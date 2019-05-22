@@ -1,5 +1,6 @@
 node_modules
 miniprogram_npm
+lib
 *.idea
 *.iml
 .DS_Store

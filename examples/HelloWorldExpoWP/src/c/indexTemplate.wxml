@@ -1,0 +1,37 @@
+
+    <wxs src="../../commonwxs.wxs" module="tools" />
+    
+<template name="CTNP00003">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+ <template name="ITNP00010">
+    <view tempName="ITNP00010" style="{{tools.getFinalStyle(DIUU00001style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00002style)}}"><view style="{{tools.getFinalStyle(DIUU00003style)}}">Hello</view></view>
+                <view style="{{tools.getFinalStyle(DIUU00004style)}}"><view style="{{tools.getFinalStyle(DIUU00005style)}}"><template datakey="CTDK00004" wx:if="{{CTDK00004}}" is="CTNP00003" data="{{...CTDK00004}}"></template></view></view>
+
+                <view style="{{tools.getFinalStyle(DIUU00006style)}}">
+                    <WXButton title="PUSH E PAGE" color="#FFF" diuu="{{DIUU00007}}" style="{{tools.getFinalStyle(DIUU00007style)}}" />
+                </view>
+                
+                <view style="{{tools.getFinalStyle(DIUU00008style)}}">
+                    <WXButton color="#fff" title="REPLACE E PAGE" diuu="{{DIUU00009}}" style="{{tools.getFinalStyle(DIUU00009style)}}" />
+                </view>
+                
+            </view>
+  </template>
+ 
+ 
+    

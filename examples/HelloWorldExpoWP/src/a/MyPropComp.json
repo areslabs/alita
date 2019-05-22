@@ -1,0 +1,9 @@
+{
+	"component": true,
+	"usingComponents": {},
+	"componentGenerics": {
+		"headerComponentCPT": "true",
+		"footerComponentCPT": "true"
+	},
+	"disableScroll": true
+}

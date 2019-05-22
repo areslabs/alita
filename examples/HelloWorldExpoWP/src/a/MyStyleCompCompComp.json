@@ -1,0 +1,8 @@
+{
+	"component": true,
+	"usingComponents": {
+		"WXButton": "@areslabs/wx-react-native/component/WXButton/index"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

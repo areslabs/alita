@@ -1,0 +1,32 @@
+
+    <wxs src="../../commonwxs.wxs" module="tools" />
+    
+<template name="CTNP00003">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+ <template name="ITNP00006">
+    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00006" style="{{tools.getFinalStyle(DIUU00001style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00002style)}}">
+                    <WXButton title="Change Name" color="#333" diuu="{{DIUU00003}}" style="{{tools.getFinalStyle(DIUU00003style)}}" />
+                </view>
+                <view style="{{tools.getFinalStyle(DIUU00004style)}}">
+                    <view style="{{tools.getFinalStyle(DIUU00005style)}}"><template datakey="CTDK00004" wx:if="{{CTDK00004}}" is="CTNP00003" data="{{...CTDK00004}}"></template>: name=<template datakey="CTDK00005" wx:if="{{CTDK00005}}" is="CTNP00003" data="{{...CTDK00005}}"></template>, age=<template datakey="CTDK00006" wx:if="{{CTDK00006}}" is="CTNP00003" data="{{...CTDK00006}}"></template></view>
+                </view>
+            </block>
+  </template>
+ 
+ 
+    
