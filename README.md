@@ -16,8 +16,8 @@ Alita是一款把React Native转化为微信小程序的引擎，它对React语�
    	    <td>微信小程序</td>
    </tr>
 	<tr>
-		<td><img src="./doc/static/rnalita.gif"/></td>
-		<td><img src="./doc/static/wxalita.gif"/></td>
+		<td><img src="./docs/static/rnalita.gif"/></td>
+		<td><img src="./docs/static/wxalita.gif"/></td>
 	</tr>
 </table>
 
@@ -34,7 +34,7 @@ Alita是一款把React Native转化为微信小程序的引擎，它对React语�
     ```
     react-native init HelloWorld
     ``` 
-    构建你的页面，路由需要使用[@areslabs/router](./doc/路由.md)
+    构建你的页面，路由需要使用[@areslabs/router](./docs/路由.md)
  
 2. 调用alita命令将其转化为微信小程序应用
     ```
@@ -79,7 +79,7 @@ alita命令有以下参数：
 
 [ReactRepos](./examples/ReactRepos)，react-native 命令创建的项目，转化出来的小程序在[ReactReposWP](./examples/ReactReposWP)
 
-[SubpackagesDemo](./examples/SubpackagesDemo)， 通过[小程序分包集成的方式](./doc/小程序分包集成.md)，集成的小程序包
+[SubpackagesDemo](./examples/SubpackagesDemo)， 通过[小程序分包集成的方式](./docs/小程序分包集成.md)，集成的小程序包
 
 
 ## 要求与限制
@@ -87,16 +87,16 @@ alita命令有以下参数：
 
 1. 转化之后的小程序，必须符合小程序的规范， 比如最终压缩的代码小于4m，分包8m， 路由深度不大于5层等。
 
-2. Alita本身的一些限制 详见[要求与限制](./doc/要求与限制.md)， [静态限制](./doc/静态限制.md)
+2. Alita本身的一些限制 详见[要求与限制](./docs/要求与限制.md)， [静态限制](./docs/静态限制.md)
 
-3. 如果使用了第三方React Native组件，需要使用[自定义组件库扩展](./doc/自定义组件库扩展.md) 方式进行扩展
+3. 如果使用了第三方React Native组件，需要使用[自定义组件库扩展](./docs/自定义组件库扩展.md) 方式进行扩展
 
 
 ## 配置文件
-[详见](./doc/配置文件.md)
+[详见](./docs/配置文件.md)
 
 ## 老项目转化
-[详见](./doc/老项目转化.md)
+[详见](./docs/老项目转化.md)
 
 ## License
 MIT
