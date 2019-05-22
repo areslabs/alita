@@ -1,0 +1,761 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>自定义组件库扩展 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="官方组件库.html" />
+    
+    
+    <link rel="prev" href="支持Redux.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    开始
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="路由.html">
+            
+                <a href="路由.html">
+            
+                    
+                    路由
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="入口文件.html">
+            
+                <a href="入口文件.html">
+            
+                    
+                    入口文件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="静态限制.html">
+            
+                <a href="静态限制.html">
+            
+                    
+                    静态限制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="动画.html">
+            
+                <a href="动画.html">
+            
+                    
+                    动画
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="平台判断.html">
+            
+                <a href="平台判断.html">
+            
+                    
+                    平台判断
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="属性传递JSX&组件.html">
+            
+                <a href="属性传递JSX&组件.html">
+            
+                    
+                    属性传递JSX&组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="外部JSX片段.html">
+            
+                <a href="外部JSX片段.html">
+            
+                    
+                    外部JSX片段
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="高阶组件.html">
+            
+                <a href="高阶组件.html">
+            
+                    
+                    高阶组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="配置文件.html">
+            
+                <a href="配置文件.html">
+            
+                    
+                    配置文件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="要求与限制.html">
+            
+                <a href="要求与限制.html">
+            
+                    
+                    要求与限制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="未实现组件和API.html">
+            
+                <a href="未实现组件和API.html">
+            
+                    
+                    未实现组件和API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="组件差异.html">
+            
+                <a href="组件差异.html">
+            
+                    
+                    组件差异
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="组件差异-Text.html">
+            
+                <a href="组件差异-Text.html">
+            
+                    
+                    Text
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.2" data-path="组件差异-Image.html">
+            
+                <a href="组件差异-Image.html">
+            
+                    
+                    Image
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.3" data-path="组件差异-ScrollView.html">
+            
+                <a href="组件差异-ScrollView.html">
+            
+                    
+                    ScrollView
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.4" data-path="组件差异-FlatList.html">
+            
+                <a href="组件差异-FlatList.html">
+            
+                    
+                    FlatList
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.5" data-path="组件差异-TouchableXXX.html">
+            
+                <a href="组件差异-TouchableXXX.html">
+            
+                    
+                    TouchableXXX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.6" >
+            
+                <span>
+            
+                    
+                    等等
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="支持Redux.html">
+            
+                <a href="支持Redux.html">
+            
+                    
+                    支持Redux
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.15" data-path="自定义组件库扩展.html">
+            
+                <a href="自定义组件库扩展.html">
+            
+                    
+                    自定义组件库扩展
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.16" data-path="官方组件库.html">
+            
+                <a href="官方组件库.html">
+            
+                    
+                    官方组件库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.17" data-path="代码检查&Eslint.html">
+            
+                <a href="代码检查&Eslint.html">
+            
+                    
+                    代码检查&Eslint
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18" data-path="老项目转化.html">
+            
+                <a href="老项目转化.html">
+            
+                    
+                    老项目转化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19" data-path="小程序分包集成.html">
+            
+                <a href="小程序分包集成.html">
+            
+                    
+                    小程序分包集成
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20" data-path="React16特性支持进度.html">
+            
+                <a href="React16特性支持进度.html">
+            
+                    
+                    React16特性支持进度
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >自定义组件库扩展</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x5E93;&#x6269;&#x5C55;">&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x5E93;&#x6269;&#x5C55;</h2>
+<p>&#x9664;&#x4E86;React Native&#x672C;&#x8EAB;&#x63D0;&#x4F9B;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C; &#x6BCF;&#x4E2A;&#x9879;&#x76EE;&#x6BCF;&#x4E2A;&#x56E2;&#x961F;&#x4E00;&#x822C;&#x90FD;&#x4F1A;&#x6709;&#x81EA;&#x5DF1;&#x7684;UI&#x7EC4;&#x4EF6;&#x5E93;&#x3002; 
+&#x6B64;&#x5916;&#xFF0C;&#x6709;&#x5F88;&#x591A;&#x4F18;&#x79C0;&#x7684;&#x7B2C;&#x4E09;&#x65B9;&#x7EC4;&#x4EF6;&#x6BD4;&#x5982;&#xFF1A;<a href="https://github.com/ptomasroos/react-native-scrollable-tab-view" target="_blank">ScrollableTabView</a>&#xFF0C; <a href="https://github.com/race604/react-native-viewpager" target="_blank">ViewPager</a>&#x7B49;&#xFF0C; &#x5982;&#x4F55;&#x628A;&#x4F7F;&#x7528;&#x4E86;&#x8FD9;&#x4E9B;&#x7EC4;&#x4EF6;&#x7684;React Native&#x5E94;&#x7528;&#x8F6C;&#x5316;&#x4E3A;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x5462;&#xFF1F;</p>
+<p>&#x4E0B;&#x9762;&#x6211;&#x4EEC;&#x63D0;&#x4F9B;2&#x79CD;&#x65B9;&#x5F0F;&#xFF0C;&#x6765;&#x5904;&#x7406;&#x8FD9;&#x4E9B;&#x7EC4;&#x4EF6;&#xFF0C;&#x6211;&#x4EEC;&#x4EE5;&#x5B9E;&#x9645;&#x7684;&#x4F8B;&#x5B50;&#x8BF4;&#x660E;&#x3002; </p>
+<p>&#x4EE5;&#x4E0B;&#x6240;&#x6D89;&#x53CA;&#x7684;<code>@areslabs/hi-rn</code>, <code>@areslabs/hi-wx</code>, <code>@areslabs/hello-rn</code>, <code>@areslabs/hello-wx</code>&#x3002; &#x4EE3;&#x7801;&#x5747;&#x53EF;&#x4EE5;&#x5728;packages&#x76EE;&#x5F55;&#x4E0B;&#x627E;&#x5230;</p>
+<h3 id="&#x624B;&#x52A8;&#x5BF9;&#x9F50;ui&#x7EC4;&#x4EF6;&#x5E93;">&#x624B;&#x52A8;&#x5BF9;&#x9F50;UI&#x7EC4;&#x4EF6;&#x5E93;</h3>
+<p>&#x9996;&#x5148;&#xFF0C; &#x6211;&#x4EEC;&#x9700;&#x8981;&#x9884;&#x5148;&#x5728;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7AEF; &#x5BF9;&#x9F50;&#x4E00;&#x5957;&#x5BF9;&#x5E94;&#x7684;&#x7EC4;&#x4EF6;&#x3002;&#x4E3A;&#x4E86;&#x65B9;&#x4FBF;&#x8BF4;&#x660E;&#xFF0C;&#x6211;&#x4EEC;&#x4EE5;&#x7B2C;&#x4E09;&#x65B9;&#x7EC4;&#x4EF6;<code>@areslabs/hi-rn</code>&#x4E3A;&#x4F8B;&#xFF0C; &#x8FD9;&#x4E2A;&#x7EC4;&#x4EF6;&#x5F88;&#x7B80;&#x5355;&#xFF0C;&#x5E0C;&#x671B;&#x901A;&#x8FC7;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x80FD;&#x591F;&#x8BA9;&#x5927;&#x5BB6;&#x7406;&#x89E3;&#x6269;&#x5C55;&#x7B2C;&#x4E09;&#x65B9;&#x7EC4;&#x4EF6;&#x5E93;&#x7684;&#x65B9;&#x5F0F;&#x3002; &#x8FD9;&#x4E2A;&#x7EC4;&#x4EF6;&#x7684;RN&#xFF0C;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x6E90;&#x4EE3;&#x7801;&#x90FD;&#x5728;packages&#x76EE;&#x5F55;&#x4E0B;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x5148;&#x6765;&#x770B;&#x4E00;&#x4E0B;RN&#x7EC4;&#x4EF6;&#x4EE3;&#x7801;</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Hi</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+    render() {
+        <span class="hljs-keyword">return</span> (
+            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{this.props.style}</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">Text</span>
+                    <span class="hljs-attr">style</span>=<span class="hljs-string">{this.props.textStyle}</span>
+                    <span class="hljs-attr">onPress</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+                        console.log(&apos;Hi &apos;, this.props.name, &apos; !&apos;)
+                        this.props.textPress &amp;&amp; this.props.textPress()
+                    }}
+                &gt;Hi {this.props.name}!<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
+        )
+    }
+}
+</code></pre>
+<p>&#x8FD9;&#x4E2A;&#x7EC4;&#x4EF6;&#x63A5;&#x53D7;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;name&#xFF0C; &#x5E76;&#x5C55;&#x793A;&#x3002; </p>
+<p>&#x518D;&#x770B;&#x4E0B;&#x5BF9;&#x9F50;&#x7684;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x4EE3;&#x7801;&#xFF0C; &#x5148;&#x770B;&#x4E0B;&#x76EE;&#x5F55;&#x7ED3;&#x6784;
+<img src="static/hiwx.png" alt="hiwx"></p>
+<p>&#x9996;&#x5148;&#x8FD9;&#x4E2A;&#x5305;&#x8981;&#x7B26;&#x5408;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;npm&#x5305;&#x7684;<a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html" target="_blank">&#x7EA6;&#x5B9A;</a>&#x3002; &#x4EE3;&#x7801;&#x9700;&#x8981;&#x5728;miniprogram_dist &#x76EE;&#x5F55;&#x4E0B;&#x3002; </p>
+<p>&#x5206;&#x522B;&#x6765;&#x770B;&#x4E0B;&#x5FC5;&#x8981;&#x7684;&#x51E0;&#x4E2A;&#x6587;&#x4EF6; index.comp.js &#xFF0C;index.js&#xFF0C; index.json, index.wxml ,index.wxss&#x3002; </p>
+<h4 id="indexcompjs">index.comp.js</h4>
+<p>&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A; </p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {RNBaseComponent, tackleWithStyleObj, styleType} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@areslabs/wx-react&apos;</span>
+<span class="hljs-keyword">const</span> {VIEW} = styleType
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Hi</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">RNBaseComponent</span></span>{
+    getStyle(props) {
+        <span class="hljs-keyword">return</span> {
+            style: tackleWithStyleObj(props.style, VIEW),
+            textStyle: tackleWithStyleObj(props.textStyle),
+        }
+    }
+}
+</code></pre>
+<p>&#x8FD9;&#x4E2A;&#x6587;&#x4EF6;&#x662F;&#x7531;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x5185;&#x90E8;&#x7684;mini-react&#x8FD0;&#x884C;&#x65F6;&#x7528;&#x7684;&#xFF0C; &#x6709;&#x4E24;&#x70B9;&#x9700;&#x8981;&#x6CE8;&#x610F;</p>
+<ol>
+<li>&#x7EE7;&#x627F;&#x81EA;RNBaseComponent</li>
+<li>&#x63D0;&#x4F9B;getStyle &#x65B9;&#x6CD5;</li>
+</ol>
+<p>&#x7EE7;&#x627F;&#x81EA;RNBaseComponent&#x662F;&#x4E3A;&#x4E86;&#x65B9;&#x4FBF;&#xFF0C;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x5185;&#x90E8;&#x7684;&#x8BC6;&#x522B;&#x3002;</p>
+<p>&#x91CD;&#x70B9;&#x5728;&#x4E8E;&#x8FD9;&#x91CC;&#x7684;getStyle &#x65B9;&#x6CD5;&#xFF0C;&#x5728;&#x8BF4;getStyle&#x4E4B;&#x524D;&#xFF0C;&#x5148;&#x8BF4;&#x4E24;&#x70B9;&#x3002;</p>
+<ol>
+<li><code>tackleWithStyleObj</code>&#x65B9;&#x6CD5;&#xFF0C;&#x987E;&#x540D;&#x601D;&#x4E49;<code>tackleWithStyleObj</code>&#x5C31;&#x662F;&#x628A;RN&#x7684;&#x6837;&#x5F0F;&#x5BF9;&#x8C61;&#xFF0C;&#x8F6C;&#x5316;&#x4E3A;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x7B49;&#x6548;&#x6837;&#x5F0F;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x5B83;&#x63A5;&#x53D7;2&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x7B2C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x662F;RN&#x5408;&#x6CD5;&#x7684;&#x6837;&#x5F0F;&#x5BF9;&#x8C61;&#xFF08;&#x53EF;&#x4EE5;&#x662F;&#x6570;&#x7EC4;&#xFF09;&#xFF0C;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x51B3;&#x5B9A;&#x4E86;&#x9700;&#x8981;&#x6DFB;&#x52A0;&#x7684;&#x6837;&#x5F0F;&#x9ED8;&#x8BA4;&#x503C;&#x3002;</li>
+<li>&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x548C;RN &#x6709;&#x4E00;&#x4E2A;&#x5F88;&#x5927;&#x7684;&#x4E0D;&#x540C;&#xFF0C; RN&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x5B9E;&#x9645;&#x4E0A;&#x53EA;&#x5B58;&#x5728;&#x4E8E;React&#x8FC7;&#x7A0B;&#x9636;&#x6BB5;&#xFF0C;&#x6BD4;&#x5982;Hi&#x7EC4;&#x4EF6;&#xFF0C;&#x5728;React&#x771F;&#x6B63;&#x6E32;&#x67D3;&#x4E4B;&#x540E;&#x662F;&#x4E0D;&#x5B58;&#x5728;&#x7684;&#xFF0C;&#x800C;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x4F1A;&#x5B9E;&#x5B9E;&#x5728;&#x5728;&#x6E32;&#x67D3;&#x51FA;&#x4E00;&#x4E2A;Hi&#x8282;&#x70B9;&#x3002;</li>
+</ol>
+<p>&#x6240;&#x4EE5;&#xFF0C;&#x5728;&#x5C0F;&#x7A0B;&#x5E8F;&#x4E0A;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x628A;&#x7EC4;&#x4EF6;Hi&#x7684;&#x5916;&#x5C42;View&#x7684;&#x6837;&#x5F0F;&#x63D0;&#x53D6;&#x51FA;&#x6765;&#xFF0C;&#x653E;&#x5230;Hi&#x8282;&#x70B9;&#x4E0A;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;<code>style: tackleWithStyleObj(props.style, VIEW)</code>&#x3002; &#x800C;&#x5185;&#x90E8;&#x6587;&#x5B57;&#x7684;&#x6837;&#x5F0F;&#xFF0C;&#x4E5F;&#x9700;&#x8981;&#x901A;&#x8FC7;<code>tackleWithStyleObj</code>&#x8F6C;&#x5316;&#x4E00;&#x6B21;&#x5373;&#xFF1A;<code>textStyle:tackleWithStyleObj(props.textStyle),</code>&#x3002; &#x6CE8;&#x610F;&#x8FD9;&#x91CC;style&#x7684;&#x65F6;&#x5019;&#x4F7F;&#x7528;&#x4E86;tackleWithStyleObj&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x539F;&#x56E0;&#x662F;&#x6211;&#x4EEC;&#x65E0;&#x6CD5;&#x7ED9;Hi&#x8282;&#x70B9;&#xFF0C;&#x6DFB;&#x52A0;&#x6837;&#x5F0F;&#x9ED8;&#x8BA4;&#x503C;&#xFF0C;&#x800C;&#x5BF9;&#x5E94;&#x5185;&#x90E8;&#x5BF9;&#x9F50;&#x4F7F;&#x7528;&#x7684;&#x5FAE;&#x4FE1;&#x539F;&#x751F;&#x8282;&#x70B9;&#xFF0C;&#x662F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5982;&#x4E0B;&#x65B9;&#x5F0F;&#x6DFB;&#x52A0;&#x9ED8;&#x8BA4;&#x503C;&#x7684;&#x3002;</p>
+<pre><code class="lang-css">page, view, image, scroll-view {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    ...
+}
+</code></pre>
+<h4 id="indexjs">index.js</h4>
+<p>&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {getPropsMethod, instanceManager} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@areslabs/wx-react&apos;</span>
+
+Component({
+    properties: {
+        name: <span class="hljs-literal">null</span>,
+        textStyle: <span class="hljs-literal">null</span>,
+        diuu: <span class="hljs-literal">null</span>,
+    },
+
+    attached() {
+        instanceManager.setWxCompInst(<span class="hljs-keyword">this</span>.data.diuu, <span class="hljs-keyword">this</span>)
+    },
+
+    detached() {
+        instanceManager.removeUUID(<span class="hljs-keyword">this</span>.data.diuu)
+    },
+
+    methods: {
+        handlePress: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;Hi &apos;</span>, <span class="hljs-keyword">this</span>.data.name, <span class="hljs-string">&apos; !&apos;</span>)
+            <span class="hljs-keyword">const</span> textPress = getPropsMethod(<span class="hljs-keyword">this</span>, <span class="hljs-string">&apos;textPress&apos;</span>)
+            textPress &amp;&amp; textPress()
+        }
+    }
+});
+</code></pre>
+<p>properties &#x5B57;&#x6BB5;&#x5B9A;&#x4E49;&#x4E86;&#x7EC4;&#x4EF6;&#x9700;&#x8981;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x989D;&#x5916;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#xFF1A; diuu&#xFF0C; &#x540C;&#x65F6;&#x5728;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#x91CC;&#x9762;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#x8FD9;&#x4E2A;diuu&#x5C5E;&#x6027;&#xFF0C; &#x5373;attached &#x751F;&#x547D;&#x5468;&#x671F;&#x6267;&#x884C;<code>instanceManager.setWxCompInst(this.data.diuu, this)</code>&#xFF0C; detached &#x751F;&#x547D;&#x5468;&#x671F;<code>instanceManager.removeUUID(this.data.diuu)</code>&#x3002; 
+&#x53E6;&#x5916;&#x5728;methods&#x5B57;&#x6BB5;&#x91CC;&#x9762;&#xFF0C; &#x63D0;&#x4F9B;&#x4E86;handlePress&#x65B9;&#x6CD5;&#xFF0C;&#x5BF9;&#x5E94;Text&#x6807;&#x7B7E;&#x7684;onPress&#xFF0C;&#x7531;&#x4E8E;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x4E0D;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4F20;&#x9012;&#x65B9;&#x6CD5;&#xFF0C; &#x5BF9;&#x4E8E; <code>this.props.textPress</code>&#x9700;&#x8981;&#x8C03;&#x7528;<code>getPropsMethod</code> &#x83B7;&#x53D6;&#x5BF9;&#x5E94;&#x65B9;&#x6CD5;</p>
+<p>style&#x5C5E;&#x6027;&#x4E0D;&#x9700;&#x8981;&#x5B9A;&#x4E49;&#x5728;properties&#xFF1F;&#x9996;&#x5148;&#x6CA1;&#x5FC5;&#x8981;&#xFF0C;&#x56E0;&#x4E3A;&#x6837;&#x5F0F;&#x9700;&#x8981;&#x8BBE;&#x7F6E;&#x5728;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x751F;&#x6210;&#x7684;&#x5916;&#x90E8;&#x8282;&#x70B9;&#x4E0A;&#xFF0C;&#x7B2C;&#x4E8C;&#x8BBE;&#x7F6E;&#x4E86;&#x4E5F;&#x6CA1;&#x6709;&#x7528;&#xFF0C; &#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x4F20;&#x9012;&#x5C5E;&#x6027;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x81EA;&#x52A8;&#x8FC7;&#x6EE4;&#x4E86;style&#x3002;</p>
+<h4 id="indexwxml">index.wxml</h4>
+<p>&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A; </p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fillout&quot;</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;{{textStyle}}&quot;</span> <span class="hljs-attr">catchtap</span>=<span class="hljs-string">&quot;handlePress&quot;</span>&gt;</span>Hi {{name}}!<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span>
+</code></pre>
+<p>&#x8FD9;&#x91CC;&#x6709;&#x51E0;&#x70B9;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;</p>
+<ol>
+<li>React Native&#x7684;Text&#x7EC4;&#x4EF6;&#x884C;&#x4E3A;&#x8868;&#x73B0;&#xFF0C;&#x66F4;&#x50CF;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;view&#x6807;&#x7B7E;&#xFF0C; &#x8FD9;&#x91CC;&#x7528;view&#x6807;&#x7B7E;&#x66FF;&#x6362;Text&#x6807;&#x7B7E;</li>
+<li>React Native&#x7684;&#x4E8B;&#x4EF6;&#x5728;&#x5D4C;&#x5957;&#x7684;&#x65F6;&#x5019;&#x662F;&#x4E0D;&#x5192;&#x6CE1;&#x7684;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;Touchable&#x7EC4;&#x4EF6;&#x5D4C;&#x5957;Touchable&#x7EC4;&#x4EF6;&#x5728;&#x54CD;&#x5E94;&#x7684;&#x65F6;&#x5019;&#x53EA;&#x6709;&#x5185;&#x90E8;&#x54CD;&#x5E94;&#xFF0C; &#x6240;&#x4EE5;&#x8FD9;&#x91CC;&#x7528;catchtap&#xFF0C; &#x8FD9;&#x91CC;&#x7684;handlePress&#x548C;&#x4E0A;&#x9762;index.js&#x6587;&#x4EF6;&#x91CC;&#x7684;handlePress&#x662F;&#x5BF9;&#x5E94;&#x7684;</li>
+<li>React Native &#x7684;&#x6570;&#x636E;&#x7ED1;&#x5B9A;<code>{this.props.name}</code> &#x5BF9;&#x5E94;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;<code>{ { name } }</code>&#x3002;</li>
+<li>&#x6B63;&#x5982;&#x4E4B;&#x524D;&#x6240;&#x8BF4;&#xFF0C;style&#x4F1A;&#x88AB;&#x8BBE;&#x7F6E;&#x5230;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x751F;&#x6210;&#x7684;&#x8282;&#x70B9;&#x4E4B;&#x4E0A;&#xFF0C;&#x6240;&#x4EE5;&#x91CC;&#x9762;&#x5305;&#x88F9;&#x7684;view&#x9700;&#x8981;&#x6491;&#x6EE1;&#x8FD9;&#x4E2A;&#x81EA;&#x5B9A;&#x4E49;&#x8282;&#x70B9;&#xFF0C; &#x9700;&#x8981;&#x8BBE;&#x7F6E;fillout&#x7C7B;</li>
+</ol>
+<p>&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x751F;&#x6210;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x672C;&#x8EAB;&#x4E5F;&#x662F;&#x4E00;&#x4E2A;view&#x8282;&#x70B9;&#xFF0C;&#x5B83;&#x5373;&#x88AB;&#x8BBE;&#x7F6E;&#x4E86;style&#x7684;&#x503C;&#xFF0C;&#x4E5F;&#x5C31;&#x548C;React Native&#x7684;&#x5305;&#x88F9;&#x7684;View&#x8282;&#x70B9;&#x7B49;&#x6548;&#x4E86;&#xFF0C;&#x6240;&#x4EE5;&#x8FD9;&#x91CC;&#x7684;&#x5305;&#x88F9;view&#x8282;&#x70B9;&#x53EF;&#x4EE5;&#x7701;&#x7565;&#x3002; </p>
+<p>&#x5B9E;&#x9645;&#x4E0A;&#x7684;index.wxml&#x7684;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A; </p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;{{textStyle}}&quot;</span> <span class="hljs-attr">catchtap</span>=<span class="hljs-string">&quot;handlePress&quot;</span>&gt;</span>Hi {{name}}!<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span>
+</code></pre>
+<h4 id="indexjson">index.json</h4>
+<p>&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A; </p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;component&quot;</span>: <span class="hljs-literal">true</span>
+}
+</code></pre>
+<h4 id="indexwxss">index.wxss</h4>
+<p>&#x8FD9;&#x91CC;&#x653E;&#x7F6E;&#x4F60;&#x5728;&#x5BF9;&#x9F50;&#x9636;&#x6BB5;&#x9700;&#x8981;&#x7528;&#x5230;&#x7684;wxss&#x6587;&#x4EF6;&#xFF0C; &#x4E00;&#x822C;&#x60C5;&#x51B5;&#x7531;&#x4E8E;React Native&#x7684;&#x6837;&#x5F0F;&#x90FD;&#x662F;&#x8BBE;&#x7F6E;&#x5728;style&#x5C5E;&#x6027;&#xFF0C; &#x8FD9;&#x4E2A;&#x6587;&#x4EF6;&#x901A;&#x5E38;&#x4E3A;&#x7A7A;&#x3002; 
+&#x53E6;&#x5916;&#x4E3A;&#x4E86;&#x65B9;&#x4FBF;&#x5904;&#x7406;&#x6837;&#x5F0F;&#xFF0C;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x57FA;&#x672C;&#x8282;&#x70B9; view, image, scroll-view &#x90FD;&#x88AB;&#x9ED8;&#x8BA4;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E86; flex&#x5E03;&#x5C40;&#xFF0C;&#x4E14;&#x65B9;&#x5411;&#x4E3A;column&#xFF0C;&#x4E0E;React Native&#x4FDD;&#x6301;&#x4E86;&#x4E00;&#x81F4;&#x3002; </p>
+<h4 id="&#x914D;&#x7F6E;&#x6587;&#x4EF6;">&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h4>
+<p>&#x5BF9;&#x9F50;&#x4E4B;&#x540E;&#xFF0C;&#x53D1;&#x5E03;&#x4E3A;<a href="../packages/Hi-WX">@areslabs/hi-wx</a>npm&#x5305;&#x3002;&#x7136;&#x540E;&#x5728;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x914D;&#x7F6E;&#x5982;&#x4E0B;&#xFF1A; </p>
+<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
+    dependenciesMap: {
+        ...
+        <span class="hljs-string">&quot;@areslabs/hi-rn&quot;</span>: <span class="hljs-string">&quot;@areslabs/hi-wx&quot;</span>,
+        ...
+    },
+
+
+    extCompLibs: [
+        {
+            name: <span class="hljs-string">&apos;@areslabs/hi-rn&apos;</span>,
+            compLists: [
+                <span class="hljs-string">&apos;Hi&apos;</span>
+            ]
+        }
+    ]
+}
+</code></pre>
+<p>&#x548C;&#x5176;&#x4ED6;npm&#x5305;&#x4E00;&#x6837;&#xFF0C; &#x9996;&#x5148;&#x9700;&#x8981;&#x5728;<code>dependenciesMap</code>&#x5B57;&#x6BB5;&#x91CC;&#x9762;&#x6307;&#x660E;&#x5BF9;&#x5E94;&#x5173;&#x7CFB;&#x3002; &#x989D;&#x5916;&#x7684;&#xFF0C;&#x7EC4;&#x4EF6;&#x5E93;&#x5BF9;&#x9F50;&#x7684;&#x5305;&#x8FD8;&#x9700;&#x8981;&#x5728;<code>extCompLibs</code>&#x5B57;&#x6BB5;&#xFF0C;&#x6307;&#x660E;&#x63D0;&#x4F9B;&#x7684;&#x6240;&#x6709;&#x7EC4;&#x4EF6;&#xFF0C; &#x5BF9;&#x4E8E;<code>@areslabs/hi-rn</code>&#x8FD9;&#x4E2A;&#x5305;&#xFF0C; &#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x7EC4;&#x4EF6; Hi</p>
+<h4 id="&#x4F7F;&#x7528;&#x65B9;&#x5F0F;">&#x4F7F;&#x7528;&#x65B9;&#x5F0F;</h4>
+<p>&#x4EE5;&#x4E0A;&#xFF0C;&#x6211;&#x4EEC;&#x5BF9;&#x4E00;&#x4E2A;React Native&#x7EC4;&#x4EF6;&#x5728;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x4E0A;&#x7684;&#x9002;&#x914D;&#x5DE5;&#x4F5C;&#x5C31;&#x7ED3;&#x675F;&#x4E86;&#xFF0C;&#x5BF9;&#x4E8E;&#x4EE5;&#x540E;&#x6240;&#x6709;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;Hi&#x7EC4;&#x4EF6;&#x7684;React Native&#x5E94;&#x7528;&#x6765;&#x8BF4;&#xFF0C;&#x5C31;&#x662F;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x8F6C;&#x5316;&#x4E3A;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7248;&#x672C;&#x4E86;&#x3002; </p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Hi <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@areslabs/hi-rn&apos;</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloWorld</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+    render() {
+        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
+             <span class="hljs-tag">&lt;<span class="hljs-name">Hi</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;y5g&quot;</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span>
+    }
+}
+</span></code></pre>
+<p>React Native&#x7684;&#x6240;&#x6709;&#x7EC4;&#x4EF6;&#x5305;&#x62EC;Image&#xFF0C; View&#xFF0C; FlatList&#x90FD;&#x662F;&#x901A;&#x8FC7;&#x4EE5;&#x4E0A;&#x7684;&#x65B9;&#x5F0F;&#x5728;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7AEF;&#x5B9E;&#x73B0;&#x4E86;&#x5BF9;&#x9F50;&#xFF0C; &#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x67E5;&#x770B;<a href="https://www.npmjs.com/package/@areslabs/wx-react-native" target="_blank">wx-react-native</a>&#xFF0C;&#x6765;&#x67E5;&#x770B;&#x57FA;&#x672C;&#x7EC4;&#x4EF6;&#x7684;&#x5BF9;&#x9F50;&#x3002; </p>
+<h3 id="&#x5F15;&#x64CE;&#x76F4;&#x63A5;&#x8F6C;&#x5316;&#x7EC4;&#x4EF6;">&#x5F15;&#x64CE;&#x76F4;&#x63A5;&#x8F6C;&#x5316;&#x7EC4;&#x4EF6;</h3>
+<p>&#x662F;&#x4E0D;&#x662F;&#x81EA;&#x5DF1;&#x7684;UI&#x7EC4;&#x4EF6;&#x5E93;&#xFF0C;&#x90FD;&#x9700;&#x8981;&#x7528;&#x4EE5;&#x4E0A;&#x7684;&#x5BF9;&#x9F50;&#x65B9;&#x5F0F;&#x5462;&#xFF1F; &#x8FD8;&#x6709;&#x4E00;&#x79CD;&#x53EF;&#x9009;&#x65B9;&#x5F0F;&#x3002;&#x65E2;&#x7136;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x8BA9;React Native&#x5E94;&#x7528;&#x76F4;&#x63A5;&#x8FD0;&#x884C;&#x5728;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7AEF;&#xFF0C; &#x90A3;&#x4E48;&#x76F4;&#x63A5;&#x628A;UI&#x7EC4;&#x4EF6;&#x5E93;&#x7528;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x5904;&#x7406;&#x4E00;&#x6B21;&#x5462;&#xFF1F;&#x7B54;&#x6848;&#x662F;&#x53EF;&#x884C;&#x7684;&#xFF0C; &#x6211;&#x4EEC;&#x4EE5; <code>@areslabs/hello-rn</code>&#x4E3A;&#x4F8B;&#xFF0C; &#x5176;React Native&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Hello</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+    render() {
+        <span class="hljs-keyword">return</span> (
+            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{this.props.style}</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">Text</span>
+                    <span class="hljs-attr">style</span>=<span class="hljs-string">{this.props.textStyle}</span>
+                    <span class="hljs-attr">onPress</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+                        console.log(&apos;Hi &apos;, this.props.name, &apos; !&apos;)
+                        this.props.textPress &amp;&amp; this.props.textPress()
+                    }}
+                &gt;Hi {this.props.name}!<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
+        )
+    }
+}
+</code></pre>
+<p>&#x7136;&#x540E;&#x6211;&#x4EEC;&#x8FDB;&#x5165;&#x4EE3;&#x7801;&#x76EE;&#x5F55;&#x6267;&#x884C;</p>
+<pre><code class="lang-shell">alita -i ./ -o ../hello-wx/miniprogram_dist
+</code></pre>
+<p>&#x8FD9;&#x6837;&#x5728;<code>hello-wx</code>&#x76EE;&#x5F55;&#x5C31;&#x751F;&#x6210;&#x4E86;&#x5BF9;&#x5E94;&#x7684;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;Hello&#x7EC4;&#x4EF6;&#xFF0C; &#x7136;&#x540E;&#x6211;&#x4EEC;&#x628A;miniproram_dist&#x76EE;&#x5F55;&#x4E0B;&#x7684;package.json &#x6587;&#x4EF6;&#x79FB;&#x52A8;&#x5230;&#x4E0A;&#x5C42;hello-wx&#x76EE;&#x5F55;&#xFF0C; &#x4FEE;&#x6539;&#x5176;name&#x5B57;&#x6BB5;&#x4E3A;<code>@areslabs/hello-wx</code>, &#x53D1;&#x5E03;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#x3002;
+&#x76EE;&#x5F55;&#x7ED3;&#x6784;&#x5982;&#x4E0B;&#xFF1A; 
+<img src="static/helowx.jpg" alt="hellowx"></p>
+<h4 id="&#x914D;&#x7F6E;&#x6587;&#x4EF6;">&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h4>
+<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
+    dependenciesMap: {
+        <span class="hljs-string">&quot;@areslabs/hello-rn&quot;</span>: <span class="hljs-string">&quot;@areslabs/hello-wx&quot;</span>
+    }
+}
+</code></pre>
+<p>&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x53EA;&#x9700;&#x8981;&#x5728;<code>dependenciesMap</code>&#x5B57;&#x6BB5;&#x914D;&#x7F6E;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x5728;extCompLibs&#x5B57;&#x6BB5;&#x6307;&#x5B9A;&#x4E86;&#x3002; </p>
+<h4 id="&#x4F7F;&#x7528;&#x65B9;&#x5F0F;">&#x4F7F;&#x7528;&#x65B9;&#x5F0F;</h4>
+<p>&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x5BF9;&#x9F50;&#x7684;&#x7EC4;&#x4EF6;&#x5728;&#x4F7F;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x9700;&#x8981;&#x5F15;&#x5165;&#x5168;&#x8DEF;&#x5F84;&#x5982;<code>@areslabs/hello-rn/index</code>&#xFF08;&#x5373;&#x4F7F;&#x662F;index&#x6587;&#x4EF6;&#xFF0C;&#x4E5F;&#x4E0D;&#x80FD;&#x53EA;&#x5F15;&#x5165;&#x76EE;&#x5F55;&#xFF09; </p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Hello <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@areslabs/hello-rn/index&apos;</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloWorld</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+    render() {
+        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
+             <span class="hljs-tag">&lt;<span class="hljs-name">Hello</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;y5g&quot;</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span>
+    }
+}
+</span></code></pre>
+<p><strong>&#x8FD9;&#x91CC;&#x4E00;&#x5B9A;&#x8981;&#x6CE8;&#x610F;&#x4F7F;&#x7528; &#x5168;&#x8DEF;&#x5F84;</strong></p>
+<h3 id="&#x6700;&#x540E;">&#x6700;&#x540E;</h3>
+<p>&#x5BF9;&#x4E8E;&#x57FA;&#x672C;UI&#x7EC4;&#x4EF6;&#x5E93;&#xFF0C;&#x6211;&#x4EEC;&#x66F4;&#x52A0;&#x63A8;&#x8350;&#x624B;&#x52A8;&#x5BF9;&#x9F50;&#x7684;&#x65B9;&#x5F0F;&#xFF0C; &#x56E0;&#x4E3A;&#x5728;&#x624B;&#x52A8;&#x5BF9;&#x9F50;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6240;&#x6709;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x539F;&#x751F;API/&#x7EC4;&#x4EF6;&#xFF0C; &#x5305;&#x62EC;&#x4F7F;&#x7528;&#x52A8;&#x753B;API&#x7B49;&#xFF0C;&#x80FD;&#x529B;&#x66F4;&#x52A0;&#x7684;&#x5F3A;&#x5927;&#xFF0C;&#x53E6;&#x5916;&#x624B;&#x52A8;&#x5BF9;&#x9F50;&#x66F4;&#x52A0;&#x7684;&#x81EA;&#x7531;&#xFF0C; &#x4F60;&#x53EF;&#x4EE5;&#x9488;&#x5BF9;&#x4E0D;&#x540C;&#x5E73;&#x53F0;&#x505A;&#x4E0D;&#x540C;&#x7684;&#x54CD;&#x5E94;&#x3002; &#x800C;&#x4E14;&#xFF0C;&#x624B;&#x52A8;&#x5BF9;&#x9F50;&#x7684;&#x7EC4;&#x4EF6;&#x6709;&#x66F4;&#x51FA;&#x8272;&#x7684;&#x6027;&#x80FD;&#xFF0C;&#x5F53;&#x4E00;&#x4E2A;&#x7EC4;&#x4EF6;&#x88AB;&#x9891;&#x7E41;&#x4F7F;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x66F4;&#x5E94;&#x8BE5;&#x91C7;&#x7528;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x3002;
+&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x76F4;&#x63A5;&#x8F6C;&#x5316;&#x7EC4;&#x4EF6;&#x7684;&#x65B9;&#x5F0F;&#xFF0C; &#x66F4;&#x52A0;&#x76F4;&#x63A5;&#x7B80;&#x5355;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x6765;&#x5904;&#x7406;&#x57FA;&#x4E8E;&#x57FA;&#x672C;UI&#x7EC4;&#x4EF6;&#x5E93;&#x5C01;&#x88C5;&#x7684;&#x9AD8;&#x7EA7;&#x7EC4;&#x4EF6;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="支持Redux.html" class="navigation navigation-prev " aria-label="Previous page: 支持Redux">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="官方组件库.html" class="navigation navigation-next " aria-label="Next page: 官方组件库">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"自定义组件库扩展","level":"1.15","depth":1,"next":{"title":"官方组件库","level":"1.16","depth":1,"path":"官方组件库.md","ref":"./官方组件库.md","articles":[]},"previous":{"title":"支持Redux","level":"1.14","depth":1,"path":"支持Redux.md","ref":"./支持Redux.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"自定义组件库扩展.md","mtime":"2019-05-22T03:31:59.431Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-22T07:49:44.034Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
