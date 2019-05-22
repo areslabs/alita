@@ -1,0 +1,29 @@
+{
+  "pages":[
+    "pages/index/index"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  },
+  "subPackages": [
+    {
+      "root": "pages/HelloWorld/",
+      "pages": [
+        "src/a/index",
+        "src/c/index",
+        "src/e/index",
+        "src/b/index",
+        "src/d/index"
+      ]
+    },
+    {
+      "root": "pages/Todo/",
+      "pages":  [
+        "src/components/index"
+      ]
+    }
+  ]
+}

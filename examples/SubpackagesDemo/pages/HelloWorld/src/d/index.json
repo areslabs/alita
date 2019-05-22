@@ -1,0 +1,8 @@
+{
+	"component": true,
+	"usingComponents": {
+		"MyAni": "./MyAni"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

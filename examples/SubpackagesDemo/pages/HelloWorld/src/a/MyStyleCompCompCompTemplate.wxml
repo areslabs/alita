@@ -1,0 +1,14 @@
+
+    <wxs src="../../commonwxs.wxs" module="tools" />
+    
+ <template name="ITNP00005">
+    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00005" style="{{tools.getFinalStyle(DIUU00001style)}}">
+            <view style="{{tools.getFinalStyle(DIUU00002style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00003style)}}">MyStyleCompCompComp</view>
+            </view>
+            <WXButton title="Change Boder Width" diuu="{{DIUU00004}}" style="{{tools.getFinalStyle(DIUU00004style)}}" />
+        </block>
+  </template>
+ 
+ 
+    

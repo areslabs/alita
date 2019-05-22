@@ -1,0 +1,10 @@
+{
+	"pages": [
+		"src/components/index"
+	],
+	"window": {
+		"backgroundTextStyle": "light",
+		"backgroundColor": "#E9E9E9",
+		"enablePullDownRefresh": false
+	}
+}

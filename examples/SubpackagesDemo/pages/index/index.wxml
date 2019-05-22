@@ -1,0 +1,7 @@
+<!--index.wxml-->
+<view class="container">
+  <view>这是主包小程序</view>
+
+  <button bindtap="enterHW" >进入分包HelloWorld</button>
+  <button bindtap="enterTD">进入分包Todo</button>
+</view>

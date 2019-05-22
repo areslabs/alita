@@ -1,0 +1,33 @@
+
+    <wxs src="../../commonwxs.wxs" module="tools" />
+    
+ <template name="ITNP00011">
+    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00011" style="{{tools.getFinalStyle(DIUU00001style)}}">
+            <view catchtap="eventHandler" data-diuu="{{DIUU00002}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00002hoverClass}}" style="{{tools.getFinalStyle(DIUU00002style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00003style)}}">
+                    <view style="{{tools.getFinalStyle(DIUU00004style)}}">
+                        All
+                    </view>
+                </view>
+            </view>
+
+            <view catchtap="eventHandler" data-diuu="{{DIUU00005}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00005hoverClass}}" style="{{tools.getFinalStyle(DIUU00005style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00006style)}}">
+                    <view style="{{tools.getFinalStyle(DIUU00007style)}}">
+                        Active
+                    </view>
+                </view>
+            </view>
+
+            <view catchtap="eventHandler" data-diuu="{{DIUU00008}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00008hoverClass}}" style="{{tools.getFinalStyle(DIUU00008style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00009style)}}">
+                    <view style="{{tools.getFinalStyle(DIUU00010style)}}">
+                        Completed
+                    </view>
+                </view>
+            </view>
+        </block>
+  </template>
+ 
+ 
+    

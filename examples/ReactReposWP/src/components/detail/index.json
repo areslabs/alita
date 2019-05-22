@@ -1,0 +1,8 @@
+{
+	"component": true,
+	"usingComponents": {
+		"SecBody": "./SecBody"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

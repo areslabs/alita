@@ -1,0 +1,8 @@
+{
+	"component": true,
+	"usingComponents": {
+		"MyStyleCompCompComp": "./MyStyleCompCompComp"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

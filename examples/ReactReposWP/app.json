@@ -1,0 +1,13 @@
+{
+	"pages": [
+		"src/components/list/index",
+		"src/components/detail/index"
+	],
+	"window": {
+		"backgroundTextStyle": "light",
+		"backgroundColor": "#E9E9E9",
+		"enablePullDownRefresh": false,
+		"navigationBarBackgroundColor": "#ffffff",
+		"navigationBarTextStyle": "black"
+	}
+}

@@ -1,0 +1,22 @@
+
+    <wxs src="../../commonwxs.wxs" module="tools" />
+    
+ <template name="ITNP00002">
+    <view tempName="ITNP00002" style="{{tools.getFinalStyle(DIUU00001style)}}">TodoList样例列表</view>
+  </template>
+ 
+ <template name="ITNP00004">
+    <Todo diuu="{{DIUU00003}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00003style)}}" _r="{{DIUU00003R}}" />
+  </template>
+ 
+ <template name="ITNP00009">
+    <view tempName="ITNP00009" style="{{tools.getFinalStyle(DIUU00005style)}}">
+                <AddTodo diuu="{{DIUU00006}}" style="{{tools.getFinalStyle(DIUU00006style)}}" _r="{{DIUU00006R}}" />
+                <WXFlatList generic:renderItemCPT="ICNPaaaaa" diuu="{{DIUU00007}}" style="{{tools.getFinalStyle(DIUU00007style)}}" _r="{{DIUU00007R}}" />
+
+                <Footer diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" _r="{{DIUU00008R}}" />
+            </view>
+  </template>
+ 
+ 
+    

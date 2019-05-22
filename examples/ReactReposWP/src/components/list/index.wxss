@@ -1,0 +1,2 @@
+@import '../../../pageCommon.wxss';
+@import '../../../compCommon.wxss';
