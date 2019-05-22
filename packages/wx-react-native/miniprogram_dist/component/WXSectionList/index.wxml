@@ -1,0 +1,65 @@
+<wxs src="../commonwxs.wxs" module="tools" />
+<scroll-view
+        bindscrolltoupper="onScrollToupper"
+        scroll-y
+        scroll-top="{{_r.onRefreshPassed ? (sr ? 0: 80) : 0}}"
+        upper-threshold="3"
+        scroll-with-animation="{{withAni}}"
+        bindscroll="outScroll"
+        scroll-left="{{outLeft}}"
+        style="flex: 1; flex-basis: 0%;overflow:hidden;"
+        bindtouchstart='startTouch'
+        bindtouchend='leaveTouch'
+        bindscrolltolower="onEndReached"
+        lower-threshold="{{_r.onEndReachedThreshold}}"
+>
+    <view style="{{_r.contentContainerStyle}}min-height: calc(100% + {{_r.onRefreshPassed ? 80 : 0}}px)">
+        <view
+                wx:if="{{_r.onRefreshPassed}}"
+                style="height:80px;align-items:center;justify-content:center;"
+        >
+            <image
+                    src="../../component/assets/loading.gif"
+                    mode="aspectFit"
+                    style="height: 30px"
+            />
+        </view>
+
+        <ListHeaderComponentCPT
+                wx:if="{{_r.ListHeaderComponentDIUU}}"
+                diuu="{{_r.ListHeaderComponentDIUU}}"
+                _r="{{_r.ListHeaderComponentDIUUR}}"
+                style="{{tools.getFinalStyle(_r.ListHeaderComponentDIUUstyle)}}"
+        />
+
+        <block wx:for="{{_r.sectionsData.v}}" wx:key="key">
+            <renderSectionHeaderCPT
+                    wx:if="{{item.renderSectionHeaderDIUU}}"
+                    diuu="{{item.renderSectionHeaderDIUU}}"
+                    _r="{{item.renderSectionHeaderDIUUR}}"
+                    style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
+            />
+
+            <block wx:for="{{item.renderItemData.v}}" wx:key="key">
+                <renderItemCPT
+                        diuu="{{item.renderItemDIUU}}"
+                        _r="{{item.renderItemDIUUR}}"
+                        style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+                />
+            </block>
+
+            <renderSectionFooterCPT
+                    wx:if="{{item.renderSectionFooterDIUU}}"
+                    diuu="{{item.renderSectionFooterDIUU}}"
+                    _r="{{item.renderSectionFooterDIUUR}}"
+                    style="{{tools.getFinalStyle(item.renderSectionFooterDIUUstyle)}}"
+            />
+        </block>
+        <ListFooterComponentCPT
+                wx:if="{{_r.ListFooterComponentDIUU}}"
+                diuu="{{_r.ListFooterComponentDIUU}}"
+                _r="{{_r.ListFooterComponentDIUUR}}"
+                style="{{tools.getFinalStyle(_r.ListFooterComponentDIUUstyle)}}"
+        />
+    </view>
+</scroll-view>

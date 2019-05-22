@@ -1,0 +1,36 @@
+<wxs module="methods">
+  var minimumValue=function(newVal){
+    return newVal * 100;
+  }
+  var maximumValue=function(newVal){
+    return newVal * 100;
+  }
+  var step=function(newVal){
+    if(newVal){
+      return newVal * 100;
+    }else{
+      return 1;
+    }
+  }
+  var value=function(newVal){
+    return newVal * 100;
+  }
+  module.exports = {
+    minimumValue: minimumValue,
+    maximumValue: maximumValue,
+    step: step ? step : 1,
+    value: value
+  }
+</wxs>
+<slider
+  max='{{methods.maximumValue(maximumValue)}}'
+  min='{{methods.minimumValue(minimumValue)}}'
+  step='{{methods.step(step) ? methods.step(step) : 1}}'
+  value='{{methods.value(value)}}'
+  activeColor='{{minimumTrackTintColor}}'
+  backgroundColor='{{maximumTrackTintColor}}'
+  disabled='{{disabled}}'
+  bindchange='onSlidingComplete'
+  bindchanging='onValueChange'
+  selected-color='{{minimumTrackTintColor}}'
+/>

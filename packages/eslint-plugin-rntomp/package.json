@@ -1,0 +1,35 @@
+{
+  "name": "@areslabs/eslint-plugin-rntomp",
+  "version": "1.0.2",
+  "description": "rules for React Native ===> miniprogram",
+  "files": [
+    "lib",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "React Native",
+    "miniprogram"
+  ],
+  "author": "yankang",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha tests --recursive"
+  },
+  "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint-config-react-app": "^3.0.7",
+    "requireindex": "~1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "mocha": "^3.1.2"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "MIT"
+}

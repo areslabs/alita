@@ -1,0 +1,14 @@
+.container{
+  display: flex;
+  flex:1;
+  text-align: center;
+  color:#0c42FD;
+  margin:0;
+  font-size: 18px;
+  padding: 8px;
+  line-height: 1.2;
+}
+
+.hc{
+  opacity: 0.2;
+}

@@ -1,0 +1,11 @@
+<view
+        class="container"
+        style="{{color ? 'color:' + color : ''}}"
+        catchtap="innerPress"
+        hover-class="hc"
+        hover-stop-propagation=""
+        hover-start-time="0"
+        hover-stay-time="200"
+>
+    {{title}}
+</view>

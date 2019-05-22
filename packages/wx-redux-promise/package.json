@@ -1,0 +1,11 @@
+{
+  "name": "@areslabs/wx-redux-promise",
+  "version": "1.0.2",
+  "description": "微信版本的redux-promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

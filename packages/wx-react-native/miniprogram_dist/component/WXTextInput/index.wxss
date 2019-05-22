@@ -1,0 +1,16 @@
+.APP_InnerContainer {
+    align-items: inherit;
+    flex: 1;
+    flex-basis: 100%;
+    flex-direction: inherit;
+    flex-wrap: inherit;
+    justify-content: inherit;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    font-size: inherit;
+    line-height: inherit;
+    border-radius: inherit;
+    position: static;
+}

@@ -1,0 +1,61 @@
+<wxs module="methods">
+    var solveAutoCapitalize = function(newVal) {
+    if (newVal == "words") {
+    return "text-transform: capitalize;"
+    } else {
+    return "";
+    }
+    }
+    var solveKeyboardType = function(val) {
+    if (val == "default") {
+    return "text"
+    } else if (val == "number-pad") {
+    return "number"
+    } else if (val == "decimal-pad" || val == "numeric") {
+    return "digit"
+    } else return "text"
+    }
+    var solvePlaceholderTextColor = function(val) {
+    if (val == null) {
+    return ""
+    } else return "color:" + val + ";"
+    }
+    module.exports = {
+    solveAutoCapitalize: solveAutoCapitalize,
+    solveKeyboardType: solveKeyboardType,
+    solvePlaceholderTextColor: solvePlaceholderTextColor
+    }
+</wxs>
+<!-- 如果是multilines，返回textarea 否则input -->
+<block wx:if="{{multiline!=true}}">
+    <input
+            class="APP_InnerContainer"
+            auto-height='true'
+            placeholder="{{placeholder}}"
+            focus="{{focusFlag || autoFocus}}"
+            bindblur="inneronblur"
+            bindinput="inneronInput"
+            value="{{value || defaultValue}}"
+            disabled="{{!editable}}"
+            type="{{methods.solveKeyboardType(keyboardType)}}"
+            maxlength="{{maxLength}}"
+            bindfocus="inneronFocus"
+            placeholder-style="{{methods.solvePlaceholderTextColor(placeholderTextColor)}}"
+    />
+</block>
+<block wx:else>
+  <textarea
+          class="APP_InnerContainer"
+          auto-height='true'
+          placeholder="{{placeholder}}"
+          focus="{{focusFlag || autoFocus}}"
+          bindblur="inneronblur"
+          bindinput="inneronInput"
+          value="{{value || defaultValue}}"
+          disabled="{{!editable}}"
+          type="{{methods.solveKeyboardType(keyboardType)}}"
+          maxlength="{{maxLength}}"
+          bindfocus="inneronFocus"
+          placeholder-style="{{methods.solvePlaceholderTextColor(placeholderTextColor)}}"
+  />
+</block>

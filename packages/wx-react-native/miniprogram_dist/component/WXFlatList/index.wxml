@@ -1,0 +1,95 @@
+<wxs src="../commonwxs.wxs" module="tools" />
+<wxs module="methods">
+    var ArrayContains=function(arr,ele){
+        var find=false
+        for(var i=0; i < arr.length; i++){
+            if(ele == arr[i]){
+                find=true;
+                break;
+            }
+        }
+        return find;
+    }
+    module.exports = {
+        ArrayContains : ArrayContains,
+    }
+</wxs>
+<scroll-view
+        bindscrolltoupper="onScrollToupper"
+        scroll-y
+        scroll-top="{{_r.onRefreshPassed ? (sr ? 0: 80) : 0}}"
+        upper-threshold="3"
+        scroll-with-animation="{{withAni}}"
+        bindscroll="outScroll"
+        scroll-left="{{outLeft}}"
+        style="flex: 1; flex-basis: 0%;overflow:hidden;"
+        bindtouchstart='startTouch'
+        bindtouchend='leaveTouch'
+        bindscrolltolower="onEndReached"
+        lower-threshold="{{100}}"
+        scroll-into-view="{{index_id}}"
+>
+    <view style="{{_r.contentContainerStyle}}min-height: calc(100% + {{_r.onRefreshPassed ? 80 : 0}}px)">
+        <view
+                wx:if="{{_r.onRefreshPassed}}"
+                style="height:80px;align-items:center;justify-content:center;"
+        >
+            <image
+                    src="../../component/assets/loading.gif"
+                    mode="aspectFit"
+                    style="height: 30px"
+            />
+        </view>
+
+
+        <ListHeaderComponentCPT
+                wx:if="{{_r.ListHeaderComponentDIUU}}"
+                diuu="{{_r.ListHeaderComponentDIUU}}"
+                _r="{{_r.ListHeaderComponentDIUUR}}"
+                style="{{tools.getFinalStyle(_r.ListHeaderComponentDIUUstyle)}}"
+        />
+
+        <ListEmptyComponentCPT
+                wx:if="{{_r.ListEmptyComponentDIUU}}"
+                diuu="{{_r.ListEmptyComponentDIUU}}"
+                _r="{{_r.ListEmptyComponentDIUUR}}"
+                style="{{tools.getFinalStyle(_r.ListEmptyComponentDIUUstyle)}}"
+        />
+
+
+        <block wx:if="{{_r.numColumns >= 2}}">
+            <view style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap">
+                <view wx:for="{{_r.renderItemData.v}}" wx:key="key" style="width: {{100 / r.numColumns}}%">
+                    <renderItemCPT id="id_{{index}}"
+                                   diuu="{{item.renderItemDIUU}}"
+                                   _r="{{item.renderItemDIUUR}}"
+                                   style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}};"/>
+                </view>
+            </view>
+        </block>
+        <block wx:else>
+            <block wx:for="{{_r.renderItemData.v}}" wx:key="key">
+                <view wx:if="{{methods.ArrayContains(_r.stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}">
+                    <renderItemCPT id="id_{{index}}"
+                                   diuu="{{item.renderItemDIUU}}"
+                                   _r="{{item.renderItemDIUUR}}"
+                                   style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}{{sti['stickyStyle'+index]}}"/>
+                </view>
+                <renderItemCPT
+                    wx:else
+                    id="id_{{index}}"
+                    diuu="{{item.renderItemDIUU}}"
+                    _r="{{item.renderItemDIUUR}}"
+                    style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+                />
+            </block>
+        </block>
+
+        <ListFooterComponentCPT
+                wx:if="{{_r.ListFooterComponentDIUU}}"
+                diuu="{{_r.ListFooterComponentDIUU}}"
+                _r="{{_r.ListFooterComponentDIUUR}}"
+                style="{{tools.getFinalStyle(_r.ListFooterComponentDIUUstyle)}}"
+        />
+    </view>
+</scroll-view>

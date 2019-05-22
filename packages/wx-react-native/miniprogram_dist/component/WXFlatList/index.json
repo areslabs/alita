@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "WXScrollView": "../WXScrollView/index"
+  },
+  "componentGenerics": {
+    "renderItemCPT": "true",
+    "ListFooterComponentCPT": "true",
+    "ListHeaderComponentCPT": "true",
+    "ListEmptyComponentCPT": "true"
+  }
+}

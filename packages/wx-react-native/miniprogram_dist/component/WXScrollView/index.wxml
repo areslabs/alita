@@ -1,0 +1,32 @@
+<block wx:if="{{!horizontal}}">
+    <scroll-view
+            scroll-y
+            scroll-with-animation="{{withAni}}"
+            bindscroll="outScroll"
+            scroll-left="{{outLeft}}"
+            scroll-top="{{outTop}}"
+            style="flex: 1; flex-basis: 0%;overflow:hidden;"
+            bindtouchstart='startTouch'
+            bindtouchend='leaveTouch'
+    >
+        <view style="{{contentContainerStyle}}min-height: 100%;">
+            <slot/>
+        </view>
+    </scroll-view>
+</block>
+<block wx:else>
+    <scroll-view
+            scroll-x
+            scroll-with-animation="{{withAni}}"
+            bindscroll="outScroll"
+            bindtouchstart='startTouch'
+            scroll-left="{{outLeft}}"
+            scroll-top="{{outTop}}"
+            bindtouchend='leaveTouch'
+            style="flex: 1; flex-basis: 0%;overflow:hidden; height: 100%;"
+    >
+        <view style="{{contentContainerStyle}}flex-direction:row;flex: 1; flex-basis: 0%;height: 100%">
+            <slot/>
+        </view>
+    </scroll-view>
+</block>
