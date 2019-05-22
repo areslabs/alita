@@ -1,0 +1,23 @@
+{
+  "main": "main.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@areslabs/hello-rn": "^1.0.2",
+    "@areslabs/hi-rn": "^1.0.2",
+    "@areslabs/router": "^1.0.1",
+    "@areslabs/wx-animated": "^1.0.12",
+    "expo": "^32.0.0",
+    "prop-types": "^15.7.2",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.0.0"
+  },
+  "private": true
+}

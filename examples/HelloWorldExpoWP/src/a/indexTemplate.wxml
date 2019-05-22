@@ -1,0 +1,187 @@
+
+    <wxs src="../../commonwxs.wxs" module="tools" />
+    
+<template name="CTNP00036">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+<template name="CTNP00021">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+<template name="CTNP00019">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+<template name="CTNP00012">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+<template name="CTNP00003">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+ <template name="ITNP00003">
+    <view tempName="ITNP00003" style="{{tools.getFinalStyle(DIUU00001style)}}"><view style="{{tools.getFinalStyle(DIUU00002style)}}">item3</view></view>
+  </template>
+ 
+ <template name="ITNP00006">
+    <view tempName="ITNP00006" style="{{tools.getFinalStyle(DIUU00004style)}}"><view style="{{tools.getFinalStyle(DIUU00005style)}}"><template datakey="CTDK00004" wx:if="{{CTDK00004}}" is="CTNP00003" data="{{...CTDK00004}}"></template></view></view>
+  </template>
+ 
+ <template name="ITNP00009">
+    <view tempName="ITNP00009" style="{{tools.getFinalStyle(DIUU00007style)}}"><view style="{{tools.getFinalStyle(DIUU00008style)}}">item2</view></view>
+  </template>
+ 
+ <template name="ITNP00012">
+    <view tempName="ITNP00012" style="{{tools.getFinalStyle(DIUU00010style)}}"><view style="{{tools.getFinalStyle(DIUU00011style)}}">item1</view></view>
+  </template>
+ 
+ <template name="ITNP00023">
+    <view tempName="ITNP00023" style="{{tools.getFinalStyle(DIUU00021style)}}"><view style="{{tools.getFinalStyle(DIUU00022style)}}">clicked is true</view></view>
+  </template>
+ 
+ <template name="ITNP00026">
+    <view tempName="ITNP00026" style="{{tools.getFinalStyle(DIUU00025style)}}"><template datakey="CTDK00020" wx:if="{{CTDK00020}}" is="CTNP00019" data="{{...CTDK00020}}"></template>,</view>
+  </template>
+ 
+ <template name="ITNP00033">
+    <view tempName="ITNP00033" style="{{tools.getFinalStyle(DIUU00031style)}}"><view style="{{tools.getFinalStyle(DIUU00032style)}}">header</view></view>
+  </template>
+ 
+ <template name="ITNP00036">
+    <view tempName="ITNP00036" style="{{tools.getFinalStyle(DIUU00034style)}}"><view style="{{tools.getFinalStyle(DIUU00035style)}}">footer</view></view>
+  </template>
+ 
+ <template name="ITNP00042">
+    <view tempName="ITNP00042" style="{{tools.getFinalStyle(DIUU00040style)}}"><view style="{{tools.getFinalStyle(DIUU00041style)}}">a</view></view>
+  </template>
+ 
+ <template name="ITNP00045">
+    <view tempName="ITNP00045" style="{{tools.getFinalStyle(DIUU00043style)}}"><view style="{{tools.getFinalStyle(DIUU00044style)}}">b</view></view>
+  </template>
+ 
+ <template name="ITNP00048">
+    <view tempName="ITNP00048" style="{{tools.getFinalStyle(DIUU00046style)}}"><view style="{{tools.getFinalStyle(DIUU00047style)}}">c</view></view>
+  </template>
+ 
+ <template name="ITNP00053">
+    <WXScrollView contentContainerStyle="{{DIUU00013contentContainerStyle}}" diuu="{{DIUU00013}}" tempName="ITNP00053" style="{{tools.getFinalStyle(DIUU00013style)}}" refreshing="{{DIUU00013refreshing}}" onRefreshPassed="{{DIUU00013onRefreshPassed}}">
+                <view style="{{tools.getFinalStyle(DIUU00014style)}}">
+                    <WXButton color="#fff" title="PUSH C PAGE" diuu="{{DIUU00015}}" style="{{tools.getFinalStyle(DIUU00015style)}}" />
+                </view>
+                <view style="{{tools.getFinalStyle(DIUU00016style)}}">
+                    <view style="{{tools.getFinalStyle(DIUU00017style)}}">Platform: <template datakey="CTDK00013" wx:if="{{CTDK00013}}" is="CTNP00012" data="{{...CTDK00013}}"></template></view>
+                </view>
+                <PlatformComp diuu="{{DIUU00018}}" style="{{tools.getFinalStyle(DIUU00018style)}}" _r="{{DIUU00018R}}" />
+
+                <template datakey="CTDK00037" wx:if="{{CTDK00037}}" is="CTNP00036" data="{{...CTDK00037}}"></template>
+                <template datakey="CTDK00038" wx:if="{{CTDK00038}}" is="CTNP00036" data="{{...CTDK00038}}"></template>
+                <template datakey="CTDK00039" wx:if="{{CTDK00039}}" is="CTNP00036" data="{{...CTDK00039}}"></template>
+
+                <view style="{{tools.getFinalStyle(DIUU00019style)}}">
+                    <WXButton title="CLICK ME" color="#fff" diuu="{{DIUU00020}}" style="{{tools.getFinalStyle(DIUU00020style)}}" />
+                </view>
+                <template datakey="CTDK00040" wx:if="{{CTDK00040}}" is="CTNP00036" data="{{...CTDK00040}}"></template>
+
+
+                <template datakey="CTDK00041" wx:if="{{CTDK00041}}" is="CTNP00036" data="{{...CTDK00041}}"></template>
+                <template datakey="CTDK00042" wx:if="{{CTDK00042}}" is="CTNP00036" data="{{...CTDK00042}}"></template>
+
+
+                <view style="{{tools.getFinalStyle(DIUU00024style)}}">
+                    <template datakey="CTDK00022" wx:if="{{CTDK00022}}" is="CTNP00021" data="{{...CTDK00022}}"></template>
+                </view>
+
+
+                <MyContext diuu="{{DIUU00027}}" style="{{tools.getFinalStyle(DIUU00027style)}}" _r="{{DIUU00027R}}" />
+
+
+                <view style="{{tools.getFinalStyle(DIUU00028style)}}">
+                    <WXButton title="Add One" color="#fff" diuu="{{DIUU00029}}" style="{{tools.getFinalStyle(DIUU00029style)}}" />
+                </view>
+
+                <MyRefComp diuu="{{DIUU00030}}" style="{{tools.getFinalStyle(DIUU00030style)}}" _r="{{DIUU00030R}}" />
+
+
+                <MyPropComp generic:headerComponentCPT="ICNPaaaaa" generic:footerComponentCPT="ICNPaaaab" diuu="{{DIUU00037}}" style="{{tools.getFinalStyle(DIUU00037style)}}" _r="{{DIUU00037R}}" />
+
+                <MyFunComp diuu="{{DIUU00038}}" style="{{tools.getFinalStyle(DIUU00038style)}}" _r="{{DIUU00038R}}" />
+
+
+                <MyChildComp generic:childrenCPT="ICNPaaaac" diuu="{{DIUU00039}}" style="{{tools.getFinalStyle(DIUU00039style)}}" _r="{{DIUU00039R}}"></MyChildComp>
+
+                <MyHoc diuu="{{DIUU00049}}" style="{{tools.getFinalStyle(DIUU00049style)}}" _r="{{DIUU00049R}}" />
+
+                <MyStyleComp diuu="{{DIUU00050}}" style="{{tools.getFinalStyle(DIUU00050style)}}" _r="{{DIUU00050R}}" />
+
+                <Hi name="Yvette" textStyle="{{DIUU00051textStyle}}" diuu="{{DIUU00051}}" style="{{tools.getFinalStyle(DIUU00051style)}}" />
+
+                <Hello diuu="{{DIUU00052}}" style="{{tools.getFinalStyle(DIUU00052style)}}" _r="{{DIUU00052R}}" />
+
+                
+            </WXScrollView>
+  </template>
+ 
+ 
+    
