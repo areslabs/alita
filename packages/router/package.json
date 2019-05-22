@@ -1,0 +1,16 @@
+{
+  "name": "@areslabs/router",
+  "version": "1.0.3",
+  "description": "router for react-native, web",
+  "client": "./src/web/index.js",
+  "main": "./src/native/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "hoist-non-react-statics": "^3.2.0",
+    "react-navigation": "^2.0.0"
+  }
+}

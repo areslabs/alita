@@ -1,0 +1,11 @@
+{
+  "name": "@areslabs/wx-eventemitter",
+  "version": "1.0.1",
+  "description": "可以在RN和小程序共用的EventEmitter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

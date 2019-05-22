@@ -1,0 +1,1 @@
+<view style="{{textStyle}}" catchtap="handlePress">Hi {{name}}!</view>

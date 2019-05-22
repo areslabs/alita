@@ -1,0 +1,11 @@
+{
+  "name": "@areslabs/wx-moment",
+  "version": "1.0.1",
+  "description": "微信版本的moment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
