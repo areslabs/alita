@@ -28,7 +28,10 @@ Alita是一款把React Native转化为微信小程序的引擎，它对React语�
 `npm install -g @areslabs/alita`
 
 ## Getting Started
-我们在examples目录提供了丰富的样例代码，你可以直接clone出一份，进行参考。 当然你也可以建立自己的RN应用，进行转化。
+我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码，包括HelloWorld， Todo， ReactRepos。 强烈建议你clone出一份，然后使用Alita转化，你可以在上面尝试任何你想要的功能。 
+
+
+当然你也可以建立自己的RN应用，进行转化。
 
 1. 建立React Native应用 HelloWorld
     ```
@@ -49,15 +52,16 @@ Alita是一款把React Native转化为微信小程序的引擎，它对React语�
 
 4. 运行`HelloWorldWP`代码
    使用微信开发者工具在`HelloWorldWP`目录 [创建小程序](https://developers.weixin.qq.com/miniprogram/dev/quickstart/basic/getstart.html#%E8%B5%B7%E6%AD%A5)
-   转化生成的小程序使用了小程序的npm功能， 所以需要在下图的地方点击构建npm
+  
+   **Alita生成的小程序使用了小程序的npm功能， 所以需要在下图的地方点击构建npm**
    
    ![buildnpm](./static/buildnpm.jpg)
 
-这样你的React Native应用就运行在了微信小程序
+这样你新建的React Native应用就运行在了微信小程序
 
 
 **注意**一般我们有两种方式创建React Native应用，一种是使用react-native命令， 另一种是使用expo。 这两种方式Alita都可以转化，但是不管是哪一种方式
-创建的项目，都会在项目根目录创建App.js， App.json文件。但是这两个文件在微信小程序平台有特别的意义，在React Native端必须对这两个文件**重新命名**。 
+创建的项目，都会在项目根目录创建App.js， App.json文件。但是这两个文件在微信小程序平台有特别的意义，所以必须对这两个文件**重新命名**。 
 react-native 命令创建的项目只需要把App.js 重命名比如RNApp.js即可， 而expo的方式需要[参考](https://docs.expo.io/versions/latest/sdk/register-root-component/#what-if-i-want-to-name-my)
 
 另外， React Native命令默认会创建最新的版本，而目前最新的 0.45 及以上版本需要下载 boost 等几个第三方库编译。这些库在国内即便翻墙也很难下载成功，导致很多人无法运行iOS项目！！！中文网在论坛中提供了这些库的[国内下载链接](http://bbs.reactnative.cn/topic/4301/ios-rn-0-45%E4%BB%A5%E4%B8%8A%E7%89%88%E6%9C%AC%E6%89%80%E9%9C%80%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BC%96%E8%AF%91%E5%BA%93-boost%E7%AD%89)
@@ -93,13 +97,13 @@ alita命令有以下参数：
 
 
 ## 配置文件
-[详见](./docs/配置文件.md)
+Alita可以通过参数`--config`指定一个配置文件。当你的项目只使用了React Native官方组件和API的时候，这个配置文件是可以忽略的，使用系统默认配置就可以，但是当你的React Native应用足够复杂的，就需要使用配置文件了。[具体可见](./docs/配置文件.md)
 
-## Eslint检查
-[详见](./docs/代码检查&Eslint.md)
+## eslint检查
+虽然Alita支持了大部分的React语法，但是还是有一些情况Alita无法处理，比如原生RN动画库。另外Alita在转化代码的过程中，使用了一些保留字。我们希望这些来自Alita的限制可以近早的被发现，所以我们提供了一个eslint plugin。通过配置此plugin，可以让你在使用Alita转化代码之前，对你的代码进行静态的检查。[详见](./docs/代码检查&Eslint.md)
 
-## 老项目转化
-[详见](./docs/老项目转化.md)
+## 已有RN项目转化
+Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存在的RN应用。但是不可避免的，已有项目会更多的触及到Alita的限制，包括路由组件，动画组件。当你需要转化已有项目时，可以[参考这里](./docs/老项目转化.md)， 它总结性的提出了老项目需要注意和修改的点
 
 ## License
 MIT
