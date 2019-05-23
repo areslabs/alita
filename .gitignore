@@ -5,6 +5,8 @@ miniprogram_npm
 *.iml
 .DS_Store
 
+/docs/_book
+
 yarn.lock
 yarn-error.log
 
