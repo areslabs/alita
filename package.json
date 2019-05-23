@@ -28,7 +28,7 @@
     "start": "npm run compiler && node ./lib/index",
     "pub": "npm run compiler && npm publish",
     "pubNext": "npm run compiler && npm publish --tag next",
-    "doc": "gitbook build ./docs ./docs/book",
+    "doc": "gitbook build ./docs ../docsTmp && git checkout gh-pages && cp -r ../docsTmp/* ./ && rm -fr ../docsTmp",
     "doc:serve": "gitbook serve ./docs"
   },
   "authors": [
