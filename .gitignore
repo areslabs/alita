@@ -1,0 +1,16 @@
+node_modules
+miniprogram_npm
+
+examples
+
+/lib
+*.idea
+*.iml
+.DS_Store
+
+/docs/_book
+
+yarn.lock
+yarn-error.log
+
+package-lock.json
