@@ -31,33 +31,34 @@ Alita是一款把React Native转化为微信小程序的引擎，它对React语�
 我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码，包括HelloWorld， Todo， ReactRepos。 强烈建议你clone出一份，然后使用Alita转化，你可以在上面尝试任何你想要的功能。 
 
 
-当然你也可以建立自己的RN应用，进行转化。
-
-1. 建立React Native应用 HelloWorld
-    ```
+当然你也可以建立自己的RN应用：
+```
     react-native init HelloWorld
-    ``` 
-    构建你的页面，路由需要使用[@areslabs/router](./docs/路由.md)
+``` 
+
+**注意** 应用的路由需要使用[@areslabs/router](./docs/路由.md)组件
+
+下面以HelloWorld项目说明Alita的使用
  
-2. 调用alita命令将其转化为微信小程序应用
+1. 调用alita命令将其转化为微信小程序应用
     ```
     alita -i HelloWorld -o HelloWorldWP
     ```
 
-3. 进入`HelloWorldWP` 目录， 安装相关依赖
+2. 进入`HelloWorldWP` 目录， 安装相关依赖
     ```
     cd HelloWorldWP
     npm install
     ```
 
-4. 运行`HelloWorldWP`代码
+3. 运行`HelloWorldWP`代码
    使用微信开发者工具在`HelloWorldWP`目录 [创建小程序](https://developers.weixin.qq.com/miniprogram/dev/quickstart/basic/getstart.html#%E8%B5%B7%E6%AD%A5)
   
    **Alita生成的小程序使用了小程序的npm功能， 所以需要在下图的地方点击构建npm**
    
    ![buildnpm](./static/buildnpm.jpg)
 
-这样你新建的React Native应用就运行在了微信小程序
+这样React Native应用就运行在了微信小程序
 
 
 **注意**一般我们有两种方式创建React Native应用，一种是使用react-native命令， 另一种是使用expo。 这两种方式Alita都可以转化，但是不管是哪一种方式
