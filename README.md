@@ -3,12 +3,11 @@
 [![npm License](https://img.shields.io/npm/l/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 
 # Alita
-Alita是一款把React Native转化为微信小程序的引擎，它对React语法有全新的处理方式，更多的是在运行时处理React语法，它可以把你的React Native应用转化为
-微信小程序代码，实现React Native和微信小程序之间的打通。  
+> Alita：战斗天使阿丽塔，原型是《铳梦》中一位不断战斗和自我超越的生化改造少女。
 
-更少的代码，等于更少的bug，等于更少的工作量。
+Alita是一套React Native代码转换引擎工具。它对React语法有全新的处理方式，支持在运行时处理React语法，可以用简洁、高效的方式把React Native代码转换成微信小程序代码，并且实现了React Native和微信小程序之间的主要组件对齐。  
 
-另外，虽然我们说这是一个把React Native应用转化为微信小程序的引擎，但是换一个角度，也可以把它看成是提供React开发微信小程序应用的方式。 相比与微信小程序，React更加的自由，对组件化有着更为强大的支持， 封装和复用代码的方式更加的多样。所以，如果你喜欢React的开发方式， 你完全可以把这个转化引擎当成是React Native对微信小程序端的扩展，即使没有APP端的需求， 也可以使用React Native开发最终通过我们的引擎使其运行在微信小程序端。
+借助Alita引擎，可以实现用React Native进行多终端业务开发，除了官方支持的Android、iOS外，还可以额外支持微信小程序和Web（可以通过react-native-web进行转换）。同时也支持把现有React Native项目低成本转换成微信小程序代码，大大降低了多终端业务的开发成本。
  
 <table>
    <tr>
@@ -98,13 +97,21 @@ alita命令有以下参数：
 
 
 ## 配置文件
-Alita可以通过参数`--config`指定一个配置文件。当你的项目只使用了React Native官方组件和API的时候，这个配置文件是可以忽略的，使用系统默认配置就可以，但是当你的React Native应用足够复杂的，就需要使用配置文件了。[具体可见](./docs/配置文件.md)
+Alita可以通过参数`--config`指定一个配置文件。当你的项目只使用了React Native官方组件和API的时候，这个配置文件是可以忽略的，使用系统默认配置就可以，但是当你的React Native应用足够复杂的，就需要使用配置文件了。
+
+[详细介绍](./docs/配置文件.md)
 
 ## eslint检查
-虽然Alita支持了大部分的React语法，但是还是有一些情况Alita无法处理，比如原生RN动画库。另外Alita在转化代码的过程中，使用了一些保留字。我们希望这些来自Alita的限制可以近早的被发现，所以我们提供了一个eslint plugin。通过配置此plugin，可以让你在使用Alita转化代码之前，对你的代码进行静态的检查。[详见](./docs/代码检查&Eslint.md)
+虽然Alita支持了大部分的React语法，但是还是有一些情况Alita无法处理，比如原生RN动画库。另外Alita在转化代码的过程中，使用了一些保留字。我们希望这些来自Alita的限制可以近早的被发现，所以我们提供了一个eslint plugin。通过配置此plugin，可以让你在使用Alita转化代码之前，对你的代码进行静态的检查。
+
+[详细介绍](./docs/代码检查&Eslint.md)
 
 ## 已有RN项目转化
-Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存在的RN应用。但是不可避免的，已有项目会更多的触及到Alita的限制，包括路由组件，动画组件。当你需要转化已有项目时，可以[参考这里](./docs/老项目转化.md)， 它总结性的提出了老项目需要注意和修改的点
+Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存在的RN应用。但是不可避免的，已有项目会更多的触及到Alita的限制，包括路由组件，动画组件。当你需要转化已有RN项目时，我们梳理了需要注意和必要的修改点
+
+[详细介绍](./docs/老项目转化.md)
 
 ## License
-MIT
+MIT License
+
+Copyright (c) ARES Labs
