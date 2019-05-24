@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "fix": "eslint ./src"
   },
   "dependencies": {
     "@areslabs/router": "^1.0.1",
@@ -13,8 +14,10 @@
     "react-native": "0.59.5"
   },
   "devDependencies": {
+    "@areslabs/eslint-plugin-alita": "^1.0.0",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
+    "eslint": "^5.16.0",
     "babel-jest": "^24.7.1",
     "jest": "^24.7.1",
     "metro-react-native-babel-preset": "^0.54.0",
