@@ -20,7 +20,7 @@ $ npm install @areslabs/eslint-plugin-alita --save-dev
 **注意:** 如果eslint是全局安装的（使用`-g`），那么`@areslabs/eslint-plugin-alita` 也需要全局安装
 
 ### 使用
-最简单的使用方式， 在你的.eslint.js配置文件 添加`@areslabs/eslint-plugin-alita`
+最简单的使用方式， 在你的`.eslintrc.js`配置文件 添加`@areslabs/eslint-plugin-alita`
 ```javascript
 module.exports = {
     ...
