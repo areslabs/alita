@@ -1,4 +1,4 @@
-# @areslabs/eslint-plugin-rntomp
+# @areslabs/eslint-plugin-alita
 
 React Native 转化为小程序的rules
 
@@ -10,34 +10,34 @@ React Native 转化为小程序的rules
 $ npm i eslint --save-dev
 ```
 
-Next, 安装 `@areslabs/eslint-plugin-rntomp`:
+Next, 安装 `@areslabs/eslint-plugin-alita`:
 
 ```
-$ npm install @areslabs/eslint-plugin-rntomp --save-dev
+$ npm install @areslabs/eslint-plugin-alita --save-dev
 ```
 
-**注意:** 如果eslint是全局安装的（使用`-g`），那么`@areslabs/eslint-plugin-rntomp` 也需要全局安装
+**注意:** 如果eslint是全局安装的（使用`-g`），那么`@areslabs/eslint-plugin-alita` 也需要全局安装
 
 ## 使用
-最简单的使用方式， 在你的.eslint.js配置文件 添加`@areslabs/eslint-plugin-rntomp`
+最简单的使用方式， 在你的.eslint.js配置文件 添加`@areslabs/eslint-plugin-alita`
 ```javascript
 module.exports = {
     ...
     extends: [
         ...
-        "plugin:@areslabs/rntomp/all"
+        "plugin:@areslabs/alita/all"
     ]
 };
 ```
 all配置里面， 包含了所以rntomp rules
 
 ### 单独rules使用
-1. 添加 `@areslabs/rntomp` 到`.eslintrc`配置文件的 plugins
+1. 添加 `@areslabs/alita` 到`.eslintrc`配置文件的 plugins
 
 ```json
 {
     "plugins": [
-        "@areslabs/rntomp"
+        "@areslabs/alita"
     ]
 }
 ```
@@ -47,7 +47,7 @@ all配置里面， 包含了所以rntomp rules
 ```json
 {
     "rules": {
-        "@areslabs/rntomp/no-h": 2
+        "@areslabs/alita/no-h": 2
     }
 }
 ```
