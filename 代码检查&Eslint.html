@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="老项目转化.html" />
+    <link rel="next" href="已有项目转化.html" />
     
     
-    <link rel="prev" href="官方组件库.html" />
+    <link rel="prev" href="Alita组件库.html" />
     
 
     </head>
@@ -368,12 +368,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.16" data-path="官方组件库.html">
+        <li class="chapter " data-level="1.16" data-path="Alita组件库.html">
             
-                <a href="官方组件库.html">
+                <a href="Alita组件库.html">
             
                     
-                    官方组件库
+                    Alita组件库
             
                 </a>
             
@@ -394,12 +394,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.18" data-path="老项目转化.html">
+        <li class="chapter " data-level="1.18" data-path="已有项目转化.html">
             
-                <a href="老项目转化.html">
+                <a href="已有项目转化.html">
             
                     
-                    老项目转化
+                    已有项目转化
             
                 </a>
             
@@ -484,27 +484,27 @@ eslint&#x68C0;&#x67E5;&#x4E00;&#x4E0B;&#x3002;&#x6211;&#x4EEC;&#x6B63;&#x5728;&#
 <h3 id="installation">Installation</h3>
 <p>&#x9996;&#x5148;&#xFF0C; &#x5B89;&#x88C5; <a href="http://eslint.org" target="_blank">ESLint</a>:</p>
 <pre><code>$ npm i eslint --save-dev
-</code></pre><p>Next, &#x5B89;&#x88C5; <code>@areslabs/eslint-plugin-rntomp</code>:</p>
-<pre><code>$ npm install @areslabs/eslint-plugin-rntomp --save-dev
-</code></pre><p><strong>&#x6CE8;&#x610F;:</strong> &#x5982;&#x679C;eslint&#x662F;&#x5168;&#x5C40;&#x5B89;&#x88C5;&#x7684;&#xFF08;&#x4F7F;&#x7528;<code>-g</code>&#xFF09;&#xFF0C;&#x90A3;&#x4E48;<code>@areslabs/eslint-plugin-rntomp</code> &#x4E5F;&#x9700;&#x8981;&#x5168;&#x5C40;&#x5B89;&#x88C5;</p>
+</code></pre><p>Next, &#x5B89;&#x88C5; <code>@areslabs/eslint-plugin-alita</code>:</p>
+<pre><code>$ npm install @areslabs/eslint-plugin-alita --save-dev
+</code></pre><p><strong>&#x6CE8;&#x610F;:</strong> &#x5982;&#x679C;eslint&#x662F;&#x5168;&#x5C40;&#x5B89;&#x88C5;&#x7684;&#xFF08;&#x4F7F;&#x7528;<code>-g</code>&#xFF09;&#xFF0C;&#x90A3;&#x4E48;<code>@areslabs/eslint-plugin-alita</code> &#x4E5F;&#x9700;&#x8981;&#x5168;&#x5C40;&#x5B89;&#x88C5;</p>
 <h3 id="&#x4F7F;&#x7528;">&#x4F7F;&#x7528;</h3>
-<p>&#x6700;&#x7B80;&#x5355;&#x7684;&#x4F7F;&#x7528;&#x65B9;&#x5F0F;&#xFF0C; &#x5728;&#x4F60;&#x7684;.eslint.js&#x914D;&#x7F6E;&#x6587;&#x4EF6; &#x6DFB;&#x52A0;<code>@areslabs/eslint-plugin-rntomp</code></p>
+<p>&#x6700;&#x7B80;&#x5355;&#x7684;&#x4F7F;&#x7528;&#x65B9;&#x5F0F;&#xFF0C; &#x5728;&#x4F60;&#x7684;<code>.eslintrc.js</code>&#x914D;&#x7F6E;&#x6587;&#x4EF6; &#x6DFB;&#x52A0;<code>@areslabs/eslint-plugin-alita</code></p>
 <pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
     ...
     extends: [
         ...
-        <span class="hljs-string">&quot;plugin:@areslabs/rntomp/all&quot;</span>
+        <span class="hljs-string">&quot;plugin:@areslabs/alita/all&quot;</span>
     ]
 };
 </code></pre>
 <p>all&#x914D;&#x7F6E;&#x91CC;&#x9762;&#xFF0C; &#x5305;&#x542B;&#x4E86;&#x6240;&#x4EE5;rntomp rules</p>
 <h3 id="&#x5355;&#x72EC;rules&#x4F7F;&#x7528;">&#x5355;&#x72EC;rules&#x4F7F;&#x7528;</h3>
 <ol>
-<li>&#x6DFB;&#x52A0; <code>@areslabs/rntomp</code> &#x5230;<code>.eslintrc</code>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x7684; plugins</li>
+<li>&#x6DFB;&#x52A0; <code>@areslabs/alita</code> &#x5230;<code>.eslintrc</code>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x7684; plugins</li>
 </ol>
 <pre><code class="lang-json">{
     <span class="hljs-string">&quot;plugins&quot;</span>: [
-        <span class="hljs-string">&quot;@areslabs/rntomp&quot;</span>
+        <span class="hljs-string">&quot;@areslabs/alita&quot;</span>
     ]
 }
 </code></pre>
@@ -513,7 +513,7 @@ eslint&#x68C0;&#x67E5;&#x4E00;&#x4E0B;&#x3002;&#x6211;&#x4EEC;&#x6B63;&#x5728;&#
 </ol>
 <pre><code class="lang-json">{
     <span class="hljs-string">&quot;rules&quot;</span>: {
-        <span class="hljs-string">&quot;@areslabs/rntomp/no-h&quot;</span>: <span class="hljs-number">2</span>
+        <span class="hljs-string">&quot;@areslabs/alita/no-h&quot;</span>: <span class="hljs-number">2</span>
     }
 }
 </code></pre>
@@ -563,12 +563,12 @@ eslint&#x68C0;&#x67E5;&#x4E00;&#x4E0B;&#x3002;&#x6211;&#x4EEC;&#x6B63;&#x5728;&#
 
             
                 
-                <a href="官方组件库.html" class="navigation navigation-prev " aria-label="Previous page: 官方组件库">
+                <a href="Alita组件库.html" class="navigation navigation-prev " aria-label="Previous page: Alita组件库">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="老项目转化.html" class="navigation navigation-next " aria-label="Next page: 老项目转化">
+                <a href="已有项目转化.html" class="navigation navigation-next " aria-label="Next page: 已有项目转化">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -579,7 +579,7 @@ eslint&#x68C0;&#x67E5;&#x4E00;&#x4E0B;&#x3002;&#x6211;&#x4EEC;&#x6B63;&#x5728;&#
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"代码检查&Eslint","level":"1.17","depth":1,"next":{"title":"老项目转化","level":"1.18","depth":1,"path":"老项目转化.md","ref":"./老项目转化.md","articles":[]},"previous":{"title":"官方组件库","level":"1.16","depth":1,"path":"官方组件库.md","ref":"./官方组件库.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"代码检查&Eslint.md","mtime":"2019-05-23T11:18:07.123Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-23T11:19:29.849Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"代码检查&Eslint","level":"1.17","depth":1,"next":{"title":"已有项目转化","level":"1.18","depth":1,"path":"已有项目转化.md","ref":"./已有项目转化.md","articles":[]},"previous":{"title":"Alita组件库","level":"1.16","depth":1,"path":"Alita组件库.md","ref":"./Alita组件库.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"代码检查&Eslint.md","mtime":"2019-05-24T09:23:50.495Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-24T09:24:17.810Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
