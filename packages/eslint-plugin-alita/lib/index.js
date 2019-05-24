@@ -25,7 +25,7 @@ module.exports = {
         all: {
             ...config,
             plugins: [
-                '@areslabs/rntomp'
+                '@areslabs/alita'
             ],
             rules: {
                 "no-undef": 2,
@@ -35,7 +35,7 @@ module.exports = {
                 "no-extend-native": 2,
                 "no-global-assign": 2,
 
-                // rntomp rules
+                // alita rules
                 ...(getRules([
                     'component-static-path',
                     'no-as-in-rncomponent',
@@ -63,7 +63,7 @@ module.exports = {
 function getRules(rules, level) {
     const r = {}
     rules.forEach(rule => {
-        r[`@areslabs/rntomp/${rule}`] =  level
+        r[`@areslabs/alita/${rule}`] =  level
     })
     return r
 }

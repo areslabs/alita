@@ -1,7 +1,7 @@
 {
-  "name": "@areslabs/eslint-plugin-rntomp",
-  "version": "1.0.2",
-  "description": "rules for React Native ===> miniprogram",
+  "name": "@areslabs/eslint-plugin-alita",
+  "version": "1.0.0",
+  "description": "rules for alita",
   "files": [
     "lib",
     "package.json",
