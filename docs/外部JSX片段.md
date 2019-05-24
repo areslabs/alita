@@ -42,7 +42,7 @@ class A extends Component {
 
 ### 函数式组件
 
-一个返回 `JSX` 片段的方法，很难判断出这是一个函数式组件，还是一个普通方法。比如： 
+一个返回 `JSX` 片段的方法。比如： 
 
 a.js
 
@@ -52,7 +52,7 @@ export default A() {
 }
 ```
 
-b.js
+此时 A 被认为是一个普通方法，根据我们前面所说的，这是 "外部JSX片段"，不能被转换引擎支持。
 
 ```javascript
 import A from './a.js'
@@ -64,7 +64,7 @@ class B extends Componnet {
 }
 ```
 
-c.js
+此时 A 是一个函数式组件，转换引擎可以支持。
 
 ```javascript
 import A from './a.js'
@@ -76,13 +76,8 @@ class B extends Componnet {
 }
 ```
 
-对于 b.js 这里的A是一个普通方法，a.js 里面的A方法的返回值就是"外部JSX片段" 这是不被转化引擎支持的。 
 
-对于 c.js 来说，A是一个函数式组件，所以不会有问题。 但是A组件这里很难判断出是"外部JSX片段"还是函数式组件。
-
-为了小程序转换引擎能够准确判断出函数组件，我们作了如下限制：
-
-函数式组件必须在定义的时候导出。
+函数式组件有一个限制，即函数式组件必须在定义的时候导出：
 
 ```javascript
 // 1
@@ -96,5 +91,3 @@ export default function B(props) {}
 export C = (props) => {}
 C.contextTypes = {...}
 ```
-
-以上：当转化引擎遇到形如 a.js 的文件的时候，会将其判断为函数组件。
