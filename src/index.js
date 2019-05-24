@@ -313,7 +313,7 @@ async function main() {
         {
             //TODO watch模式暂未支持
             persistent: false,
-            ignored: /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|yarn\.lock|\.test\.js|.watchmanconfig/
+            ignored: /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
         })
     watcher.on('add', (path) => {
             const relativePath = path.replace(INPUT_DIR, '').replace(/\\/g, '/').substring(1)
