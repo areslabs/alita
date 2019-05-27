@@ -36,8 +36,12 @@ Alita对React Native应用有一些基本要求和限制，另外Alita本身也�
 
 1. Alita的代码已经托管在github，可以在这里给我们提交[issues](https://github.com/areslabs/alita/issues)，我们会第一时间反馈处理。
 
-2. QQ群:![](./static/qqgroup.jpg)
+2. QQ群:
+
+![](./static/qqgroup.jpg)
     
 
-3. 微信公众号：![](./static/gzh.jpg)
+3. 微信公众号：
+
+![](./static/gzh.jpg)
 
