@@ -27,6 +27,8 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
 
 `npm install -g @areslabs/alita`
 
+若`-g`有权限问题，需要`sudo`
+
 ## Getting Started
 我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码，包括HelloWorld， Todo， ReactRepos。 强烈建议你clone出一份，然后使用Alita转化，你可以在上面尝试任何你想要的功能。 
 
