@@ -30,7 +30,7 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
 若`-g`有权限问题，需要`sudo`
 
 ## Getting Started
-我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码，包括HelloWorld， Todo， ReactRepos。 强烈建议你clone出一份，然后使用Alita转化，你可以在上面尝试任何你想要的功能。 
+我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码，包括HelloWorld（Expo命令创建的HelloWorldExpo， 和react-native命令创建的HelloWorldRN）， Todo， ReactRepos。 强烈建议你clone出一份，然后使用Alita转化，你可以在这些样例代码上尝试任何你想要的功能。 
 
 
 当然你也可以建立自己的RN应用：
@@ -47,14 +47,13 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
     alita -i HelloWorld -o HelloWorldWP
     ```
 
-2. 进入`HelloWorldWP` 目录， 安装相关依赖
+2. 这样，你在`HelloWorldWP`目录就得到了一份小程序源代码。 进入`HelloWorldWP` 目录， 安装相关依赖
     ```
     cd HelloWorldWP
     npm install
     ```
 
-3. 运行`HelloWorldWP`代码
-   使用微信开发者工具在`HelloWorldWP`目录 [创建小程序](https://developers.weixin.qq.com/miniprogram/dev/quickstart/basic/getstart.html#%E8%B5%B7%E6%AD%A5)
+3. 运行`HelloWorldWP`代码， 参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`HelloWorldWP`目录， 运行。
   
    **Alita生成的小程序使用了小程序的npm功能， 所以需要在下图的地方点击构建npm**
    
