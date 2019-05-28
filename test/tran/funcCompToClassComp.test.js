@@ -19,29 +19,60 @@ describe('function component to class component', () => {
         }
     })
 
-    it('函数组件转化为类组件声明', () => {
+    it('箭头函数组件转化为类组件声明', () => {
         const code = `
         export default () => <View/> 
         `
         const ast = parseCode(code)
-        const newAst = funcCompToClassComp(ast, {})
+        const newAst = funcCompToClassComp(ast, {filepath: '/a/b/MyFunc.js'})
         const newCode = geneCode(newAst)
         const expectCode = `
-        import { fetch, alert } from "./rnext/api/index";
-    
-        class A {
-          f() {
-            fetch();
+        export default class MyFunc extends React.FuncComponent {
+          render() {
+            return <View />;
           }
         
         }
-        
-        alert();
         `
+        expect(newCode).JSEqual(expectCode)
+    })
 
-        console.log('newCode:', newCode)
-        //expect(newCode).JSEqual(expectCode)
-
+    it('普通函数组件转化为类组件声明', () => {
+        const code = `
+        export default function(props) {
+           const {a, b} = props
+           return (
+              <View>
+                  <Text>
+                     {a}
+                     {b}
+                  </Text>
+              </View>
+           )  
+        } 
+        `
+        const ast = parseCode(code)
+        const newAst = funcCompToClassComp(ast, {filepath: '/a/b/MyFunc.js'})
+        const newCode = geneCode(newAst)
+        const expectCode = `
+        export default class MyFunc extends React.FuncComponent {
+          render() {
+            const props = this.props
+            const {
+              a,
+              b
+            } = props;
+            return (<View>
+                       <Text>
+                          {a}
+                          {b}
+                       </Text>
+                 </View>)
+          }
+        
+        }
+       `
+        expect(newCode).JSEqual(expectCode)
     })
 
 })
