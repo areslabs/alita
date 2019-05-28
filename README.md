@@ -35,25 +35,25 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
 
 当然你也可以建立自己的RN应用：
 ```
-    react-native init HelloWorld
+    react-native init myproject
 ``` 
 
 **注意** 应用的路由需要使用[@areslabs/router](./docs/路由.md)组件
 
-下面以HelloWorld项目说明Alita的使用
+下面以`myproject`项目说明Alita的使用
  
 1. 调用alita命令将其转化为微信小程序应用
     ```
-    alita -i HelloWorld -o HelloWorldWP
+    alita -i myproject -o myprojectwp
     ```
 
-2. 这样，你在`HelloWorldWP`目录就得到了一份小程序源代码。 进入`HelloWorldWP` 目录， 安装相关依赖
+2. 这样，你在`myprojectwp`目录就得到了一份小程序源代码。 进入`myprojectwp` 目录， 安装相关依赖
     ```
-    cd HelloWorldWP
+    cd myprojectwp
     npm install
     ```
 
-3. 运行`HelloWorldWP`代码， 参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`HelloWorldWP`目录， 运行。
+3. 运行`myprojectwp`代码， 参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`myprojectwp `目录， 运行。
   
    **Alita生成的小程序使用了小程序的npm功能， 所以需要在下图的地方点击构建npm**
    
