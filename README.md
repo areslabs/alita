@@ -54,13 +54,12 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
     ```
 
 3. 在[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)上运行`myprojectwp`代码。参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`myprojectwp `目录， 运行。
-  
-   **Alita生成的小程序使用了小程序的npm功能， 所以需要在微信开发者工具下图的地方点击构建npm**
+
+   **Alita生成的小程序使用了小程序的npm功能， 所以需要在微信开发者工具下构建npm， 工具 --> 构建npm。如下图**
    
    ![buildnpm](./static/buildnpm.jpg)
 
 这样React Native应用就运行在了微信小程序
-
 
 **注意**一般我们有两种方式创建React Native应用，一种是使用react-native命令， 另一种是使用expo。 这两种方式Alita都可以转化，但是不管是哪一种方式
 创建的项目，都会在项目根目录创建App.js， App.json文件。但是这两个文件在微信小程序平台有特别的意义，所以必须对这两个文件**重新命名**。 
