@@ -116,6 +116,19 @@ Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存�
 
 [详细介绍](./docs/已有项目转化.md)
 
+## 开发交流
+
+<table>
+   <tr>
+   	    <td>QQ群</td>
+   	    <td>微信公众号</td>
+   </tr>
+	<tr>
+		<td><img src="./docs/static/qqgroup.jpg"/></td>
+		<td><img src="./docs/static/gzh.jpg"/></td>
+	</tr>
+</table>
+
 ## License
 MIT License
 
