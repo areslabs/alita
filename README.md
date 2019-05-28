@@ -53,9 +53,9 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
     npm install
     ```
 
-3. 运行`myprojectwp`代码， 参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`myprojectwp `目录， 运行。
+3. 在[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)上运行`myprojectwp`代码。参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`myprojectwp `目录， 运行。
   
-   **Alita生成的小程序使用了小程序的npm功能， 所以需要在下图的地方点击构建npm**
+   **Alita生成的小程序使用了小程序的npm功能， 所以需要在微信开发者工具下图的地方点击构建npm**
    
    ![buildnpm](./static/buildnpm.jpg)
 
