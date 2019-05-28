@@ -59,7 +59,7 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
    
    ![buildnpm](./static/buildnpm.jpg)
    
-   如果开发者工具报：`﻿module "xxx" is not defined"`，说明npm模块没有构建好，需要点击上图构建。 
+   (**如果开发者工具报：`﻿module "xxx" is not defined"`，说明npm模块没有构建好，需要点击上图构建。**) 
 
 这样React Native应用就运行在了微信小程序
 
