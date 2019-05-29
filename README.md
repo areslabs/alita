@@ -21,6 +21,13 @@ Alita是一套React Native代码转换引擎工具。它对React语法有全新�
 	</tr>
 </table>
 
+## Features
+* 完备的React语法支持。runtime阶段处理JSX语法，对JSX支持更加完善，可以在组件内任何地方出现JSX片段，包括属性传递JSX片段，render方法之外的JSX片段等等， 
+* React生命周期
+* React Native组件/API
+* 动画
+* 支持Redux
+* 支持第三方/自定义组件库扩展
 
 ## Install
 通过npm安装即可
