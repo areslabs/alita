@@ -6,9 +6,7 @@
 [![npm License](https://img.shields.io/npm/l/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 
 
-Alita是一套React Native代码转换引擎工具。它对React语法有全新的处理方式，支持在运行时处理React语法，可以用简洁、高效的方式把React Native代码转换成微信小程序代码，并且实现了React Native和微信小程序之间的主要组件对齐。  
-
-借助Alita引擎，可以实现用React Native进行多终端业务开发，除了官方支持的Android、iOS外，还可以额外支持微信小程序和Web（可以通过react-native-web进行转换）。同时也支持把现有React Native项目低成本转换成微信小程序代码，大大降低了多终端业务的开发成本。
+Alita是一套React Native代码转换引擎工具。它对React语法有全新的处理方式，支持在运行时处理React语法，实现了React Native和微信小程序之间的主要组件对齐，可以用简洁、高效的方式把React Native代码转换成微信小程序代码。  
 
 <table>
    <tr>
