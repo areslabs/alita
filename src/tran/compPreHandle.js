@@ -16,7 +16,7 @@ import {getPropsChain, isReactComponent} from '../util/uast'
  * 预处理
  * 1. <A name={"yk"}/> 修改为 <A name="yk"/>
  *
- * 2. wxNavigationBarTitleText 设置到 小程序的 window.navigationBarTitleText
+ * 2. wxNavigationOptions 设置到 小程序的页面配置上
  *
  * 3. 移除JSX里面的注释
  *
@@ -58,6 +58,8 @@ export default function compPreHandle(ast, info) {
                 path.node.value = path.node.value.expression
                 return
             }
+
+            // TODO 添加<A>{"yk"}</A> 修改为 <A>yk</A> 的逻辑
 
             if (path.type === 'ClassProperty'
                 && path.node.static
