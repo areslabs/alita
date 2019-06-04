@@ -49,17 +49,21 @@ export default function compPreHandle(ast, info) {
             }
 
 
-            //  <A name={"yk"}/> 修改为 <A name="yk"/>
-            if (path.type === 'JSXAttribute'
-                && path.node.value
-                && path.node.value.type === 'JSXExpressionContainer'
-                && path.node.value.expression.type === 'StringLiteral'
+            // JSXExpressionContainer 只可能出现在3个地方： JSXAttribute，JSXElement， JSXFragment。 所以这里可以用else逻辑处理
+            if (path.type === 'JSXExpressionContainer'
+                && path.node.expression.type === 'StringLiteral'
             ) {
-                path.node.value = path.node.value.expression
+                const pp = path.parentPath
+
+                if (pp.type === 'JSXAttribute') {
+                    //  <A name={"yk"}/> 修改为 <A name="yk"/>
+                    path.replaceWith(t.stringLiteral(path.node.expression.value))
+                } else {
+                    //  <A>{"yk"}</A> 修改为 <A>yk</A>
+                    path.replaceWith(t.jsxText(path.node.expression.value))
+                }
                 return
             }
-
-            // TODO 添加<A>{"yk"}</A> 修改为 <A>yk</A> 的逻辑
 
             if (path.type === 'ClassProperty'
                 && path.node.static
