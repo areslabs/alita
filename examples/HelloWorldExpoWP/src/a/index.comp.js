@@ -53,6 +53,7 @@ const item3 = h(
     h(
         "view",
         {
+            numberOfLines: "2",
             style: styles.itemText,
             original: "OuterText",
             diuu: "DIUU00002"

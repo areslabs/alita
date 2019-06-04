@@ -38,7 +38,7 @@ import Hello from '@areslabs/hello-rn/index'
 import {history} from '@areslabs/router'
 
 
-const item3 = <View style={[styles.item, {borderBottomWidth: 0}]}><Text style={styles.itemText}>item3</Text></View>
+const item3 = <View style={[styles.item, {borderBottomWidth: 0}]}><Text numberOfLines={"2"} style={styles.itemText}>{"item3"}</Text></View>
 export default class A extends Component {
 
     static wxNavigationOptions = {
