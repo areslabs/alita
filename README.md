@@ -87,6 +87,13 @@ alita命令有以下参数：
 ## Examples
 以下提供了一些样例代码以及他们转化出来的小程序代码。 当然你完全可以选择其他小程序源码输出目录，自行转化。
 
+运行转化生成的微信小程序：
+1. 安装`微信开发者工具`
+2. 进入生成的小程序目录：`npm install`
+3. 用`开发者工具`打开生成的小程序目录（老版本的`开发者工具`，在目录上`新建小程序`即可，新版本的`开发者工具`，需要`导入项目`）
+4. 在`开发者工具`上 点击：`工具 --> 构建npm`。
+
+
 [HelloWorldExpo](https://github.com/areslabs/alita/tree/master/examples/HelloWorldExpo), Expo命令创建的项目，转化出来的小程序在[HelloWorldWP](https://github.com/areslabs/alita/tree/master/examples/HelloWorldExpoWP)。
 
 [HelloWorldRN](https://github.com/areslabs/alita/tree/master/examples/HelloWorldRN), react-native 命令创建的项目。 代码逻辑同[HelloWorldExpo](https://github.com/areslabs/alita/tree/master/examples/HelloWorldRNWP)
