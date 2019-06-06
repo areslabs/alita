@@ -45,7 +45,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
     react-native init myproject
 ``` 
 
-**注意** 应用的路由需要使用[@areslabs/router](./docs/路由.md)组件
+**注意** 应用的路由需要使用[@areslabs/router](https://areslabs.github.io/alita/%E8%B7%AF%E7%94%B1.html)组件
 
 下面以`myproject`项目说明Alita的使用
  
@@ -110,29 +110,29 @@ alita命令有以下参数：
 
 1. 转化之后的小程序，必须符合小程序的规范， 比如最终压缩的代码小于4m，分包8m， 路由深度不大于5层等。
 
-2. Alita本身的一些限制 详见[要求与限制](./docs/要求与限制.md)， [静态限制](./docs/静态限制.md)
+2. Alita本身的一些限制 详见[要求与限制](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， [静态限制](https://areslabs.github.io/alita/%E9%9D%99%E6%80%81%E9%99%90%E5%88%B6.html)
 
-3. 如果使用了第三方React Native组件，需要使用[自定义组件库扩展](./docs/自定义组件库扩展.md) 方式进行扩展
+3. 如果使用了第三方React Native组件，需要使用[自定义组件库扩展](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 方式进行扩展
 
 ## 关于第三方包/组件库，原生组件
-Alita并不能直接转化第三方库组件库，RN原生扩展组件。需要你预先在微信小程序平台对齐好相应组件，这一点很像你在原生平台上扩展RN组件，这很好理解，比如你在RN上扩展了一个原生平台组件`MyComp`，小程序并不知道这个`MyComp`为何物，需要你预先对齐好小程序版的`MyComp`，第三方组件库也是一样，也是需要手动的对齐处理。我们提供两种对齐方式，具体请[参考](./docs/自定义组件库扩展.md)。另外，我们还会发布`alita-ui`，她会处理好RN社区常用的一些组件，是直接被Alita支持的。
+Alita并不能直接转化第三方库组件库，RN原生扩展组件。需要你预先在微信小程序平台对齐好相应组件，这一点很像你在原生平台上扩展RN组件，这很好理解，比如你在RN上扩展了一个原生平台组件`MyComp`，小程序并不知道这个`MyComp`为何物，需要你预先对齐好小程序版的`MyComp`，第三方组件库也是一样，也是需要手动的对齐处理。我们提供两种对齐方式，具体请[参考](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)。另外，我们还会发布`alita-ui`，她会处理好RN社区常用的一些组件，是直接被Alita支持的。
 
-微信小程序对npm包有特殊的要求，你需要确定你的包是否可以直接在小程序端使用，我们在[配置文件](./docs/配置文件.md)的`dependenciesMap`字段对npm包的使用做了详细的说明。
+微信小程序对npm包有特殊的要求，你需要确定你的包是否可以直接在小程序端使用，我们在[配置文件](https://areslabs.github.io/alita/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html)的`dependenciesMap`字段对npm包的使用做了详细的说明。
 
 ## 配置文件
 Alita可以通过参数`--config`指定一个配置文件。当你的项目只使用了React Native官方组件和API的时候，这个配置文件是可以忽略的，使用系统默认配置就可以，但是当你的React Native应用足够复杂的，就需要使用配置文件了。
 
-[详细介绍](./docs/配置文件.md)
+[详细介绍](https://areslabs.github.io/alita/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html)
 
 ## eslint检查
 虽然Alita支持了大部分的React语法，但是还是有一些情况Alita无法处理，比如原生RN动画库。另外Alita在转化代码的过程中，使用了一些保留字。我们希望这些来自Alita的限制可以近早的被发现，所以我们提供了一个eslint plugin。通过配置此plugin，可以让你在使用Alita转化代码之前，对你的代码进行静态的检查。
 
-[详细介绍](./docs/代码检查&Eslint.md)
+[详细介绍](https://areslabs.github.io/alita/%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5&Eslint.html)
 
 ## 已有RN项目转化
 Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存在的RN应用。但是不可避免的，已有项目会更多的触及到Alita的限制，包括路由组件，动画组件。当你需要转化已有RN项目时，我们梳理了需要注意和必要的修改点
 
-[详细介绍](./docs/已有项目转化.md)
+[详细介绍](https://areslabs.github.io/alita/%E5%B7%B2%E6%9C%89%E9%A1%B9%E7%9B%AE%E8%BD%AC%E5%8C%96.html)
 
 ## Alita组件库
 在项目开发中，仅仅使用 RN 基本组件和 API，是很难满足需要的。我们在内部使用 Alita 的过程中，积累了很多常用的三端组件，包括ScrollTabView，ViewPager，SegmentedControl等等，我们正在剥离和梳理这些组件，很快会发布兼容三端的 Alita 组件库。此组件库也是我们日后的工作重点之一，我们将会不断优化和扩展新组件。
