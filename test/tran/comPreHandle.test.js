@@ -8,7 +8,8 @@
 
 import "../help/customExpect";
 import compPreHandle from '../../src/tran/compPreHandle'
-import {getNewCode} from '../help/utils'
+import {expectNewCode} from '../help/utils'
+import {parseCode} from '../../src/util/uast'
 
 describe('comPreHandle', () => {
     beforeEach(() => {
@@ -26,13 +27,13 @@ describe('comPreHandle', () => {
         const info = {
             isStatelessComp: true
         }
-        const newCode = getNewCode(code, info, compPreHandle)
         const expectCode = `
         class A extends React.Component {
             __stateless__ = true;
         }
         `
-        expect(newCode).JSEqual(expectCode)
+        expectNewCode(code, expectCode, info, compPreHandle)
+
 
         const code2 = `
         class A extends React.Component {}
@@ -40,13 +41,12 @@ describe('comPreHandle', () => {
         const info2 = {
             isStatelessComp: false
         }
-        const newCode2 = getNewCode(code2, info2, compPreHandle)
         const expectCode2 = `
         class A extends React.Component {
             __stateless__ = false;
         }
         `
-        expect(newCode2).JSEqual(expectCode2)
+        expectNewCode(code2, expectCode2, info2, compPreHandle)
     })
 
     it("stateless标志只添加在组件类上", () => {
@@ -54,9 +54,9 @@ describe('comPreHandle', () => {
         const info = {
             isStatelessComp: true
         }
-        const newCode = getNewCode(code, info, compPreHandle)
         const expectCode = `class A {}`
-        expect(newCode).JSEqual(expectCode)
+
+        expectNewCode(code, expectCode, info, compPreHandle)
     })
 
     it("移除代码注释", () =>{
@@ -75,11 +75,6 @@ describe('comPreHandle', () => {
             }
         }
         `
-
-        const newCode = getNewCode(code, {
-            isStatelessComp: false
-        }, compPreHandle)
-
         const expectCode = `
         class A extends React.Component {
             render() {
@@ -93,7 +88,9 @@ describe('comPreHandle', () => {
         }
         `
 
-        expect(newCode).JSEqual(expectCode)
+        expectNewCode(code, expectCode, {
+            isStatelessComp: false
+        }, compPreHandle)
     })
 
     it("JSX表达式值为 字符串字面量 的时候，直接使用字符串字面量", () => {
@@ -109,7 +106,6 @@ describe('comPreHandle', () => {
         const info = {
             isStatelessComp: true
         }
-        const newCode = getNewCode(code, info, compPreHandle)
 
         const expectCode = `
         class A extends React.Component {
@@ -120,7 +116,7 @@ describe('comPreHandle', () => {
             __stateless__ = true;
         }
         `
-        expect(newCode).JSEqual(expectCode)
+        expectNewCode(code, expectCode, info, compPreHandle)
     })
 
     it("wxNavigationOptions 设置到 小程序的页面配置上", () => {
@@ -135,7 +131,9 @@ describe('comPreHandle', () => {
             isStatelessComp: true,
             json: {}
         }
-        getNewCode(code, info, compPreHandle)
+
+        const ast = parseCode(code)
+        compPreHandle(ast, info)
 
         expect(info.json.navigationBarTitleText).toBe("HelloWorld")
     })

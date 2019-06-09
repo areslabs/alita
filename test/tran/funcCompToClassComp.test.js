@@ -9,6 +9,8 @@
 import "../help/customExpect";
 import funcCompToClassComp from '../../src/tran/funcCompToClassComp'
 import {parseCode, geneCode} from '../../src/util/uast'
+import {expectNewCode} from '../help/utils'
+import compPreHandle from "../../src/tran/compPreHandle";
 
 describe('function component to class component', () => {
     beforeEach(() => {
@@ -23,9 +25,6 @@ describe('function component to class component', () => {
         const code = `
         export default () => <View/> 
         `
-        const ast = parseCode(code)
-        const newAst = funcCompToClassComp(ast, {filepath: '/a/b/MyFunc.js'})
-        const newCode = geneCode(newAst)
         const expectCode = `
         export default class MyFunc extends React.FuncComponent {
           render() {
@@ -34,7 +33,7 @@ describe('function component to class component', () => {
         
         }
         `
-        expect(newCode).JSEqual(expectCode)
+        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
     })
 
     it('普通函数组件转化为类组件声明', () => {
@@ -51,9 +50,6 @@ describe('function component to class component', () => {
            )  
         } 
         `
-        const ast = parseCode(code)
-        const newAst = funcCompToClassComp(ast, {filepath: '/a/b/MyFunc.js'})
-        const newCode = geneCode(newAst)
         const expectCode = `
         export default class MyFunc extends React.FuncComponent {
           render() {
@@ -72,7 +68,7 @@ describe('function component to class component', () => {
         
         }
        `
-        expect(newCode).JSEqual(expectCode)
+        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
     })
 
 })
