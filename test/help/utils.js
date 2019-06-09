@@ -25,3 +25,9 @@ export function getNewCode(code, info, ...trans) {
 
     return geneCode(ast)
 }
+
+export function expectNewCode(code, expectCode, info, ...trans) {
+
+    const newCode = getNewCode(code, info, ...trans)
+    expect(newCode).JSEqual(expectCode)
+}
