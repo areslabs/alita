@@ -146,14 +146,15 @@ function renameImageSourceAttri(path) {
             attri.name.name = 'mode'
 
             if (attri.value.type === 'StringLiteral') {
-                attri.value = t.jsxExpressionContainer(t.StringLiteral(attri.value.value))
+                const nv = resizeMode(attri.value.value)
+                attri.value.value = nv
             }
         }
     })
     // resizeMode在React Native上的默认值是cover
     if (!hasMode) {
         path.node.attributes.push(
-            t.jsxAttribute(t.jsxIdentifier('mode'), t.jsxExpressionContainer(t.StringLiteral('cover')))
+            t.jsxAttribute(t.jsxIdentifier('mode'), t.stringLiteral('aspectFill'))
         )
     }
 }
@@ -164,4 +165,27 @@ function addViewOriginalAttri(path, v) {
     path.node.attributes.push(
         t.jsxAttribute(t.jsxIdentifier('original'), t.stringLiteral(v))
     )
+}
+
+
+/**
+ * 同 wx-react 里面的resizeMode 方法，注意修改的时候，要修改这两处
+ * @param newVal
+ * @returns {string}
+ */
+function resizeMode(newVal){
+    if(newVal === 'cover'){
+        return 'aspectFill';
+    } else if (newVal === 'contain'){
+        return 'aspectFit';
+    } else if (newVal === 'stretch'){
+        return 'scaleToFill';
+    } else if (newVal === 'repeat') {
+        console.warn('Image的resizeMode属性小程序端不支持repeat')
+        return 'aspectFill'
+    } else if (newVal === 'center') {
+        return 'aspectFill'
+    } else{
+        return 'aspectFill';
+    }
 }
