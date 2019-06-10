@@ -15,6 +15,6 @@ export default async function (ast, filepath, isFuncComp, entryFilePath, isPageC
     const dirname = path.dirname(filepath)
     await fse.mkdirs(dirname)
 
-    await baseTran(ast, filepath, true)
+    await baseTran(ast, filepath, true, isFuncComp)
     await componentTran(ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp)
 }

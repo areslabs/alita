@@ -12,9 +12,10 @@ import handleMisc from './handleMisc'
 import geneJS from './geneJS'
 import {geneCode} from "../util/uast";
 
-export default async function (ast, filepath, justTran) {
+export default async function (ast, filepath, justTran, isFuncComp) {
     const info = {
-        filepath
+        filepath,
+        isFuncComp
     }
 
     ast = handleMisc(ast, info)

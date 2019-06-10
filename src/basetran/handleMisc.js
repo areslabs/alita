@@ -17,7 +17,7 @@ const historyPrefixSet = new Set([
     'replace'
 ])
 
-export default function (ast) {
+export default function (ast, {isFuncComp}) {
     let leftIden = null
     traverse(ast, {
         exit: path => {
@@ -35,10 +35,12 @@ export default function (ast) {
              * const x = 1
              * export default x
              *
+             * 函数式组件在后续会被处理为class组件，这里不需要处理
              *
              */
 
-            if (path.type === 'ExportDefaultDeclaration'
+            if (!isFuncComp
+                && path.type === 'ExportDefaultDeclaration'
                 && path.node.declaration
                 && path.node.declaration.type === 'AssignmentExpression'
                 && path.node.declaration.left.type === 'Identifier'
