@@ -27,7 +27,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * React Native组件/API
 * 动画
 * 支持Redux
-* 支持第三方/自定义组件库扩展
+* 支持第三方/自定义组件库扩展， 扩展方式[详见](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
 
 ## Install
 通过npm安装即可
