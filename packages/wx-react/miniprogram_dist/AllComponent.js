@@ -176,6 +176,7 @@ export class Component extends BaseComponent {
     }
 
     setState(newState, cb) {
+        // 还未渲染完成调用setState，通常发生在willMount等处，此时把更新入队，在渲染结束的时候会统一检查一下这种情况的更新
         if (!(this instanceof HocComponent) && this.firstRender !== FR_DONE) {
             this.updateQueue.push(newState)
             cb && this.updateQueueCB.push(cb)
@@ -183,6 +184,7 @@ export class Component extends BaseComponent {
             return
         }
 
+        // 没有找到对应wxInst
         if (!(this instanceof HocComponent) && !this.getWxInst()) {
             console.warn('the component has unmount, should not invoke setState!!')
             return
@@ -223,10 +225,14 @@ export class Component extends BaseComponent {
 
 
         const subVnode = this.render()
+
+        /// 重置实例字段：_or 旧的渲染数据， _r 渲染数据， _c 所以孩子实例 ， __eventHanderMap 方法回调map
+
         this._or = this._r
         this._r = {}
         this._c = []
         this.__eventHanderMap = {}
+
 
         const parentContext = this._parentContext
         const context = getCurrentContext(this, parentContext)
@@ -235,7 +241,7 @@ export class Component extends BaseComponent {
         render(subVnode, this, context, this._r, this._or, '_r')
 
         let finalCb = null
-        // 合并之后的setState
+        // 合并setState 回调
         if (this.updateQueueCB.length > 0) {
             const cbQueue = this.updateQueueCB
             finalCb = () => {
@@ -248,7 +254,11 @@ export class Component extends BaseComponent {
             finalCb = cb
         }
 
-        // Page Comp 不需要上报样式
+        /**
+         *  render过程结束之后，各组件_r 数据已经生成完毕，执行updateUI递归的把数据刷新到小程序。
+         *  此外：由于微信小程序自定义组件会生成一个节点，需要把内部最外层样式上报到这个节点
+         */
+
         if (this.isPageComp) {
             this.updateUI(finalCb)
             return
@@ -304,6 +314,37 @@ export class PureComponent extends Component {
     }
 }
 
+/***
+ * 由于alita默认处理的情况是 一个React组件 对应一个微信小程序组件。
+ * Hoc的情况，会出现多个 React组件 对应一个微信小程序组件， 比如Hoc1(Hoc2(A)) 。HOC现阶段的处理如下：
+ *
+ *     Hoc1 -> Hoc2 -> A
+ *      ↓             /
+ *      ↓            /
+ *      ↓           /
+ *   实例对应       /
+ *      ↓         /
+ *      ↓        /
+ *      ↓   wxA 渲染的数据
+ *      ↓      /
+ *      ↓     /
+ *      ↓    /
+ *      ↓   /
+ *      ↓  /
+ *      wxA
+ *
+ *  Hoc1的uuid 和wxA属性接收到的uuid 是一致的，所以在实例管理器中 Hoc1 和wxA是一对，但是Hoc1包裹Hoc2包裹A在运行结束时产生的_r 数据
+ *  才是最终决定 wxA渲染的。
+ *
+ *  当 Hoc1， Hoc2 初始化的时候： getObjSubData会收集到A的数据，通过小程序属性_r 把数据传递到wxA
+ *
+ *  当 Hoc1， Hoc2 调用setState的时候：
+ *      1. 执行在React过程
+ *      2. 调用 this.updateUI
+ *      3. updateUI的过程中会跳过HOC，直接到A
+ *      4. A执行 getWxInst 方法 获取到wxA
+ *      5. wxA 获取A的数据，更新
+ */
 export class HocComponent extends Component {
     constructor(props, context) {
         super(props, context)
