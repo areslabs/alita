@@ -44,8 +44,6 @@ export class BaseComponent {
             const childUuid = children[i]
             const child = instanceManager.getCompInstByUUID(childUuid)
 
-            //TODO child.firstRender !== FR_DONE的新节点，状态应该也托管给父，通过父的setData来设置
-
             if (child.firstRender !== FR_DONE && !child.stateless) {
                 // 一般而言 hocWrapped 都会在外层firstUpdateUI的过程中 状态就会变成FR_DONE，
                 // 这里状态不是FR_DONE 只有一种情况，就是在HOC里面调用了setState新产生的节点， 由于外层
@@ -66,7 +64,7 @@ export class BaseComponent {
                 })
                 cbPros.push(p)
             } else if (child.firstRender !== FR_DONE && child.stateless) {
-                // 新增无状态节点， 还未初始化，
+                // 新增无状态节点，还未初始化，无状态节点的渲染数据由父节点管理，不过无状态节点需要调用updateUI 递归更新子节点
                 const p = new Promise(function (resolve) {
                     child.updateUI(resolve)
                 })
@@ -170,9 +168,27 @@ export class Component extends BaseComponent {
         this.updateQueueCB = []
     }
 
-    //TODO
-    forceUpdate() {
-        console.warn('forceUpdate not support yet!')
+    forceUpdate(cb) {
+        if (!(this instanceof HocComponent) && !this.getWxInst()) {
+            console.warn('the component has unmount, should not invoke forceUpdate!!')
+            return
+        }
+
+        this.componentWillUpdate && this.componentWillUpdate(this.props, this.state)
+        this.UNSAFE_componentWillUpdate && this.UNSAFE_componentWillUpdate(this.props, this.state)
+
+        const subVnode = this.render()
+        this._or = this._r
+        this._r = {}
+        this._c = []
+        this.__eventHanderMap = {}
+
+        const parentContext = this._parentContext
+        const context = getCurrentContext(this, parentContext)
+
+        render(subVnode, this, context, this._r, this._or, '_r')
+
+        this.flushDataToWx(subVnode, cb)
     }
 
     setState(newState, cb) {
@@ -237,7 +253,6 @@ export class Component extends BaseComponent {
         const parentContext = this._parentContext
         const context = getCurrentContext(this, parentContext)
 
-        const oldOutStyle = this._myOutStyle
         render(subVnode, this, context, this._r, this._or, '_r')
 
         let finalCb = null
@@ -254,10 +269,15 @@ export class Component extends BaseComponent {
             finalCb = cb
         }
 
-        /**
-         *  render过程结束之后，各组件_r 数据已经生成完毕，执行updateUI递归的把数据刷新到小程序。
-         *  此外：由于微信小程序自定义组件会生成一个节点，需要把内部最外层样式上报到这个节点
-         */
+        this.flushDataToWx(subVnode, finalCb)
+    }
+
+    /**
+     * render过程结束之后，各组件_r 数据已经生成完毕，执行updateUI递归的把数据刷新到小程序。
+     * 此外：由于微信小程序自定义组件会生成一个节点，需要把内部最外层样式上报到这个节点
+     */
+    flushDataToWx(subVnode, finalCb) {
+        const oldOutStyle = this._myOutStyle
 
         if (this.isPageComp) {
             this.updateUI(finalCb)
