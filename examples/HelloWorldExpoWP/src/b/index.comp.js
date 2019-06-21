@@ -159,7 +159,7 @@ export default class B extends Component {
                 },
                 h("image", {
                     src: "/src/b/local.png",
-                    mode: "contain",
+                    mode: "aspectFit",
                     style: {
                         width: 200,
                         height: 200
@@ -174,7 +174,7 @@ export default class B extends Component {
                     src: {
                         uri: base64Img
                     },
-                    mode: "cover",
+                    mode: "aspectFill",
                     diuu: "DIUU00009"
                 })
             ),
@@ -339,7 +339,7 @@ export default class B extends Component {
                                     width: Dimensions.get("window").width / 2,
                                     height: 160
                                 },
-                                mode: "stretch",
+                                mode: "scaleToFill",
                                 diuu: "DIUU00027"
                             })
                         )

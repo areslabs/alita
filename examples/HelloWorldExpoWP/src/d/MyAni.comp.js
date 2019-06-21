@@ -23,7 +23,7 @@ class MyAni extends Component {
                     height: 60
                 },
                 src: "/src/d/alita.jpg",
-                mode: "cover",
+                mode: "aspectFill",
                 diuu: "DIUU00002"
             }),
             h(

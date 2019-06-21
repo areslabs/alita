@@ -34,6 +34,7 @@ import MyStyleComp from "./MyStyleComp.comp"
 import PlatformComp from "./PlatformComp.comp"
 import MyHoc from "./MyHoc.comp"
 import styles from "./styles"
+import MyForceUpdate from "./MyForceUpdate.comp"
 import Hi from "@areslabs/hi-wx"
 import Hello from "@areslabs/hello-wx/index.comp"
 import { history } from "@areslabs/wx-router"
@@ -201,7 +202,7 @@ export default class A extends Component {
                     backgroundColor: "#fff"
                 },
                 diuu: "DIUU00013",
-                tempName: "ITNP00053"
+                tempName: "ITNP00054"
             },
             h(
                 "view",
@@ -511,11 +512,14 @@ export default class A extends Component {
             h(MyStyleComp, {
                 diuu: "DIUU00050"
             }),
+            h(MyForceUpdate, {
+                diuu: "DIUU00051"
+            }),
             h(Hi, {
                 name: "Yvette",
                 style: styles.item,
                 textStyle: styles.itemText,
-                diuu: "DIUU00051"
+                diuu: "DIUU00052"
             }),
             h(Hello, {
                 name: "y5g",
@@ -526,7 +530,7 @@ export default class A extends Component {
                     }
                 ],
                 textStyle: styles.itemText,
-                diuu: "DIUU00052"
+                diuu: "DIUU00053"
             })
         )
     }

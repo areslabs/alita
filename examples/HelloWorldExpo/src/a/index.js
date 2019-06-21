@@ -30,8 +30,10 @@ import MyStyleComp from './MyStyleComp'
 import PlatformComp from './PlatformComp'
 import MyHoc from './MyHoc'
 import styles from './styles';
+import MyForceUpdate from './MyForceUpdate'
 import Hi from '@areslabs/hi-rn'
 import Hello from '@areslabs/hello-rn/index'
+
 
 
 
@@ -222,6 +224,8 @@ export default class A extends Component {
                 <MyHoc txt="HOC"/>
 
                 <MyStyleComp/>
+
+                <MyForceUpdate/>
 
                 <Hi name="Yvette" style={styles.item} textStyle={styles.itemText}/>
 
