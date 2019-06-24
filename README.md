@@ -2,7 +2,7 @@
 > Alita，战斗天使阿丽塔，原型是《铳梦》中一位不断战斗和自我超越的生化改造少女。
 
 [![npm Version](https://img.shields.io/npm/v/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
-[![npm Downloads](https://img.shields.io/npm/dt/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
+[![npm Downloads](https://img.shields.io/npm/dt/@areslabs/wx-react.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm License](https://img.shields.io/npm/l/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 
 
