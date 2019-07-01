@@ -1,3 +1,17 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import {
     View,
@@ -14,83 +28,91 @@ import {
 import styles from "../a/styles"
 import base64Img from "./img"
 export default class B extends Component {
-    componentDidMount() {
-        console.log("B componentDidMount:")
-    }
+    constructor(...args) {
+        super(...args)
 
-    state = {
-        sv: true,
-        users: [
-            {
-                name: parseInt(Math.random() * 10000000)
-            },
-            {
-                name: parseInt(Math.random() * 10000000)
-            },
-            {
-                name: parseInt(Math.random() * 10000000)
-            },
-            {
-                name: parseInt(Math.random() * 10000000)
-            }
-        ],
-        scrollList: [
-            {
-                id: 1,
-                img: "/src/b/imgs/001.jpg"
-            },
-            {
-                id: 2,
-                img: "/src/b/imgs/002.jpg"
-            },
-            {
-                id: 3,
-                img: "/src/b/imgs/003.jpg"
-            },
-            {
-                id: 4,
-                img: "/src/b/imgs/004.jpg"
-            },
-            {
-                id: 5,
-                img: "/src/b/imgs/005.jpg"
-            },
-            {
-                id: 6,
-                img: "/src/b/imgs/006.jpg"
-            }
-        ],
-        refreshing: false,
-        value: "1"
-    }
-    renderItem = ({ item }) => {
-        return h(
-            "view",
-            {
-                style: styles.item,
-                original: "View",
-                diuu: "DIUU00001",
-                tempName: "ITNP00003"
-            },
-            h(
+        _defineProperty(this, "state", {
+            sv: true,
+            users: [
+                {
+                    name: parseInt(Math.random() * 10000000)
+                },
+                {
+                    name: parseInt(Math.random() * 10000000)
+                },
+                {
+                    name: parseInt(Math.random() * 10000000)
+                },
+                {
+                    name: parseInt(Math.random() * 10000000)
+                }
+            ],
+            scrollList: [
+                {
+                    id: 1,
+                    img: "/src/b/imgs/001.jpg"
+                },
+                {
+                    id: 2,
+                    img: "/src/b/imgs/002.jpg"
+                },
+                {
+                    id: 3,
+                    img: "/src/b/imgs/003.jpg"
+                },
+                {
+                    id: 4,
+                    img: "/src/b/imgs/004.jpg"
+                },
+                {
+                    id: 5,
+                    img: "/src/b/imgs/005.jpg"
+                },
+                {
+                    id: 6,
+                    img: "/src/b/imgs/006.jpg"
+                }
+            ],
+            refreshing: false,
+            value: "1"
+        })
+
+        _defineProperty(this, "renderItem", ({ item }) => {
+            return h(
                 "view",
                 {
-                    style: styles.itemText,
-                    original: "OuterText",
-                    diuu: "DIUU00002"
+                    style: styles.item,
+                    original: "View",
+                    diuu: "DIUU00001",
+                    tempName: "ITNP00003"
                 },
-                h("template", {
-                    datakey: "CTDK00002",
-                    tempVnode: item.name,
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
-                })
+                h(
+                    "view",
+                    {
+                        style: styles.itemText,
+                        original: "OuterText",
+                        diuu: "DIUU00002"
+                    },
+                    h("template", {
+                        datakey: "CTDK00002",
+                        tempVnode: item.name,
+                        "wx:if": "{{CTDK00002}}",
+                        is: "CTNP00001",
+                        data: "{{...CTDK00002}}"
+                    })
+                )
             )
-        )
+        })
+
+        _defineProperty(this, "keyExtractor", item => {
+            return item.name + ""
+        })
+
+        _defineProperty(this, "__stateless__", false)
     }
-    keyExtractor = item => {
-        return item.name + ""
+
+    componentDidMount() {
+        console.log("B componentDidMount:")
     }
 
     _onEndReached() {
@@ -449,6 +471,4 @@ export default class B extends Component {
             )
         )
     }
-
-    __stateless__ = false
 }

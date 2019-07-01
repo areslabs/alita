@@ -1,3 +1,17 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text, WXButton } from "@areslabs/wx-react-native"
 import Hoc1 from "./Hoc1"
@@ -6,6 +20,12 @@ import styles from "./styles"
 let i = 6
 
 class MyHoc extends Component {
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "__stateless__", true)
+    }
+
     componentDidMount() {
         console.log("MyHoc componentDidMount")
     }
@@ -75,8 +95,6 @@ class MyHoc extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }
 
 export default Hoc1(Hoc2(MyHoc))

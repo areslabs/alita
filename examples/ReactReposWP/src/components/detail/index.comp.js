@@ -1,3 +1,17 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import {
     StyleSheet,
@@ -12,6 +26,9 @@ const down = "/src/assets/arrow_down.png"
 export default class Detail extends Component {
     constructor(props) {
         super(props)
+
+        _defineProperty(this, "__stateless__", false)
+
         const {
             stargazers_url,
             contributors_url,
@@ -71,7 +88,7 @@ export default class Detail extends Component {
                     src: {
                         uri: owner.avatar_url
                     },
-                    mode: "cover",
+                    mode: "aspectFill",
                     diuu: "DIUU00003"
                 }),
                 h(
@@ -152,7 +169,7 @@ export default class Detail extends Component {
                                     width: 15
                                 },
                                 src: down,
-                                mode: "cover",
+                                mode: "aspectFill",
                                 diuu: "DIUU00008"
                             })
                         ),
@@ -170,8 +187,6 @@ export default class Detail extends Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 const styles = StyleSheet.create({
     sections: {

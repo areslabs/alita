@@ -1,8 +1,28 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Image, Text } from "@areslabs/wx-react-native"
 import { AnimationEnable } from "@areslabs/wx-animated"
 
 class MyAni extends Component {
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "__stateless__", true)
+    }
+
     render() {
         return h(
             "block",
@@ -36,8 +56,6 @@ class MyAni extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }
 
 export default AnimationEnable(MyAni)

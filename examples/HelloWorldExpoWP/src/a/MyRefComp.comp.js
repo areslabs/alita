@@ -1,14 +1,35 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyRefComp extends Component {
-    state = {
-        count: 0
-    }
-    increCount = () => {
-        this.setState({
-            count: this.state.count + 1
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "state", {
+            count: 0
         })
+
+        _defineProperty(this, "increCount", () => {
+            this.setState({
+                count: this.state.count + 1
+            })
+        })
+
+        _defineProperty(this, "__stateless__", false)
     }
 
     render() {
@@ -37,6 +58,4 @@ export default class MyRefComp extends Component {
             )
         )
     }
-
-    __stateless__ = false
 }

@@ -1,3 +1,17 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { PureComponent, h } from "@areslabs/wx-react"
 import {
     View,
@@ -6,6 +20,12 @@ import {
     StyleSheet
 } from "@areslabs/wx-react-native"
 export default class Todo extends PureComponent {
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "__stateless__", true)
+    }
+
     render() {
         const { onClick, completed, text } = this.props
         return h(
@@ -46,8 +66,6 @@ export default class Todo extends PureComponent {
             )
         )
     }
-
-    __stateless__ = true
 }
 const styles = StyleSheet.create({
     item: {

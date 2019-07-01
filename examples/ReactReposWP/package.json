@@ -2,9 +2,9 @@
 	"name": "ReactRepos",
 	"version": "0.0.1",
 	"dependencies": {
-		"@areslabs/wx-router": "^1.0.0",
+		"@areslabs/wx-router": "beta",
 		"@areslabs/wx-animated": "^1.0.3",
-		"@areslabs/wx-react": "^1.0.0",
+		"@areslabs/wx-react": "beta",
 		"@areslabs/wx-react-native": "^1.0.0"
 	}
 }

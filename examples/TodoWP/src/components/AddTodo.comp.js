@@ -1,3 +1,17 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { h } from "@areslabs/wx-react"
 import {
     View,
@@ -9,13 +23,20 @@ import { addTodo } from "../actions/index"
 import { connect } from "@areslabs/wx-react-redux"
 
 class AddTodo extends React.Component {
-    state = {
-        v: "What needs to be done?"
-    }
-    handleFocus = () => {
-        this.setState({
-            v: ""
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "state", {
+            v: "What needs to be done?"
         })
+
+        _defineProperty(this, "handleFocus", () => {
+            this.setState({
+                v: ""
+            })
+        })
+
+        _defineProperty(this, "__stateless__", false)
     }
 
     render() {
@@ -69,8 +90,6 @@ class AddTodo extends React.Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 
 const styles = StyleSheet.create({

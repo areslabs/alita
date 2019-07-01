@@ -26,8 +26,6 @@ const rootContext = React.getRootContext();
 export default {
   childContext: rootContext
 };
-wx._historyConfig = { ...(wx._historyConfig || {}),
-  ...{
-    "Todoinit": "/src/components/index"
-  }
-};
+wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {
+  "Todoinit": "/src/components/index"
+});

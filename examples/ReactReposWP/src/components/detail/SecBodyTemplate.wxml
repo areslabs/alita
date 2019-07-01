@@ -18,7 +18,7 @@
 
         
  <template name="ITNP00003">
-    <image src="{{DIUU00002src}}" mode="{{DIUU00002mode}}" diuu="{{DIUU00002}}" tempName="ITNP00003" style="{{tools.getFinalStyle(DIUU00002style)}}"></image>
+    <image src="{{DIUU00002src}}" mode="aspectFill" diuu="{{DIUU00002}}" tempName="ITNP00003" style="{{tools.getFinalStyle(DIUU00002style)}}"></image>
   </template>
  
  <template name="ITNP00004">

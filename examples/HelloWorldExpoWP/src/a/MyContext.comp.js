@@ -1,10 +1,26 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import PropTypes from "@areslabs/wx-prop-types"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyContext extends Component {
-    static contextTypes = {
-        color: PropTypes.string
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "__stateless__", true)
     }
 
     render() {
@@ -52,6 +68,8 @@ export default class MyContext extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }
+
+_defineProperty(MyContext, "contextTypes", {
+    color: PropTypes.string
+})

@@ -15,6 +15,20 @@ function _extends() {
     return _extends.apply(this, arguments)
 }
 
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { PureComponent, h } from "@areslabs/wx-react"
 import { WXFlatList, StyleSheet, Text, View } from "@areslabs/wx-react-native"
 import { toggleTodo } from "../actions/index"
@@ -24,31 +38,43 @@ import Todo from "./Todo.comp"
 import Footer from "./Footer.comp"
 
 class Index extends PureComponent {
-    LHC = h(
-        "view",
-        {
-            style: styles.header,
-            original: "OuterText",
-            diuu: "DIUU00001",
-            tempName: "ITNP00002"
-        },
-        "TodoList\u6837\u4F8B\u5217\u8868"
-    )
-    renderItem = ({ item }) => {
-        const { onTodoClick } = this.props
-        return h(
-            Todo,
-            _extends({}, item, {
-                onClick: () => {
-                    onTodoClick(item.id)
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(
+            this,
+            "LHC",
+            h(
+                "view",
+                {
+                    style: styles.header,
+                    original: "OuterText",
+                    diuu: "DIUU00001",
+                    tempName: "ITNP00002"
                 },
-                diuu: "DIUU00003",
-                tempName: "ITNP00004"
-            })
+                "TodoList\u6837\u4F8B\u5217\u8868"
+            )
         )
-    }
-    keyExtractor = item => {
-        return item.id + ""
+
+        _defineProperty(this, "renderItem", ({ item }) => {
+            const { onTodoClick } = this.props
+            return h(
+                Todo,
+                _extends({}, item, {
+                    onClick: () => {
+                        onTodoClick(item.id)
+                    },
+                    diuu: "DIUU00003",
+                    tempName: "ITNP00004"
+                })
+            )
+        })
+
+        _defineProperty(this, "keyExtractor", item => {
+            return item.id + ""
+        })
+
+        _defineProperty(this, "__stateless__", true)
     }
 
     render() {
@@ -84,8 +110,6 @@ class Index extends PureComponent {
             })
         )
     }
-
-    __stateless__ = true
 }
 
 const styles = StyleSheet.create({

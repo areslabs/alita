@@ -35,10 +35,10 @@ export function geneCode(ast) {
 }
 
 const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
-const babelRestSpread = babel.createConfigItem(require("@babel/plugin-syntax-object-rest-spread"))
-const babelClassProperties = babel.createConfigItem(require("@babel/plugin-syntax-class-properties"))
-const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-syntax-optional-chaining"))
-
+const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
+const babelClassProperties = babel.createConfigItem(require("@babel/plugin-proposal-class-properties"))
+const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
+const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {decoratorsBeforeExport: false}])
 
 export async function geneReactCode(ast) {
     let code = geneCode(ast)
@@ -46,6 +46,7 @@ export async function geneReactCode(ast) {
         babelrc: false,
         configFile: false,
         plugins: [
+            babelDecorators,
             babelRestSpread,
             babelClassProperties,
             babelOptionalChaining,

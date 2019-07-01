@@ -1,7 +1,27 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyForceUpdateInnerInner extends Component {
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "__stateless__", true)
+    }
+
     shouldComponentUpdate() {
         console.log("MyForceUpdateInnerInner shouldComponentUpdate")
         return true
@@ -34,6 +54,4 @@ export default class MyForceUpdateInnerInner extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }

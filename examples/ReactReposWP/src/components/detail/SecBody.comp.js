@@ -1,3 +1,17 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import { fetch } from "@areslabs/wx-react-native/index"
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Image } from "@areslabs/wx-react-native"
@@ -5,8 +19,14 @@ import { AnimationEnable } from "@areslabs/wx-animated"
 import { token } from "../../util/index"
 
 class SecBody extends Component {
-    state = {
-        users: []
+    constructor(...args) {
+        super(...args)
+
+        _defineProperty(this, "state", {
+            users: []
+        })
+
+        _defineProperty(this, "__stateless__", false)
     }
 
     componentDidMount() {
@@ -49,7 +69,7 @@ class SecBody extends Component {
                             height: 70,
                             marginLeft: 5
                         },
-                        mode: "cover",
+                        mode: "aspectFill",
                         diuu: "DIUU00002",
                         tempName: "ITNP00003"
                     })
@@ -60,8 +80,6 @@ class SecBody extends Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 
 export default AnimationEnable(SecBody)
