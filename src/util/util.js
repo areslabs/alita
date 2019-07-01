@@ -148,7 +148,8 @@ export const RNWXLIBMaps = {
     'react-redux': "@areslabs/wx-react-redux",
     'redux-actions': "@areslabs/wx-redux-actions",
     'redux-promise': "@areslabs/wx-redux-promise",
-    'redux-thunk': "@areslabs/wx-redux-thunk"
+    'redux-thunk': "@areslabs/wx-redux-thunk",
+    'mobx-react': "@areslabs/wx-mobx-react"
 }
 
 export function getDependenciesMap(version) {

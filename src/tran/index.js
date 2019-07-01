@@ -62,7 +62,7 @@ export default async function (ast, filepath, isFuncComp, entryFilePath, isPageC
 
     ast = childrenToTemplate(ast, info)
 
-    await geneReactJS(ast, info)
+    geneReactJS(ast, info)
 
     ast = addEventHandler(ast, info)
 
@@ -70,6 +70,6 @@ export default async function (ast, filepath, isFuncComp, entryFilePath, isPageC
 
     geneWxml(info)
     geneJSON(info)
-    geneJS(geneCode(ast), info)
+    geneJS(info)
     geneWxss(info)
 }

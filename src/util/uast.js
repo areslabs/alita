@@ -27,12 +27,6 @@ export function parseCode(code) {
     })
 }
 
-export function geneCode(ast) {
-    const code = generator(ast, {
-        comments: false
-    }).code
-    return code
-}
 
 const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
@@ -40,8 +34,18 @@ const babelClassProperties = babel.createConfigItem(require("@babel/plugin-propo
 const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
 const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {decoratorsBeforeExport: false}])
 
-export async function geneReactCode(ast) {
-    let code = geneCode(ast)
+export function geneJSXCode(ast) {
+    let code = generator(ast, {
+        comments: false
+    }).code
+
+    return code
+}
+
+export function geneReactCode(ast) {
+    let code = generator(ast, {
+        comments: false
+    }).code
     code = babel.transformSync(code, {
         babelrc: false,
         configFile: false,

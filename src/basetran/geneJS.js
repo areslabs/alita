@@ -11,7 +11,7 @@ const prettier = require("prettier")
 const path = require('path')
 
 
-export default async function (code, info) {
+export default function (code, info) {
     let {filepath} = info
     filepath = filepath.replace('.wx.js', '.js')
 
@@ -22,7 +22,7 @@ export default async function (code, info) {
     })
 
     const dirname = path.dirname(filepath)
-    await fse.mkdirs(dirname)
+    fse.mkdirsSync(dirname)
 
 
     fse.writeFileSync(

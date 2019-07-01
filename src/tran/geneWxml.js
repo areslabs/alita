@@ -8,7 +8,7 @@
  
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
-import { geneCode } from "../util/uast";
+import { geneJSXCode } from "../util/uast";
 
 import {getRootPathPrefix} from '../util/util'
 
@@ -58,7 +58,7 @@ export default function(info) {
     });
 
 
-    let templateWxml = geneCode(ast);
+    let templateWxml = geneJSXCode(ast);
     templateWxml = templateWxml.replace("<InnerTmpOpeningElement>", "");
     templateWxml = templateWxml.replace("</InnerTmpOpeningElement>", "");
 
@@ -160,7 +160,7 @@ function geneAllOutComp(outComp, filepath) {
             false
         );
 
-        let WXMLCode = geneCode(tmpWxmlAst);
+        let WXMLCode = geneJSXCode(tmpWxmlAst);
         WXMLCode = WXMLCode.replace("<InnerTmpOpeningElement>", "");
         WXMLCode = WXMLCode.replace("</InnerTmpOpeningElement>", "");
 

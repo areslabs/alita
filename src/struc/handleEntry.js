@@ -361,7 +361,7 @@ App({})
 
 
 
-    const entryCode = await geneReactCode(ast)
+    const entryCode = geneReactCode(ast)
     const dirname = npath.dirname(filepath)
     await fse.mkdirs(dirname)
     await fse.writeFile(
