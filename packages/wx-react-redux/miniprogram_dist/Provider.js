@@ -5,4 +5,21 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import React, {Component} from '@areslabs/wx-react'
+import PropTypes from '@areslabs/wx-prop-types'
+
+export default class Provider extends Component {
+
+    static childContextTypes = {
+        store: PropTypes.object
+    };
+
+    getChildContext() {
+        return {
+            store: this.props.store
+        };
+    }
+
+    render() {}
+}
  

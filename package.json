@@ -17,7 +17,7 @@
     "weixin",
     "redux"
   ],
-  "version": "1.0.1",
+  "version": "1.0.2-beta.1",
   "description": "首个ReactNative转微信小程序引擎",
   "main": "./lib/index.js",
   "scripts": {
