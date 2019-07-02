@@ -1,6 +1,13 @@
 import { spy, configure, getDebugName } from "@areslabs/wx-mobx"
 import { Component } from "@areslabs/wx-react"
 
+import { unstable_batchedUpdates as rnBatched } from "@areslabs/wx-react-native"
+
+if (!Component) throw new Error("mobx-react requires React to be available")
+if (!spy) throw new Error("mobx-react requires mobx to be available")
+
+configure({ reactionScheduler: rnBatched })
+
 export {
     observer,
     Observer,
