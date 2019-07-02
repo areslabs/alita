@@ -15,6 +15,7 @@ import tackleWithStyleObj from './tackleWithStyleObj'
 import styleType from './styleType'
 import instanceManager from './InstanceManager'
 import {getPropsMethod, getRootContext, rootUuid} from './util'
+import {unstable_batchedUpdates} from './unstable'
 
 
 export default {
@@ -33,7 +34,8 @@ export default {
     instanceManager,
     getPropsMethod,
     getRootContext,
-    rootUuid
+    rootUuid,
+    unstable_batchedUpdates
 }
 
 export {
@@ -51,6 +53,7 @@ export {
     instanceManager,
     getPropsMethod,
     getRootContext,
-    rootUuid
+    rootUuid,
+    unstable_batchedUpdates
 }
 export const h = createElement
