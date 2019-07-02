@@ -19,6 +19,7 @@
   * [ScrollView](./组件差异-ScrollView.md)
   * [FlatList](./组件差异-FlatList.md)
   * [TouchableXXX](./组件差异-TouchableXXX.md)
+  * [TextInput](./组件差异-TextInput.md)
   * [等等]()
 
 * [支持Redux](./支持Redux.md) 
