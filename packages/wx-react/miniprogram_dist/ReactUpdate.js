@@ -48,7 +48,22 @@ class ReactUpdate {
                     Object.assign(newState, inst.updateQueue[j])
                 }
                 inst.updateQueue = []
-                inst.setState(newState)
+
+                let finalCb = null
+                if (inst.updateQueueCB.length > 0) {
+                    const cbQueue = inst.updateQueueCB
+                    finalCb = () => {
+                        for (let i = 0; i < cbQueue.length; i++) {
+                            cbQueue[i].call(inst)
+                        }
+                    }
+                    inst.updateQueueCB = []
+                }
+
+                const isForceUpdate = inst.isForceUpdate
+                inst.isForceUpdate = false
+
+                inst.updateInner(newState, finalCb, isForceUpdate)
             }
         }
 

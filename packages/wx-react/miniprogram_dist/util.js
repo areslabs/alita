@@ -132,7 +132,10 @@ export function recursionMount(comp) {
             comp.updateQueueCB = []
         }
 
-        comp.setState(newState, finalCb)
+        const isForceUpdate = comp.isForceUpdate
+        comp.isForceUpdate = false
+
+        comp.updateInner(newState, finalCb, isForceUpdate)
     }
 
 
