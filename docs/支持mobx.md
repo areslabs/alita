@@ -7,5 +7,24 @@
 npm install mobx@4.11.0 mobx-react@5.4.4 --save
 ```
 
+### 注意事项
+
+#### 函数组件
+Alita 暂不支持 observer 如下的函数组件
+
+```javascript
+// 不支持
+const Timer = observer(({ timerData }) =>
+    <span>Seconds passed: { timerData.secondsPassed } </span>
+);
+```
+
+#### Observer
+Alira 暂不支持 Observer 组件
+
+### 样例
+examples 目录下的 [RoomMobx](https://github.com/areslabs/alita/tree/master/examples/RoomMobx)。
+
+
 
 
