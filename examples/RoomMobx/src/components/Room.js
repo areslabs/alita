@@ -13,10 +13,8 @@ import {observer} from 'mobx-react'
 @observer
 class Room extends Component {
 
-
     render() {
         const {style, data, autoFocus} = this.props
-        console.log('data:', data)
         return (
             <View style={style}>
                 <Text>{data.label}：</Text>
@@ -25,7 +23,6 @@ class Room extends Component {
                     value={data.price + ''}
                     style={{borderBottomWidth: 2, width: 40}}
                     onChangeText={(price) => {
-                        console.log('price:', price)
                         data.price = Number(price)
                     }}
                 />

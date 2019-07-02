@@ -3,7 +3,9 @@ var _dec, _class, _temp
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
 import { inject, observer } from "@areslabs/wx-mobx-react"
-let TotalInfo = ((_dec = inject("room")),
+let TotalInfo = ((_dec = inject(allStores => {
+    return Object.assign({}, allStores.room)
+})),
 _dec(
     (_class =
         observer(
@@ -20,7 +22,7 @@ _dec(
                         kitchen,
                         bookroom,
                         total
-                    } = this.props.room
+                    } = this.props
                     return h(
                         "block",
                         {

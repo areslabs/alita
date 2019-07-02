@@ -14,7 +14,6 @@ let Room =
 
             render() {
                 const { style, data, autoFocus } = this.props
-                console.log("data:", data)
                 return h(
                     "block",
                     {
@@ -46,7 +45,6 @@ let Room =
                             width: 40
                         },
                         onChangeText: price => {
-                            console.log("price:", price)
                             data.price = Number(price)
                         },
                         diuu: "DIUU00003"

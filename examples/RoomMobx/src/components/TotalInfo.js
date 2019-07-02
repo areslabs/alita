@@ -10,12 +10,17 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import {inject, observer} from 'mobx-react'
 
-@inject('room')
+/*演示inject接收函数的时候*/
+@inject((allStores) => {
+    return {
+        ...allStores.room
+    }
+})
 @observer
 export default class TotalInfo extends Component {
 
     render() {
-        const {bedRoom1, bedRoom2, kitchen, bookroom, total} = this.props.room
+        const {bedRoom1, bedRoom2, kitchen, bookroom, total} = this.props
 
         return (
             <View>
