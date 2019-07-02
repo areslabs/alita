@@ -30,9 +30,9 @@ export function parseCode(code) {
 
 const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
-const babelClassProperties = babel.createConfigItem(require("@babel/plugin-proposal-class-properties"))
+const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
 const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
-const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {decoratorsBeforeExport: false}])
+const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {"legacy": true }])
 
 export function geneJSXCode(ast) {
     let code = generator(ast, {

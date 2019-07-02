@@ -1,0 +1,74 @@
+
+    <wxs src="../../../commonwxs.wxs" module="tools" />
+    
+<template name="CTNP00010">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+<template name="CTNP00005">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+<template name="CTNP00002">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+ <template name="ITNP00010">
+    <view tempName="ITNP00010" style="{{tools.getFinalStyle(DIUU00005style)}}">
+                                <view catchtap="eventHandler" data-diuu="{{DIUU00006}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00006hoverClass}}" style="{{tools.getFinalStyle(DIUU00006style)}}">
+                                    <view style="{{tools.getFinalStyle(DIUU00007style)}}"><template datakey="CTDK00006" wx:if="{{CTDK00006}}" is="CTNP00005" data="{{...CTDK00006}}"></template></view>
+                                    <image animation="{{DIUU00008animation}}" src="{{DIUU00008src}}" mode="aspectFill" diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" />
+                                </view>
+                                <SecBody animation="{{DIUU00009animation}}" diuu="{{DIUU00009}}" style="{{tools.getFinalStyle(DIUU00009style)}}" _r="{{DIUU00009R}}" />
+                            </view>
+  </template>
+ 
+ <template name="ITNP00011">
+    <view tempName="ITNP00011" style="{{tools.getFinalStyle(DIUU00001style)}}">
+                <view style="{{tools.getFinalStyle(DIUU00002style)}}">
+                    <image src="{{DIUU00003src}}" mode="aspectFill" diuu="{{DIUU00003}}" style="{{tools.getFinalStyle(DIUU00003style)}}"></image>
+                    <view style="{{tools.getFinalStyle(DIUU00004style)}}"><template datakey="CTDK00003" wx:if="{{CTDK00003}}" is="CTNP00002" data="{{...CTDK00003}}"></template></view>
+                </view>
+
+                <template datakey="CTDK00011" wx:if="{{CTDK00011}}" is="CTNP00010" data="{{...CTDK00011}}"></template>
+            </view>
+  </template>
+ 
+ 
+    

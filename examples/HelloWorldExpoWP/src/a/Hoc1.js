@@ -1,29 +1,58 @@
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        })
+    } else {
+        obj[key] = value
+    }
+    return obj
+}
+
 import React, { HocComponent, h } from "@areslabs/wx-react"
 export default function(WrappedComponent) {
-    return class Hoc1 extends HocComponent {
-        state = {
-            name: "y5g"
-        }
+    var _temp
 
-        componentDidMount() {
-            console.log("Hoc1 componentDidMount")
-        }
+    return (
+        (_temp = class Hoc1 extends HocComponent {
+            constructor(...args) {
+                super(...args)
 
-        componentWillUnmount() {
-            console.log("Hoc1 componentWillUnmount")
-        }
+                _defineProperty(this, "state", {
+                    name: "y5g"
+                })
+            }
 
-        render() {
-            return React.createElement(WrappedComponent, {
-                ...this.props,
-                name: this.state.name,
-                changeName: newName => {
-                    this.setState({
-                        name: newName
-                    })
-                },
-                ...this.hocProps
-            })
-        }
-    }
+            componentDidMount() {
+                console.log("Hoc1 componentDidMount")
+            }
+
+            componentWillUnmount() {
+                console.log("Hoc1 componentWillUnmount")
+            }
+
+            render() {
+                return React.createElement(
+                    WrappedComponent,
+                    Object.assign(
+                        {},
+                        this.props,
+                        {
+                            name: this.state.name,
+                            changeName: newName => {
+                                this.setState({
+                                    name: newName
+                                })
+                            }
+                        },
+                        this.hocProps
+                    )
+                )
+            }
+        }),
+        _temp
+    )
 }

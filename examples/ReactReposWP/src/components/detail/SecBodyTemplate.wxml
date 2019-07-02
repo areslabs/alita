@@ -1,0 +1,31 @@
+
+    <wxs src="../../../commonwxs.wxs" module="tools" />
+    
+<template name="CTNP00002">
+    <block wx:if="{{isArray}}">
+        <block wx:for="{{v}}" wx:key="key">
+            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
+            <block wx:if="{{item.isLiteral}}">
+                {{item.v}}
+            </block>
+        </block>
+    </block>
+    <block wx:elif="{{isJSX}}">
+        <template is="{{v.tempName}}" data="{{...v}}"></template>
+    </block>
+    <block wx:elif="{{isLiteral}}">{{v}}</block>
+</template>
+
+        
+ <template name="ITNP00003">
+    <image src="{{DIUU00002src}}" mode="aspectFill" diuu="{{DIUU00002}}" tempName="ITNP00003" style="{{tools.getFinalStyle(DIUU00002style)}}"></image>
+  </template>
+ 
+ <template name="ITNP00004">
+    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00001style)}}">
+            <template datakey="CTDK00003" wx:if="{{CTDK00003}}" is="CTNP00002" data="{{...CTDK00003}}"></template>
+        </block>
+  </template>
+ 
+ 
+    

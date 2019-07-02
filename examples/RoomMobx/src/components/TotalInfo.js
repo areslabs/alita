@@ -6,3 +6,26 @@
  *
  */
 
+import React, {Component} from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+import {inject, observer} from 'mobx-react'
+
+@inject('room')
+@observer
+export default class TotalInfo extends Component {
+
+    render() {
+        const {bedRoom1, bedRoom2, kitchen, bookroom, total} = this.props.room
+
+        return (
+            <View>
+                <Text>{bedRoom1.label}：{bedRoom1.price}¥</Text>
+                <Text>{bedRoom2.label}：{bedRoom2.price}¥</Text>
+                <Text>{kitchen.label}：{kitchen.price}¥</Text>
+                <Text>{bookroom.label}：{bookroom.price}¥</Text>
+                <Text>总价：{total}¥</Text>
+            </View>
+        )
+    }
+}
+

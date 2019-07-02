@@ -1,0 +1,11 @@
+{
+	"name": "RoomMobx",
+	"version": "0.0.1",
+	"dependencies": {
+		"@areslabs/wx-router": "beta",
+		"@areslabs/wx-mobx": "^1.0.0",
+		"@areslabs/wx-mobx-react": "0.0.3",
+		"@areslabs/wx-react": "beta",
+		"@areslabs/wx-react-native": "^1.0.0"
+	}
+}
