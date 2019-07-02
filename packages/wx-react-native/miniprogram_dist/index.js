@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+import {unstable_batchedUpdates} from '@areslabs/wx-react'
+
 import WXFlatList from './component/WXFlatList/index.comp'
 import WXSectionList from './component/WXSectionList/index.comp'
 import WXScrollView from './component/WXScrollView/index.comp'
@@ -101,7 +102,8 @@ export {
     fetch,
     alert,
     requestAnimationFrame,
-    cancelAnimationFrame
+    cancelAnimationFrame,
+    unstable_batchedUpdates
 }
 
 export default  {
@@ -149,5 +151,6 @@ export default  {
     fetch,
     alert,
     requestAnimationFrame,
-    cancelAnimationFrame
+    cancelAnimationFrame,
+    unstable_batchedUpdates
 }
