@@ -8,6 +8,11 @@
 import reactUpdate from './ReactUpdate'
 
 export function unstable_batchedUpdates(func) {
+    if (reactUpdate.inRe()) {
+        func()
+        return
+    }
+
     reactUpdate.setFlag(true)
     func()
     reactUpdate.setFlag(false)
