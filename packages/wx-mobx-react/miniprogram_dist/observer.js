@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from "@areslabs/wx-react"
-import { createAtom, Reaction, _allowStateChanges, $mobx } from "mobx"
+import { createAtom, Reaction, _allowStateChanges, $mobx } from "@areslabs/wx-mobx"
 import hoistStatics from "./utils/hoistNonReactStatics"
 
 import EventEmitter from "./utils/EventEmitter"
@@ -162,6 +162,11 @@ const reactiveMixin = {
         this[mobxIsUnmounted] = true
     },
 
+    componentWillMount: function() {
+        // observer的组件，需要调用forceUpdate更新组件，所以要设置__stateless__标志
+        this.__stateless__ = false
+    },
+
     componentDidMount: function() {
 
     },
@@ -289,7 +294,7 @@ export function observer(arg1, arg2) {
 }
 
 function mixinLifecycleEvents(target) {
-    ;["componentDidMount", "componentWillUnmount", "componentDidUpdate"].forEach(function(
+    ;["componentWillMount", "componentDidMount", "componentWillUnmount", "componentDidUpdate"].forEach(function(
         funcName
     ) {
         patch(target, funcName)

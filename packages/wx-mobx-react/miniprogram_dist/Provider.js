@@ -1,5 +1,4 @@
-import { Children, Component } from "react"
-import { polyfill } from "react-lifecycles-compat"
+import { Component } from "@areslabs/wx-react"
 import * as PropTypes from "./propTypes"
 
 const specialReactKeys = { children: true, key: true, ref: true }
@@ -19,9 +18,7 @@ class Provider extends Component {
         copyStores(props, this.state)
     }
 
-    render() {
-        return Children.only(this.props.children)
-    }
+    render() {}
 
     getChildContext() {
         const stores = {}
@@ -32,30 +29,6 @@ class Provider extends Component {
         return {
             mobxStores: stores
         }
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (!nextProps) return null
-        if (!prevState) return nextProps
-
-        // Maybe this warning is too aggressive?
-        if (
-            Object.keys(nextProps).filter(validStoreName).length !==
-            Object.keys(prevState).filter(validStoreName).length
-        )
-            console.warn(
-                "MobX Provider: The set of provided stores has changed. Please avoid changing stores as the change might not propagate to all children"
-            )
-        if (!nextProps.suppressChangedStoreWarning)
-            for (let key in nextProps)
-                if (validStoreName(key) && prevState[key] !== nextProps[key])
-                    console.warn(
-                        "MobX Provider: Provided store '" +
-                            key +
-                            "' has changed. Please avoid replacing stores as the change might not propagate to all children"
-                    )
-
-        return nextProps
     }
 }
 
@@ -68,7 +41,5 @@ function validStoreName(key) {
     return !specialReactKeys[key] && key !== "suppressChangedStoreWarning"
 }
 
-// TODO: kill in next major
-polyfill(Provider)
 
 export default Provider

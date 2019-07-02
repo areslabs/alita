@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "@areslabs/wx-react"
 import { patch, newSymbol } from "./utils/utils"
 
 const storeKey = newSymbol("disposeOnUnmount")

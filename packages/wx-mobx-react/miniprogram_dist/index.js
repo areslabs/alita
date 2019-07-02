@@ -1,4 +1,4 @@
-import { spy, configure, getDebugName } from "mobx"
+import { spy, configure, getDebugName } from "@areslabs/wx-mobx"
 import { Component } from "@areslabs/wx-react"
 
 export {

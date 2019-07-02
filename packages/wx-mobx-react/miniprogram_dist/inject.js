@@ -68,6 +68,7 @@ function createStoreInjector(grabStoresFn, component, injectNames) {
                 newProps.ref = this.storeRef
             }
 
+            Object.assign(newProps, this.hocProps)
             return createElement(component, newProps)
         }
     }
