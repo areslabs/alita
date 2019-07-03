@@ -210,3 +210,22 @@ export function getRNCompList() {
         return `WX${comp}`
     })
 }
+
+
+export function emptyDir(dir, ignoreArr) {
+    const allFiles = fse.readdirSync(dir)
+    for(let i = 0; i < allFiles.length; i ++) {
+        const partPath = allFiles[i]
+        if (ignoreArr.has(partPath)) {
+            continue
+        }
+
+        const absolutePath = path.resolve(dir, partPath)
+
+        if (ignoreArr.has(absolutePath)) {
+            continue
+        }
+
+        fse.removeSync(absolutePath)
+    }
+}

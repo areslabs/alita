@@ -9,7 +9,7 @@
 
 import fse from 'fs-extra'
 import struc, {geneWXFileStruc, exitStruc} from './struc/index'
-import {isStaticRes, getDependenciesMap, getRNCompList} from './util/util'
+import {isStaticRes, getDependenciesMap, getRNCompList, emptyDir} from './util/util'
 import packagz from '../package.json'
 
 
@@ -82,6 +82,12 @@ const OUT_DIR = path.resolve(options.outdir)
 
 console.log(`输入目录: ${INPUT_DIR}`.info)
 console.log(`输出目录: ${OUT_DIR}`.info)
+
+emptyDir(OUT_DIR, new Set([
+    'miniprogram_npm',
+    'node_modules'
+]))
+console.log('输出目录清理完成'.info)
 
 const watchMode = options.watch
 
