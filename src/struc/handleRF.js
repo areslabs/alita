@@ -11,10 +11,10 @@ import componentTran from '../tran'
 import fse from 'fs-extra'
 const path = require('path')
 
-export default async function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
+export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
     const dirname = path.dirname(filepath)
-    await fse.mkdirs(dirname)
+    fse.mkdirsSync(dirname)
 
     baseTran(ast, filepath, true, isFuncComp)
-    await componentTran(ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp)
+    return componentTran(ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp)
 }

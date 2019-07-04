@@ -20,7 +20,7 @@ export default (ignored) => {
         })
 
     watcher.on('add', async (path) => {
-        const files = await addFile(path)
-        console.log(path, ' ok! 生成:', files)
+        const allFilepaths = await addFile(path)
+        console.log(path, ' ok! 生成:', allFilepaths)
     })
 }

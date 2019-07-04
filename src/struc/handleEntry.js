@@ -18,7 +18,7 @@ import {geneOrder} from '../util/util'
 const npath = require('path')
 
 
-export default async function (ast, filepath) {
+export default function (ast, filepath) {
     const appJSON = {
         pages: [
         ],
@@ -40,7 +40,7 @@ export default async function (ast, filepath) {
     const compImportMap = {}
     const pngMap = {}
 
-    await basetran(ast, filepath, true)
+    basetran(ast, filepath, true)
 
     const go = geneOrder()
     traverse(ast, {
@@ -343,7 +343,7 @@ export default {
     })
 
     const appJSONPATH = npath.resolve(global.execArgs.OUT_DIR, 'app.json')
-    await fse.writeFile(
+    fse.writeFileSync(
         appJSONPATH,
         JSON.stringify(appJSON, null, '\t')
     )
@@ -353,7 +353,7 @@ export default {
 wx._beta = ${global.execArgs.beta ? 'true' : 'false'}
 App({})
     `
-    await fse.writeFile(
+    fse.writeFileSync(
         appJSPATH,
         appJSCode
     )
@@ -363,8 +363,8 @@ App({})
 
     const entryCode = geneReactCode(ast)
     const dirname = npath.dirname(filepath)
-    await fse.mkdirs(dirname)
-    await fse.writeFile(
+    fse.mkdirsSync(dirname)
+    fse.writeFileSync(
         filepath,
         entryCode
     )

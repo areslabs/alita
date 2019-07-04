@@ -20,56 +20,69 @@ const colors = require('colors');
 const RFFileList = []
 let allCompSet = null
 let entryFilePath = null
-export default async function (srcpath, targetpath) {
-    if (srcpath.indexOf('innerTmpComponent') !== -1) return
 
+/**
+ * 转化文件，返回转化生成的文件数组
+ * @param srcpath
+ * @param targetpath
+ * @returns {Promise<void>}
+ */
+export default async function (srcpath, targetpath) {
     const fsStat = await fse.stat(srcpath)
     if (fsStat.isDirectory()) {
-        return
+        return []
     }
 
     if (srcpath.endsWith('.js') || srcpath.endsWith('.jsx')) { // js 文件需要处理
         const code = fse.readFileSync(srcpath).toString()
         const ast = parseCode(code)
-        //TODO
 
         const {isEntry, isRF, isFuncComp, isRNEntry, isStatelessComp} = getFileInfo(ast)
-        if (isRNEntry) return
+        if (isRNEntry) return []
 
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
-            const entryResult  = await handleEntry(ast, targetpath)
+            const entryResult  =  handleEntry(ast, targetpath)
             entryFilePath = entryResult.filepath
             allCompSet = entryResult.allCompSet
             for(let i = 0; i<RFFileList.length; i++ ) {
-                const {ast, targetpath, srcpath, isFuncComp, isStatelessComp} = RFFileList[i]
+                const {ast, targetpath, srcpath, isFuncComp, isStatelessComp, done} = RFFileList[i]
                 try {
-                    await handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
+                    const allFilepaths = handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
+                    done(allFilepaths)
                 } catch (e) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
                 }
             }
+            return [targetpath]
         } else if (isRF) {
             if (entryFilePath) {
                 try {
-                    await handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
+                    return handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
                 } catch (e) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
                 }
 
             } else {
-                RFFileList.push({
-                    ast,
-                    targetpath,
-                    srcpath,
-                    isFuncComp,
-                    isStatelessComp
+                // 保证入口文件一定最先处理， 如果入口文件还未被处理，则把react文件先入队列
+                return new Promise((resolve) => {
+                    RFFileList.push({
+                        ast,
+                        targetpath,
+                        srcpath,
+                        isFuncComp,
+                        isStatelessComp,
+
+                        done: resolve,
+                    })
                 })
             }
         } else {
-            await handleBF(ast, targetpath)
+            handleBF(ast, targetpath)
+            return [targetpath]
         }
     } else { // 其他文件直接copy
         await fse.copy(srcpath, targetpath)
+        return [targetpath]
     }
 }
 
@@ -88,7 +101,7 @@ export async function exitStruc() {
         for(let i = 0; i< RFFileList.length; i++ ) {
             const {ast, targetpath, srcpath, isFuncComp, isStatelessComp} = RFFileList[i]
             try {
-                await handleRF(ast, targetpath, isFuncComp, entryFilePath, false, isStatelessComp)
+                handleRF(ast, targetpath, isFuncComp, entryFilePath, false, isStatelessComp)
             } catch (e) {
                 console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
             }

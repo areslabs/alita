@@ -26,14 +26,14 @@ export default async function addFile(filepath) {
 
     // 如果文件需要忽略， 则不处理
     if (typeof configObj.isFileIgnore === "function" && configObj.isFileIgnore(relativePath)) {
-        return
+        return []
     }
 
     // 如果存在.wx.js 那么 .js 的文件不用处理
     if (srcpath.endsWith('.js')) {
         const wxSrcpath = srcpath.replace('.js', '.wx.js')
         if (fse.existsSync(wxSrcpath)) {
-            return
+            return []
         }
     }
 
@@ -45,19 +45,19 @@ export default async function addFile(filepath) {
         } else if (srcpath.includes('@2x')) {
             const txPath = srcpath.replace('@2x', '@3x')
             if (fse.existsSync(txPath)) {
-                return
+                return []
             }
 
             targetpath = targetpath.replace('@2x', '')
         } else if (srcpath.includes('@1x')) {
             const sxPath = srcpath.replace('@1x', '@2x')
             if (fse.existsSync(sxPath)) {
-                return
+                return []
             }
 
             const txPath = srcpath.replace('@1x', '@3x')
             if (fse.existsSync(txPath)) {
-                return
+                return []
             }
 
             targetpath = targetpath.replace('@1x', '')
@@ -65,18 +65,20 @@ export default async function addFile(filepath) {
             const extname = path.extname(srcpath)
             const oxPath = srcpath.replace(extname, `@1x${extname}`)
             if (fse.existsSync(oxPath)) {
-                return
+                return []
             }
             const sxPath = srcpath.replace(extname, `@2x${extname}`)
             if (fse.existsSync(sxPath)) {
-                return
+                return []
             }
             const txPath = srcpath.replace(extname, `@3x${extname}`)
             if (fse.existsSync(txPath)) {
-                return
+                return []
             }
         }
     }
+
+    const allFilepaths = await struc(srcpath, targetpath)
     console.log('process file:'.info, relativePath)
-    await struc(srcpath, targetpath)
+    return allFilepaths
 }
