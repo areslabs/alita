@@ -8,14 +8,14 @@
  */
 
 import fse from 'fs-extra'
-import struc, {geneWXFileStruc, exitStruc} from './struc/index'
-import {isStaticRes, getDependenciesMap, getRNCompList, emptyDir} from './util/util'
+import {geneWXFileStruc, exitStruc} from './struc/index'
+import {getDependenciesMap, getRNCompList, emptyDir} from './util/util'
 import packagz from '../package.json'
+import filewatch from './filewatch/index'
 
 
 const path = require('path')
 const getopts = require("getopts")
-const chokidar = require('chokidar')
 const colors = require('colors')
 colors.setTheme({
     silly: 'rainbow',
@@ -242,68 +242,6 @@ function geneWXPackgejson(configObj) {
     }
 }
 
-async function handleFile(filepath, relativePath) {
-
-    const srcpath = filepath  //path.resolve(INPUT_DIR, filepath)
-    let targetpath = filepath.replace(INPUT_DIR, OUT_DIR) //path.resolve(OUT_DIR, filepath)
-
-    // 如果文件需要忽略， 则不处理
-    if (typeof configObj.isFileIgnore === "function" && configObj.isFileIgnore(relativePath)) {
-        return
-    }
-
-    // 如果存在.wx.js 那么 .js 的文件不用处理
-    if (srcpath.endsWith('.js')) {
-        const wxSrcpath = srcpath.replace('.js', '.wx.js')
-        if (fse.existsSync(wxSrcpath)) {
-            return
-        }
-    }
-
-    // 如果 xx@3x.png 存在，则忽略xx@2x.png， xx.png
-    if (isStaticRes(srcpath)) {
-        if (srcpath.includes('@3x')) {
-            // do nothing
-            targetpath = targetpath.replace('@3x', '')
-        } else if (srcpath.includes('@2x')) {
-            const txPath = srcpath.replace('@2x', '@3x')
-            if (fse.existsSync(txPath)) {
-                return
-            }
-
-            targetpath = targetpath.replace('@2x', '')
-        } else if (srcpath.includes('@1x')) {
-            const sxPath = srcpath.replace('@1x', '@2x')
-            if (fse.existsSync(sxPath)) {
-                return
-            }
-
-            const txPath = srcpath.replace('@1x', '@3x')
-            if (fse.existsSync(txPath)) {
-                return
-            }
-
-            targetpath = targetpath.replace('@1x', '')
-        } else {
-            const extname = path.extname(srcpath)
-            const oxPath = srcpath.replace(extname, `@1x${extname}`)
-            if (fse.existsSync(oxPath)) {
-                return
-            }
-            const sxPath = srcpath.replace(extname, `@2x${extname}`)
-            if (fse.existsSync(sxPath)) {
-                return
-            }
-            const txPath = srcpath.replace(extname, `@3x${extname}`)
-            if (fse.existsSync(txPath)) {
-                return
-            }
-        }
-    }
-    console.log('process file:'.info, relativePath)
-    await struc(srcpath, targetpath)
-}
-
 async function main() {
     // 生成微信目录结构
     await geneWXFileStruc(OUT_DIR)
@@ -315,20 +253,8 @@ async function main() {
         exitStruc()
     })
 
-    const watcher = chokidar.watch(INPUT_DIR,
-        {
-            //TODO watch模式暂未支持
-            persistent: false,
-            ignored: /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
-        })
-    watcher.on('add', (path) => {
-            const relativePath = path.replace(INPUT_DIR, '').replace(/\\/g, '/').substring(1)
-            handleFile(path, relativePath)
-                .catch((e) => {
-                    console.log(colors.error(`${relativePath} tran error!`), e)
-                })
-
-        })
+    const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
+    filewatch(ignored)
 }
 
 main()
