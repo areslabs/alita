@@ -137,6 +137,9 @@ Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存�
 ## Alita组件库
 在项目开发中，仅仅使用 RN 基本组件和 API，是很难满足需要的。我们在内部使用 Alita 的过程中，积累了很多常用的三端组件，包括ScrollTabView，ViewPager，SegmentedControl等等，我们正在剥离和梳理这些组件，很快会发布兼容三端的 Alita 组件库。此组件库也是我们日后的工作重点之一，我们将会不断优化和扩展新组件。
 
+## Alita 原理相关
+在处理React的时候，Alita使用的是运行时方案，区别现有社区使用的编译时方案，[具体](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
+
 ## 开发交流
 
 <table>
