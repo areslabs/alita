@@ -3,7 +3,7 @@
 
 我们以下面的组件来说明数据交换方式
 
-首先React Natie的3个组件
+首先React Native的3个组件
 App.js
 ```javascript
 export default class App extends React.Component {
