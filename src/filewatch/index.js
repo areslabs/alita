@@ -7,20 +7,47 @@
  */
 
 import addFile from './addFile'
+
 const chokidar = require('chokidar')
+const events = require('events');
+// 创建 eventEmitter 对象
+const eventEmitter = new events.EventEmitter();
+
+const DONE_EVENT = 'DONE_EVENT'
 
 export default (ignored) => {
     const {INPUT_DIR, watchMode} = global.execArgs
-    console.log('watchMode:', watchMode)
 
+    const fileSet = new Set([])
     const watcher = chokidar.watch(INPUT_DIR,
         {
-            persistent: false,
+            persistent: watchMode,
             ignored,
         })
 
-    watcher.on('add', async (path) => {
-        const allFilepaths = await addFile(path)
-        console.log(path, ' ok! 生成:', allFilepaths)
-    })
+    watcher
+        .on('add', async (path) => {
+            fileSet.add(path)
+            const allFilepaths = await addFile(path)
+            fileSet.delete(path)
+
+            if (fileSet.size === 0) {
+                eventEmitter.emit(DONE_EVENT)
+            }
+        })
+        .on('change', async path => {
+            console.log(path, ' changed!')
+        })
+        .on('unlink', async path => {
+            console.log(path, ' delete!')
+        })
+        .on('ready', () => {
+            eventEmitter.on(DONE_EVENT, () => {
+                if (watchMode) {
+                    console.log(`转化完成！监听文件修改...`.info)
+                } else {
+                    console.log('转化完成!'.info)
+                }
+            })
+        })
 }

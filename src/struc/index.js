@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
 import fse from 'fs-extra'
 import {getFileInfo, parseCode} from '../util/uast'
 import {isStaticRes, base64Encode} from '../util/util'
@@ -28,6 +28,9 @@ let entryFilePath = null
  * @returns {Promise<void>}
  */
 export default async function (srcpath, targetpath) {
+    //如果tranComp为true，表明只是单纯的转化组件，而不是整个项目
+    const tranComp = global.execArgs.tranComp
+
     const fsStat = await fse.stat(srcpath)
     if (fsStat.isDirectory()) {
         return []
@@ -41,10 +44,10 @@ export default async function (srcpath, targetpath) {
         if (isRNEntry) return []
 
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
-            const entryResult  =  handleEntry(ast, targetpath)
+            const entryResult = handleEntry(ast, targetpath)
             entryFilePath = entryResult.filepath
             allCompSet = entryResult.allCompSet
-            for(let i = 0; i<RFFileList.length; i++ ) {
+            for (let i = 0; i < RFFileList.length; i++) {
                 const {ast, targetpath, srcpath, isFuncComp, isStatelessComp, done} = RFFileList[i]
                 try {
                     const allFilepaths = handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
@@ -55,13 +58,18 @@ export default async function (srcpath, targetpath) {
             }
             return [targetpath]
         } else if (isRF) {
-            if (entryFilePath) {
+            if (tranComp) {
+                try {
+                    return handleRF(ast, targetpath, isFuncComp, entryFilePath, false, isStatelessComp)
+                } catch (e) {
+                    console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
+                }
+            } else if (entryFilePath) {
                 try {
                     return handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
                 } catch (e) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
                 }
-
             } else {
                 // 保证入口文件一定最先处理， 如果入口文件还未被处理，则把react文件先入队列
                 return new Promise((resolve) => {
@@ -91,26 +99,6 @@ export async function geneWXFileStruc(targetpath) {
     const mptempDir = path.resolve(__dirname, '..', '..', 'mptemp')
     await fse.copy(mptempDir, targetpath)
 }
-
-/**
- * 程序退出之前的操作
- */
-export async function exitStruc() {
-    // 没有入口文件
-    if (!entryFilePath) {
-        for(let i = 0; i< RFFileList.length; i++ ) {
-            const {ast, targetpath, srcpath, isFuncComp, isStatelessComp} = RFFileList[i]
-            try {
-                handleRF(ast, targetpath, isFuncComp, entryFilePath, false, isStatelessComp)
-            } catch (e) {
-                console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
-            }
-        }
-        // 以免再次触发 exitStruc
-        entryFilePath = "DONE"
-    }
-}
-
 
 function isPageComp(targetpath, allCompSet) {
     const originPath = targetpath

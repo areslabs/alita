@@ -8,7 +8,7 @@
  */
 
 import fse from 'fs-extra'
-import {geneWXFileStruc, exitStruc} from './struc/index'
+import {geneWXFileStruc} from './struc/index'
 import {getDependenciesMap, getRNCompList, emptyDir} from './util/util'
 import packagz from '../package.json'
 import filewatch from './filewatch/index'
@@ -37,7 +37,8 @@ const options = getopts(process.argv, {
         w: 'watch',
         v: 'version',
         config: 'config',
-        beta: 'beta'
+        beta: 'beta',
+        comp: 'component'
     },
 })
 
@@ -89,9 +90,6 @@ emptyDir(OUT_DIR, new Set([
 ]))
 console.log('输出目录清理完成'.info)
 
-const watchMode = options.watch
-
-
 const CONFIGPATH = path.resolve(INPUT_DIR, options.config || 'alita.config.js')
 let configObj = DEFAULTCONFIG
 
@@ -121,7 +119,8 @@ const {extCompPathMaps, extChildComp, allExtComp, extReactComp, jsxPropsMap} = g
 global.execArgs = {
     INPUT_DIR,
     OUT_DIR,
-    watchMode,
+    watchMode: !!options.watch,
+    tranComp: !!options.component,
     configObj,
     extCompPathMaps,
     extChildComp,
@@ -248,10 +247,6 @@ async function main() {
 
     // 生成微信package.json文件
     geneWXPackgejson(configObj)
-
-    process.on('beforeExit', (code) => {
-        exitStruc()
-    })
 
     const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
     filewatch(ignored)
