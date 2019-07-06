@@ -1,0 +1,24 @@
+{
+	"component": true,
+	"usingComponents": {
+		"WXButton": "@areslabs/wx-react-native/component/WXButton/index",
+		"WXScrollView": "@areslabs/wx-react-native/component/WXScrollView/index",
+		"MyContext": "./MyContext",
+		"MyRefComp": "./MyRefComp",
+		"MyPropComp": "./MyPropComp",
+		"MyFunComp": "./MyFunComp",
+		"MyChildComp": "./MyChildComp",
+		"MyStyleComp": "./MyStyleComp",
+		"PlatformComp": "./PlatformComp",
+		"MyHoc": "./MyHoc",
+		"MyForceUpdate": "./MyForceUpdate",
+		"Hi": "@areslabs/hi-wx/Hi/index",
+		"Hello": "@areslabs/hello-wx/index",
+		"ICNPaaaaa": "indexICNPaaaaa",
+		"ICNPaaaab": "indexICNPaaaab",
+		"ICNPaaaac": "indexICNPaaaac"
+	},
+	"componentGenerics": {},
+	"disableScroll": true,
+	"navigationBarTitleText": "WX A"
+}

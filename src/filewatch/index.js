@@ -7,6 +7,9 @@
  */
 
 import addFile from './addFile'
+import unlinkFile from './unlinkFile'
+import unlinkDir from './unlinkDir'
+import changeFile from './changeFile'
 
 const chokidar = require('chokidar')
 const events = require('events');
@@ -23,6 +26,7 @@ export default (ignored) => {
         {
             persistent: watchMode,
             ignored,
+            interval: 200
         })
 
     watcher
@@ -36,10 +40,13 @@ export default (ignored) => {
             }
         })
         .on('change', async path => {
-            console.log(path, ' changed!')
+            changeFile(path)
         })
         .on('unlink', async path => {
-            console.log(path, ' delete!')
+            unlinkFile(path)
+        })
+        .on('unlinkDir', async dir => {
+            unlinkDir(dir)
         })
         .on('ready', () => {
             eventEmitter.on(DONE_EVENT, () => {
