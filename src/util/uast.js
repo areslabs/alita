@@ -62,7 +62,7 @@ export function geneReactCode(ast) {
             babelClassProperties,
             babelOptionalChaining,
             babelTransformJSX,
-            babelTransformRuntime
+            //TODO 对体积的减少是否明显？？ babelTransformRuntime
         ]
     }).code
 
