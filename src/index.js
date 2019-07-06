@@ -84,11 +84,14 @@ const OUT_DIR = path.resolve(options.outdir)
 console.log(`输入目录: ${INPUT_DIR}`.info)
 console.log(`输出目录: ${OUT_DIR}`.info)
 
-emptyDir(OUT_DIR, new Set([
-    'miniprogram_npm',
-    'node_modules'
-]))
-console.log('输出目录清理完成'.info)
+if (fse.existsSync(OUT_DIR)) {
+    emptyDir(OUT_DIR, new Set([
+        'miniprogram_npm',
+        'node_modules'
+    ]))
+    console.log('输出目录清理完成'.info)
+}
+
 
 const CONFIGPATH = path.resolve(INPUT_DIR, options.config || 'alita.config.js')
 let configObj = DEFAULTCONFIG
