@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "src/a/index",
+    "src/c/index",
+    "src/e/index",
+    "src/b/index",
+    "src/d/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#E9E9E9",
+    "enablePullDownRefresh": false,
+    "navigationBarTitleText": "HelloWorld",
+    "navigationBarBackgroundColor": "#eee",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "src/a/index",
+        "text": "常见写法",
+        "iconPath": "/assets/faxian.png",
+        "selectedIconPath": "/assets/faxianCurrent.png"
+      },
+      {
+        "pagePath": "src/b/index",
+        "text": "RN组件",
+        "iconPath": "/assets/comp_desel.png",
+        "selectedIconPath": "/assets/comp_sel.png"
+      },
+      {
+        "pagePath": "src/d/index",
+        "text": "常见动画",
+        "iconPath": "/assets/my.png",
+        "selectedIconPath": "/assets/myCurrent.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
