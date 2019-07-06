@@ -7,6 +7,8 @@
  */
 
 import addFile from './addFile'
+import unlinkFile from './unlinkFile'
+import unlinkDir from './unlinkDir'
 
 const chokidar = require('chokidar')
 const events = require('events');
@@ -39,7 +41,11 @@ export default (ignored) => {
             console.log(path, ' changed!')
         })
         .on('unlink', async path => {
+            unlinkFile(path)
             console.log(path, ' delete!')
+        })
+        .on('unlinkDir', async dir => {
+            unlinkDir(dir)
         })
         .on('ready', () => {
             eventEmitter.on(DONE_EVENT, () => {
