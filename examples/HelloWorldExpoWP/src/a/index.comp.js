@@ -1,4 +1,20 @@
-import _extends from "@babel/runtime/helpers/extends"
+function _extends() {
+    _extends =
+        Object.assign ||
+        function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i]
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key]
+                    }
+                }
+            }
+            return target
+        }
+    return _extends.apply(this, arguments)
+}
+
 import regeneratorRuntime from "@areslabs/wx-react/regeneratorRuntime"
 import React, { Component, h } from "@areslabs/wx-react"
 import PropTypes from "@areslabs/wx-prop-types"
