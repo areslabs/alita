@@ -14,6 +14,52 @@ import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
 
+/**
+ *
+ * firstUpdateUI 组件初次渲染
+ * updateUI 组件更新
+ *
+ * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。比如如下的情形：
+ *        Father
+ *       /  |   \
+ *      /   |    \
+ *     /    |     \
+ *   son1  son2   son3
+ *
+ * 当父组件Father setState 引起 son1，son2，son3 UI发生改变的时候， 这3个组件增量的uiDes描述数据，需要传递到对应的小程序组件上，最不理想
+ * 情况是react层和小程序层交互3次，最初版本的alita（包括1.0.2版本以前）的确是这么做的。 自小程序2.4.0版本提供groupSetData之后，小程序提供了
+ * 批量设置数据的功能。现在我们可以通过类似如下的代码来批量的设置小程序数据
+ *    father.groupSetData(() => {
+ *          son1.setData(uiDes1)
+ *          son2.setData(uiDes2)
+ *          son3.setData(uiDes3)
+ *    })
+ * 也就是说在更新的时候，我们利用groupSetData 可以做到本质上只交互一次。
+ *
+ * 下面我们在考虑一下Father组件初始建立的过程： Father初始的时候，在wxFather（Father组件对应的小程序组件实例，这里暂时称为wxFather）的ready
+ * 声明周期里，调用了 wxFather.setData(uiDes)，完成之后，分别会触发wxSon1, wxSon2, wxSon3的 ready 并调用setData设置数据。 这里会调用4次setData，
+ * 我们有办法通过groupSetData，批量设置这里的数据吗？比较麻烦，不能简单的通过上面的方式使用groupSetData，因为只有当wxFather设置数据结束之后，son才有
+ * 机会ready
+ * 所以，alita先阶段采用的方案是：在组件初始阶段，会先构造出所以uiDes数据，包括子组件，孙组件等等
+ *     const allUiDes = {
+ *           ... // fatherUiDes
+ *
+ *           son1R: {
+ *               ... // son1UiDes
+ *           },
+ *
+ *           son2R: {
+ *               ... // son2UiDes
+ *           },
+ *
+ *           son3R: {
+ *               ... // son3UiDes
+ *           }
+ *     }
+ * 然后 father.setData(allUiDes) 。 初始结束以后，father组件不再持有子组件数据，以后的更新将通过groupSetData方式。
+ *
+ *
+ */
 export class BaseComponent {
     getWxInst() {
         let diuu = null
