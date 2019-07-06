@@ -1,6 +1,8 @@
 import fse from 'fs-extra';
 import addFile from './addFile';
-import { isStaticRes } from "../util/util"
+import { isStaticRes } from "../util/util";
+import getFiles from './getFiles';
+
 const path = require('path');
 
 /**
@@ -171,23 +173,4 @@ async function removeFiles(files) {
             console.log(err);
         });
     });
-}
-
-async function getFiles(targetPath, suffix) {
-    const targetdir = path.dirname(targetPath);
-    const noSuffix = targetPath.substring(0, targetPath.lastIndexOf(suffix));
-    const suffixs = ['.json', '.wxss', '.js', '.comp.js', '.wxml'];
-    const allFiles = suffixs.map((item) => {
-        return noSuffix + item;
-    });
-    allFiles.push(noSuffix + 'Template.wxml');
-    await fse.readdir(targetdir).then((files) => {
-        files.forEach((fileName) => {
-            if (fileName.indexOf(noSuffix.substring(noSuffix.lastIndexOf('/') + 1) + 'ICNP') === 0) {
-                allFiles.push(path.resolve(targetdir, fileName));
-            }
-
-        });
-    });
-    return allFiles;
 }

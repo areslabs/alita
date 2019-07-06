@@ -26,7 +26,7 @@ export default (ignored) => {
         {
             persistent: watchMode,
             ignored,
-            interval: 1000
+            interval: 200
         })
 
     watcher
