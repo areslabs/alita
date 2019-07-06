@@ -33,6 +33,13 @@ const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
 const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
 const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {"legacy": true }])
+const babelTransformRuntime = babel.createConfigItem(
+    [
+        require("@babel/plugin-transform-runtime"),
+        {
+            helpers: true,
+        }]
+)
 
 export function geneJSXCode(ast) {
     let code = generator(ast, {
@@ -55,6 +62,7 @@ export function geneReactCode(ast) {
             babelClassProperties,
             babelOptionalChaining,
             babelTransformJSX,
+            babelTransformRuntime
         ]
     }).code
 
