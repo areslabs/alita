@@ -67,12 +67,12 @@ export default async function unlinkFile(filePath) {
             //删除目标文件，查找是否有 [fileName] 
             await resolveStaticRes(srcPath, targetPath, 1);
         } else {
-            //查找是否有 [fileName]@3x/查找是否有 [fileName]@2x,如果有返回；
+            //查找是否有 [fileName]@3x/ [fileName]@2x /[fileName]@1x,如果有返回；
             //删除目标文件
             await resolveStaticRes(srcPath, targetPath, 0);
         }
     } else if (srcPath.endsWith('.js')) {
-        
+
         let allFiles = [];
         if (srcPath.endsWith('.wx.js')) {
             //删除的是 .wx.js
@@ -99,7 +99,11 @@ export default async function unlinkFile(filePath) {
 }
 
 async function resolveStaticRes(srcPath, targetPath, num) {
+    let imgIndex = num;
     let srcIndex = srcPath.lastIndexOf('@' + num + 'x'); //防止路径中出现 @nx
+    if(srcIndex === -1) {
+        srcIndex = srcPath.lastIndexOf('.');
+    }
     if (num === 3 || num === 2 || num === 1) {
         let index = targetPath.lastIndexOf('@' + num + 'x');
 
@@ -115,8 +119,7 @@ async function resolveStaticRes(srcPath, targetPath, num) {
     while (num > 0) {
         rightArry.push(--num);
     }
-
-    if (!existsHighPriority(srcPath, leftArry, srcIndex)) {
+    if (!existsHighPriority(srcPath, leftArry, srcIndex, imgIndex)) {
         //不存在更高优先级图片资源:删除图片资源，找更低优先级的图片资源
         await fse.remove(targetPath).catch(err => console.log(err));
         for (let i of rightArry) {
@@ -137,17 +140,24 @@ async function resolveStaticRes(srcPath, targetPath, num) {
 }
 
 
-function existsHighPriority(srcPath, leftArry, srcIndex) {
+function existsHighPriority(srcPath, leftArry, srcIndex, imgIndex) {
     for (let i of leftArry) {
         let srcFile;
         if (i !== 0) {
-            srcFile = srcPath.substring(0, srcIndex) + '@' + i + 'x' + srcPath.substring(srcIndex + 3);
+            if(imgIndex === 0) {
+                srcFile = srcPath.substring(0, srcIndex) + '@' + i + 'x' + srcPath.substring(srcIndex);
+            }else{
+                srcFile = srcPath.substring(0, srcIndex) + '@' + i + 'x' + srcPath.substring(srcIndex + 3);
+            }
+            
         } else {
             srcFile = srcPath.substring(0, srcIndex) + srcPath.substring(srcIndex + 3);
         }
+        
         if (fse.existsSync(srcFile)) {
             return true;
         }
+        
     }
     return false;
 
