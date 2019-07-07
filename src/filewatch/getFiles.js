@@ -1,4 +1,6 @@
 import fse from "fs-extra";
+import {InnerComponentNamePrefix} from '../constants';
+
 const path = require('path');
 
 export default async function getFiles(targetPath, suffix) {
@@ -11,7 +13,7 @@ export default async function getFiles(targetPath, suffix) {
     allFiles.push(noSuffix + 'Template.wxml');
     await fse.readdir(targetdir).then((files) => {
         files.forEach((fileName) => {
-            if (fileName.indexOf(noSuffix.substring(noSuffix.lastIndexOf('/') + 1) + 'ICNP') === 0) {
+            if (fileName.indexOf(noSuffix.substring(noSuffix.lastIndexOf('/') + 1) + InnerComponentNamePrefix) === 0) {
                 allFiles.push(path.resolve(targetdir, fileName));
             }
 
