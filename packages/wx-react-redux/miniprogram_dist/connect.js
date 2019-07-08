@@ -8,6 +8,7 @@
  
 import shallowEqual from "./shallowEqual"
 import React, {HocComponent} from '@areslabs/wx-react'
+import {bindActionCreators} from '@areslabs/wx-redux'
 import PropTypes from '@areslabs/wx-prop-types'
 
 export default function connect(mapStateToProps, mapDispatchToProps) {
@@ -39,7 +40,10 @@ export default function connect(mapStateToProps, mapDispatchToProps) {
 
 
                 let o2 = null
-                if (mapDispatchToProps) {
+
+                if (mapDispatchToProps && typeof mapDispatchToProps === 'object') {
+                    o2 = bindActionCreators(mapDispatchToProps, this.store.dispatch)
+                } else if (mapDispatchToProps && typeof mapDispatchToProps === 'function') {
                     o2 = mapDispatchToProps(this.store.dispatch, this.props)
                 } else {
                     o2 = {
