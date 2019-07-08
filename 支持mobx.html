@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>开始 · GitBook</title>
+        <title>支持mobx · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="路由.html" />
+    <link rel="next" href="自定义组件库扩展.html" />
     
+    
+    <link rel="prev" href="支持Redux.html" />
     
 
     </head>
@@ -87,7 +89,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -379,7 +381,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.16" data-path="支持mobx.html">
+        <li class="chapter active" data-level="1.16" data-path="支持mobx.html">
             
                 <a href="支持mobx.html">
             
@@ -545,7 +547,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >开始</a>
+        <a href="." >支持mobx</a>
     </h1>
 </div>
 
@@ -560,61 +562,23 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="alita">Alita</h1>
-<blockquote>
-<p>Alita&#xFF0C;&#x6218;&#x6597;&#x5929;&#x4F7F;&#x963F;&#x4E3D;&#x5854;&#xFF0C;&#x539F;&#x578B;&#x662F;&#x300A;&#x94F3;&#x68A6;&#x300B;&#x4E2D;&#x4E00;&#x4F4D;&#x4E0D;&#x65AD;&#x6218;&#x6597;&#x548C;&#x81EA;&#x6211;&#x8D85;&#x8D8A;&#x7684;&#x751F;&#x5316;&#x6539;&#x9020;&#x5C11;&#x5973;&#x3002;</p>
-</blockquote>
-<p>Alita&#x662F;&#x4E00;&#x5957;React Native&#x4EE3;&#x7801;&#x8F6C;&#x6362;&#x5F15;&#x64CE;&#x5DE5;&#x5177;&#x3002;&#x5B83;&#x5BF9;React&#x8BED;&#x6CD5;&#x6709;&#x5168;&#x65B0;&#x7684;&#x5904;&#x7406;&#x65B9;&#x5F0F;&#xFF0C;&#x652F;&#x6301;&#x5728;&#x8FD0;&#x884C;&#x65F6;&#x5904;&#x7406;React&#x8BED;&#x6CD5;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x7B80;&#x6D01;&#x3001;&#x9AD8;&#x6548;&#x7684;&#x65B9;&#x5F0F;&#x628A;React Native&#x4EE3;&#x7801;&#x8F6C;&#x6362;&#x6210;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x4EE3;&#x7801;&#xFF0C;&#x5E76;&#x4E14;&#x5B9E;&#x73B0;&#x4E86;React Native&#x548C;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x4E4B;&#x95F4;&#x7684;&#x4E3B;&#x8981;&#x7EC4;&#x4EF6;&#x5BF9;&#x9F50;&#x3002;</p>
-<h2 id="&#x57FA;&#x7840;">&#x57FA;&#x7840;</h2>
-<p>&#x5728;&#x4F7F;&#x7528;Alita&#x4E4B;&#x524D;&#xFF0C;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x4F60;&#x80FD;&#x4E86;&#x89E3;&#x4E00;&#x4E9B;&#x57FA;&#x7840;&#x77E5;&#x8BC6;&#x3002;&#x63D0;&#x524D;&#x4E86;&#x89E3;&#x8FD9;&#x4E9B;&#x77E5;&#x8BC6;&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x4F60;&#x4E4B;&#x540E;&#x4F7F;&#x7528;Alita&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x5C11;&#x8D70;&#x5F88;&#x591A;&#x5F2F;&#x8DEF;&#x3002;</p>
-<ul>
-<li>&#x8DEF;&#x7531;&#x662F;&#x4E00;&#x4E2A;&#x5E94;&#x7528;&#x5FC5;&#x4E0D;&#x53EF;&#x5C11;&#x7684;&#x90E8;&#x5206;&#xFF0C;Alita&#x63D0;&#x4F9B;&#x4E86;&#x7B80;&#x5355;&#x6613;&#x7528;&#x7684;&#x8DEF;&#x7531;&#x7EC4;&#x4EF6;<code>@areslabs/router</code>&#x3002;&#x5E76;&#x4E14;&#x53EA;&#x652F;&#x6301;&#x8F6C;&#x5316;&#x4F7F;&#x7528;&#x4E86;&#x8FD9;&#x4E2A;&#x8DEF;&#x7531;&#x7684;RN&#x5E94;&#x7528;&#xFF0C;<a href="&#x8DEF;&#x7531;.html">&#x8BE6;&#x89C1;</a></li>
-<li>&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x52A8;&#x753B;&#x548C;RN&#x52A8;&#x753B;&#x662F;&#x72EC;&#x7ACB;&#x7684;&#x4E24;&#x5957;&#x673A;&#x5236;&#xFF0C;&#x6211;&#x4EEC;&#x5C01;&#x88C5;&#x4E86;<code>@areslabs/wx-animated</code>&#x52A8;&#x753B;&#x5E93;&#xFF0C;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#x52A8;&#x753B;&#x5E93;&#x7684;RN&#x5E94;&#x7528;&#xFF0C;&#x53EF;&#x4EE5;&#x65E0;&#x635F;&#x7684;&#x8F6C;&#x5316;&#x8FD0;&#x884C;&#x5728;&#x5C0F;&#x7A0B;&#x5E8F;&#x4E0A;&#xFF0C;<a href="&#x52A8;&#x753B;.html">&#x8BE6;&#x89C1;</a></li>
-<li>&#x591A;&#x7AEF;&#x878D;&#x5408;&#x7684;&#x5F00;&#x53D1;&#x65B9;&#x5F0F;&#xFF0C;&#x9ED8;&#x8BA4;&#x4E86;&#x5404;&#x7AEF;&#x7684;&#x5C55;&#x793A;&#x548C;&#x4EA4;&#x4E92;&#x662F;&#x4E00;&#x6837;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x6709;&#x65F6;&#x5019;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E0D;&#x540C;&#x7AEF;&#x4F1A;&#x6709;&#x4E0D;&#x540C;&#x7684;&#x9700;&#x6C42;&#xFF0C;&#x8FD9;&#x5C31;&#x9700;&#x8981;&#x6709;&#x5E73;&#x53F0;&#x5224;&#x65AD;&#x7684;&#x80FD;&#x529B;&#xFF0C;Alita&#x7684;&#x5E73;&#x53F0;&#x5224;&#x65AD;&#x65B9;&#x5F0F;&#xFF0C;&#x53C2;&#x8003;&#x4E86;ReactNative&#x7684;&#x65B9;&#x5F0F;&#x3002;<a href="&#x5E73;&#x53F0;&#x5224;&#x65AD;.html">&#x8BE6;&#x89C1;</a></li>
-<li>&#x5173;&#x4E8E;Redux&#x7684;&#x652F;&#x6301;&#xFF0C;<a href="&#x652F;&#x6301;Redux.html">&#x8BE6;&#x89C1;</a></li>
-<li>&#x5173;&#x4E8E;Mobx&#x7684;&#x652F;&#x6301;&#xFF0C;<a href="&#x652F;&#x6301;mobx.html">&#x8BE6;&#x89C1;</a></li>
-<li>&#x5F53;&#x4F60;&#x7684;&#x9879;&#x76EE;&#x53EA;&#x4F7F;&#x7528;&#x4E86;React Native&#x5B98;&#x65B9;&#x7EC4;&#x4EF6;&#x548C;API&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8FD9;&#x4E2A;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x662F;&#x53EF;&#x4EE5;&#x5FFD;&#x7565;&#x7684;&#xFF0C;&#x4F7F;&#x7528;&#x7CFB;&#x7EDF;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x5C31;&#x53EF;&#x4EE5;&#xFF0C;&#x4F46;&#x662F;&#x5F53;&#x4F60;&#x7684;React Native&#x5E94;&#x7528;&#x8DB3;&#x591F;&#x590D;&#x6742;&#x7684;&#xFF0C;&#x5C31;&#x9700;&#x8981;&#x4F7F;&#x7528;<a href="&#x914D;&#x7F6E;&#x6587;&#x4EF6;.html">&#x914D;&#x7F6E;&#x6587;&#x4EF6;</a>&#x4E86;&#x3002;</li>
-</ul>
-<h2 id="&#x6CE8;&#x610F;&#x4E8B;&#x9879;">&#x6CE8;&#x610F;&#x4E8B;&#x9879;</h2>
-<p>Alita&#x5BF9;React Native&#x5E94;&#x7528;&#x6709;&#x4E00;&#x4E9B;&#x57FA;&#x672C;&#x8981;&#x6C42;&#x548C;&#x9650;&#x5236;&#xFF0C;&#x53E6;&#x5916;Alita&#x672C;&#x8EAB;&#x4E5F;&#x4F1A;&#x4F7F;&#x7528;&#x4E00;&#x4E9B;&#x4FDD;&#x7559;&#x5B57;&#x3002; &#x9664;&#x6B64;&#x4EE5;&#x5916;&#xFF0C;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x672C;&#x8EAB;&#x5C31;&#x5B58;&#x5728;&#x4E00;&#x4E9B;&#x9650;&#x5236;&#xFF0C;&#x6BD4;&#x5982;&#x5305;&#x5927;&#x5C0F;&#x7B49;&#x3002;&#x5BF9;&#x8FD9;&#x4E9B;&#x9650;&#x5236;&#xFF0C;&#x5E0C;&#x671B;&#x4F60;&#x6709;&#x4E00;&#x4E2A;&#x8DB3;&#x591F;&#x7684;&#x4E86;&#x89E3;&#xFF0C;&#x8FD9;&#x6837;&#x5728;&#x4F7F;&#x7528;Alita&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x5C31;&#x4E0D;&#x4F1A;&#x51FA;&#x73B0;&#x83AB;&#x540D;&#x5176;&#x5999;&#x7684;&#x9519;&#x8BEF;&#x3002;</p>
-<ul>
-<li>&#x63D0;&#x7EB2;&#x6308;&#x9886;&#x7684;&#x603B;&#x7ED3;&#x4E86;<a href="&#x8981;&#x6C42;&#x4E0E;&#x9650;&#x5236;.html">&#x8981;&#x6C42;&#x548C;&#x9650;&#x5236;</a></li>
-<li>Alita&#x9759;&#x6001;&#x4EE3;&#x7801;&#x7F16;&#x8BD1;&#x8F6C;&#x5316;&#x7684;<a href="&#x9759;&#x6001;&#x9650;&#x5236;.html">&#x9650;&#x5236;</a></li>
-<li>&#x5BF9;&#x51FA;&#x73B0;&#x5728;&#x7EC4;&#x4EF6;&#x6587;&#x4EF6;&#x4E4B;&#x5916;&#x7684;JSX&#x7247;&#x6BB5;&#x7684;<a href="&#x5916;&#x90E8;JSX&#x7247;&#x6BB5;.html">&#x9650;&#x5236;</a></li>
-<li>&#x4E00;&#x4E9B;&#x5C1A;&#x672A;&#x5B9E;&#x73B0;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x4E3B;&#x8981;&#x662F;&#x5E73;&#x53F0;&#x76F8;&#x5173;&#x7EC4;&#x4EF6;&#xFF0C;<a href="&#x672A;&#x5B9E;&#x73B0;&#x7EC4;&#x4EF6;&#x548C;API.html">&#x8BE6;&#x89C1;</a></li>
-<li>&#x9AD8;&#x9636;&#x7EC4;&#x4EF6;&#x7684;&#x4E00;&#x4E9B;<a href="&#x9AD8;&#x9636;&#x7EC4;&#x4EF6;.html">&#x7EA6;&#x675F;</a></li>
-<li>&#x5BF9;&#x4E8E;&#x4EE5;&#x4E0A;&#x7684;&#x8FD9;&#x4E9B;&#x9650;&#x5236;&#xFF0C;&#x6211;&#x4EEC;&#x63D0;&#x4F9B;&#x4E86;&#x5BF9;&#x5E94;&#x7684;<code>eslint</code><a href="&#x4EE3;&#x7801;&#x68C0;&#x67E5;&amp;Eslint.html">&#x68C0;&#x67E5;&#x5DE5;&#x5177;</a>&#x3002; &#x8FD9;&#x4E2A;&#x5DE5;&#x5177;&#xFF0C;&#x867D;&#x7136;&#x6682;&#x65F6;&#x8FD8;&#x4E0D;&#x80FD;&#x8986;&#x76D6;100%&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x4E0D;&#x8FC7;&#x76F8;&#x6BD4;&#x4E8E;&#x624B;&#x52A8;&#x67E5;&#x627E;&#xFF0C;&#x8FD8;&#x662F;&#x53EF;&#x4EE5;&#x51CF;&#x5C11;&#x5F88;&#x591A;&#x5DE5;&#x4F5C;&#x91CF;&#x3002;</li>
-</ul>
-<h2 id="&#x9AD8;&#x9636;">&#x9AD8;&#x9636;</h2>
-<p>&#x5F53;&#x4F60;&#x4E86;&#x89E3;&#x4E86;Alita&#x57FA;&#x672C;&#x77E5;&#x8BC6;&#x548C;&#x9650;&#x5236;&#x4E4B;&#x540E;&#xFF0C;&#x4F60;&#x4E5F;&#x8BB8;&#x4F1A;&#x5728;&#x5176;&#x4ED6;&#x4E00;&#x4E9B;&#x65B9;&#x9762;&#x9047;&#x5230;&#x95EE;&#x9898;&#x3002;</p>
-<ul>
-<li>Alita&#x4F7F;&#x7528;&#x7684;&#x662F;&#x8FD0;&#x884C;&#x65F6;JSX&#x7684;&#x5904;&#x7406;&#xFF0C;&#x76F8;&#x6BD4;&#x793E;&#x533A;&#x73B0;&#x6709;&#x7684;&#x65B9;&#x6848;&#xFF0C;&#x5BF9;JSX&#x652F;&#x6301;&#x66F4;&#x52A0;&#x7684;&#x5B8C;&#x5907;&#xFF0C;&#x8BE6;&#x89C1;<a href="&#x4E00;&#x79CD;&#x8BA9;&#x5C0F;&#x7A0B;&#x5E8F;&#x652F;&#x6301;JSX&#x8BED;&#x6CD5;&#x7684;&#x65B0;&#x601D;&#x8DEF;.html">&#x4E00;&#x79CD;&#x8BA9;&#x5C0F;&#x7A0B;&#x5E8F;&#x652F;&#x6301;JSX&#x8BED;&#x6CD5;&#x7684;&#x65B0;&#x601D;&#x8DEF;</a></li>
-<li>&#x672C;&#x6587;&#x8BE6;&#x7EC6;&#x4ECB;&#x7ECD;&#x4E86;&#x5D4C;&#x5165;&#x5F0F;React&#x548C;&#x5C0F;&#x7A0B;&#x5E8F;&#x5728;&#x8FD0;&#x884C;&#x9636;&#x6BB5;&#x7684;<a href="mini-react&#x4E0E;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x6570;&#x636E;&#x4EA4;&#x6362;&#x65B9;&#x5F0F;.html">&#x6570;&#x636E;&#x4EA4;&#x4E92;&#x65B9;&#x5F0F;</a></li>
-<li>&#x5F88;&#x591A;&#x65F6;&#x5019;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x628A;&#x591A;&#x4E2A;RN&#x6A21;&#x5757;&#x8F6C;&#x5316;&#x96C6;&#x6210;&#x5230;&#x4E00;&#x4E2A;&#x5C0F;&#x7A0B;&#x5E8F;&#x5305;&#x91CC;&#x9762;&#xFF0C;&#x8FD9;&#x5C31;&#x9700;&#x8981;&#x7528;&#x5230;<a href="&#x5C0F;&#x7A0B;&#x5E8F;&#x5206;&#x5305;&#x96C6;&#x6210;.html">&#x5C0F;&#x7A0B;&#x5E8F;&#x5206;&#x5305;&#x96C6;&#x6210;</a></li>
-<li>&#x5F53;&#x9879;&#x76EE;&#x8DB3;&#x591F;&#x590D;&#x6742;&#xFF0C;&#x4F7F;&#x7528;RN&#x57FA;&#x672C;&#x7EC4;&#x4EF6;&#x5E93;/API&#x5F80;&#x5F80;&#x5F88;&#x96BE;&#x6EE1;&#x8DB3;&#x5F00;&#x53D1;&#x9700;&#x8981;&#xFF0C;&#x5F88;&#x591A;&#x56E2;&#x961F;&#x4E5F;&#x4F1A;&#x6709;&#x81EA;&#x5DF1;&#x7684;RN&#x57FA;&#x672C;&#x7EC4;&#x4EF6;&#x5E93;&#xFF0C;&#x8FD9;&#x5C31;&#x9700;&#x8981;<a href="&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x5E93;&#x6269;&#x5C55;.html">&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x5E93;&#x6269;&#x5C55;</a></li>
-</ul>
-<h2 id="&#x4EA4;&#x6D41;&#x53CD;&#x9988;">&#x4EA4;&#x6D41;&#x53CD;&#x9988;</h2>
-<p>&#x6B22;&#x8FCE;&#x4EA4;&#x6D41;&#x53CD;&#x9988;&#xFF0C;&#x4E00;&#x822C;&#x6709;&#x4EE5;&#x4E0B;&#x51E0;&#x79CD;&#x65B9;&#x5F0F;&#xFF1A;</p>
-<ul>
-<li><p>Alita&#x7684;&#x4EE3;&#x7801;&#x5DF2;&#x7ECF;&#x6258;&#x7BA1;&#x5728;github&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x8FD9;&#x91CC;&#x7ED9;&#x6211;&#x4EEC;&#x63D0;&#x4EA4;<a href="https://github.com/areslabs/alita/issues" target="_blank">issues</a>&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x7B2C;&#x4E00;&#x65F6;&#x95F4;&#x53CD;&#x9988;&#x5904;&#x7406;&#x3002;</p>
-</li>
-<li><p>&#x8054;&#x7CFB;</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>QQ&#x7FA4;</th>
-<th>&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="static/qqgroup.jpg" alt=""></td>
-<td><img src="static/gzh.jpg" alt=""></td>
-</tr>
-</tbody>
-</table>
+                                <h2 id="&#x652F;&#x6301;mobx">&#x652F;&#x6301;mobx</h2>
+<p><a href="https://github.com/mobxjs/mobx" target="_blank">mobx</a> &#x662F;React&#x6280;&#x672F;&#x6808;&#x9664;&#x4E86;Redux&#x4E4B;&#x5916;&#xFF0C;&#x53E6;&#x4E00;&#x4E2A;&#x6BD4;&#x8F83;&#x6D41;&#x884C;&#x7684;&#x6570;&#x636E;&#x7BA1;&#x7406;&#x5E93;&#x3002; Alita&#x4ECE;1.0.2&#x7248;&#x672C;&#x5F00;&#x59CB;&#x652F;&#x6301;<a href="https://github.com/mobxjs/mobx" target="_blank">mobx</a>&#x7684;&#x4F7F;&#x7528;&#x3002;</p>
+<p><a href="https://github.com/mobxjs/mobx" target="_blank">mobx</a>&#x6700;&#x65B0;&#x7684;&#x7248;&#x672C;&#x662F;<strong>5.x</strong>&#xFF0C;&#x4F46;&#x662F;<strong>5.x</strong>&#x5728;&#x5B9E;&#x73B0;&#x4E0A;&#x4F7F;&#x7528;&#x4E86;<a href="https://kangax.github.io/compat-table/es6/#test-Proxy" target="_blank">ES6 Proxies</a>&#x3002;&#x5904;&#x4E8E;&#x5BF9;&#x517C;&#x5BB9;&#x6027;&#x7684;&#x8003;&#x8651;&#xFF0C;&#x5305;&#x62EC;RN&#x7684;&#x517C;&#x5BB9;&#x6027;&#xFF0C;Alita&#x8F6C;&#x5316;H5&#x7684;&#x517C;&#x5BB9;&#x6027;&#x7B49;&#x7B49;&#xFF0C;&#x6211;&#x4EEC;&#x5E76;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x6700;&#x65B0;&#x7684;<strong>5.x</strong>&#x7248;&#x672C;&#xFF0C;&#x800C;&#x662F;&#x4F7F;&#x7528;&#x4E86;<strong>4.11.0</strong>&#xFF0C; &#x5BF9;&#x5E94;&#x7684;<a href="https://github.com/mobxjs/mobx-react" target="_blank">mobx-react</a>&#x4F7F;&#x7528;&#x4E86;<strong>5.4.4</strong>&#x7248;&#x672C;&#x3002; &#x6240;&#x4EE5;&#x5728;&#x4F60;&#x7684;React Native&#x9879;&#x76EE;&#xFF0C;&#x8BF7;&#xFF1A;</p>
+<pre><code class="lang-shell">npm install mobx@4.11.0 mobx-react@5.4.4 --save
+</code></pre>
+<h3 id="&#x6CE8;&#x610F;&#x4E8B;&#x9879;">&#x6CE8;&#x610F;&#x4E8B;&#x9879;</h3>
+<h4 id="&#x51FD;&#x6570;&#x7EC4;&#x4EF6;">&#x51FD;&#x6570;&#x7EC4;&#x4EF6;</h4>
+<p>Alita &#x6682;&#x4E0D;&#x652F;&#x6301; observer &#x5982;&#x4E0B;&#x7684;&#x51FD;&#x6570;&#x7EC4;&#x4EF6;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Alita&#x4E0D;&#x652F;&#x6301;</span>
+<span class="hljs-keyword">const</span> Timer = observer(({ timerData }) =&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: { timerData.secondsPassed } <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+);
+</code></pre>
+<h4 id="observer">Observer</h4>
+<p>Alita &#x6682;&#x4E0D;&#x652F;&#x6301; Observer &#x7EC4;&#x4EF6;</p>
+<h3 id="&#x6837;&#x4F8B;">&#x6837;&#x4F8B;</h3>
+<p>examples &#x76EE;&#x5F55;&#x4E0B;&#x7684; <a href="https://github.com/areslabs/alita/tree/master/examples/RoomMobx" target="_blank">RoomMobx</a>&#x3002;</p>
 
                                 
                                 </section>
@@ -642,8 +606,12 @@
 
             
                 
+                <a href="支持Redux.html" class="navigation navigation-prev " aria-label="Previous page: 支持Redux">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="路由.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 路由">
+                
+                <a href="自定义组件库扩展.html" class="navigation navigation-next " aria-label="Next page: 自定义组件库扩展">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -654,7 +622,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"开始","level":"1.1","depth":1,"next":{"title":"路由","level":"1.2","depth":1,"path":"路由.md","ref":"./路由.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-07-08T08:33:25.862Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-07-08T08:39:41.461Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"支持mobx","level":"1.16","depth":1,"next":{"title":"自定义组件库扩展","level":"1.17","depth":1,"path":"自定义组件库扩展.md","ref":"./自定义组件库扩展.md","articles":[]},"previous":{"title":"支持Redux","level":"1.15","depth":1,"path":"支持Redux.md","ref":"./支持Redux.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"支持mobx.md","mtime":"2019-07-08T08:33:46.534Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-07-08T08:39:41.461Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
