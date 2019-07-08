@@ -6,6 +6,11 @@ import {
     StyleSheet
 } from "@areslabs/wx-react-native"
 export default class Todo extends PureComponent {
+    constructor(...args) {
+        super(...args)
+        this.__stateless__ = true
+    }
+
     render() {
         const { onClick, completed, text } = this.props
         return h(
@@ -46,8 +51,6 @@ export default class Todo extends PureComponent {
             )
         )
     }
-
-    __stateless__ = true
 }
 const styles = StyleSheet.create({
     item: {

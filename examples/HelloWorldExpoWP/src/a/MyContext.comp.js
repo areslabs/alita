@@ -3,8 +3,9 @@ import PropTypes from "@areslabs/wx-prop-types"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyContext extends Component {
-    static contextTypes = {
-        color: PropTypes.string
+    constructor(...args) {
+        super(...args)
+        this.__stateless__ = true
     }
 
     render() {
@@ -52,6 +53,7 @@ export default class MyContext extends Component {
             )
         )
     }
-
-    __stateless__ = true
+}
+MyContext.contextTypes = {
+    color: PropTypes.string
 }

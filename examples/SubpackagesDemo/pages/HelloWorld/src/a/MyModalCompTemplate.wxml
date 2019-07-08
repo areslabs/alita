@@ -1,9 +1,0 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
-    
- <template name="ITNP00002">
-    <JDNetworkd diuu="{{DIUU00001}}" tempName="ITNP00002" style="{{tools.getFinalStyle(DIUU00001style)}}" _r="{{DIUU00001R}}" />
-  </template>
- 
- 
-    

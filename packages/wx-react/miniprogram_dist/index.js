@@ -14,7 +14,8 @@ import WxNormalComp from './WxNormalComp'
 import tackleWithStyleObj from './tackleWithStyleObj'
 import styleType from './styleType'
 import instanceManager from './InstanceManager'
-import {getPropsMethod} from './util'
+import {getPropsMethod, getRootContext, rootUuid} from './util'
+import {unstable_batchedUpdates} from './unstable'
 
 
 export default {
@@ -31,7 +32,10 @@ export default {
     styleType,
     h: createElement,
     instanceManager,
-    getPropsMethod
+    getPropsMethod,
+    getRootContext,
+    rootUuid,
+    unstable_batchedUpdates
 }
 
 export {
@@ -47,6 +51,9 @@ export {
     tackleWithStyleObj,
     styleType,
     instanceManager,
-    getPropsMethod
+    getPropsMethod,
+    getRootContext,
+    rootUuid,
+    unstable_batchedUpdates
 }
 export const h = createElement

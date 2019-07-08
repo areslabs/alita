@@ -1,0 +1,8 @@
+{
+	"component": true,
+	"usingComponents": {
+		"MyForceUpdateInner": "./MyForceUpdateInner"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

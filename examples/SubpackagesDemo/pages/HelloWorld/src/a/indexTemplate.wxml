@@ -125,8 +125,8 @@
     <view tempName="ITNP00048" style="{{tools.getFinalStyle(DIUU00046style)}}"><view style="{{tools.getFinalStyle(DIUU00047style)}}">c</view></view>
   </template>
  
- <template name="ITNP00053">
-    <WXScrollView contentContainerStyle="{{DIUU00013contentContainerStyle}}" diuu="{{DIUU00013}}" tempName="ITNP00053" style="{{tools.getFinalStyle(DIUU00013style)}}" refreshing="{{DIUU00013refreshing}}" onRefreshPassed="{{DIUU00013onRefreshPassed}}">
+ <template name="ITNP00054">
+    <WXScrollView contentContainerStyle="{{DIUU00013contentContainerStyle}}" diuu="{{DIUU00013}}" tempName="ITNP00054" style="{{tools.getFinalStyle(DIUU00013style)}}" refreshing="{{DIUU00013refreshing}}" onRefreshPassed="{{DIUU00013onRefreshPassed}}">
                 <view style="{{tools.getFinalStyle(DIUU00014style)}}">
                     <WXButton color="#fff" title="PUSH C PAGE" diuu="{{DIUU00015}}" style="{{tools.getFinalStyle(DIUU00015style)}}" />
                 </view>
@@ -175,9 +175,11 @@
 
                 <MyStyleComp diuu="{{DIUU00050}}" style="{{tools.getFinalStyle(DIUU00050style)}}" _r="{{DIUU00050R}}" />
 
-                <Hi name="Yvette" textStyle="{{DIUU00051textStyle}}" diuu="{{DIUU00051}}" style="{{tools.getFinalStyle(DIUU00051style)}}" />
+                <MyForceUpdate diuu="{{DIUU00051}}" style="{{tools.getFinalStyle(DIUU00051style)}}" _r="{{DIUU00051R}}" />
 
-                <Hello diuu="{{DIUU00052}}" style="{{tools.getFinalStyle(DIUU00052style)}}" _r="{{DIUU00052R}}" />
+                <Hi name="Yvette" textStyle="{{DIUU00052textStyle}}" diuu="{{DIUU00052}}" style="{{tools.getFinalStyle(DIUU00052style)}}" />
+
+                <Hello diuu="{{DIUU00053}}" style="{{tools.getFinalStyle(DIUU00053style)}}" _r="{{DIUU00053R}}" />
 
                 
             </WXScrollView>

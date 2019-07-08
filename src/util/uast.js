@@ -27,29 +27,42 @@ export function parseCode(code) {
     })
 }
 
-export function geneCode(ast) {
-    const code = generator(ast, {
+
+const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
+const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
+const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
+const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
+const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {"legacy": true }])
+const babelTransformRuntime = babel.createConfigItem(
+    [
+        require("@babel/plugin-transform-runtime"),
+        {
+            helpers: true,
+        }]
+)
+
+export function geneJSXCode(ast) {
+    let code = generator(ast, {
         comments: false
     }).code
+
     return code
 }
 
-const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
-const babelRestSpread = babel.createConfigItem(require("@babel/plugin-syntax-object-rest-spread"))
-const babelClassProperties = babel.createConfigItem(require("@babel/plugin-syntax-class-properties"))
-const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-syntax-optional-chaining"))
-
-
-export async function geneReactCode(ast) {
-    let code = geneCode(ast)
+export function geneReactCode(ast) {
+    let code = generator(ast, {
+        comments: false
+    }).code
     code = babel.transformSync(code, {
         babelrc: false,
         configFile: false,
         plugins: [
+            babelDecorators,
             babelRestSpread,
             babelClassProperties,
             babelOptionalChaining,
             babelTransformJSX,
+            //TODO 对体积的减少是否明显？？ babelTransformRuntime
         ]
     }).code
 

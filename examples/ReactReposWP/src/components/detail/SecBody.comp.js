@@ -5,8 +5,12 @@ import { AnimationEnable } from "@areslabs/wx-animated"
 import { token } from "../../util/index"
 
 class SecBody extends Component {
-    state = {
-        users: []
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            users: []
+        }
+        this.__stateless__ = false
     }
 
     componentDidMount() {
@@ -49,7 +53,7 @@ class SecBody extends Component {
                             height: 70,
                             marginLeft: 5
                         },
-                        mode: "cover",
+                        mode: "aspectFill",
                         diuu: "DIUU00002",
                         tempName: "ITNP00003"
                     })
@@ -60,8 +64,6 @@ class SecBody extends Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 
 export default AnimationEnable(SecBody)

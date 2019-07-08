@@ -2,6 +2,11 @@ import React, { Component, h } from "@areslabs/wx-react"
 import { Text, View, WXButton } from "@areslabs/wx-react-native"
 import { history } from "@areslabs/wx-router"
 export default class C extends Component {
+    constructor(...args) {
+        super(...args)
+        this.__stateless__ = true
+    }
+
     getPush() {
         return h(
             "view",
@@ -111,6 +116,4 @@ export default class C extends Component {
             })
         )
     }
-
-    __stateless__ = true
 }

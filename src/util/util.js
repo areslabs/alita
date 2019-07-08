@@ -148,7 +148,9 @@ export const RNWXLIBMaps = {
     'react-redux': "@areslabs/wx-react-redux",
     'redux-actions': "@areslabs/wx-redux-actions",
     'redux-promise': "@areslabs/wx-redux-promise",
-    'redux-thunk': "@areslabs/wx-redux-thunk"
+    'redux-thunk': "@areslabs/wx-redux-thunk",
+    'mobx-react': "@areslabs/wx-mobx-react",
+    'mobx': "@areslabs/wx-mobx"
 }
 
 export function getDependenciesMap(version) {
@@ -207,4 +209,23 @@ export function getRNCompList() {
 
         return `WX${comp}`
     })
+}
+
+
+export function emptyDir(dir, ignoreArr) {
+    const allFiles = fse.readdirSync(dir)
+    for(let i = 0; i < allFiles.length; i ++) {
+        const partPath = allFiles[i]
+        if (ignoreArr.has(partPath)) {
+            continue
+        }
+
+        const absolutePath = path.resolve(dir, partPath)
+
+        if (ignoreArr.has(absolutePath)) {
+            continue
+        }
+
+        fse.removeSync(absolutePath)
+    }
 }

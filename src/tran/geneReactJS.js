@@ -10,8 +10,8 @@ import {geneReactCode} from '../util/uast'
 import fse from "fs-extra";
 const prettier = require("prettier");
 
-export default async function (ast, info) {
-    const code = await geneReactCode(ast)
+export default function (ast, info) {
+    const code = geneReactCode(ast)
     let {filepath} = info
     filepath = filepath.replace('.wx.js', '.js')
         .replace('.js', '.comp.js')

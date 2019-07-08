@@ -12,6 +12,7 @@ const down = "/src/assets/arrow_down.png"
 export default class Detail extends Component {
     constructor(props) {
         super(props)
+        this.__stateless__ = false
         const {
             stargazers_url,
             contributors_url,
@@ -71,7 +72,7 @@ export default class Detail extends Component {
                     src: {
                         uri: owner.avatar_url
                     },
-                    mode: "cover",
+                    mode: "aspectFill",
                     diuu: "DIUU00003"
                 }),
                 h(
@@ -152,7 +153,7 @@ export default class Detail extends Component {
                                     width: 15
                                 },
                                 src: down,
-                                mode: "cover",
+                                mode: "aspectFill",
                                 diuu: "DIUU00008"
                             })
                         ),
@@ -170,8 +171,6 @@ export default class Detail extends Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 const styles = StyleSheet.create({
     sections: {

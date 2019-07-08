@@ -132,7 +132,10 @@ export function recursionMount(comp) {
             comp.updateQueueCB = []
         }
 
-        comp.setState(newState, finalCb)
+        const isForceUpdate = comp.isForceUpdate
+        comp.isForceUpdate = false
+
+        comp.updateInner(newState, finalCb, isForceUpdate)
     }
 
 
@@ -144,4 +147,18 @@ export const ReactWxEventMap = {
     'onLongPress': 'longpress',
     'onLoad': 'load',
     'onError': 'error'
+}
+
+export const rootUuid = '__root__'
+export function getRootContext() {
+    const rootInst = instanceManager.getCompInstByUUID(rootUuid)
+    let topInst = rootInst
+    while (topInst._c.length !== 0) {
+        if (rootInst._c.length !== 1) {
+            console.warn('Root页包裹路由的组件，不应该存在多个节点！')
+        }
+        topInst = instanceManager.getCompInstByUUID(rootInst._c[0])
+    }
+
+    return getCurrentContext(topInst, topInst._parentContext)
 }

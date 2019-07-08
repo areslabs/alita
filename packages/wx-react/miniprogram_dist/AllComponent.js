@@ -169,53 +169,42 @@ export class Component extends BaseComponent {
     }
 
     forceUpdate(cb) {
-        if (!(this instanceof HocComponent) && !this.getWxInst()) {
-            console.warn('the component has unmount, should not invoke forceUpdate!!')
-            return
-        }
-
-        this.componentWillUpdate && this.componentWillUpdate(this.props, this.state)
-        this.UNSAFE_componentWillUpdate && this.UNSAFE_componentWillUpdate(this.props, this.state)
-
-        const subVnode = this.render()
-        this._or = this._r
-        this._r = {}
-        this._c = []
-        this.__eventHanderMap = {}
-
-        const parentContext = this._parentContext
-        const context = getCurrentContext(this, parentContext)
-
-        render(subVnode, this, context, this._r, this._or, '_r')
-
-        this.flushDataToWx(subVnode, cb)
+        this.updateInner({}, cb, true)
     }
 
     setState(newState, cb) {
-        // 还未渲染完成调用setState，通常发生在willMount等处，此时把更新入队，在渲染结束的时候会统一检查一下这种情况的更新
+        this.updateInner(newState, cb, false)
+    }
+
+    updateInner(newState, cb, isForce) {
+        // 还未渲染完成调用setState/forceUpdate，通常发生在willMount等处，此时把更新入队，在渲染结束的时候会统一检查一下这种情况的更新
         if (!(this instanceof HocComponent) && this.firstRender !== FR_DONE) {
             this.updateQueue.push(newState)
             cb && this.updateQueueCB.push(cb)
+            if (isForce) {
+                this.isForceUpdate = isForce
+            }
 
             return
         }
 
         // 没有找到对应wxInst
         if (!(this instanceof HocComponent) && !this.getWxInst()) {
-            console.warn('the component has unmount, should not invoke setState!!')
+            console.warn(`the component has unmount, should not invoke ${isForce ? 'forceUpdate' : 'setState'}!!`)
             return
         }
-
 
         if (reactUpdate.inRe()) {
             this.updateQueue.push(newState)
             if (cb) {
                 this.updateQueueCB.push(cb)
             }
+            if (isForce) {
+                this.isForceUpdate = isForce
+            }
             reactUpdate.addUpdateInst(this)
             return
         }
-
 
         const nextState = {
             ...this.state,
@@ -223,7 +212,9 @@ export class Component extends BaseComponent {
         }
 
         let shouldUpdate
-        if (this.shouldComponentUpdate) {
+        if (isForce) {
+            shouldUpdate = true
+        } else if (this.shouldComponentUpdate) {
             shouldUpdate = this.shouldComponentUpdate(this.props, nextState)
         } else {
             shouldUpdate = true
@@ -232,13 +223,11 @@ export class Component extends BaseComponent {
         shouldUpdate && this.componentWillUpdate && this.componentWillUpdate(this.props, nextState)
         shouldUpdate && this.UNSAFE_componentWillUpdate && this.UNSAFE_componentWillUpdate(this.props, nextState)
 
-
         this.state = nextState
 
         if (!shouldUpdate) {
             return // do nothing
         }
-
 
         const subVnode = this.render()
 
@@ -255,25 +244,11 @@ export class Component extends BaseComponent {
 
         render(subVnode, this, context, this._r, this._or, '_r')
 
-        let finalCb = null
-        // 合并setState 回调
-        if (this.updateQueueCB.length > 0) {
-            const cbQueue = this.updateQueueCB
-            finalCb = () => {
-                for (let i = 0; i < cbQueue.length; i++) {
-                    cbQueue[i].call(this)
-                }
-            }
-            this.updateQueueCB = []
-        } else {
-            finalCb = cb
-        }
-
-        this.flushDataToWx(subVnode, finalCb)
+        this.flushDataToWx(subVnode, cb)
     }
 
     /**
-     * render过程结束之后，各组件_r 数据已经生成完毕，执行updateUI递归的把数据刷新到小程序。
+     * render过程结束之后，各组件渲染数据已经生成完毕，执行updateUI递归的把数据刷新到小程序。
      * 此外：由于微信小程序自定义组件会生成一个节点，需要把内部最外层样式上报到这个节点
      */
     flushDataToWx(subVnode, finalCb) {

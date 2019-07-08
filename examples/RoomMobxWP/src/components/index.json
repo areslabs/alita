@@ -1,0 +1,10 @@
+{
+	"component": true,
+	"usingComponents": {
+		"WXButton": "@areslabs/wx-react-native/component/WXButton/index",
+		"TotalInfo": "./TotalInfo",
+		"Room": "./Room"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

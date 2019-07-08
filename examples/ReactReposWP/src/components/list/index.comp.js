@@ -14,19 +14,191 @@ import { formatK, token, fetchRepos } from "../../util/index"
 const { width } = Dimensions.get("window")
 const reposUrl = `https://api.github.com/search/repositories?q=react&sort=stars&per_page=20&access_token=${token}`
 export default class List extends Component {
-    static navigationOptions = {
-        title: "ReactRepos"
-    }
-    static wxNavigationOptions = {
-        navigationBarTitleText: "ReactRepos"
-    }
-    state = {
-        repos: [],
-        refreshing: false
-    }
-    page = 1
-    getReposUrl = (page = 1) => {
-        return `${reposUrl}&page=${page}`
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            repos: [],
+            refreshing: false
+        }
+        this.page = 1
+
+        this.getReposUrl = (page = 1) => {
+            return `${reposUrl}&page=${page}`
+        }
+
+        this.renderItem = ({ item }) => {
+            return h(
+                "view",
+                {
+                    style: styles.itemOut,
+                    onPress: () => {
+                        history.push("ReactRepos", "detail", item)
+                    },
+                    original: "TouchableOpacity",
+                    diuu: "DIUU00001",
+                    tempName: "ITNP00011"
+                },
+                h("image", {
+                    style: styles.picStyle,
+                    src: {
+                        uri: item.owner.avatar_url
+                    },
+                    mode: "aspectFill",
+                    diuu: "DIUU00002"
+                }),
+                h(
+                    "view",
+                    {
+                        style: {
+                            flex: 1
+                        },
+                        original: "View",
+                        diuu: "DIUU00003"
+                    },
+                    h(
+                        "view",
+                        {
+                            style: styles.intro,
+                            original: "View",
+                            diuu: "DIUU00004"
+                        },
+                        h(
+                            "view",
+                            {
+                                numberOfLines: 1,
+                                style: styles.name,
+                                original: "OuterText",
+                                diuu: "DIUU00005"
+                            },
+                            h("template", {
+                                datakey: "CTDK00003",
+                                tempVnode: item.name,
+                                "wx:if": "{{CTDK00003}}",
+                                is: "CTNP00002",
+                                data: "{{...CTDK00003}}"
+                            })
+                        ),
+                        h(
+                            "view",
+                            {
+                                style: styles.star,
+                                original: "View",
+                                diuu: "DIUU00006"
+                            },
+                            h("image", {
+                                style: {
+                                    height: 15,
+                                    width: 15
+                                },
+                                src: "/src/assets/stars.jpg",
+                                mode: "aspectFill",
+                                diuu: "DIUU00007"
+                            }),
+                            h(
+                                "view",
+                                {
+                                    original: "OuterText",
+                                    diuu: "DIUU00008"
+                                },
+                                h("template", {
+                                    datakey: "CTDK00006",
+                                    tempVnode: formatK(item.watchers),
+                                    "wx:if": "{{CTDK00006}}",
+                                    is: "CTNP00005",
+                                    data: "{{...CTDK00006}}"
+                                })
+                            )
+                        )
+                    ),
+                    h(
+                        "view",
+                        {
+                            numberOfLines: 2,
+                            style: styles.des,
+                            original: "OuterText",
+                            diuu: "DIUU00009"
+                        },
+                        h("template", {
+                            datakey: "CTDK00010",
+                            tempVnode: item.description,
+                            "wx:if": "{{CTDK00010}}",
+                            is: "CTNP00009",
+                            data: "{{...CTDK00010}}"
+                        })
+                    ),
+                    h(
+                        "view",
+                        {
+                            style: styles.license,
+                            original: "OuterText",
+                            diuu: "DIUU00010"
+                        },
+                        h("template", {
+                            datakey: "CTDK00012",
+                            tempVnode: item.license
+                                ? item.license.spdx_id
+                                : "ISC",
+                            "wx:if": "{{CTDK00012}}",
+                            is: "CTNP00011",
+                            data: "{{...CTDK00012}}"
+                        })
+                    )
+                )
+            )
+        }
+
+        this.keyExtractor = (item, index) => item.id + ""
+
+        this.onEndReached = () => {
+            console.log("onEndReached:")
+            this.page++
+            fetchRepos(this.page, 20).then(res => {
+                this.setState({
+                    repos: this.state.repos.concat(res.items)
+                })
+            })
+        }
+
+        this.lfc = () => {
+            if (this.state.repos.length === 0) {
+                return null
+            }
+
+            return h(
+                "view",
+                {
+                    style: {
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    },
+                    original: "View",
+                    diuu: "DIUU00012",
+                    tempName: "ITNP00014"
+                },
+                h(
+                    "view",
+                    {
+                        original: "OuterText",
+                        diuu: "DIUU00013"
+                    },
+                    "\u52A0\u8F7D\u4E2D..."
+                )
+            )
+        }
+
+        this.onRefresh = () => {
+            this.setState({
+                refreshing: true
+            })
+            setTimeout(() => {
+                this.setState({
+                    refreshing: false
+                })
+            }, 4000)
+        }
+
+        this.__stateless__ = false
     }
 
     componentDidMount() {
@@ -35,172 +207,6 @@ export default class List extends Component {
                 repos: res.items
             })
         })
-    }
-
-    renderItem = ({ item }) => {
-        return h(
-            "view",
-            {
-                style: styles.itemOut,
-                onPress: () => {
-                    history.push("ReactRepos", "detail", item)
-                },
-                original: "TouchableOpacity",
-                diuu: "DIUU00001",
-                tempName: "ITNP00011"
-            },
-            h("image", {
-                style: styles.picStyle,
-                src: {
-                    uri: item.owner.avatar_url
-                },
-                mode: "cover",
-                diuu: "DIUU00002"
-            }),
-            h(
-                "view",
-                {
-                    style: {
-                        flex: 1
-                    },
-                    original: "View",
-                    diuu: "DIUU00003"
-                },
-                h(
-                    "view",
-                    {
-                        style: styles.intro,
-                        original: "View",
-                        diuu: "DIUU00004"
-                    },
-                    h(
-                        "view",
-                        {
-                            numberOfLines: 1,
-                            style: styles.name,
-                            original: "OuterText",
-                            diuu: "DIUU00005"
-                        },
-                        h("template", {
-                            datakey: "CTDK00003",
-                            tempVnode: item.name,
-                            "wx:if": "{{CTDK00003}}",
-                            is: "CTNP00002",
-                            data: "{{...CTDK00003}}"
-                        })
-                    ),
-                    h(
-                        "view",
-                        {
-                            style: styles.star,
-                            original: "View",
-                            diuu: "DIUU00006"
-                        },
-                        h("image", {
-                            style: {
-                                height: 15,
-                                width: 15
-                            },
-                            src: "/src/assets/stars.jpg",
-                            mode: "cover",
-                            diuu: "DIUU00007"
-                        }),
-                        h(
-                            "view",
-                            {
-                                original: "OuterText",
-                                diuu: "DIUU00008"
-                            },
-                            h("template", {
-                                datakey: "CTDK00006",
-                                tempVnode: formatK(item.watchers),
-                                "wx:if": "{{CTDK00006}}",
-                                is: "CTNP00005",
-                                data: "{{...CTDK00006}}"
-                            })
-                        )
-                    )
-                ),
-                h(
-                    "view",
-                    {
-                        numberOfLines: 2,
-                        style: styles.des,
-                        original: "OuterText",
-                        diuu: "DIUU00009"
-                    },
-                    h("template", {
-                        datakey: "CTDK00010",
-                        tempVnode: item.description,
-                        "wx:if": "{{CTDK00010}}",
-                        is: "CTNP00009",
-                        data: "{{...CTDK00010}}"
-                    })
-                ),
-                h(
-                    "view",
-                    {
-                        style: styles.license,
-                        original: "OuterText",
-                        diuu: "DIUU00010"
-                    },
-                    h("template", {
-                        datakey: "CTDK00012",
-                        tempVnode: item.license ? item.license.spdx_id : "ISC",
-                        "wx:if": "{{CTDK00012}}",
-                        is: "CTNP00011",
-                        data: "{{...CTDK00012}}"
-                    })
-                )
-            )
-        )
-    }
-    keyExtractor = (item, index) => item.id + ""
-    onEndReached = () => {
-        console.log("onEndReached:")
-        this.page++
-        fetchRepos(this.page, 20).then(res => {
-            this.setState({
-                repos: this.state.repos.concat(res.items)
-            })
-        })
-    }
-    lfc = () => {
-        if (this.state.repos.length === 0) {
-            return null
-        }
-
-        return h(
-            "view",
-            {
-                style: {
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center"
-                },
-                original: "View",
-                diuu: "DIUU00012",
-                tempName: "ITNP00014"
-            },
-            h(
-                "view",
-                {
-                    original: "OuterText",
-                    diuu: "DIUU00013"
-                },
-                "\u52A0\u8F7D\u4E2D..."
-            )
-        )
-    }
-    onRefresh = () => {
-        this.setState({
-            refreshing: true
-        })
-        setTimeout(() => {
-            this.setState({
-                refreshing: false
-            })
-        }, 4000)
     }
 
     render() {
@@ -243,8 +249,12 @@ export default class List extends Component {
             })
         )
     }
-
-    __stateless__ = false
+}
+List.navigationOptions = {
+    title: "ReactRepos"
+}
+List.wxNavigationOptions = {
+    navigationBarTitleText: "ReactRepos"
 }
 const styles = StyleSheet.create({
     fr: {

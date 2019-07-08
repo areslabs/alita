@@ -63,17 +63,41 @@ const item3 = h(
     )
 )
 export default class A extends Component {
-    static wxNavigationOptions = {
-        navigationBarTitleText: "WX A"
-    }
-    static navigationOptions = {
-        title: "RN A"
-    }
-    static childContextTypes = {
-        color: PropTypes.string
-    }
-    static defaultProps = {
-        name: "yk"
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            toggleClicked1: false,
+            arr: ["arr1", "arr2", "arr3"],
+            user: {
+                name: "kk",
+                age: 18
+            },
+            hasZ: false
+        }
+
+        this.handleIncre = () => {
+            this.mrc.increCount()
+        }
+
+        this.item2 = h(
+            "view",
+            {
+                style: styles.item,
+                original: "View",
+                diuu: "DIUU00007",
+                tempName: "ITNP00009"
+            },
+            h(
+                "view",
+                {
+                    style: styles.itemText,
+                    original: "OuterText",
+                    diuu: "DIUU00008"
+                },
+                "item2"
+            )
+        )
+        this.__stateless__ = false
     }
 
     getChildContext() {
@@ -109,16 +133,6 @@ export default class A extends Component {
         console.log("A componentDidUpdate:")
     }
 
-    state = {
-        toggleClicked1: false,
-        arr: ["arr1", "arr2", "arr3"],
-        user: {
-            name: "kk",
-            age: 18
-        },
-        hasZ: false
-    }
-
     getText1() {
         return null
     }
@@ -149,28 +163,6 @@ export default class A extends Component {
             )
         )
     }
-
-    handleIncre = () => {
-        this.mrc.increCount()
-    }
-    item2 = h(
-        "view",
-        {
-            style: styles.item,
-            original: "View",
-            diuu: "DIUU00007",
-            tempName: "ITNP00009"
-        },
-        h(
-            "view",
-            {
-                style: styles.itemText,
-                original: "OuterText",
-                diuu: "DIUU00008"
-            },
-            "item2"
-        )
-    )
 
     render() {
         const { toggleClicked1, arr, user, count } = this.state
@@ -534,6 +526,16 @@ export default class A extends Component {
             })
         )
     }
-
-    __stateless__ = false
+}
+A.wxNavigationOptions = {
+    navigationBarTitleText: "WX A"
+}
+A.navigationOptions = {
+    title: "RN A"
+}
+A.childContextTypes = {
+    color: PropTypes.string
+}
+A.defaultProps = {
+    name: "yk"
 }

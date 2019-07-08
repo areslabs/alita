@@ -17,13 +17,14 @@ import geneJS from './geneJS'
 import geneWxml from './geneWxml'
 import geneWxss from './geneWxss'
 import geneJSON from './geneJSON'
+import allFilepaths from './allFilepaths'
 import geneAllTemplate from "./geneAllTemplate";
 import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
 import addWXPrefixHandler from './addWXPrefixHandler'
 import cptCompHandler from './cptCompHandler'
 
-export default async function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
+export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
     const info = {
         filepath: filepath,
         templates: [],
@@ -62,7 +63,7 @@ export default async function (ast, filepath, isFuncComp, entryFilePath, isPageC
 
     ast = childrenToTemplate(ast, info)
 
-    await geneReactJS(ast, info)
+    geneReactJS(ast, info)
 
     ast = addEventHandler(ast, info)
 
@@ -70,6 +71,8 @@ export default async function (ast, filepath, isFuncComp, entryFilePath, isPageC
 
     geneWxml(info)
     geneJSON(info)
-    geneJS(geneCode(ast), info)
+    geneJS(info)
     geneWxss(info)
+
+    return allFilepaths(info)
 }

@@ -1,6 +1,11 @@
 import React, { Component, h } from "@areslabs/wx-react"
 import { StyleSheet, Text, View } from "@areslabs/wx-react-native"
 export default class LoadingView extends Component {
+    constructor(...args) {
+        super(...args)
+        this.__stateless__ = true
+    }
+
     render() {
         return h(
             "block",
@@ -20,8 +25,6 @@ export default class LoadingView extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }
 const styles = StyleSheet.create({
     loading: {

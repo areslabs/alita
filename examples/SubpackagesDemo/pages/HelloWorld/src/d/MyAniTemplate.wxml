@@ -3,7 +3,7 @@
     
  <template name="ITNP00004">
     <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00001style)}}">
-                <image src="/pages/HelloWorld/src/d/alita.jpg" mode="{{DIUU00002mode}}" diuu="{{DIUU00002}}" style="{{tools.getFinalStyle(DIUU00002style)}}" />
+                <image src="/pages/HelloWorld/src/d/alita.jpg" mode="aspectFill" diuu="{{DIUU00002}}" style="{{tools.getFinalStyle(DIUU00002style)}}" />
                 <view style="{{tools.getFinalStyle(DIUU00003style)}}">Alita</view>
             </block>
   </template>

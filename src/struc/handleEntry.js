@@ -10,14 +10,15 @@ import fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
-import {geneCode} from "../util/uast";
+import { geneReactCode } from "../util/uast";
 
 import basetran from '../basetran'
+import {geneOrder} from '../util/util'
 
 const npath = require('path')
 
 
-export default async function (ast, filepath) {
+export default function (ast, filepath) {
     const appJSON = {
         pages: [
         ],
@@ -39,10 +40,10 @@ export default async function (ast, filepath) {
     const compImportMap = {}
     const pngMap = {}
 
-    await basetran(ast, filepath, true)
+    basetran(ast, filepath, true)
 
+    const go = geneOrder()
     traverse(ast, {
-
         enter: path => {
             if (path.type === 'StringLiteral'
                 && isStaticRes(path.node.value)
@@ -138,6 +139,7 @@ export default async function (ast, filepath) {
 
                 appJSON.pages.push(projectRelativePath)
 
+                path.node.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
                 return
             }
 
@@ -185,6 +187,19 @@ export default async function (ast, filepath) {
                 appJSON.tabBar.list = appJSON.tabBar.list || []
                 appJSON.tabBar.list.push(tabBarElement)
 
+                path.node.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
+
+                return
+            }
+
+            if (path.type === 'JSXOpeningElement') {
+                const jsxOp = path.node
+
+                const key = `DIUU${go.next}`
+
+                jsxOp.attributes.push(
+                    t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(key))
+                )
                 return
             }
 
@@ -208,14 +223,6 @@ export default async function (ast, filepath) {
                 }
 
                 path.remove()
-                return
-            }
-
-            if (path.type === 'ClassMethod'
-                && path.node.key.name === 'render'
-            ) {
-                path.remove()
-
                 return
             }
         }
@@ -301,20 +308,22 @@ export default async function (ast, filepath) {
                  */
 
                 // be lazy
-
                 path.node.body.push(
                     t.expressionStatement(
-                        t.identifier('const RNApp = new RNAppClass({})')
-                    )
-                )
-                path.node.body.push(
-                    t.expressionStatement(
-                        t.identifier('RNApp.childContext = RNApp.getChildContext ? RNApp.getChildContext() : {}')
-                    )
-                )
-                path.node.body.push(
-                    t.expressionStatement(
-                        t.identifier('export default RNApp')
+                        t.identifier(`React.render(
+    h(
+        RNAppClass,
+        {
+          diuu: React.rootUuid
+        }
+    ),
+    null,
+    {}
+)
+const rootContext = React.getRootContext()
+export default {
+    childContext: rootContext
+}`)
                     )
                 )
 
@@ -334,7 +343,7 @@ export default async function (ast, filepath) {
     })
 
     const appJSONPATH = npath.resolve(global.execArgs.OUT_DIR, 'app.json')
-    await fse.writeFile(
+    fse.writeFileSync(
         appJSONPATH,
         JSON.stringify(appJSON, null, '\t')
     )
@@ -344,7 +353,7 @@ export default async function (ast, filepath) {
 wx._beta = ${global.execArgs.beta ? 'true' : 'false'}
 App({})
     `
-    await fse.writeFile(
+    fse.writeFileSync(
         appJSPATH,
         appJSCode
     )
@@ -352,10 +361,10 @@ App({})
 
 
 
-    const entryCode = geneCode(ast)
+    const entryCode = geneReactCode(ast)
     const dirname = npath.dirname(filepath)
-    await fse.mkdirs(dirname)
-    await fse.writeFile(
+    fse.mkdirsSync(dirname)
+    fse.writeFileSync(
         filepath,
         entryCode
     )

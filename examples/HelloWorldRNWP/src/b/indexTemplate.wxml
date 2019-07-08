@@ -53,7 +53,7 @@
  
  <template name="ITNP00028">
     <view tempName="ITNP00028" style="{{tools.getFinalStyle(DIUU00026style)}}">
-                                    <image src="{{DIUU00027src}}" mode="{{DIUU00027mode}}" diuu="{{DIUU00027}}" style="{{tools.getFinalStyle(DIUU00027style)}}" />
+                                    <image src="{{DIUU00027src}}" mode="scaleToFill" diuu="{{DIUU00027}}" style="{{tools.getFinalStyle(DIUU00027style)}}" />
                                 </view>
   </template>
  
@@ -64,8 +64,8 @@
                     <view style="{{tools.getFinalStyle(DIUU00006style)}}">图片</view>
                 </view>
                 <view style="{{tools.getFinalStyle(DIUU00007style)}}">
-                    <image src="/src/b/local.png" mode="{{DIUU00008mode}}" diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" />
-                    <image src="{{DIUU00009src}}" mode="{{DIUU00009mode}}" diuu="{{DIUU00009}}" style="{{tools.getFinalStyle(DIUU00009style)}}" />
+                    <image src="/src/b/local.png" mode="aspectFit" diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" />
+                    <image src="{{DIUU00009src}}" mode="aspectFill" diuu="{{DIUU00009}}" style="{{tools.getFinalStyle(DIUU00009style)}}" />
                 </view>
 
 

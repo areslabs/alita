@@ -12,7 +12,7 @@ const prettier = require("prettier");
 const path = require('path')
 
 
-export default function (code, info) {
+export default function (info) {
     let {filepath, outComp, entryFilePath, isFuncComp, isStatelessComp, isPageComp} = info
     filepath = filepath.replace('.wx.js', '.js')
 

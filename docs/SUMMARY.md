@@ -19,9 +19,11 @@
   * [ScrollView](./组件差异-ScrollView.md)
   * [FlatList](./组件差异-FlatList.md)
   * [TouchableXXX](./组件差异-TouchableXXX.md)
+  * [TextInput](./组件差异-TextInput.md)
   * [等等]()
 
 * [支持Redux](./支持Redux.md) 
+* [支持mobx](./支持mobx.md)
 * [自定义组件库扩展](./自定义组件库扩展.md)
 * [Alita组件库](./Alita组件库.md)
 * [代码检查&Eslint](./代码检查&Eslint.md)
