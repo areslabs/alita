@@ -2,10 +2,11 @@ import fse from "fs-extra";
 import {InnerComponentNamePrefix} from '../constants';
 
 const path = require('path');
-
+const fs = require('fs');
 export default async function getFiles(targetPath, suffix) {
     const targetdir = path.dirname(targetPath);
     const noSuffix = targetPath.substring(0, targetPath.lastIndexOf(suffix));
+    
     const suffixs = ['.json', '.wxss', '.js', '.comp.js', '.wxml'];
     const allFiles = suffixs.map((item) => {
         return noSuffix + item;
@@ -19,8 +20,7 @@ export default async function getFiles(targetPath, suffix) {
 
         });
     });
-
-    return allFiles.map((file) => {
+    return allFiles.filter((file) => {
         return fse.existsSync(file);
     });
 }
