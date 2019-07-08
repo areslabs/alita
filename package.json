@@ -29,7 +29,8 @@
     "pub": "npm run compiler && npm publish",
     "pubNext": "npm run compiler && npm publish --tag next",
     "doc": "gitbook build ./docs ../docsTmp && git checkout gh-pages && cp -r ../docsTmp/* ./ && rm -fr ../docsTmp",
-    "doc:serve": "gitbook serve ./docs"
+    "doc:serve": "gitbook serve ./docs",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "authors": [
     "yankang (https://github.com/ykforerlang)",
