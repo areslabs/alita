@@ -49,7 +49,7 @@ export default (ignored) => {
             unlinkDir(dir)
         })
         .on('ready', () => {
-            eventEmitter.on(DONE_EVENT, () => {
+            eventEmitter.once(DONE_EVENT, () => {
                 if (watchMode) {
                     console.log(`转化完成！监听文件修改...`.info)
                 } else {
