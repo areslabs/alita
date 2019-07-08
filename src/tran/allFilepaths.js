@@ -23,7 +23,8 @@ export default function allFilepaths(info) {
                 filepath.replace('.js', '.comp.js'),
                 filepath.replace('.js', '.wxml'),
                 filepath.replace('.js', '.wxss'),
-                filepath.replace('.js', '.json')
+                filepath.replace('.js', '.json'),
+                filepath.replace('.js', 'Template.wxml')
             )
         } else {
             r.push(
