@@ -25,9 +25,13 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * 完备的React语法支持。runtime阶段处理JSX语法，对JSX支持更加完善，可以在组件内任何地方出现JSX片段，包括属性传递JSX片段，render方法之外的JSX片段等等， 
 * React生命周期
 * React Native组件/API
-* 动画
-* 支持Redux
+* [动画](https://areslabs.github.io/alita/%E5%8A%A8%E7%94%BB.html)
+* [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)
+* [支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
 * 支持第三方/自定义组件库扩展， 扩展方式[详见](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
+
+## Alita 原理相关
+Alita使用运行时React语法处理方案，区别现有社区使用的编译时方案，对React语法的支持更加完备，具体请看：[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
 
 ## Install
 通过npm安装即可
@@ -83,6 +87,8 @@ alita命令有以下参数：
 2. -i  React Native 源代码目录
 3. -o  转化生成的小程序源代码目录
 4. --config 指定配置文件
+5. --watch 监听模式
+6. --comp 转化RN组件，而不是整个项目
 
 ## Examples
 以下提供了一些样例代码以及他们转化出来的小程序代码。 当然你完全可以选择其他小程序源码输出目录，自行转化。
@@ -101,6 +107,8 @@ alita命令有以下参数：
 [Todo(redux实现)](https://github.com/areslabs/alita/tree/master/examples/Todo)，react-native 命令创建的项目，转化出来的小程序在[TodoWP](https://github.com/areslabs/alita/tree/master/examples/TodoWP)
 
 [ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)，react-native 命令创建的项目，转化出来的小程序在[ReactReposWP](https://github.com/areslabs/alita/tree/master/examples/ReactReposWP)
+
+[RoomMobx](https://github.com/areslabs/alita/tree/master/examples/RoomMobx) Mobx项目，转化出来的小程序在[RoomMobxWP](https://github.com/areslabs/alita/tree/master/examples/RoomMobxWP)
 
 [SubpackagesDemo](https://github.com/areslabs/alita/tree/master/examples/SubpackagesDemo)， 通过[小程序分包集成的方式](https://areslabs.github.io/alita/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%88%86%E5%8C%85%E9%9B%86%E6%88%90.html)，集成的小程序包
 
@@ -137,8 +145,12 @@ Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存�
 ## Alita组件库
 在项目开发中，仅仅使用 RN 基本组件和 API，是很难满足需要的。我们在内部使用 Alita 的过程中，积累了很多常用的三端组件，包括ScrollTabView，ViewPager，SegmentedControl等等，我们正在剥离和梳理这些组件，很快会发布兼容三端的 Alita 组件库。此组件库也是我们日后的工作重点之一，我们将会不断优化和扩展新组件。
 
-## Alita 原理相关
-在处理React的时候，Alita使用的是运行时方案，区别现有社区使用的编译时方案，[具体](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
+## 更新日志
+本项目遵从 [Angular Style Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)，更新日志由 `conventional-changelog` 自动生成。完整日志请点击 [CHANGELOG.md](./CHANGELOG.md)。
+
+## alitajs
+社区另有一个[alitajs/alita](https://github.com/alitajs/alita)，那是一个专注业务的Web全流程方案。我们重名了，带来的困扰很抱歉:sweat_smile::sweat_smile::sweat_smile: 。 所以如果你需要的是Web全流程方案，请[点击](https://github.com/alitajs/alita)
+
 
 ## 开发交流
 
