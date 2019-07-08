@@ -1,4 +1,4 @@
-import CompMySelf from "./MyModalComp.comp"
+import CompMySelf from "./MyForceUpdate.comp"
 import { WxNormalComp } from "@areslabs/wx-react"
 import RNApp from "../../src/index.js"
 

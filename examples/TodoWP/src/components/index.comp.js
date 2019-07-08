@@ -15,20 +15,6 @@ function _extends() {
     return _extends.apply(this, arguments)
 }
 
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        })
-    } else {
-        obj[key] = value
-    }
-    return obj
-}
-
 import React, { PureComponent, h } from "@areslabs/wx-react"
 import { WXFlatList, StyleSheet, Text, View } from "@areslabs/wx-react-native"
 import { toggleTodo } from "../actions/index"
@@ -40,23 +26,18 @@ import Footer from "./Footer.comp"
 class Index extends PureComponent {
     constructor(...args) {
         super(...args)
-
-        _defineProperty(
-            this,
-            "LHC",
-            h(
-                "view",
-                {
-                    style: styles.header,
-                    original: "OuterText",
-                    diuu: "DIUU00001",
-                    tempName: "ITNP00002"
-                },
-                "TodoList\u6837\u4F8B\u5217\u8868"
-            )
+        this.LHC = h(
+            "view",
+            {
+                style: styles.header,
+                original: "OuterText",
+                diuu: "DIUU00001",
+                tempName: "ITNP00002"
+            },
+            "TodoList\u6837\u4F8B\u5217\u8868"
         )
 
-        _defineProperty(this, "renderItem", ({ item }) => {
+        this.renderItem = ({ item }) => {
             const { onTodoClick } = this.props
             return h(
                 Todo,
@@ -68,13 +49,13 @@ class Index extends PureComponent {
                     tempName: "ITNP00004"
                 })
             )
-        })
+        }
 
-        _defineProperty(this, "keyExtractor", item => {
+        this.keyExtractor = item => {
             return item.id + ""
-        })
+        }
 
-        _defineProperty(this, "__stateless__", true)
+        this.__stateless__ = true
     }
 
     render() {

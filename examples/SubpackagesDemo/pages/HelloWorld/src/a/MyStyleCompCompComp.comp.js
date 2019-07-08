@@ -1,8 +1,12 @@
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text, WXButton, StyleSheet } from "@areslabs/wx-react-native"
 export default class MyStyleCompCompComp extends Component {
-    state = {
-        bw: 2
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            bw: 2
+        }
+        this.__stateless__ = false
     }
 
     render() {
@@ -45,8 +49,6 @@ export default class MyStyleCompCompComp extends Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 const styles = StyleSheet.create({
     item: {

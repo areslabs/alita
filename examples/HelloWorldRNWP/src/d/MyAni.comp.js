@@ -3,6 +3,11 @@ import { View, Image, Text } from "@areslabs/wx-react-native"
 import { AnimationEnable } from "@areslabs/wx-animated"
 
 class MyAni extends Component {
+    constructor(...args) {
+        super(...args)
+        this.__stateless__ = true
+    }
+
     render() {
         return h(
             "block",
@@ -23,7 +28,7 @@ class MyAni extends Component {
                     height: 60
                 },
                 src: "/src/d/alita.jpg",
-                mode: "cover",
+                mode: "aspectFill",
                 diuu: "DIUU00002"
             }),
             h(
@@ -36,8 +41,6 @@ class MyAni extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }
 
 export default AnimationEnable(MyAni)

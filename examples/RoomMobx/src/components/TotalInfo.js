@@ -13,7 +13,8 @@ import {inject, observer} from 'mobx-react'
 /*演示inject接收函数的时候*/
 @inject((allStores) => {
     return {
-        ...allStores.room
+        ...allStores.room,
+        total: allStores.room.total // 计算属性，展开有问题，需要手动写明
     }
 })
 @observer

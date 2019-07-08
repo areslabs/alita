@@ -1,17 +1,3 @@
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        })
-    } else {
-        obj[key] = value
-    }
-    return obj
-}
-
 import { fetch } from "@areslabs/wx-react-native/index"
 import React, { Component, h } from "@areslabs/wx-react"
 import { View, Image } from "@areslabs/wx-react-native"
@@ -21,12 +7,10 @@ import { token } from "../../util/index"
 class SecBody extends Component {
     constructor(...args) {
         super(...args)
-
-        _defineProperty(this, "state", {
+        this.state = {
             users: []
-        })
-
-        _defineProperty(this, "__stateless__", false)
+        }
+        this.__stateless__ = false
     }
 
     componentDidMount() {

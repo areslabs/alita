@@ -9,13 +9,19 @@ import { addTodo } from "../actions/index"
 import { connect } from "@areslabs/wx-react-redux"
 
 class AddTodo extends React.Component {
-    state = {
-        v: "What needs to be done?"
-    }
-    handleFocus = () => {
-        this.setState({
-            v: ""
-        })
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            v: "What needs to be done?"
+        }
+
+        this.handleFocus = () => {
+            this.setState({
+                v: ""
+            })
+        }
+
+        this.__stateless__ = false
     }
 
     render() {
@@ -69,8 +75,6 @@ class AddTodo extends React.Component {
             })
         )
     }
-
-    __stateless__ = false
 }
 
 const styles = StyleSheet.create({

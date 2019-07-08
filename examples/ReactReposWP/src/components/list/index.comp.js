@@ -1,17 +1,3 @@
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        })
-    } else {
-        obj[key] = value
-    }
-    return obj
-}
-
 import React, { Component, h } from "@areslabs/wx-react"
 import {
     StyleSheet,
@@ -30,19 +16,17 @@ const reposUrl = `https://api.github.com/search/repositories?q=react&sort=stars&
 export default class List extends Component {
     constructor(...args) {
         super(...args)
-
-        _defineProperty(this, "state", {
+        this.state = {
             repos: [],
             refreshing: false
-        })
+        }
+        this.page = 1
 
-        _defineProperty(this, "page", 1)
-
-        _defineProperty(this, "getReposUrl", (page = 1) => {
+        this.getReposUrl = (page = 1) => {
             return `${reposUrl}&page=${page}`
-        })
+        }
 
-        _defineProperty(this, "renderItem", ({ item }) => {
+        this.renderItem = ({ item }) => {
             return h(
                 "view",
                 {
@@ -161,11 +145,11 @@ export default class List extends Component {
                     )
                 )
             )
-        })
+        }
 
-        _defineProperty(this, "keyExtractor", (item, index) => item.id + "")
+        this.keyExtractor = (item, index) => item.id + ""
 
-        _defineProperty(this, "onEndReached", () => {
+        this.onEndReached = () => {
             console.log("onEndReached:")
             this.page++
             fetchRepos(this.page, 20).then(res => {
@@ -173,9 +157,9 @@ export default class List extends Component {
                     repos: this.state.repos.concat(res.items)
                 })
             })
-        })
+        }
 
-        _defineProperty(this, "lfc", () => {
+        this.lfc = () => {
             if (this.state.repos.length === 0) {
                 return null
             }
@@ -201,9 +185,9 @@ export default class List extends Component {
                     "\u52A0\u8F7D\u4E2D..."
                 )
             )
-        })
+        }
 
-        _defineProperty(this, "onRefresh", () => {
+        this.onRefresh = () => {
             this.setState({
                 refreshing: true
             })
@@ -212,9 +196,9 @@ export default class List extends Component {
                     refreshing: false
                 })
             }, 4000)
-        })
+        }
 
-        _defineProperty(this, "__stateless__", false)
+        this.__stateless__ = false
     }
 
     componentDidMount() {
@@ -266,15 +250,12 @@ export default class List extends Component {
         )
     }
 }
-
-_defineProperty(List, "navigationOptions", {
+List.navigationOptions = {
     title: "ReactRepos"
-})
-
-_defineProperty(List, "wxNavigationOptions", {
+}
+List.wxNavigationOptions = {
     navigationBarTitleText: "ReactRepos"
-})
-
+}
 const styles = StyleSheet.create({
     fr: {
         flexDirection: "row"

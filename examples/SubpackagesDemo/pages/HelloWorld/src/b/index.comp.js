@@ -14,83 +14,90 @@ import {
 import styles from "../a/styles"
 import base64Img from "./img"
 export default class B extends Component {
-    componentDidMount() {
-        console.log("B componentDidMount:")
-    }
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            sv: true,
+            users: [
+                {
+                    name: parseInt(Math.random() * 10000000)
+                },
+                {
+                    name: parseInt(Math.random() * 10000000)
+                },
+                {
+                    name: parseInt(Math.random() * 10000000)
+                },
+                {
+                    name: parseInt(Math.random() * 10000000)
+                }
+            ],
+            scrollList: [
+                {
+                    id: 1,
+                    img: "/pages/HelloWorld/src/b/imgs/001.jpg"
+                },
+                {
+                    id: 2,
+                    img: "/pages/HelloWorld/src/b/imgs/002.jpg"
+                },
+                {
+                    id: 3,
+                    img: "/pages/HelloWorld/src/b/imgs/003.jpg"
+                },
+                {
+                    id: 4,
+                    img: "/pages/HelloWorld/src/b/imgs/004.jpg"
+                },
+                {
+                    id: 5,
+                    img: "/pages/HelloWorld/src/b/imgs/005.jpg"
+                },
+                {
+                    id: 6,
+                    img: "/pages/HelloWorld/src/b/imgs/006.jpg"
+                }
+            ],
+            refreshing: false,
+            value: "1"
+        }
 
-    state = {
-        sv: true,
-        users: [
-            {
-                name: parseInt(Math.random() * 10000000)
-            },
-            {
-                name: parseInt(Math.random() * 10000000)
-            },
-            {
-                name: parseInt(Math.random() * 10000000)
-            },
-            {
-                name: parseInt(Math.random() * 10000000)
-            }
-        ],
-        scrollList: [
-            {
-                id: 1,
-                img: "/pages/HelloWorld/src/b/imgs/001.jpg"
-            },
-            {
-                id: 2,
-                img: "/pages/HelloWorld/src/b/imgs/002.jpg"
-            },
-            {
-                id: 3,
-                img: "/pages/HelloWorld/src/b/imgs/003.jpg"
-            },
-            {
-                id: 4,
-                img: "/pages/HelloWorld/src/b/imgs/004.jpg"
-            },
-            {
-                id: 5,
-                img: "/pages/HelloWorld/src/b/imgs/005.jpg"
-            },
-            {
-                id: 6,
-                img: "/pages/HelloWorld/src/b/imgs/006.jpg"
-            }
-        ],
-        refreshing: false,
-        value: "1"
-    }
-    renderItem = ({ item }) => {
-        return h(
-            "view",
-            {
-                style: styles.item,
-                original: "View",
-                diuu: "DIUU00001",
-                tempName: "ITNP00003"
-            },
-            h(
+        this.renderItem = ({ item }) => {
+            return h(
                 "view",
                 {
-                    style: styles.itemText,
-                    original: "OuterText",
-                    diuu: "DIUU00002"
+                    style: styles.item,
+                    original: "View",
+                    diuu: "DIUU00001",
+                    tempName: "ITNP00003"
                 },
-                h("template", {
-                    datakey: "CTDK00002",
-                    tempVnode: item.name,
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
-                })
+                h(
+                    "view",
+                    {
+                        style: styles.itemText,
+                        original: "OuterText",
+                        diuu: "DIUU00002"
+                    },
+                    h("template", {
+                        datakey: "CTDK00002",
+                        tempVnode: item.name,
+                        "wx:if": "{{CTDK00002}}",
+                        is: "CTNP00001",
+                        data: "{{...CTDK00002}}"
+                    })
+                )
             )
-        )
+        }
+
+        this.keyExtractor = item => {
+            return item.name + ""
+        }
+
+        this.__stateless__ = false
     }
-    keyExtractor = item => {
-        return item.name + ""
+
+    componentDidMount() {
+        console.log("B componentDidMount:")
     }
 
     _onEndReached() {
@@ -159,7 +166,7 @@ export default class B extends Component {
                 },
                 h("image", {
                     src: "/pages/HelloWorld/src/b/local.png",
-                    mode: "contain",
+                    mode: "aspectFit",
                     style: {
                         width: 200,
                         height: 200
@@ -174,7 +181,7 @@ export default class B extends Component {
                     src: {
                         uri: base64Img
                     },
-                    mode: "cover",
+                    mode: "aspectFill",
                     diuu: "DIUU00009"
                 })
             ),
@@ -339,7 +346,7 @@ export default class B extends Component {
                                     width: Dimensions.get("window").width / 2,
                                     height: 160
                                 },
-                                mode: "stretch",
+                                mode: "scaleToFill",
                                 diuu: "DIUU00027"
                             })
                         )
@@ -449,6 +456,4 @@ export default class B extends Component {
             )
         )
     }
-
-    __stateless__ = false
 }

@@ -24,31 +24,38 @@ import Todo from "./Todo.comp"
 import Footer from "./Footer.comp"
 
 class Index extends PureComponent {
-    LHC = h(
-        "view",
-        {
-            style: styles.header,
-            original: "OuterText",
-            diuu: "DIUU00001",
-            tempName: "ITNP00002"
-        },
-        "TodoList\u6837\u4F8B\u5217\u8868"
-    )
-    renderItem = ({ item }) => {
-        const { onTodoClick } = this.props
-        return h(
-            Todo,
-            _extends({}, item, {
-                onClick: () => {
-                    onTodoClick(item.id)
-                },
-                diuu: "DIUU00003",
-                tempName: "ITNP00004"
-            })
+    constructor(...args) {
+        super(...args)
+        this.LHC = h(
+            "view",
+            {
+                style: styles.header,
+                original: "OuterText",
+                diuu: "DIUU00001",
+                tempName: "ITNP00002"
+            },
+            "TodoList\u6837\u4F8B\u5217\u8868"
         )
-    }
-    keyExtractor = item => {
-        return item.id + ""
+
+        this.renderItem = ({ item }) => {
+            const { onTodoClick } = this.props
+            return h(
+                Todo,
+                _extends({}, item, {
+                    onClick: () => {
+                        onTodoClick(item.id)
+                    },
+                    diuu: "DIUU00003",
+                    tempName: "ITNP00004"
+                })
+            )
+        }
+
+        this.keyExtractor = item => {
+            return item.id + ""
+        }
+
+        this.__stateless__ = true
     }
 
     render() {
@@ -84,8 +91,6 @@ class Index extends PureComponent {
             })
         )
     }
-
-    __stateless__ = true
 }
 
 const styles = StyleSheet.create({

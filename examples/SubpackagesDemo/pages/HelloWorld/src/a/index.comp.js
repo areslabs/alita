@@ -34,6 +34,7 @@ import MyStyleComp from "./MyStyleComp.comp"
 import PlatformComp from "./PlatformComp.comp"
 import MyHoc from "./MyHoc.comp"
 import styles from "./styles"
+import MyForceUpdate from "./MyForceUpdate.comp"
 import Hi from "@areslabs/hi-wx"
 import Hello from "@areslabs/hello-wx/index.comp"
 import { history } from "@areslabs/wx-router"
@@ -53,6 +54,7 @@ const item3 = h(
     h(
         "view",
         {
+            numberOfLines: "2",
             style: styles.itemText,
             original: "OuterText",
             diuu: "DIUU00002"
@@ -61,17 +63,41 @@ const item3 = h(
     )
 )
 export default class A extends Component {
-    static wxNavigationOptions = {
-        navigationBarTitleText: "WX A"
-    }
-    static navigationOptions = {
-        title: "RN A"
-    }
-    static childContextTypes = {
-        color: PropTypes.string
-    }
-    static defaultProps = {
-        name: "yk"
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            toggleClicked1: false,
+            arr: ["arr1", "arr2", "arr3"],
+            user: {
+                name: "kk",
+                age: 18
+            },
+            hasZ: false
+        }
+
+        this.handleIncre = () => {
+            this.mrc.increCount()
+        }
+
+        this.item2 = h(
+            "view",
+            {
+                style: styles.item,
+                original: "View",
+                diuu: "DIUU00007",
+                tempName: "ITNP00009"
+            },
+            h(
+                "view",
+                {
+                    style: styles.itemText,
+                    original: "OuterText",
+                    diuu: "DIUU00008"
+                },
+                "item2"
+            )
+        )
+        this.__stateless__ = false
     }
 
     getChildContext() {
@@ -107,16 +133,6 @@ export default class A extends Component {
         console.log("A componentDidUpdate:")
     }
 
-    state = {
-        toggleClicked1: false,
-        arr: ["arr1", "arr2", "arr3"],
-        user: {
-            name: "kk",
-            age: 18
-        },
-        hasZ: false
-    }
-
     getText1() {
         return null
     }
@@ -148,28 +164,6 @@ export default class A extends Component {
         )
     }
 
-    handleIncre = () => {
-        this.mrc.increCount()
-    }
-    item2 = h(
-        "view",
-        {
-            style: styles.item,
-            original: "View",
-            diuu: "DIUU00007",
-            tempName: "ITNP00009"
-        },
-        h(
-            "view",
-            {
-                style: styles.itemText,
-                original: "OuterText",
-                diuu: "DIUU00008"
-            },
-            "item2"
-        )
-    )
-
     render() {
         const { toggleClicked1, arr, user, count } = this.state
         const item1 = h(
@@ -200,7 +194,7 @@ export default class A extends Component {
                     backgroundColor: "#fff"
                 },
                 diuu: "DIUU00013",
-                tempName: "ITNP00053"
+                tempName: "ITNP00054"
             },
             h(
                 "view",
@@ -510,11 +504,14 @@ export default class A extends Component {
             h(MyStyleComp, {
                 diuu: "DIUU00050"
             }),
+            h(MyForceUpdate, {
+                diuu: "DIUU00051"
+            }),
             h(Hi, {
                 name: "Yvette",
                 style: styles.item,
                 textStyle: styles.itemText,
-                diuu: "DIUU00051"
+                diuu: "DIUU00052"
             }),
             h(Hello, {
                 name: "y5g",
@@ -525,10 +522,20 @@ export default class A extends Component {
                     }
                 ],
                 textStyle: styles.itemText,
-                diuu: "DIUU00052"
+                diuu: "DIUU00053"
             })
         )
     }
-
-    __stateless__ = false
+}
+A.wxNavigationOptions = {
+    navigationBarTitleText: "WX A"
+}
+A.navigationOptions = {
+    title: "RN A"
+}
+A.childContextTypes = {
+    color: PropTypes.string
+}
+A.defaultProps = {
+    name: "yk"
 }

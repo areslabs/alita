@@ -8,15 +8,147 @@ import {
 const { width } = Dimensions.get("window")
 import MyAni from "./MyAni.comp"
 export default class C extends Component {
-    state = {
-        ani1: null,
-        ani2: null,
-        ani3: null,
-        ani4: null,
-        ani5: null,
-        ani6: null,
-        ani7: null,
-        ani8: null
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            ani1: null,
+            ani2: null,
+            ani3: null,
+            ani4: null,
+            ani5: null,
+            ani6: null,
+            ani7: null,
+            ani8: null
+        }
+
+        this.handleAni1 = () => {
+            if (this.unfocus) return
+            const ani = createAnimation({
+                duration: 1000,
+                timingFunction: "ease"
+            })
+            ani.opacity(0.5)
+                .step()
+                .opacity(1)
+                .step()
+            this.setState({
+                ani1: ani.export(() => {
+                    this.handleAni1()
+                })
+            })
+        }
+
+        this.handleAni2 = () => {
+            if (this.unfocus) return
+            const ani = createAnimation({
+                duration: 1500,
+                timingFunction: "linear"
+            })
+            ani.translateX(width - 100)
+                .rotateZ(180)
+                .scale(0.5, 0.5)
+                .step()
+                .translateX(0)
+                .rotateZ(0)
+                .scale(1, 1)
+                .step()
+            console.log("handleAni2")
+            this.setState({
+                ani2: ani.export(() => {
+                    this.handleAni2()
+                })
+            })
+        }
+
+        this.count = 0
+
+        this.handleLoading1 = () => {
+            if (this.unfocus) return
+            const ani = createAnimation({
+                duration: 800,
+                timingFunction: "linear"
+            })
+            ani.rotateZ(360 * this.count++).step()
+            this.setState({
+                ani3: ani.export(() => {
+                    this.handleLoading1()
+                })
+            })
+        }
+
+        this.handleLoading2 = () => {
+            if (this.unfocus) return
+            const ani = createAnimation({
+                duration: 150,
+                timingFunction: "linear"
+            })
+            ani.scale(1.5, 1.5)
+                .step({
+                    delay: 0
+                })
+                .scale(1, 1)
+                .step()
+            const ani4 = ani.export()
+            ani.scale(1.5, 1.5)
+                .step({
+                    delay: 400
+                })
+                .scale(1, 1)
+                .step()
+            const ani5 = ani.export()
+            ani.scale(1.5, 1.5)
+                .step({
+                    delay: 800
+                })
+                .scale(1, 1)
+                .step()
+            const ani6 = ani.export(() => {
+                this.handleLoading2()
+            })
+            this.setState({
+                ani4,
+                ani5,
+                ani6
+            })
+        }
+
+        this.handleAni7 = () => {
+            if (this.unfocus) return
+            const ani = createAnimation({
+                duration: 800,
+                timingFunction: "ease"
+            })
+            ani.scale(0, 0)
+                .step()
+                .scale(1, 1)
+                .step()
+            this.setState({
+                ani7: ani.export(() => {
+                    this.handleAni7()
+                })
+            })
+        }
+
+        this.handleAni8 = () => {
+            if (this.unfocus) return
+            const ani = createAnimation({
+                duration: 800,
+                timingFunction: "ease"
+            })
+            ani.backgroundColor("#EEDC82").step()
+            this.setState({
+                ani8: ani.export(() => {
+                    ani.backgroundColor("#fff").step()
+                    this.setState({
+                        ani8: ani.export(() => {
+                            this.handleAni8()
+                        })
+                    })
+                })
+            })
+        }
+
+        this.__stateless__ = false
     }
 
     componentDidFocus() {
@@ -32,127 +164,6 @@ export default class C extends Component {
 
     componentWillUnfocus() {
         this.unfocus = true
-    }
-
-    handleAni1 = () => {
-        if (this.unfocus) return
-        const ani = createAnimation({
-            duration: 1000,
-            timingFunction: "ease"
-        })
-        ani.opacity(0.5)
-            .step()
-            .opacity(1)
-            .step()
-        this.setState({
-            ani1: ani.export(() => {
-                this.handleAni1()
-            })
-        })
-    }
-    handleAni2 = () => {
-        if (this.unfocus) return
-        const ani = createAnimation({
-            duration: 1500,
-            timingFunction: "linear"
-        })
-        ani.translateX(width - 100)
-            .rotateZ(180)
-            .scale(0.5, 0.5)
-            .step()
-            .translateX(0)
-            .rotateZ(0)
-            .scale(1, 1)
-            .step()
-        console.log("handleAni2")
-        this.setState({
-            ani2: ani.export(() => {
-                this.handleAni2()
-            })
-        })
-    }
-    count = 0
-    handleLoading1 = () => {
-        if (this.unfocus) return
-        const ani = createAnimation({
-            duration: 800,
-            timingFunction: "linear"
-        })
-        ani.rotateZ(360 * this.count++).step()
-        this.setState({
-            ani3: ani.export(() => {
-                this.handleLoading1()
-            })
-        })
-    }
-    handleLoading2 = () => {
-        if (this.unfocus) return
-        const ani = createAnimation({
-            duration: 150,
-            timingFunction: "linear"
-        })
-        ani.scale(1.5, 1.5)
-            .step({
-                delay: 0
-            })
-            .scale(1, 1)
-            .step()
-        const ani4 = ani.export()
-        ani.scale(1.5, 1.5)
-            .step({
-                delay: 400
-            })
-            .scale(1, 1)
-            .step()
-        const ani5 = ani.export()
-        ani.scale(1.5, 1.5)
-            .step({
-                delay: 800
-            })
-            .scale(1, 1)
-            .step()
-        const ani6 = ani.export(() => {
-            this.handleLoading2()
-        })
-        this.setState({
-            ani4,
-            ani5,
-            ani6
-        })
-    }
-    handleAni7 = () => {
-        if (this.unfocus) return
-        const ani = createAnimation({
-            duration: 800,
-            timingFunction: "ease"
-        })
-        ani.scale(0, 0)
-            .step()
-            .scale(1, 1)
-            .step()
-        this.setState({
-            ani7: ani.export(() => {
-                this.handleAni7()
-            })
-        })
-    }
-    handleAni8 = () => {
-        if (this.unfocus) return
-        const ani = createAnimation({
-            duration: 800,
-            timingFunction: "ease"
-        })
-        ani.backgroundColor("#EEDC82").step()
-        this.setState({
-            ani8: ani.export(() => {
-                ani.backgroundColor("#fff").step()
-                this.setState({
-                    ani8: ani.export(() => {
-                        this.handleAni8()
-                    })
-                })
-            })
-        })
     }
 
     render() {
@@ -316,8 +327,6 @@ export default class C extends Component {
             )
         )
     }
-
-    __stateless__ = false
 }
 const styles = StyleSheet.create({
     section: {

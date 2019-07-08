@@ -1,17 +1,3 @@
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        })
-    } else {
-        obj[key] = value
-    }
-    return obj
-}
-
 import React, { PureComponent, h } from "@areslabs/wx-react"
 import {
     View,
@@ -22,8 +8,7 @@ import {
 export default class Todo extends PureComponent {
     constructor(...args) {
         super(...args)
-
-        _defineProperty(this, "__stateless__", true)
+        this.__stateless__ = true
     }
 
     render() {
