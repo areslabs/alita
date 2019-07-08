@@ -14,7 +14,9 @@ import {observer} from 'mobx-react'
 class Room extends Component {
 
     render() {
+
         const {style, data, autoFocus} = this.props
+        console.log(data.label, ' update!')
         return (
             <View style={style}>
                 <Text>{data.label}：</Text>

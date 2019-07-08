@@ -54,7 +54,7 @@ function _initializerWarningHelper(descriptor, context) {
     )
 }
 
-import { observable, computed, action } from "@areslabs/wx-mobx"
+import { observable, computed } from "@areslabs/wx-mobx"
 let Room = ((_class = ((_temp = class Room {
     constructor() {
         _initializerDefineProperty(this, "bedRoom1", _descriptor, this)
@@ -76,6 +76,11 @@ let Room = ((_class = ((_temp = class Room {
     }
 
     reset() {
+        this.bedRoom1.price = 0
+        this.bedRoom1.price = 1
+        this.bedRoom1.price = 2
+        this.bedRoom1.price = 3
+        this.bedRoom1.price = 4
         this.bedRoom1.price = 0
         this.bedRoom2.price = 0
         this.kitchen.price = 0
@@ -152,13 +157,6 @@ _applyDecoratedDescriptor(
     "total",
     [computed],
     Object.getOwnPropertyDescriptor(_class.prototype, "total"),
-    _class.prototype
-),
-_applyDecoratedDescriptor(
-    _class.prototype,
-    "reset",
-    [action],
-    Object.getOwnPropertyDescriptor(_class.prototype, "reset"),
     _class.prototype
 )),
 _class)

@@ -38,9 +38,15 @@ export default class Room {
         return this.bedRoom1.price + this.bedRoom2.price + this.kitchen.price + this.bookroom.price
     }
 
-    @action
     reset() {
         this.bedRoom1.price = 0
+        this.bedRoom1.price = 1
+        this.bedRoom1.price = 2
+        this.bedRoom1.price = 3
+        this.bedRoom1.price = 4
+        this.bedRoom1.price = 0
+        // 测试bedRoom1 应该只更新一次
+
         this.bedRoom2.price = 0
         this.kitchen.price  = 0
         this.bookroom.price = 0

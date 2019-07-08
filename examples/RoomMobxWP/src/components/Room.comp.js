@@ -14,6 +14,7 @@ let Room =
 
             render() {
                 const { style, data, autoFocus } = this.props
+                console.log(data.label, " update!")
                 return h(
                     "block",
                     {
