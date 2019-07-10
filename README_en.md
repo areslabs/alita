@@ -14,3 +14,15 @@ It has a built-in runtime environment called **mini-program** ,  you can find so
 Since most of the users are Chinese, we do not provide detailed English documents.
 
 
+<table>
+   <tr>
+   	    <td>React Native</td>
+   	    <td>mini-program</td>
+   </tr>
+	<tr>
+		<td><img src="./docs/static/rnalita.gif"/></td>
+		<td><img src="./docs/static/wxalita.gif"/></td>
+	</tr>
+</table>
+
+
