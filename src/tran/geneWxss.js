@@ -10,7 +10,8 @@ import fse from "fs-extra";
 import {getRootPathPrefix} from '../util/util'
 
 export default function geneWxss(info) {
-    const {filepath, isPageComp, outComp} = info
+    let {filepath, isPageComp, outComp} = info
+    filepath = filepath.replace(".wx.js", ".js");
 
     for (let i = 0; i < outComp.length; i++) {
         const name = outComp[i];

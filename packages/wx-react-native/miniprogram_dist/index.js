@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+import {unstable_batchedUpdates} from '@areslabs/wx-react'
+
 import WXFlatList from './component/WXFlatList/index.comp'
 import WXSectionList from './component/WXSectionList/index.comp'
 import WXScrollView from './component/WXScrollView/index.comp'
@@ -57,6 +58,31 @@ const TimePickerAndroid = getNotSupport('TimePickerAndroid')
 const ToastAndroid = getNotSupport('ToastAndroid')
 const ToolbarAndroid = getNotSupport('ToolbarAndroid')
 
+const AppState = {
+    removeEventListener: () => {
+        console.warn('not support AppState now!')
+    },
+    addEventListener: () => {
+        console.warn('not support AppState now!')
+    }
+}
+const NativeAppEventEmitter = {
+    addListener: () => {
+        console.warn('not support NativeAppEventEmitter now! use @areslabs/wx-eventemitter instead')
+        return () => {
+            console.warn('not support NativeAppEventEmitter now! use @areslabs/wx-eventemitter instead')
+        }
+    },
+}
+const DeviceEventEmitter = {
+    addListener: () => {
+        console.warn('use @areslabs/wx-eventemitter instead')
+        return () => {
+            console.warn('use @areslabs/wx-eventemitter instead')
+        }
+    },
+}
+
 export {
     WXButton,
     WXView,
@@ -101,7 +127,11 @@ export {
     fetch,
     alert,
     requestAnimationFrame,
-    cancelAnimationFrame
+    cancelAnimationFrame,
+    unstable_batchedUpdates,
+    AppState,
+    NativeAppEventEmitter,
+    DeviceEventEmitter
 }
 
 export default  {
@@ -149,5 +179,9 @@ export default  {
     fetch,
     alert,
     requestAnimationFrame,
-    cancelAnimationFrame
+    cancelAnimationFrame,
+    unstable_batchedUpdates,
+    AppState,
+    NativeAppEventEmitter,
+    DeviceEventEmitter
 }

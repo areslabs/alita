@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-router",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "router for mini-program",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

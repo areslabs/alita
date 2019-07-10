@@ -8,6 +8,6 @@
  
 import basetran from '../basetran'
 
-export default async function (ast, filepath) {
-    await basetran(ast, filepath, false)
+export default function (ast, filepath) {
+    basetran(ast, filepath, false)
 }

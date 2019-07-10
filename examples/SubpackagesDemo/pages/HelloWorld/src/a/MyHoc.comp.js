@@ -6,6 +6,11 @@ import styles from "./styles"
 let i = 6
 
 class MyHoc extends Component {
+    constructor(...args) {
+        super(...args)
+        this.__stateless__ = true
+    }
+
     componentDidMount() {
         console.log("MyHoc componentDidMount")
     }
@@ -75,8 +80,6 @@ class MyHoc extends Component {
             )
         )
     }
-
-    __stateless__ = true
 }
 
 export default Hoc1(Hoc2(MyHoc))

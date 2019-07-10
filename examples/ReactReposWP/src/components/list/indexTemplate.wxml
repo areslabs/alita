@@ -84,14 +84,14 @@
  <template name="ITNP00011">
     <view catchtap="eventHandler" tempName="ITNP00011" data-diuu="{{DIUU00001}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00001hoverClass}}" style="{{tools.getFinalStyle(DIUU00001style)}}">
 
-            <image src="{{DIUU00002src}}" mode="{{DIUU00002mode}}" diuu="{{DIUU00002}}" style="{{tools.getFinalStyle(DIUU00002style)}}" />
+            <image src="{{DIUU00002src}}" mode="aspectFill" diuu="{{DIUU00002}}" style="{{tools.getFinalStyle(DIUU00002style)}}" />
 
             <view style="{{tools.getFinalStyle(DIUU00003style)}}">
                 <view style="{{tools.getFinalStyle(DIUU00004style)}}">
                     <view style="{{tools.getFinalStyle(DIUU00005style)}}"><template datakey="CTDK00003" wx:if="{{CTDK00003}}" is="CTNP00002" data="{{...CTDK00003}}"></template></view>
 
                     <view style="{{tools.getFinalStyle(DIUU00006style)}}">
-                        <image src="/src/assets/stars.jpg" mode="{{DIUU00007mode}}" diuu="{{DIUU00007}}" style="{{tools.getFinalStyle(DIUU00007style)}}" />
+                        <image src="/src/assets/stars.jpg" mode="aspectFill" diuu="{{DIUU00007}}" style="{{tools.getFinalStyle(DIUU00007style)}}" />
                         <view style="{{tools.getFinalStyle(DIUU00008style)}}"><template datakey="CTDK00006" wx:if="{{CTDK00006}}" is="CTNP00005" data="{{...CTDK00006}}"></template></view>
                     </view>
                 </view>

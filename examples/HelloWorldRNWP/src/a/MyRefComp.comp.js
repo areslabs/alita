@@ -2,13 +2,19 @@ import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyRefComp extends Component {
-    state = {
-        count: 0
-    }
-    increCount = () => {
-        this.setState({
-            count: this.state.count + 1
-        })
+    constructor(...args) {
+        super(...args)
+        this.state = {
+            count: 0
+        }
+
+        this.increCount = () => {
+            this.setState({
+                count: this.state.count + 1
+            })
+        }
+
+        this.__stateless__ = false
     }
 
     render() {
@@ -37,6 +43,4 @@ export default class MyRefComp extends Component {
             )
         )
     }
-
-    __stateless__ = false
 }

@@ -5,12 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-/*
-* 小程序版本的Route， Router， TabRouter 在转化的过程中消失，不需要导出
-* */
+
 import history from './history'
+import NullComponent from './NullComponent'
 
 export {
     history
 }
+
+export const Router = NullComponent
+export const Route = NullComponent
+export const TabRouter = NullComponent

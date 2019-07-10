@@ -25,17 +25,6 @@ const store = createStore(todoApp, applyMiddleware(thunk, promiseMiddleware))
 
 export default class RNApp extends PureComponent {
 
-    static childContextTypes = {
-        store: PropTypes.object
-    }
-
-    getChildContext() {
-        return {
-            store: Platform.OS === 'wx' ? store : {}
-        }
-    }
-
-
     render() {
         return (
             <Provider store={store}>

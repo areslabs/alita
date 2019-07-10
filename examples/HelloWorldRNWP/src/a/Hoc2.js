@@ -10,11 +10,17 @@ export default function(WrappedComponent) {
         }
 
         render() {
-            return React.createElement(WrappedComponent, {
-                ...this.props,
-                age: "28",
-                ...this.hocProps
-            })
+            return React.createElement(
+                WrappedComponent,
+                Object.assign(
+                    {},
+                    this.props,
+                    {
+                        age: "28"
+                    },
+                    this.hocProps
+                )
+            )
         }
     }
 }

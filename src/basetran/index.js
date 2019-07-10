@@ -10,9 +10,9 @@ import handleModules from './handleModules'
 import handleGlobalApi from './handleGlobalApi'
 import handleMisc from './handleMisc'
 import geneJS from './geneJS'
-import {geneCode} from "../util/uast";
+import {geneReactCode} from "../util/uast";
 
-export default async function (ast, filepath, justTran, isFuncComp) {
+export default function (ast, filepath, justTran, isFuncComp) {
     const info = {
         filepath,
         isFuncComp
@@ -25,6 +25,6 @@ export default async function (ast, filepath, justTran, isFuncComp) {
     if (justTran) {
         return
     } else {
-        await geneJS(geneCode(ast), info)
+        geneJS(geneReactCode(ast), info)
     }
 }

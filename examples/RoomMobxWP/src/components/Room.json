@@ -1,0 +1,8 @@
+{
+	"component": true,
+	"usingComponents": {
+		"WXTextInput": "@areslabs/wx-react-native/component/WXTextInput/index"
+	},
+	"componentGenerics": {},
+	"disableScroll": true
+}

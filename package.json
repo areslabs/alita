@@ -17,7 +17,7 @@
     "weixin",
     "redux"
   ],
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "首个ReactNative转微信小程序引擎",
   "main": "./lib/index.js",
   "scripts": {
@@ -29,7 +29,8 @@
     "pub": "npm run compiler && npm publish",
     "pubNext": "npm run compiler && npm publish --tag next",
     "doc": "gitbook build ./docs ../docsTmp && git checkout gh-pages && cp -r ../docsTmp/* ./ && rm -fr ../docsTmp",
-    "doc:serve": "gitbook serve ./docs"
+    "doc:serve": "gitbook serve ./docs",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "authors": [
     "yankang (https://github.com/ykforerlang)",
@@ -40,11 +41,13 @@
     "@babel/core": "^7.1.2",
     "@babel/helper-builder-react-jsx": "^7.0.0",
     "@babel/helper-plugin-utils": "^7.0.0",
-    "@babel/plugin-syntax-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/plugin-syntax-jsx": "^7.0.0",
-    "@babel/plugin-syntax-object-rest-spread": "^7.0.0",
-    "@babel/plugin-syntax-optional-chaining": "^7.0.0",
     "@babel/plugin-transform-react-jsx": "^7.1.6",
+    "@babel/plugin-transform-runtime": "^7.5.0",
     "@babel/traverse": "^7.1.6",
     "@babel/types": "^7.1.6",
     "babel-eslint": "^8.2.6",
