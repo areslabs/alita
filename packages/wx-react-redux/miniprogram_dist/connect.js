@@ -25,6 +25,9 @@ export default function connect(mapStateToProps, mapDispatchToProps) {
                 this.store = props.store || context.store
 
                 this.unsubscribe = this.store.subscribe(() => {
+                    // 有可能组件已经被销毁
+                    if (!this.unsubscribe) return
+
                     this.setState({})
                 })
 
