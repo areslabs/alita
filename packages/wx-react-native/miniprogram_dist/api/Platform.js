@@ -7,5 +7,8 @@
  */
  
 export default {
-    OS: 'wx'
+    OS: 'wx',
+    select: (obj) => {
+        return obj.wx
+    }
 }

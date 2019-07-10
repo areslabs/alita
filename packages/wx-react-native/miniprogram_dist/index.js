@@ -58,6 +58,23 @@ const TimePickerAndroid = getNotSupport('TimePickerAndroid')
 const ToastAndroid = getNotSupport('ToastAndroid')
 const ToolbarAndroid = getNotSupport('ToolbarAndroid')
 
+const AppState = {
+    removeEventListener: () => {
+        console.warn('not support AppState now!')
+    },
+    addEventListener: () => {
+        console.warn('not support AppState now!')
+    }
+}
+const NativeAppEventEmitter = {
+    addListener: () => {
+        console.warn('not support NativeAppEventEmitter now! use @areslabs/wx-eventemitter instead')
+        return () => {
+            console.warn('not support NativeAppEventEmitter now! use @areslabs/wx-eventemitter instead')
+        }
+    },
+}
+
 export {
     WXButton,
     WXView,
@@ -103,7 +120,9 @@ export {
     alert,
     requestAnimationFrame,
     cancelAnimationFrame,
-    unstable_batchedUpdates
+    unstable_batchedUpdates,
+    AppState,
+    NativeAppEventEmitter
 }
 
 export default  {
@@ -152,5 +171,7 @@ export default  {
     alert,
     requestAnimationFrame,
     cancelAnimationFrame,
-    unstable_batchedUpdates
+    unstable_batchedUpdates,
+    AppState,
+    NativeAppEventEmitter
 }
