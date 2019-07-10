@@ -74,6 +74,14 @@ const NativeAppEventEmitter = {
         }
     },
 }
+const DeviceEventEmitter = {
+    addListener: () => {
+        console.warn('use @areslabs/wx-eventemitter instead')
+        return () => {
+            console.warn('use @areslabs/wx-eventemitter instead')
+        }
+    },
+}
 
 export {
     WXButton,
@@ -122,7 +130,8 @@ export {
     cancelAnimationFrame,
     unstable_batchedUpdates,
     AppState,
-    NativeAppEventEmitter
+    NativeAppEventEmitter,
+    DeviceEventEmitter
 }
 
 export default  {
@@ -173,5 +182,6 @@ export default  {
     cancelAnimationFrame,
     unstable_batchedUpdates,
     AppState,
-    NativeAppEventEmitter
+    NativeAppEventEmitter,
+    DeviceEventEmitter
 }
