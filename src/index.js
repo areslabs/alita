@@ -87,7 +87,8 @@ console.log(`输出目录: ${OUT_DIR}`.info)
 if (fse.existsSync(OUT_DIR)) {
     emptyDir(OUT_DIR, new Set([
         'miniprogram_npm',
-        'node_modules'
+        'node_modules',
+        'project.config.json'
     ]))
     console.log('输出目录清理完成'.info)
 }
