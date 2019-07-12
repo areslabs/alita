@@ -8,10 +8,10 @@
  */
 
 import fse from 'fs-extra'
-import {geneWXFileStruc} from './struc/index'
 import {getDependenciesMap, getRNCompList, emptyDir} from './util/util'
 import packagz from '../package.json'
 import filewatch from './filewatch/index'
+import geneWXFileStruc from './util/geneWXFileStruc'
 
 
 const path = require('path')
@@ -44,6 +44,10 @@ const options = getopts(process.argv, {
 
 
 const DEFAULTCONFIG = {
+    name: '需要一个名字！',
+    appid: '',
+
+
     isFileIgnore: () => false,
 
     subDir: '/',
@@ -87,7 +91,8 @@ console.log(`输出目录: ${OUT_DIR}`.info)
 if (fse.existsSync(OUT_DIR)) {
     emptyDir(OUT_DIR, new Set([
         'miniprogram_npm',
-        'node_modules'
+        'node_modules',
+        'project.config.json'
     ]))
     console.log('输出目录清理完成'.info)
 }
@@ -244,9 +249,9 @@ function geneWXPackgejson(configObj) {
     }
 }
 
-async function main() {
+function main() {
     // 生成微信目录结构
-    await geneWXFileStruc(OUT_DIR)
+    geneWXFileStruc(OUT_DIR)
 
     // 生成微信package.json文件
     geneWXPackgejson(configObj)

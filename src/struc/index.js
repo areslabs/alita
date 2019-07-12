@@ -94,12 +94,6 @@ export default async function (srcpath, targetpath) {
     }
 }
 
-
-export async function geneWXFileStruc(targetpath) {
-    const mptempDir = path.resolve(__dirname, '..', '..', 'mptemp')
-    await fse.copy(mptempDir, targetpath)
-}
-
 function isPageComp(targetpath, allCompSet) {
     const originPath = targetpath
         .replace(global.execArgs.OUT_DIR + path.sep, '')
