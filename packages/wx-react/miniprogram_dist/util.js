@@ -162,3 +162,6 @@ export function getRootContext() {
 
     return getCurrentContext(topInst, topInst._parentContext)
 }
+
+
+export const EMPTY_FUNC = () => {}

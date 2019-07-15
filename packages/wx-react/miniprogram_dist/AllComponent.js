@@ -9,10 +9,13 @@
 import instanceManager from "./InstanceManager";
 import render from "./render";
 import getChangePath from "./getChangePath";
-import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, recursionMount} from './util'
+import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, recursionMount, EMPTY_FUNC} from './util'
 import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
+
+
+const P_R =  Promise.resolve()
 
 /**
  *
@@ -40,7 +43,7 @@ import getObjSubData from './getObjSubData'
  * 声明周期里，调用了 wxFather.setData(uiDes)，完成之后，分别会触发wxSon1, wxSon2, wxSon3的 ready 并调用setData设置数据。 这里会调用4次setData，
  * 我们有办法通过groupSetData，批量设置这里的数据吗？比较麻烦，不能简单的通过上面的方式使用groupSetData，因为只有当wxFather设置数据结束之后，son才有
  * 机会ready
- * 所以，alita先阶段采用的方案是：在组件初始阶段，会先构造出所以uiDes数据，包括子组件，孙组件等等
+ * 所以，alita先阶段采用的方案是：在组件初始阶段，会先构造出所有uiDes数据，包括子组件，孙组件等等
  *     const allUiDes = {
  *           ... // fatherUiDes
  *
@@ -75,109 +78,12 @@ export class BaseComponent {
             diuu = this.__diuu__
         }
 
-        const wxInst = instanceManager.getWxInstByUUID(diuu)
-        return wxInst
+        return instanceManager.getWxInstByUUID(diuu)
     }
 
-
-    updateUI(cb) {
-        const cbPros = []
-
-
-        // 先渲染children
-        const children = this._c
-        for (let i = 0; i < children.length; i++) {
-            const childUuid = children[i]
-            const child = instanceManager.getCompInstByUUID(childUuid)
-
-            if (child.firstRender !== FR_DONE && !child.stateless) {
-                // 一般而言 hocWrapped 都会在外层firstUpdateUI的过程中 状态就会变成FR_DONE，
-                // 这里状态不是FR_DONE 只有一种情况，就是在HOC里面调用了setState新产生的节点， 由于外层
-                // firstUpdateUI只会触发一次， 所以这里需要调用updateUI
-                if (child.hocWrapped) {
-                    const p = new Promise(function (resolve) {
-                        child.updateUI(resolve)
-                    })
-
-                    cbPros.push(p)
-                    continue
-                }
-
-
-                // 新增有状态节点，还未初始化， 此节点的firstUpdateUI过程，将会处理其子节点的渲染，结束会调用firstRenderRes
-                const p = new Promise(function (resolve) {
-                    child.firstRenderRes = resolve
-                })
-                cbPros.push(p)
-            } else if (child.firstRender !== FR_DONE && child.stateless) {
-                // 新增无状态节点，还未初始化，无状态节点的渲染数据由父节点管理，不过无状态节点需要调用updateUI 递归更新子节点
-                const p = new Promise(function (resolve) {
-                    child.updateUI(resolve)
-                })
-
-                cbPros.push(p)
-            } else if (child.shouldUpdate) {
-                // 已经存在节点
-                const p = new Promise(function (resolve) {
-                    child.updateUI(resolve)
-                })
-
-                cbPros.push(p)
-            }
-        }
-        
-        // HOC 和stateless 本身不会setData刷数据， 其中stateless是为了减少setData做的优化
-        if (this.stateless || this instanceof HocComponent) {
-            Promise.all(cbPros).then(() => {
-                cb && cb()
-                if (this.firstRender === FR_DONE) {
-                    this.componentDidUpdate && this.componentDidUpdate()
-                } else {
-                    this.firstRender = FR_DONE
-                    this.componentDidMount && this.componentDidMount()
-                }
-            })
-            return
-        }
-
-        const cp = getChangePath(this._r, this._or)
-
-        if (Object.keys(cp).length === 0) {
-            Promise.all(cbPros).then(() => {
-                cb && cb()
-
-                if(this.hocWrapped && this.firstRender !== FR_DONE) {
-                    this.firstRender = FR_DONE
-                    this.componentDidMount && this.componentDidMount()
-                } else {
-                    this.componentDidUpdate && this.componentDidUpdate()
-                }
-            })
-            return
-        }
-
-        const wxInst = this.getWxInst()
-        if (!wxInst) {
-            console.warn('miniprogram instance not exist， update error! ', this)
-            cb && cb()
-            return
-        }
-
-        wxInst.setData(cp, () => {
-            Promise.all(cbPros).then(() => {
-                cb && cb()
-
-                if(this.hocWrapped && this.firstRender !== FR_DONE) {
-                    this.firstRender = FR_DONE
-                    this.componentDidMount && this.componentDidMount()
-                } else {
-                    this.componentDidUpdate && this.componentDidUpdate()
-                }
-            })
-        })
-    }
-
-
+    /**
+     * 组件初始渲染
+     */
     firstUpdateUI() {
         const diuu = this.__diuu__
         const allData = getObjSubData(this._r)
@@ -190,6 +96,134 @@ export class BaseComponent {
                 recursionMount(this)
             })
         }
+    }
+
+
+    /**
+     * 刷新数据到小程序
+     * @param cb
+     * @param styleUpdater 上报样式的updater
+     */
+    updateWX(cb, styleUpdater) {
+        const updaterList = []
+
+        let gpr = null
+        const groupPromise = new Promise((resolve) => {
+            gpr = resolve
+        })
+
+        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise)
+
+        if (styleUpdater) {
+            updaterList.push(styleUpdater)
+        }
+
+        /// groupSetData 来优化多次setData
+
+        const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
+        let hasGprAdd = false
+        topWX.groupSetData(() => {
+            for(let i = 0; i < updaterList.length; i ++ ) {
+                const {inst, data} = updaterList[i]
+                if (!hasGprAdd) {
+                    hasGprAdd = true
+                    inst.setData(data, gpr)
+                } else {
+                    inst.setData(data)
+                }
+            }
+        })
+    }
+
+    /**
+     * 递归程序。 主要做两个事情
+     * 1. 构建出updaterList， 包含所以需要更新的微信实例/数据
+     * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 生命周期的正确执行
+     *
+     * //TODO 由于小程序groupSetData的合并， Object.keys(cp).length === 0 的判断是否还有必要？
+     * @param doneCb
+     * @param updaterList
+     * @param groupPromise
+     */
+    updateWXInner(doneCb, updaterList, groupPromise) {
+        const updatePros = []
+        const children = this._c
+        for (let i = 0; i < children.length; i++) {
+            const childUuid = children[i]
+            const child = instanceManager.getCompInstByUUID(childUuid)
+
+            if (child.firstRender !== FR_DONE && child.hocWrapped) {
+                /**
+                 * 如果child 是由hoc包裹，由于hoc包裹的组件，并不直接对应微信实例，所以无法通过微信的ready的声明周期来执行
+                 * firstRender。不过此时微信小程序实例已经存在，所以可以直接调用setData方法
+                 */
+                const allSubData = getObjSubData(child._r)
+                const wxInst = child.getWxInst()
+
+                if (Object.keys(allSubData).length === 0) {
+                    recursionMount(child)
+                    updatePros.push(P_R)
+                } else {
+                    updaterList.push({
+                        inst: wxInst,
+                        data: {
+                            _r: allSubData
+                        }
+                    })
+
+                    const p = new Promise(resolve => {
+                        groupPromise.then(() => {
+                            recursionMount(child)
+                            resolve()
+                        })
+                    })
+                    updatePros.push(p)
+                }
+            } else if (child.firstRender !== FR_DONE && !child.hocWrapped) {
+                // 新增普通节点，通过微信的ready 生命周期 触发firstRender
+                const p = new Promise((resolve) => {
+                    child.firstRenderRes = resolve
+                })
+                updatePros.push(p)
+            } else if (child.shouldUpdate) {
+                // 已经存在的节点更新数据
+                const p = new Promise((resolve) => {
+                    child.updateWXInner(resolve, updaterList, groupPromise)
+                })
+                updatePros.push(p)
+            }
+        }
+
+
+        // HOC 组件不需要刷数据到 微信小程序， 直接done!
+        if (this instanceof HocComponent) {
+            updatePros.push(P_R)
+            Promise.all(updatePros)
+                .then(() => {
+                    doneCb()
+                    this.componentDidUpdate && this.componentDidUpdate()
+                })
+
+            return
+        }
+
+
+        const cp = getChangePath(this._r, this._or)
+        if (Object.keys(cp).length === 0) {
+            updatePros.push(P_R)
+        } else {
+            updaterList.push({
+                inst: this.getWxInst(),
+                data: cp
+            })
+            updatePros.push(groupPromise)
+        }
+
+        Promise.all(updatePros)
+            .then(() => {
+                doneCb()
+                this.componentDidUpdate && this.componentDidUpdate()
+            })
     }
 }
 
@@ -224,7 +258,7 @@ export class Component extends BaseComponent {
 
     updateInner(newState, cb, isForce) {
         // 还未渲染完成调用setState/forceUpdate，通常发生在willMount等处，此时把更新入队，在渲染结束的时候会统一检查一下这种情况的更新
-        if (!(this instanceof HocComponent) && this.firstRender !== FR_DONE) {
+        if (this.firstRender !== FR_DONE) {
             this.updateQueue.push(newState)
             cb && this.updateQueueCB.push(cb)
             if (isForce) {
@@ -235,8 +269,8 @@ export class Component extends BaseComponent {
         }
 
         // 没有找到对应wxInst
-        if (!(this instanceof HocComponent) && !this.getWxInst()) {
-            console.warn(`the component has unmount, should not invoke ${isForce ? 'forceUpdate' : 'setState'}!!`)
+        if (!this.getWxInst()) {
+            console.warn(`wxInst should not null, please create an issue!`)
             return
         }
 
@@ -294,14 +328,14 @@ export class Component extends BaseComponent {
     }
 
     /**
-     * render过程结束之后，各组件渲染数据已经生成完毕，执行updateUI递归的把数据刷新到小程序。
+     * render过程结束之后，各组件渲染数据已经生成完毕，执行updateWX递归的把数据刷新到小程序。
      * 此外：由于微信小程序自定义组件会生成一个节点，需要把内部最外层样式上报到这个节点
      */
     flushDataToWx(subVnode, finalCb) {
         const oldOutStyle = this._myOutStyle
 
         if (this.isPageComp) {
-            this.updateUI(finalCb)
+            this.updateWX(finalCb)
             return
         }
 
@@ -318,12 +352,8 @@ export class Component extends BaseComponent {
             this._r[styleKey] = DEFAULTCONTAINERSTYLE
         }
 
-
-        this.updateUI(finalCb)
-
         // 如果setState之后 outStyle发生变化， 则需要上报到父（可能需要多次上报）
         if (oldOutStyle !== newOutStyle) {
-            // 更新父包裹
 
             let p = this
 
@@ -336,15 +366,20 @@ export class Component extends BaseComponent {
 
                     const diuu = pp.__diuu__
                     const wxInst = instanceManager.getWxInstByUUID(diuu)
-                    wxInst.setData({
-                        [stylePath]: newOutStyle
+
+                    this.updateWX(finalCb, {
+                        inst: wxInst,
+                        data: {
+                            [stylePath]: newOutStyle
+                        }
                     })
 
                     return
                 }
-
                 p = p._p
             }
+        } else {
+            this.updateWX(finalCb)
         }
     }
 }
@@ -381,10 +416,9 @@ export class PureComponent extends Component {
  *
  *  当 Hoc1， Hoc2 调用setState的时候：
  *      1. 执行在React过程
- *      2. 调用 this.updateUI
+ *      2. 调用 this.updateWX
  *      3. updateUI的过程中会跳过HOC，直接到A
- *      4. A执行 getWxInst 方法 获取到wxA
- *      5. wxA 获取A的数据，更新
+ *      4. A把数据传递给wxA，更新UI
  */
 export class HocComponent extends Component {
     constructor(props, context) {
@@ -394,10 +428,6 @@ export class HocComponent extends Component {
             diuu: HOCKEY
         }
 
-    }
-
-    getWxInst() {
-        return null
     }
 
     hocClear() {

@@ -283,11 +283,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
             reportSubStyleToOuter(vnodeDiuu, CPTVnode, inst, parentInst, dataPath)
 
-
-            //TODO 临时方案，将随着React/小程序的数据交换方式的改变而改变
-            const outRKey = `${diuuKey}R`
-            data[outRKey] = inst._r
-            inst.stateless = true
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === FuncComponent) {
             // 函数组件， 没有声明周期， 没有setState
             let inst = null
@@ -369,14 +364,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             if (!inst.isPageComp) {
                 reportSubStyleToOuter(vnodeDiuu, subVnode, inst, parentInst, dataPath)
-
-
-                if (!inst.hocWrapped) {
-                    //TODO 临时方案
-                    const outRKey = `${vnodeDiuu}R`
-                    data[outRKey] = inst._r
-                    inst.stateless = true
-                }
             }
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === RNBaseComponent) {
             // 与下面 typeof nodeName === 'function' 相比， 这里面应该都是 RN base 组件，
@@ -529,14 +516,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                         // 当组件不需要更新的时候，直接返回， 但是这个时候由于父组件的_r 是新计算的，组件的样式就会丢失，
                         // 所以在组件返回之前， 需要把之前计算好的样式上报给父组件。
                         reportOuterWithExistsStyle(vnodeDiuu, inst, parentInst, dataPath)
-
-
-                        if(inst.__stateless__  && !inst.hocWrapped) {
-                            //TODO 临时方案
-                            const outRKey = `${vnodeDiuu}R`
-                            data[outRKey] = inst._r
-                            inst.stateless = true
-                        }
                         return
                     }
 
@@ -625,13 +604,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             if (!inst.isPageComp) {
                 // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
                 reportSubStyleToOuter(vnodeDiuu, subVnode, inst, parentInst, dataPath)
-
-                if(inst.__stateless__  && !inst.hocWrapped) {
-                    //TODO 临时方案
-                    const outRKey = `${vnodeDiuu}R`
-                    data[outRKey] = inst._r
-                    inst.stateless = true
-                }
             }
         }
     } catch (e) {
@@ -776,7 +748,7 @@ function getKeyDataMap(arr, key) {
 
 
 function shouldReuseButInstNull(vnode) {
-    console.warn('未知原因导致React 实例丢失！错误节点：', vnode)
+    console.warn('未知原因导致React 实例丢失， please create an issue! 错误节点：', vnode)
 }
 
 function sovleNumberOfLines (newVal){
