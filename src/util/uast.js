@@ -43,7 +43,10 @@ const babelTransformRuntime = babel.createConfigItem(
 
 export function geneJSXCode(ast) {
     let code = generator(ast, {
-        comments: false
+        comments: false,
+        jsescOption: {
+            minimal: true,
+        },
     }).code
 
     return code
@@ -51,8 +54,13 @@ export function geneJSXCode(ast) {
 
 export function geneReactCode(ast) {
     let code = generator(ast, {
-        comments: false
+        comments: false,
+        jsescOption: {
+            minimal: true,
+        },
     }).code
+
+
     code = babel.transformSync(code, {
         babelrc: false,
         configFile: false,
