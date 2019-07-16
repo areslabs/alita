@@ -110,7 +110,7 @@ export default function touchableToView (ast) {
                 const diuu = getDiuu(path.node.attributes)
                 if (hasEvent) {
                     path.node.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(diuu)),
+                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`)),
                         t.jsxAttribute(t.jsxIdentifier('hover-stop-propagation'), t.stringLiteral("true")),
                     )
                 }
@@ -141,7 +141,7 @@ export default function touchableToView (ast) {
                 const diuu = getDiuu(path.node.attributes)
                 if (hasEvent) {
                     path.node.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(diuu)),
+                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`)),
                     )
                 }
 
