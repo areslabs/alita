@@ -60,8 +60,8 @@ export default class B extends Component {
         </View>
     }
 
-    keyExtractor = (item) => {
-        return item.name + ''
+    keyExtractor = (item, index) => {
+        return index + ''
     }
 
     _onEndReached() {
@@ -112,7 +112,19 @@ export default class B extends Component {
                 </View>
 
 
-                
+                <View style={styles.button}>
+                    <Button
+                        title="点击 列表项 + 1"
+                        onPress={() => {
+                            this.setState({
+                                users: this.state.users.map(user => ({
+                                    ...user,
+                                    name: user.name + 1
+                                }))
+                            })
+                        }}
+                    />
+                </View>
                 <View style={styles.button}>
                     <Text style={styles.title}>FlatList 列表</Text>
                 </View>

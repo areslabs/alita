@@ -1,6 +1,7 @@
 {
 	"component": true,
 	"usingComponents": {
+		"WXButton": "@areslabs/wx-react-native/component/WXButton/index",
 		"WXSwitch": "@areslabs/wx-react-native/component/WXSwitch/index",
 		"WXSlider": "@areslabs/wx-react-native/component/WXSlider/index",
 		"WXFlatList": "@areslabs/wx-react-native/component/WXFlatList/index",
