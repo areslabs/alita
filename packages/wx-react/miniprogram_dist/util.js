@@ -74,7 +74,17 @@ export function setDeepData(inst, v, path) {
     let tmpObj = inst
     for (let i = 0; i < arr.length - 1; i++) {
         const sk = arr[i]
-        tmpObj = tmpObj[sk]
+
+        if (sk.charAt(0) === '[' && sk.charAt(sk.length - 1) === ']') {
+            const index = Number(sk.substring(1, sk.length - 1))
+            if (!Number.isNaN(index)) {
+                tmpObj = tmpObj[index]
+            } else {
+                tmpObj = tmpObj[sk]
+            }
+        } else {
+            tmpObj = tmpObj[sk]
+        }
     }
 
     const endk = arr[arr.length - 1]

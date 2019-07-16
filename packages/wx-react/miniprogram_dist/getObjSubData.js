@@ -10,7 +10,8 @@ import instanceManager from "./InstanceManager";
 import {HOCKEY, FR_PENDING} from './util'
 
 function isDiuuKey(key) {
-    return key.startsWith("DIUU") && key.length === 9
+    // TODO 更加精确的方式？？
+    return key.includes('DIUU')
 }
 
 function getListSubData(list) {

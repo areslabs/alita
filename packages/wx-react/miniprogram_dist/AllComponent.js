@@ -89,6 +89,7 @@ export class BaseComponent {
         const allData = getObjSubData(this._r)
         const wxInst = instanceManager.getWxInstByUUID(diuu)
 
+        console.log('first wow:', allData, this)
         if (Object.keys(allData).length === 0) {
             recursionMount(this)
         } else {
@@ -123,6 +124,7 @@ export class BaseComponent {
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
         let hasGprAdd = false
         topWX.groupSetData(() => {
+            console.log('update wow:', updaterList)
             for(let i = 0; i < updaterList.length; i ++ ) {
                 const {inst, data} = updaterList[i]
                 if (!hasGprAdd) {
@@ -147,19 +149,17 @@ export class BaseComponent {
      */
     updateWXInner(doneCb, updaterList, groupPromise) {
         const updatePros = []
+        const updateObj = {}
         const children = this._c
         for (let i = 0; i < children.length; i++) {
             const childUuid = children[i]
             const child = instanceManager.getCompInstByUUID(childUuid)
 
             if (child.firstRender !== FR_DONE && child.hocWrapped) {
-                /**
-                 * 如果child 是由hoc包裹，由于hoc包裹的组件，并不直接对应微信实例，所以无法通过微信的ready的声明周期来执行
-                 * firstRender。不过此时微信小程序实例已经存在，所以可以直接调用setData方法
-                 */
                 const allSubData = getObjSubData(child._r)
                 const wxInst = child.getWxInst()
 
+                // HOC 多次嵌套的情况，allSubData可能是{}
                 if (Object.keys(allSubData).length === 0) {
                     recursionMount(child)
                     updatePros.push(P_R)
@@ -180,9 +180,13 @@ export class BaseComponent {
                     updatePros.push(p)
                 }
             } else if (child.firstRender !== FR_DONE && !child.hocWrapped) {
-                // 新增普通节点，通过微信的ready 生命周期 触发firstRender
-                const p = new Promise((resolve) => {
-                    child.firstRenderRes = resolve
+                updateObj[`${child._keyPath}R`] = getObjSubData(child._r)
+
+                const p = new Promise(resolve => {
+                    groupPromise.then(() => {
+                        recursionMount(child)
+                        resolve()
+                    })
                 })
                 updatePros.push(p)
             } else if (child.shouldUpdate) {
@@ -209,6 +213,7 @@ export class BaseComponent {
 
 
         const cp = getChangePath(this._r, this._or)
+        Object.assign(cp, updateObj)
         if (Object.keys(cp).length === 0) {
             updatePros.push(P_R)
         } else {
@@ -361,7 +366,7 @@ export class Component extends BaseComponent {
             while (true) {
                 const pp = p._p
                 if (pp.isPageComp || !p._isFirstEle) {
-                    const stylePath = p._stylePath
+                    const stylePath = `${p._keyPath}style`
                     setDeepData(pp, newOutStyle, stylePath)
 
                     const diuu = pp.__diuu__

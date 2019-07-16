@@ -23,10 +23,7 @@ export default function () {
 
         ready() {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-            // 一般情况下 CPTComp 都是无状态组件， 但是由于HOC的存在， 对于HOC包裹的组件， 需要主动firstUpdateUI
-            if (!compInst.firstRender && !compInst.stateless) {
-                compInst.firstUpdateUI()
-            }
+
         },
 
         detached() {

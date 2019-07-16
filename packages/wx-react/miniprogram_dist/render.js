@@ -209,7 +209,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     // 当Ua的key由Ka --> Kb 的时候， 那么组件变为Ub负责来渲染这一块， 故而需要给予Ub对应的数据
                     // 对于明确且唯一的key，  小程序和React处理是一致的
                     const vIndex = data[datakey].v.length - 1
-                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}.v.${vIndex}`)
+                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}.v.[${vIndex}]`)
                 }
             } else {
                 let oldSubData = null
@@ -640,7 +640,7 @@ function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath)
         const styleValue = 'display: none;'
         setStyleData(parentInst, outStyleKey, styleValue, dataPath)
         inst._myOutStyle = styleValue
-        inst._stylePath = `${dataPath}.${outStyleKey}`
+        inst._keyPath = `${dataPath}.${parentDiuu}`
         return
     }
 
@@ -655,7 +655,7 @@ function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath)
     const styleValue = inst._r[styleKey]
 
     inst._myOutStyle = styleValue
-    inst._stylePath = `${dataPath}.${outStyleKey}`
+    inst._keyPath = `${dataPath}.${parentDiuu}`
 
 
     inst._r[styleKey] = DEFAULTCONTAINERSTYLE

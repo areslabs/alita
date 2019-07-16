@@ -26,7 +26,7 @@ export default function (CompMySelf, RNApp) {
 
         ready() {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-            if (!compInst.firstRender) {
+            if (compInst.isPageComp) {
                 compInst.firstUpdateUI()
             }
         },
