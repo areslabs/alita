@@ -1,3 +1,23 @@
+## [1.1.1](https://github.com/areslabs/alita/compare/1.1.0...1.1.1) (2019-07-17)
+
+
+### Bug Fixes
+
+* **alita:** 修复Text， Image标签事件不触发的bug ([6ff2c3a](https://github.com/areslabs/alita/commit/6ff2c3a))
+* **alita:** 修复中文乱码 ([6e4acbe](https://github.com/areslabs/alita/commit/6e4acbe))
+* **alita:** 修复每次转化 project.config.json 文件被重置的bug ([ac0cfcb](https://github.com/areslabs/alita/commit/ac0cfcb))
+* **wx-react-redux:** 修复组件被销毁之后调用 setState ([22783e1](https://github.com/areslabs/alita/commit/22783e1))
+
+
+### Features
+
+* **alita:** 新增name, appid的配置 ([fbef61d](https://github.com/areslabs/alita/commit/fbef61d))
+* **wx-react-native:** 添加AppState NativeAppEventEmitter的not support 说明 ([f7dbbf7](https://github.com/areslabs/alita/commit/f7dbbf7))
+* **wx-react-native:** 添加DeviceEventEmitter not support 说明 ([bcf0869](https://github.com/areslabs/alita/commit/bcf0869))
+* **wx-react-redux:** wx-react-redux 基于react-redux重新实现 ([7d55920](https://github.com/areslabs/alita/commit/7d55920))
+
+
+
 # [1.1.0](https://github.com/areslabs/alita/compare/v1.0.1...v1.1.0) (2019-07-08)
 
 
