@@ -116,39 +116,8 @@ export function recursionMount(comp) {
         const inst = instanceManager.getCompInstByUUID(comp._c[i])
         recursionMount(inst)
     }
-
-
     comp.firstRender = FR_DONE
-
     comp.componentDidMount && comp.componentDidMount()
-
-
-    if (comp.updateQueue && comp.updateQueue.length > 0) {
-        const newState = {}
-        for (let j = 0; j < comp.updateQueue.length; j++) {
-            Object.assign(newState, comp.updateQueue[j])
-        }
-        comp.updateQueue = []
-
-        let finalCb = null
-        if (comp.updateQueueCB.length > 0) {
-            const cbQueue = comp.updateQueueCB
-
-            finalCb = () => {
-                for (let i = 0; i < cbQueue.length; i++) {
-                    cbQueue[i]()
-                }
-            }
-            comp.updateQueueCB = []
-        }
-
-        const isForceUpdate = comp.isForceUpdate
-        comp.isForceUpdate = false
-
-        comp.updateInner(newState, finalCb, isForceUpdate)
-    }
-
-
     comp.firstRenderRes && comp.firstRenderRes()
 }
 

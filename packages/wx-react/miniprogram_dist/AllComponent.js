@@ -9,7 +9,7 @@
 import instanceManager from "./InstanceManager";
 import render from "./render";
 import getChangePath from "./getChangePath";
-import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, recursionMount, EMPTY_FUNC} from './util'
+import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, FR_PENDING, recursionMount, EMPTY_FUNC} from './util'
 import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
@@ -18,10 +18,6 @@ import getObjSubData from './getObjSubData'
 const P_R =  Promise.resolve()
 
 /**
- *
- * firstUpdateUI 组件初次渲染
- * updateUI 组件更新
- *
  * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。比如如下的情形：
  *        Father
  *       /  |   \
@@ -60,7 +56,6 @@ const P_R =  Promise.resolve()
  *           }
  *     }
  * 然后 father.setData(allUiDes) 。 初始结束以后，father组件不再持有子组件数据，以后的更新将通过groupSetData方式。
- *
  *
  */
 export class BaseComponent {
@@ -262,14 +257,18 @@ export class Component extends BaseComponent {
     }
 
     updateInner(newState, cb, isForce) {
-        // 还未渲染完成调用setState/forceUpdate，通常发生在willMount等处，此时把更新入队，在渲染结束的时候会统一检查一下这种情况的更新
-        if (this.firstRender !== FR_DONE) {
-            this.updateQueue.push(newState)
-            cb && this.updateQueueCB.push(cb)
-            if (isForce) {
-                this.isForceUpdate = isForce
-            }
+        // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
+        if (this.firstRender === FR_PENDING) {
+            console.warn('组件未准备好调用setState，状态可能会丢失！')
+            return
+        }
 
+        // willMount之前的setState
+        if (!this.willMountDone) {
+            this.state = {
+                ...this.state,
+                ...newState,
+            }
             return
         }
 
@@ -328,6 +327,11 @@ export class Component extends BaseComponent {
         const context = getCurrentContext(this, parentContext)
 
         render(subVnode, this, context, this._r, this._or, '_r')
+
+        // 一般发生于didFoucs里面的setState，此时还未调用firstUpdate
+        if (this.firstRender !== FR_DONE) {
+            return
+        }
 
         this.flushDataToWx(subVnode, cb)
     }
@@ -414,7 +418,7 @@ export class PureComponent extends Component {
  *      ↓  /
  *      wxA
  *
- *  Hoc1的uuid 和wxA属性接收到的uuid 是一致的，所以在实例管理器中 Hoc1 和wxA是一对，但是Hoc1包裹Hoc2包裹A在运行结束时产生的_r 数据
+ *  Hoc1的uuid 和wxA属性接收到的uuid 是一致的，所以在实例管理器中 Hoc1 和wxA是一对，但是Hoc1包裹Hoc2包裹A在运行结束时产生的uiDes 数据
  *  才是最终决定 wxA渲染的。
  *
  *  当 Hoc1， Hoc2 初始化的时候： getObjSubData会收集到A的数据，通过小程序属性_r 把数据传递到wxA
@@ -422,7 +426,7 @@ export class PureComponent extends Component {
  *  当 Hoc1， Hoc2 调用setState的时候：
  *      1. 执行在React过程
  *      2. 调用 this.updateWX
- *      3. updateUI的过程中会跳过HOC，直接到A
+ *      3. updateWX的过程中会跳过HOC，直接到A
  *      4. A把数据传递给wxA，更新UI
  */
 export class HocComponent extends Component {
@@ -433,10 +437,6 @@ export class HocComponent extends Component {
             diuu: HOCKEY
         }
 
-    }
-
-    hocClear() {
-        console.warn('now ! hocClear 不再需要主动调用，系统会调用')
     }
 }
 

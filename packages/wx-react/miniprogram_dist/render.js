@@ -532,6 +532,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                     inst.componentWillMount && inst.componentWillMount()
                     inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
+                    inst.willMountDone = true
 
                     const instUUID = geneUUID()
                     data[diuuKey] = instUUID
@@ -566,6 +567,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                 inst.componentWillMount && inst.componentWillMount()
                 inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
+                inst.willMountDone = true
+
                 const instUUID = vnodeDiuu
                 inst.__diuu__ = instUUID
 
