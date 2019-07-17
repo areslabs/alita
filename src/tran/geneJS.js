@@ -18,9 +18,9 @@ export default function (info) {
 
     const outCompCode = `
 import {
-    WxCPTComp,
+    WxNormalComp,
 } from "${RNWXLIBMaps.react}"
-Component(WxCPTComp())
+Component(WxNormalComp())
     `
 
     const compFilename = path.basename(filepath, '.js')
@@ -44,27 +44,10 @@ Component(WxNormalComp(CompMySelf, RNApp))
         const name = outComp[i]
 
         const jspath = (name === 'render' ? filepath: filepath.replace('.js', `${name}.js`))
-
-        let jscode = null
-        if (name === 'render') {
-            if (isPageComp || !isStatelessComp) {
-                jscode = renderCompCode
-            } else {
-                jscode = outCompCode
-            }
-        } else {
-            jscode = outCompCode
-        }
-
-        const prettierCode = prettier.format(jscode, {
-            semi: false,
-            parser: "babylon",
-            tabWidth: 4,
-        })
-
+        const jscode = (name === 'render' ? renderCompCode : outCompCode)
         fse.writeFileSync(
             jspath,
-            prettierCode,
+            jscode,
             {
                 flag: 'w+'
             }
