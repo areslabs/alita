@@ -5,12 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
+import path from 'path'
+import fse from 'fs-extra'
 import {RNCOMPSET} from '../constants'
-
-const path = require('path')
-const fse = require('fs-extra')
-
 
 const constStr = 'abcdefghijklmnopqrstuvwxyz'
 
