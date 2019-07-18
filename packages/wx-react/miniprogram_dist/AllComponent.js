@@ -114,6 +114,10 @@ export class BaseComponent {
             updaterList.push(styleUpdater)
         }
 
+        if (updaterList.length === 0) {
+            gpr()
+            return
+        }
         /// groupSetData 来优化多次setData
 
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
