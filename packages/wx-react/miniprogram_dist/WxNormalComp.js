@@ -9,7 +9,7 @@
 import {render, createElement, HocComponent, unstable_batchedUpdates} from "./index"
 import geneUUID from "./geneUUID"
 import instanceManager from "./InstanceManager"
-import {recursionUnmount} from './util'
+import {FR_DONE, recursionUnmount} from './util'
 
 
 export default function (CompMySelf, RNApp) {
@@ -97,7 +97,9 @@ export default function (CompMySelf, RNApp) {
 
         o.methods.onShow = function () {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-            compInst.componentDidFocus && unstable_batchedUpdates(() => {
+
+            //如果组件还未初始化 didFocus方法，由firstUpdateUI负责
+            compInst.firstRender === FR_DONE && compInst.componentDidFocus && unstable_batchedUpdates(() => {
                 compInst.componentDidFocus()
             })
         }

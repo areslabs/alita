@@ -332,7 +332,7 @@ export class Component extends BaseComponent {
 
         render(subVnode, this, context, this._r, this._or, '_r')
 
-        // 一般发生于didFoucs里面的setState，此时还未调用firstUpdate
+        // firstRender既不是DONE，也不是PENDING，此时调用setState需要刷新_r数据
         if (this.firstRender !== FR_DONE) {
             return
         }

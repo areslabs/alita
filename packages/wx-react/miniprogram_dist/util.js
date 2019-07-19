@@ -118,6 +118,11 @@ export function recursionMount(comp) {
     }
     comp.firstRender = FR_DONE
     comp.componentDidMount && comp.componentDidMount()
+
+    if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
+        comp.componentDidFocus()
+    }
+
     comp.firstRenderRes && comp.firstRenderRes()
 }
 
