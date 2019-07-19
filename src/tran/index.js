@@ -23,6 +23,7 @@ import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
 import addWXPrefixHandler from './addWXPrefixHandler'
 import cptCompHandler from './cptCompHandler'
+import literalTemplate from './literalTemplate'
 
 export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
     const info = {
@@ -64,6 +65,8 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, i
     ast = childrenToTemplate(ast, info)
 
     geneReactJS(ast, info)
+
+    ast = literalTemplate(ast, info)
 
     ast = addEventHandler(ast, info)
 

@@ -17,6 +17,11 @@ var getFinalStyle = function (d) {
           .replace('_5_', DEFAULTCONTAINERSTYLE)
 }
 
+var lite = function(v) {
+    return v.constructor === 'Number' || v.constructor === 'String'
+}
+
 module.exports = {
-    getFinalStyle: getFinalStyle
+    getFinalStyle: getFinalStyle,
+    lite: lite
 };

@@ -147,17 +147,14 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 || tempVnode === null
             ) {
                 // do nothing
-                return
+                data[datakey] = ''
             } else if (typeof tempVnode === 'string'
                 || typeof tempVnode === 'number'
             ) {
                 // 不是jsx的情况
-                data[datakey] = {
-                    isLiteral: true,
-                    v: tempVnode
-                }
+                data[datakey] = tempVnode
             } else if (Array.isArray(tempVnode)) {
-                // key必须明确指定，对于不知道key的情况， React和小程序处理可能存在差异，照成两个平台的行为差异
+                // key必须明确指定，对于不知道key的情况， React和小程序处理可能存在差异，造成两个平台的行为差异
 
                 let oldSubDataKeyMap = {}
                 if (oldData && oldData[datakey] && oldData[datakey].isArray) {
@@ -180,10 +177,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     if (typeof subVnode === 'string'
                         || typeof subVnode === 'number'
                     ) {
-                        data[datakey].v.push({
-                            isLiteral: true,
-                            v: subVnode
-                        })
+                        data[datakey].v.push(subVnode)
                         continue
                     }
 

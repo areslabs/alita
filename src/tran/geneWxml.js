@@ -69,18 +69,12 @@ export default function(info) {
 <template name="${name}">
     <block wx:if="{{isArray}}">
         <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
+            <block wx:if="{{tools.lite(item)}}">{{item}}</block> 
+            <template wx:else is="{{item.tempName}}" data="{{...item}}"></template>
         </block>
     </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+    <template wx:elif="{{isJSX}}" is="{{v.tempName}}" data="{{...v}}"></template>
 </template>
-
         `;
 
         templateWxml = subT + templateWxml;

@@ -14,6 +14,7 @@
  * jsxPropsMap： 属性是JSX片段，包括方法返回JSX片段等，Alita需要特殊处理这些属性
  * extChildComp： 需要处理children 为childrencpt的集合
  * extReactComp：一般来说对齐的组件 需要继承于 RNBaseComponent，但是有些复杂的组件需要继承于Component/PureComponent，比如FlatList
+ * textComp: Text节点，一般来说只要官方的Text组件
  * allExtComp：所有组件，包括RN官方组件，配置在extCompLibs里的组件，这些组件在Alita转化的时候，会当做基本组件，基本组件的属性处理和自定义组件有一些区别
  * @param extCompLibs
  * @returns {{extCompPathMaps, extChildComp: Set, extReactComp: Set, allExtComp: Set, jsxPropsMap}}
@@ -23,6 +24,7 @@ export default function getExtCompPathMaps(extCompLibs) {
     const jsxPropsMap = {}
     const extChildComp = new Set([])
     const extReactComp = new Set([])
+    const textComp = new Set(['Text'])
     const allExtComp = new Set([])
     for(let i = 0; i < extCompLibs.length; i ++) {
         const extLib = extCompLibs[i]
@@ -44,7 +46,13 @@ export default function getExtCompPathMaps(extCompLibs) {
                 compPathMap[compName] = `${wxLibName}${compDir}${compName}/index`
                 allExtComp.add(compName)
             } else {
-                const {name, extendsComponent, needOperateChildren, jsxProps} = compName
+                const {
+                    name,
+                    extendsComponent,
+                    needOperateChildren,
+                    jsxProps,
+                    textChildren
+                } = compName
                 compPathMap[name] = `${wxLibName}${compDir}${name}/index`
 
                 if (needOperateChildren === true) {
@@ -59,6 +67,10 @@ export default function getExtCompPathMaps(extCompLibs) {
                     jsxPropsMap[name] = jsxProps
                 }
 
+                if (textChildren === true) {
+                    textComp.add(name)
+                }
+
                 allExtComp.add(name)
             }
 
@@ -70,6 +82,7 @@ export default function getExtCompPathMaps(extCompLibs) {
         extChildComp,
         extReactComp,
         allExtComp,
+        textComp,
         jsxPropsMap
     }
 }
