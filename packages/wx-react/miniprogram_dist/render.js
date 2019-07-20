@@ -53,19 +53,10 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
         // 由于小程序slot的性能问题， 把View/Touchablexxx/Image 等退化为view来避免使用slot。
         // 对于自定义组件，如果render的最外层是View， 这个View会退化成block。
         if (nodeName === 'view' || nodeName === 'block' || nodeName === 'image') {
-
-            let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
-
-            if (!shouldReuse) {
-                diuu = geneUUID()
-            }
-            data[diuuKey] = diuu
-
-
-
             const allKeys = Object.keys(props)
             let finalNodeType = props.original
 
+            let eventProps = []
             for (let i = 0; i < allKeys.length; i++) {
                 const k = allKeys[i]
                 const v = props[k]
@@ -75,7 +66,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 if (k === 'src') {
                     data[`${vnodeDiuu}${k}`] = v.uri || v
                 } else if (isEventProp(k)) {
-                    parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
+                    eventProps.push(k)
+                    // parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
                 } else if (k === 'mode') {
                     data[`${vnodeDiuu}${k}`] = resizeMode(v)
                 } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
@@ -86,6 +78,21 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     data[`${vnodeDiuu}${k}`] = v
                 }
             }
+
+            // 如果基本组件有事件函数，需要产生唯一uuid
+            if (eventProps.length > 0) {
+                let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
+                if (!shouldReuse) {
+                    diuu = geneUUID()
+                }
+                data[diuuKey] = diuu
+
+                eventProps.forEach(k => {
+                    const v = props[k]
+                    parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
+                })
+            }
+
 
             if (!props.style && finalNodeType !== 'TouchableWithoutFeedback') {
                 data[`${vnodeDiuu}style`] = tackleWithStyleObj('', finalNodeType)
