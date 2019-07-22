@@ -71,7 +71,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 } else if (k === 'mode') {
                     data[`${vnodeDiuu}${k}`] = resizeMode(v)
                 } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
-                    data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, finalNodeType)
+                    data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, isFirstEle ? finalNodeType : null)
                 } else if (k === 'activeOpacity') {
                     data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(v)
                 } else {
@@ -91,11 +91,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     const v = props[k]
                     parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
                 })
-            }
-
-
-            if (!props.style && finalNodeType !== 'TouchableWithoutFeedback') {
-                data[`${vnodeDiuu}style`] = tackleWithStyleObj('', finalNodeType)
             }
 
             if (props.activeOpacity === undefined && finalNodeType === 'TouchableOpacity') {
@@ -124,6 +119,10 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 }
             }
 
+            if (props.original === 'TouchableWithoutFeedback') {
+                // isFirstEle 需要往外上报样式
+                children[0].isFirstEle = true
+            }
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]

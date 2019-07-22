@@ -24,6 +24,7 @@ import addEventHandler from './addEventHandler'
 import addWXPrefixHandler from './addWXPrefixHandler'
 import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
+import classNameHandler from './classNameHandler'
 
 export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
     const info = {
@@ -69,6 +70,8 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, i
     ast = literalTemplate(ast, info)
 
     ast = addEventHandler(ast, info)
+
+    ast = classNameHandler(ast, info)
 
     ast = geneAllTemplate(ast, info)
 
