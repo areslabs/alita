@@ -71,7 +71,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 } else if (k === 'mode') {
                     data[`${vnodeDiuu}${k}`] = resizeMode(v)
                 } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
-                    data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, isFirstEle ? finalNodeType : null)
+                    data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, (isFirstEle || vnode.TWFBStylePath) ? finalNodeType : null)
                 } else if (k === 'activeOpacity') {
                     data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(v)
                 } else {
@@ -120,8 +120,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
 
             if (props.original === 'TouchableWithoutFeedback') {
-                // isFirstEle 需要往外上报样式
-                children[0].isFirstEle = true
+                children[0].TWFBStylePath = `${dataPath}.${vnodeDiuu}style`
             }
 
             for (let i = 0; i < children.length; i++) {
@@ -582,7 +581,11 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst.__eventHanderMap = {}
 
+            // _TWFBStylePath, _isFirstEle两个字段 FuncComp 不需要设置，因为他们只有在setState的起作用
             inst._isFirstEle = isFirstEle
+            if (vnode.TWFBStylePath) {
+                inst._TWFBStylePath = vnode.TWFBStylePath
+            }
 
             const subVnode = inst.render()
             if (subVnode && subVnode.isReactElement) {

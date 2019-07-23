@@ -318,6 +318,9 @@ export class Component extends BaseComponent {
         }
 
         const subVnode = this.render()
+        if (subVnode && subVnode.isReactElement) {
+            subVnode.isFirstEle = true
+        }
 
         /// 重置实例字段：_or 旧的渲染数据， _r 渲染数据， _c 所以孩子实例 ， __eventHanderMap 方法回调map
 
@@ -373,8 +376,8 @@ export class Component extends BaseComponent {
             /* eslint-disable-next-line */
             while (true) {
                 const pp = p._p
-                if (pp.isPageComp || !p._isFirstEle) {
-                    const stylePath = `${p._keyPath}style`
+                if (pp.isPageComp || !p._isFirstEle || p._TWFBStylePath) {
+                    const stylePath = p._TWFBStylePath || `${p._keyPath}style`
                     setDeepData(pp, newOutStyle, stylePath)
 
                     const diuu = pp.__diuu__
