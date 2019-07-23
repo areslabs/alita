@@ -40,7 +40,7 @@ export default async function (srcpath, targetpath) {
         const code = fse.readFileSync(srcpath).toString()
         const ast = parseCode(code)
 
-        const {isEntry, isRF, isFuncComp, isRNEntry, isStatelessComp} = getFileInfo(ast)
+        const {isEntry, isRF, isFuncComp, isRNEntry} = getFileInfo(ast)
         if (isRNEntry) return []
 
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
@@ -48,9 +48,9 @@ export default async function (srcpath, targetpath) {
             entryFilePath = entryResult.filepath
             allCompSet = entryResult.allCompSet
             for (let i = 0; i < RFFileList.length; i++) {
-                const {ast, targetpath, srcpath, isFuncComp, isStatelessComp, done} = RFFileList[i]
+                const {ast, targetpath, srcpath, isFuncComp, done} = RFFileList[i]
                 try {
-                    const allFilepaths = handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
+                    const allFilepaths = handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet))
                     done(allFilepaths)
                 } catch (e) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
@@ -60,13 +60,13 @@ export default async function (srcpath, targetpath) {
         } else if (isRF) {
             if (tranComp) {
                 try {
-                    return handleRF(ast, targetpath, isFuncComp, entryFilePath, false, isStatelessComp)
+                    return handleRF(ast, targetpath, isFuncComp, entryFilePath, false)
                 } catch (e) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
                 }
             } else if (entryFilePath) {
                 try {
-                    return handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet), isStatelessComp)
+                    return handleRF(ast, targetpath, isFuncComp, entryFilePath, isPageComp(targetpath, allCompSet))
                 } catch (e) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
                 }
@@ -78,7 +78,6 @@ export default async function (srcpath, targetpath) {
                         targetpath,
                         srcpath,
                         isFuncComp,
-                        isStatelessComp,
 
                         done: resolve,
                     })

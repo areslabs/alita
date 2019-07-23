@@ -26,7 +26,7 @@ import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
 
-export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
+export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
     const info = {
         filepath: filepath,
         templates: [],
@@ -44,7 +44,6 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, i
         entryFilePath,
         isPageComp,
         isFuncComp,
-        isStatelessComp,
     }
 
     if (isFuncComp) {

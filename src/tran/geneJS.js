@@ -13,7 +13,7 @@ const path = require('path')
 
 
 export default function (info) {
-    let {filepath, outComp, entryFilePath, isFuncComp, isStatelessComp, isPageComp} = info
+    let {filepath, outComp, entryFilePath} = info
     filepath = filepath.replace('.wx.js', '.js')
 
     const outCompCode = `
