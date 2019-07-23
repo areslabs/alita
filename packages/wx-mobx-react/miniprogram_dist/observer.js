@@ -163,8 +163,7 @@ const reactiveMixin = {
     },
 
     componentWillMount: function() {
-        // observer的组件，需要调用forceUpdate更新组件，所以要设置__stateless__标志
-        this.__stateless__ = false
+
     },
 
     componentDidMount: function() {

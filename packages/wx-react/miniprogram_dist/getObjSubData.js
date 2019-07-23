@@ -55,7 +55,7 @@ export default function getObjSubData(data) {
 
         if (isDiuuKey(k)) {
             const compInst = instanceManager.getCompInstByUUID(v)
-            if (compInst && !compInst.stateless && compInst._r) {
+            if (compInst && compInst._r) {
                 newData[`${k}R`] = getObjSubData(compInst._r)
                 compInst.firstRender = FR_PENDING
             }
