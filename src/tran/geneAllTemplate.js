@@ -84,10 +84,13 @@ export default function(ast, info) {
             ) {
                 const jsxOp = path.node.openingElement
                 let tempName = ''
-                jsxOp.attributes.forEach(attr => {
+                jsxOp.attributes = jsxOp.attributes.filter(attr => {
                     if (attr.name && attr.name.name === 'tempName') {
                         tempName = attr.value.value
+                        return false
                     }
+
+                    return true
                 })
 
                 info.templates.push(decTemlate(tempName, path.node))
@@ -108,6 +111,7 @@ export default function(ast, info) {
                 if (name === 'tempVnode'
                     || name === 'CPTVnode'
                     || name === 'key'
+                    || name === 'datakey'
                 ) {
                     path.remove()
                     return
