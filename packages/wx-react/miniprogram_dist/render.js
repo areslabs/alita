@@ -93,6 +93,10 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 })
             }
 
+            if (!props.style && finalNodeType !== 'TouchableWithoutFeedback' && (isFirstEle || vnode.TWFBStylePath)) {
+                data[`${vnodeDiuu}style`] = tackleWithStyleObj('', finalNodeType)
+            }
+
             if (props.activeOpacity === undefined && finalNodeType === 'TouchableOpacity') {
                 data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(0.2)
             }
@@ -101,7 +105,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
 
             if (props.numberOfLines !== undefined) {
-                data[`${vnodeDiuu}style`] = data[`${vnodeDiuu}style`] + sovleNumberOfLines(props.numberOfLines)
+                data[`${vnodeDiuu}style`] = (data[`${vnodeDiuu}style`] || '') + sovleNumberOfLines(props.numberOfLines)
             }
 
 
@@ -276,6 +280,10 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             inst._c = []
 
             inst.__eventHanderMap = {}
+
+            if (CPTVnode && CPTVnode.isReactElement) {
+                CPTVnode.isFirstEle = true
+            }
 
             render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r')
 
