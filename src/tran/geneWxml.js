@@ -69,7 +69,7 @@ export default function(info) {
 <template name="${name}">
     <block wx:if="{{isArray}}">
         <block wx:for="{{v}}" wx:key="key">
-            <block wx:if="{{tools.lite(item)}}">{{item}}</block> 
+            <block wx:if="{{t.l(item)}}">{{item}}</block> 
             <template wx:else is="{{item.tempName}}" data="{{...item}}"></template>
         </block>
     </block>
@@ -83,7 +83,7 @@ export default function(info) {
     const utilWxsPath = getRootPathPrefix(filepath) + '/commonwxs.wxs'
 
     templateWxml = `
-    <wxs src="${utilWxsPath}" module="tools" />
+    <wxs src="${utilWxsPath}" module="t" />
     ${templateWxml}
     `
 

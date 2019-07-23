@@ -211,7 +211,7 @@ function addStyleAttr(path, diuuKey) {
     const styleAttr = getAttr(jsxOp, 'style')
     if (!styleAttr) {
         jsxOp.attributes.push(
-            t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{tools.getFinalStyle(${diuuKey}style)}}`))
+            t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{t.s(${diuuKey}style)}}`))
         )
     }
 }

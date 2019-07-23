@@ -41,7 +41,7 @@ export default function literalTemplate (ast,info) {
                         })
 
                         newChildren.push(
-                            t.jsxText(`<block wx:if="{{tools.lite(${datakey})}}">{{${datakey}}}</block>`)
+                            t.jsxText(`<block wx:if="{{t.l(${datakey})}}">{{${datakey}}}</block>`)
                         )
                     }
 
