@@ -166,16 +166,13 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 // key必须明确指定，对于不知道key的情况， React和小程序处理可能存在差异，造成两个平台的行为差异
 
                 let oldSubDataKeyMap = {}
-                if (oldData && oldData[datakey] && oldData[datakey].isArray) {
-                    const oldSubDataList = oldData[datakey].v
+                if (oldData && oldData[datakey] && Array.isArray(oldData[datakey])) {
+                    const oldSubDataList = oldData[datakey]
                     oldSubDataKeyMap = getKeyDataMap(oldSubDataList, 'key')
                 }
 
                 const subDataList = []
-                data[datakey] = {
-                    isArray: true,
-                    v: subDataList
-                }
+                data[datakey] = subDataList
                 for (let i = 0; i < tempVnode.length; i++) {
                     const subVnode = tempVnode[i]
 
@@ -186,7 +183,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     if (typeof subVnode === 'string'
                         || typeof subVnode === 'number'
                     ) {
-                        data[datakey].v.push(subVnode)
+                        data[datakey].push(subVnode)
                         continue
                     }
 
@@ -204,29 +201,26 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                     const subData = {
                         key: subKey,
-                        diuu: subVnode.diuu
+                       // diuu: subVnode.diuu
                     }
-                    data[datakey].v.push(subData)
+                    data[datakey].push(subData)
 
                     // 假设 Ua 对应的key为 Ka， Ub对应的key为 Kb。
                     // 当Ua的key由Ka --> Kb 的时候， 那么组件变为Ub负责来渲染这一块， 故而需要给予Ub对应的数据
                     // 对于明确且唯一的key，  小程序和React处理是一致的
-                    const vIndex = data[datakey].v.length - 1
-                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}.v.[${vIndex}]`)
+                    const vIndex = data[datakey].length - 1
+                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}.[${vIndex}]`)
                 }
             } else {
                 let oldSubData = null
-                if (oldData && oldData[datakey] && oldData[datakey].isJSX) {
-                    oldSubData = oldData[datakey].v
+                if (oldData && oldData[datakey] && oldData[datakey].tempName) {
+                    oldSubData = oldData[datakey]
                 }
 
                 const subData = {}
-                data[datakey] = {
-                    isJSX: true,
-                    v: subData
-                }
+                data[datakey] = subData
 
-                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}.v`)
+                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}`)
             }
         } else if (nodeName === 'phblock') {
             // 用于FlatList等外层， 用来占位
