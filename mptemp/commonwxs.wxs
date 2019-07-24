@@ -40,11 +40,17 @@ var lite = function(v) {
     return v.constructor === 'Number' || v.constructor === 'String'
 }
 
+var isArray = function(v) {
+    return v.constructor === 'Array'
+}
+
 module.exports = {
    getFinalStyle: getFinalStyle,
    lite: lite,
+   isArray: isArray,
 
 
     s: getFinalStyle,
     l: lite,
+    a: isArray,
 };
