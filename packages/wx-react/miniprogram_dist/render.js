@@ -201,7 +201,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                     const subData = {
                         key: subKey,
-                       // diuu: subVnode.diuu
+                        diuu: subVnode.diuu  // 用来判断复用逻辑
                     }
                     data[datakey].push(subData)
 
