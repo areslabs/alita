@@ -23,7 +23,8 @@ export default function classNameHandler (ast,info) {
                 && path.node.name.name === 'view'
             ) {
                 const attris = path.node.attributes
-                const original = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === 'original'))[0].value.value
+                const origs = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === 'original'))
+                const original =  origs[0].value.value
 
                 if (original === 'View'
                     || original === 'AnimatedView'

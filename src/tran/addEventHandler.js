@@ -63,19 +63,7 @@ export default function touchableToView (ast) {
 
 
                     jsxElement.children.push(
-                        t.jsxElement(
-                            t.jsxOpeningElement(
-                                t.jsxIdentifier('view'),
-                                [
-                                    t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral('thFabricate')),
-                                    t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral('thFabricate')),
-                                    t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`background-color: {{${diuu}underlayColor}}`))
-                                ]
-                            ),
-                            t.jsxClosingElement(t.jsxIdentifier('view')),
-                            [],
-                            true
-                        )
+                        t.jsxText(`<view class="thFabricate" style="background-color: {{${diuu}underlayColor}}"/>`)
                     )
 
 

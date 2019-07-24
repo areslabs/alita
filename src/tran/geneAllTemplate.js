@@ -128,10 +128,6 @@ export default function(ast, info) {
                 const diuuAttr = getAttr(jsxOp, 'diuu')
                 const diuuKey = diuuAttr.value.value
 
-                if (diuuKey === 'thFabricate') {
-                    // TouchableHighlight 产生的占位节点
-                    return
-                }
 
                 const attr = path.node
 
