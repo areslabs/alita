@@ -1,4 +1,4 @@
-<wxs src="../commonwxs.wxs" module="tools" />
+<wxs src="../../../../../commonwxs.wxs" module="tools" />
 <scroll-view
         bindscrolltoupper="onScrollToupper"
         scroll-y
@@ -32,7 +32,7 @@
                 style="{{tools.getFinalStyle(_r.ListHeaderComponentDIUUstyle)}}"
         />
 
-        <block wx:for="{{_r.sectionsData}}" wx:key="key">
+        <block wx:for="{{tools.compact(_r.sectionsData)}}" wx:key="key">
             <renderSectionHeaderCPT
                     wx:if="{{item.renderSectionHeaderDIUU}}"
                     diuu="{{item.renderSectionHeaderDIUU}}"
@@ -40,7 +40,7 @@
                     style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
             />
 
-            <block wx:for="{{item.renderItemData}}" wx:key="key">
+            <block wx:for="{{tools.compact(item.renderItemData)}}" wx:key="key">
                 <renderItemCPT
                         diuu="{{item.renderItemDIUU}}"
                         _r="{{item.renderItemDIUUR}}"

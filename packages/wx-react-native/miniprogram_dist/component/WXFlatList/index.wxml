@@ -1,4 +1,4 @@
-<wxs src="../commonwxs.wxs" module="tools" />
+<wxs src="../../../../../commonwxs.wxs" module="tools" />
 <wxs module="methods">
     var ArrayContains=function(arr,ele){
         var find=false
@@ -59,7 +59,7 @@
 
         <block wx:if="{{_r.numColumns >= 2}}">
             <view style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap">
-                <view wx:for="{{_r.renderItemData}}" wx:key="key" style="width: {{100 / r.numColumns}}%">
+                <view wx:for="{{tools.compact(_r.renderItemData)}}" wx:key="key" style="width: {{100 / r.numColumns}}%">
                     <renderItemCPT id="id_{{index}}"
                                    diuu="{{item.renderItemDIUU}}"
                                    _r="{{item.renderItemDIUUR}}"
@@ -68,7 +68,7 @@
             </view>
         </block>
         <block wx:else>
-            <block wx:for="{{_r.renderItemData}}" wx:key="key">
+            <block wx:for="{{tools.compact(_r.renderItemData)}}" wx:key="key">
                 <view wx:if="{{methods.ArrayContains(_r.stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}">
                     <renderItemCPT id="id_{{index}}"
                                    diuu="{{item.renderItemDIUU}}"

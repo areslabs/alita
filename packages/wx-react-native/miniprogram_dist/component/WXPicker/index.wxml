@@ -1,4 +1,4 @@
-<wxs src="../commonwxs.wxs" module="tools"/>
+<wxs src="../../../../../commonwxs.wxs" module="tools" />
 <picker-view
         indicator-style="height: 50px"
         style="position: absolute; height: {{_r.itemLength * 50}}px; width: 100%"
@@ -6,7 +6,7 @@
         bindchange="onValueChange">
     <picker-view-column>
         <block
-                wx:for="{{_r.childrenData}}"
+                wx:for="{{tools.compact(_r.childrenData)}}"
                 wx:key="key"
         >
             <childrenCPT

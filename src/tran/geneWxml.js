@@ -66,7 +66,7 @@ export default function(info) {
         const name = childTemplates[i];
         // 如果只使用一个child 小程序会报递归， 然后就不渲染了
         const subT = `
-<template name="${name}"><block wx:if="{{t.a(d)}}"><block wx:for="{{d}}" wx:key="key"><block wx:if="{{t.l(item)}}">{{item}}</block><template wx:else is="{{item.tempName}}" data="{{...item}}"></template></block></block><template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"></template></template>
+<template name="${name}"><block wx:if="{{t.a(d)}}"><block wx:for="{{t.c(d)}}" wx:key="key"><block wx:if="{{t.l(item)}}">{{item}}</block><template wx:else is="{{item.tempName}}" data="{{...item}}"></template></block></block><template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"></template></template>
         `;
 
         templateWxml = subT + templateWxml;
