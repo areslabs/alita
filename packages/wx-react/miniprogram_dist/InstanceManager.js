@@ -5,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
+/**
+ * 实例管理模块，小程序和mini-react互相交互通过此模块
+ */
 class InstanceManager {
     innerMap = {}
 

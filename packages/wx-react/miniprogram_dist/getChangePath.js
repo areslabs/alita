@@ -90,6 +90,12 @@ function getChangePathInner(newR, oldR, prefix, result) {
     }
 }
 
+
+/**
+ * 获取小程序更新的数据路径
+ * @param newRender
+ * @param oldRender
+ */
 export default function getChangePath(newRender, oldRender) {
     const result = {}
 

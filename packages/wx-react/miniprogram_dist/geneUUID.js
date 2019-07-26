@@ -5,7 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
+
+/**
+ * 高效生成唯一uuid，需要全局不重复
+ */
+
 const ORDER = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split('')
 let uuid = "a0000000".split('')
 export default function geneUUID() {
