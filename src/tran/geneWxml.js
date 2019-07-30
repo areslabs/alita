@@ -105,36 +105,9 @@ function geneAllOutComp(outComp, filepath) {
         );
 
         const wxmlAst = [];
-        wxmlAst.push(t.jsxElement(
-            t.jsxOpeningElement(
-                t.jsxIdentifier("import"),
-                [
-                    t.jsxAttribute(t.jsxIdentifier("src"), t.stringLiteral(`./${temppath}`))
-                ]
-            ),
-            t.jsxClosingElement(t.jsxIdentifier("import")),
-            [],
-            true
-        ));
-
-        wxmlAst.push(t.jsxText("\n "));
-
-        wxmlAst.push(t.jsxElement(
-            t.jsxOpeningElement(
-                t.jsxIdentifier("template"),
-                [
-                    t.jsxAttribute(t.jsxIdentifier("wx:if"), t.stringLiteral(`{{_r && _r.tempName}}`)),
-                    t.jsxAttribute(t.jsxIdentifier("is"), t.stringLiteral(`{{_r.tempName}}`)),
-                    t.jsxAttribute(t.jsxIdentifier("data"), t.stringLiteral(`{{..._r}}`))
-                ]
-            ),
-            t.jsxClosingElement(t.jsxIdentifier("template")),
-            [],
-            true
-        ));
-        wxmlAst.push(t.jsxText("\n "));
-
-
+        wxmlAst.push(t.jsxText(`<import src="./${temppath}"/>`))
+        wxmlAst.push(t.jsxText("\n"));
+        wxmlAst.push(t.jsxText(`<template wx:if="{{(_r && _r.tempName) || (R && R.tempName)}}" is="{{_r.tempName || R.tempName}}" data="{{...(_r || R)}}"/>`))
         let tmpWxmlAst = t.jsxElement(
             t.jsxOpeningElement(
                 t.jsxIdentifier("InnerTmpOpeningElement"),

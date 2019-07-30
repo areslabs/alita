@@ -17,7 +17,7 @@ export default function (CompMySelf, RNApp) {
     const o = {
         properties: {
             diuu: null,
-            _r: null,
+            R: null,
         },
 
         attached() {

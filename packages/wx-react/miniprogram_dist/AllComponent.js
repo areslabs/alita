@@ -15,6 +15,33 @@ import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
 
 
+function recursionChildUpdater(inst, updaterList) {
+    const children = inst._c
+    for (let i = 0; i < children.length; i++) {
+        const childUuid = children[i]
+        const child = instanceManager.getCompInstByUUID(childUuid)
+
+        const wxInst = child.getWxInst()
+        if (wxInst.data._r) {
+            continue
+        }
+
+
+        recursionChildUpdater(child, updaterList)
+    }
+
+    if (inst instanceof HocComponent) {
+        return
+    }
+
+    updaterList.push({
+        inst: inst.getWxInst(),
+        data: {
+            _r: inst._r
+        }
+    })
+}
+
 const P_R =  Promise.resolve()
 
 /**
@@ -194,6 +221,11 @@ export class BaseComponent {
                     child.updateWXInner(resolve, updaterList, groupPromise)
                 })
                 updatePros.push(p)
+            } else {
+                const wxInst = child.getWxInst()
+                if (!child.shouldUpdate && !wxInst.data._r) {
+                    recursionChildUpdater(child, updaterList)
+                }
             }
         }
 
@@ -211,13 +243,26 @@ export class BaseComponent {
         }
 
 
-        const cp = getChangePath(this._r, this._or)
-        Object.assign(cp, updateObj)
+
+        let cp = null
+        const wxInst = this.getWxInst()
+        if (!wxInst.data._r) {
+            cp = {
+                _r: this._r,
+                ...updateObj
+            }
+        } else {
+            cp = {
+                ...getChangePath(this._r, this._or),
+                ...updateObj
+            }
+        }
+
         if (Object.keys(cp).length === 0) {
             updatePros.push(P_R)
         } else {
             updaterList.push({
-                inst: this.getWxInst(),
+                inst: wxInst,
                 data: cp
             })
             updatePros.push(groupPromise)

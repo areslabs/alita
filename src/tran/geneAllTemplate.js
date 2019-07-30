@@ -66,7 +66,7 @@ export default function(ast, info) {
 
                 if(!isBindElement(jsxOp)) {
                     jsxOp.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('_r'), t.stringLiteral(`{{${diuuKey}R}}`)),
+                        t.jsxAttribute(t.jsxIdentifier('R'), t.stringLiteral(`{{${diuuKey}R}}`)),
                     )
                 }
 
