@@ -258,6 +258,9 @@ export class BaseComponent {
             }
         }
 
+        // _or 不在有用
+        this._or = {}
+
         if (Object.keys(cp).length === 0) {
             updatePros.push(P_R)
         } else {
