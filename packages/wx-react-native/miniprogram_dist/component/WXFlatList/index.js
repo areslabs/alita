@@ -13,7 +13,7 @@ const top = 80
 Component({
     properties: {
         diuu: null,
-        _r: null,
+        R: null,
     },
 
     attached() {
@@ -23,20 +23,17 @@ Component({
     ready() {
         instanceManager.setWxCompInst(this.data.diuu, this)
         const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-        if (!compInst.firstRender) {
-            compInst.firstUpdateUI()
-        }
         this.compInst = compInst
 
         const method = getPropsMethod(this, 'onRefresh');
-        this.hasOnRefreshPassed = !!this.data._r.onRefreshPassed
+        this.hasOnRefreshPassed = !!this.data.R.onRefreshPassed
         this.onRefreshMethod = method
 
         this.onScrollFunc = getPropsMethod(this, 'onScroll');
         this.onScrollEndDragFunc = getPropsMethod(this, 'onScrollEndDrag');
 
         this.hasChanges = []
-        const infos = this.data._r.stickyInfos
+        const infos = this.data.R.stickyInfos
         if (Array.isArray(infos) && infos.length > 0) {
             for (let k = 0; k < infos.length; k++) {
                 this.hasChanges.push(false)
@@ -84,7 +81,9 @@ Component({
                 clearTimeout(this.stopTimerFlag)
             }
             this.stopTimerFlag = setTimeout(() => {
-                if (this.lastVal <= 80 && !this.data._r.refreshing) {
+
+                const refreshing = (this.data._r || this.data.R).refreshing
+                if (this.lastVal <= 80 && !refreshing) {
                     this.setData({
                         sr: false
                     });
@@ -107,8 +106,9 @@ Component({
                 this.onScrollFunc(this.formatEvent(e));
             }
 
-            if (this.data._r.stickyInfos) {
-                const infos = this.data._r.stickyInfos
+            const stickyInfos = (this.data._r || this.data.R).stickyInfos
+            if (stickyInfos) {
+                const infos = stickyInfos
                 if (Array.isArray(infos) && infos.length > 0) {
                     for (let k = 0; k < infos.length; k++) {
                         const info = infos[k]
@@ -155,7 +155,8 @@ Component({
                 return;
             }
             //松手归位
-            if (this.lastVal <= top && this.lastVal >= 20 && !this.data._r.refreshing) {
+            const refreshing = (this.data._r || this.data.R).refreshing
+            if (this.lastVal <= top && this.lastVal >= 20 && !refreshing) {
                 this.setData({
                     sr: false
                 });

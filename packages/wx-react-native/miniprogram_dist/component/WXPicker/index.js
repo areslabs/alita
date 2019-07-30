@@ -15,20 +15,13 @@ Component({
         },
         onValueChange: null,
         diuu: null,
-        _r: null
+        R: null
     },
 
     attached() {
         instanceManager.setWxCompInst(this.data.diuu, this)
     },
 
-    ready() {
-        instanceManager.setWxCompInst(this.data.diuu, this)
-        const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-        if (!compInst.firstRender) {
-            compInst.firstUpdateUI()
-        }
-    },
 
     detached() {
         instanceManager.removeUUID(this.data.diuu)
@@ -37,7 +30,9 @@ Component({
     methods: {
         onValueChange: function (e) {
             const index = e.detail.value[0];
-            const value = this.data._r.pickData[index].value
+
+            const pickData = (this.data._r || this.data.R).pickData
+            const value = pickData[index].value
 
             const method = getPropsMethod(this, 'onValueChange')
             method && method(value, index)
