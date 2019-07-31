@@ -97,4 +97,4 @@
     </scroll-view>
 </template>
 
-<template is="flatList" data="{{...(_r || R)}}"/>
+<template is="flatList" data="{{...(_r || R), withAni, outLeft, index_id, sr, sti}}"/>

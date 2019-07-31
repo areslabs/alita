@@ -67,4 +67,4 @@
     </scroll-view>
 </template>
 
-<template is="sectionList" data="{{...(_r || R)}}"/>
+<template is="sectionList" data="{{...(_r || R), withAni, outLeft, sr}}"/>
