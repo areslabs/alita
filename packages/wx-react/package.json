@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react",
-  "version": "1.0.23",
+  "version": "1.0.24-beta.9",
   "description": "微信版本的React",
   "main": "index.js",
   "scripts": {
