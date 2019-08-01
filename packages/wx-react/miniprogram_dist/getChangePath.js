@@ -6,6 +6,12 @@
  *
  */
 
+function hasMoreKeys(okeys, nkeys) {
+    const nkeysSet = new Set(nkeys)
+
+    return okeys.some(key => !nkeysSet.has(key))
+}
+
 function getObjectPathInner(v, prefix, result) {
     const tv = typeof v
 
@@ -54,16 +60,16 @@ function getChangePathInner(newR, oldR, prefix, result) {
     ) {
         getObjectPathInner(newR, prefix, result)
     } else if (Array.isArray(newR)) {
+        // 由于小程序 setData 设置为 undefined 会出问题。 所以这种情况直接设置对象
+        if (newR.length < oldR.length) {
+            result[prefix] = newR
+            return
+        }
+
         for (let i = 0; i < newR.length; i++) {
             const v = newR[i]
             const ov = oldR[i]
             getChangePathInner(v, ov, `${prefix}[${i}]`, result)
-        }
-        
-        if (newR.length < oldR.length) {
-            for (let i = newR.length; i < oldR.length; i ++) {
-                result[`${prefix}[${i}]`] = null
-            }
         }
     } else if (tn === 'object' && tn !== null) {
         if (newR.__isAnimation__) {
@@ -73,17 +79,20 @@ function getChangePathInner(newR, oldR, prefix, result) {
 
 
         const nkeys = Object.keys(newR)
+        const okeys = Object.keys(oldR)
+
+        // 由于小程序 setData 设置为 undefined 会出问题。 所以这种情况直接设置对象
+        // TODO 这种情况下， 是否依然可以减少数据的传递呢？？
+        if (hasMoreKeys(okeys, nkeys)) {
+            result[prefix] = newR
+            return
+        }
+
         for (let i = 0; i < nkeys.length; i++) {
             const k = nkeys[i]
             const v = newR[k]
             const ov = oldR[k]
             getChangePathInner(v, ov, `${prefix}.${k}`, result)
-        }
-
-        const okeys = Object.keys(oldR)
-        const onlyNkeys = okeys.filter(k => newR[k] === undefined)
-        for(let i = 0; i < onlyNkeys.length; i ++) {
-            result[`${prefix}.${onlyNkeys[i]}`] = null
         }
     } else {
         result[prefix] = newR

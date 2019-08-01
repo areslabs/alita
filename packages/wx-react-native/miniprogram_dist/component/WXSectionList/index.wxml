@@ -34,7 +34,7 @@
                     style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
             />
 
-            <block wx:for="{{tools.compact(sectionsData)}}" wx:key="key">
+            <block wx:for="{{sectionsData}}" wx:key="key">
                 <renderSectionHeaderCPT
                         wx:if="{{item.renderSectionHeaderDIUU}}"
                         diuu="{{item.renderSectionHeaderDIUU}}"
@@ -42,7 +42,7 @@
                         style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
                 />
 
-                <block wx:for="{{tools.compact(item.renderItemData)}}" wx:key="key">
+                <block wx:for="{{item.renderItemData}}" wx:key="key">
                     <renderItemCPT
                             diuu="{{item.renderItemDIUU}}"
                             R="{{item.renderItemDIUUR}}"

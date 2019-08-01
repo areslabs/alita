@@ -8,7 +8,7 @@
             bindchange="onValueChange">
         <picker-view-column>
             <block
-                    wx:for="{{tools.compact(childrenData)}}"
+                    wx:for="{{childrenData}}"
                     wx:key="key"
             >
                 <childrenCPT

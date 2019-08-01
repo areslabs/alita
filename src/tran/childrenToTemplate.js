@@ -117,7 +117,7 @@ export default function childrenToTemplate(ast, info) {
                                 [
                                     t.jsxAttribute(t.jsxIdentifier('datakey'), t.stringLiteral(datakey)),
                                     t.jsxAttribute(t.jsxIdentifier('tempVnode'), ele),
-                                    t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${datakey}}}`)),
+                                    t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${datakey}}} !== undefined`)),
                                     t.jsxAttribute(t.jsxIdentifier('is'), t.stringLiteral(tempName)),
                                     t.jsxAttribute(t.jsxIdentifier('data'), t.stringLiteral(`{{d: ${datakey}}}`))
                                 ]

@@ -40,25 +40,12 @@ var lite = function(v) {
     return v.constructor === 'Number' || v.constructor === 'String'
 }
 
-var isArray = function(v) {
-    return v.constructor === 'Array'
-}
-
-var compact = function(v) {
-    return v.filter(function(item) {
-         return item !== null
-    })
-}
 
 module.exports = {
    getFinalStyle: getFinalStyle,
    lite: lite,
-   isArray: isArray,
-   compact: compact,
 
 
     s: getFinalStyle,
     l: lite,
-    a: isArray,
-    c: compact
 };

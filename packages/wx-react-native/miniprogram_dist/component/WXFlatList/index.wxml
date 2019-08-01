@@ -61,7 +61,7 @@
 
             <block wx:if="{{numColumns >= 2}}">
                 <view style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap">
-                    <view wx:for="{{tools.compact(renderItemData)}}" wx:key="key" style="width: {{100 / numColumns}}%">
+                    <view wx:for="{{renderItemData}}" wx:key="key" style="width: {{100 / numColumns}}%">
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
                                        R="{{item.renderItemDIUUR}}"
@@ -70,7 +70,7 @@
                 </view>
             </block>
             <block wx:else>
-                <block wx:for="{{tools.compact(renderItemData)}}" wx:key="key">
+                <block wx:for="{{renderItemData}}" wx:key="key">
                     <view wx:if="{{methods.ArrayContains(stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}">
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
