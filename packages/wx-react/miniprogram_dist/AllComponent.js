@@ -15,31 +15,30 @@ import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
 
 
-function recursionChildUpdater(inst, updaterList) {
+function getRAllList(inst) {
+    const descendantList = []
+    recursionCollectChild(inst, descendantList)
+    return descendantList
+}
+
+function recursionCollectChild(inst, descendantList) {
     const children = inst._c
     for (let i = 0; i < children.length; i++) {
         const childUuid = children[i]
         const child = instanceManager.getCompInstByUUID(childUuid)
 
-        const wxInst = child.getWxInst()
-        if (wxInst.data._r) {
-            continue
-        }
-
-
-        recursionChildUpdater(child, updaterList)
+        recursionCollectChild(child, descendantList)
     }
 
     if (inst instanceof HocComponent) {
         return
     }
 
-    updaterList.push({
-        inst: inst.getWxInst(),
-        data: {
-            _r: inst._r
-        }
-    })
+    if (Object.keys(inst._r).length === 0) {
+        return
+    }
+
+    descendantList.push(inst)
 }
 
 const P_R =  Promise.resolve()
@@ -82,7 +81,9 @@ const P_R =  Promise.resolve()
  *               ... // son3UiDes
  *           }
  *     }
- * 然后 father.setData(allUiDes) 。 初始结束以后，father组件不再持有子组件数据，以后的更新将通过groupSetData方式。
+ * 然后 father.setData(allUiDes) 。 初始结束以后，father会去收集所有新产生的节点，统一调用一次 groupSetData把数据在刷给每一个子孙节点，
+ * 这一次groupSetData 可以lazy调用吗？即和下一次setState合并，其实是可以的，这样的好处是节省了一次groupSetData。但是实际运行情况表明，这样
+ * 做了以后，在FlatList里面存在这闪屏现象。 所以最终的方案还是初始结束以后，就刷数据给子孙节点
  *
  */
 export class BaseComponent {
@@ -104,9 +105,9 @@ export class BaseComponent {
     }
 
     /**
-     * 组件初始渲染
+     * 页面组件初始渲染
      */
-    firstUpdateUI() {
+    firstUpdateWX() {
         const diuu = this.__diuu__
         const allData = getObjSubData(this._r)
         const wxInst = instanceManager.getWxInstByUUID(diuu)
@@ -116,7 +117,31 @@ export class BaseComponent {
             recursionMount(this)
         } else {
             wxInst.setData({_r: allData}, () => {
-                recursionMount(this)
+                const firstReplaceRAllList = getRAllList(this)
+
+                // 会把this 也收集进来，所以至少要2个
+                if (firstReplaceRAllList.length > 1) {
+                    console.log('first replace R:', firstReplaceRAllList)
+                    wxInst.groupSetData(() => {
+                        for(let i = 0; i < firstReplaceRAllList.length; i ++ ) {
+                            const inst = firstReplaceRAllList[i]
+                            if (inst === this) {
+                                continue
+                            }
+
+                            const wxItem = inst.getWxInst()
+                            if (i === 0) {
+                                wxItem.setData({_r: inst._r}, () => {
+                                    recursionMount(this)
+                                })
+                            } else {
+                                wxItem.setData({_r: inst._r})
+                            }
+                        }
+                    })
+                } else {
+                    recursionMount(this)
+                }
             })
         }
     }
@@ -129,13 +154,19 @@ export class BaseComponent {
      */
     updateWX(cb, styleUpdater) {
         const updaterList = []
+        const firstReplaceRList = []
 
         let gpr = null
         const groupPromise = new Promise((resolve) => {
             gpr = resolve
         })
 
-        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise)
+        let frp = null
+        const firstReplacePromise = new Promise((resolve) => {
+            frp = resolve
+        })
+
+        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise, firstReplaceRList, firstReplacePromise)
 
         if (styleUpdater) {
             updaterList.push(styleUpdater)
@@ -146,15 +177,33 @@ export class BaseComponent {
             return
         }
         /// groupSetData 来优化多次setData
-
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
-        let hasGprAdd = false
+
+        if (firstReplaceRList.length > 0) {
+            groupPromise.then(() => {
+                console.log('update Replace R:', firstReplaceRList)
+                topWX.groupSetData(() => {
+                    for(let i = 0; i < firstReplaceRList.length; i ++ ) {
+                        const inst = firstReplaceRList[i]
+
+                        const wxItem = inst.getWxInst()
+                        if (i === 0) {
+                            wxItem.setData({_r: inst._r}, frp)
+                        } else {
+                            wxItem.setData({_r: inst._r})
+                        }
+                    }
+                })
+            })
+        } else {
+            frp()
+        }
+
         topWX.groupSetData(() => {
             console.log('update wow:', updaterList)
             for(let i = 0; i < updaterList.length; i ++ ) {
                 const {inst, data} = updaterList[i]
-                if (!hasGprAdd) {
-                    hasGprAdd = true
+                if (i === 0) {
                     inst.setData(data, gpr)
                 } else {
                     inst.setData(data)
@@ -167,13 +216,15 @@ export class BaseComponent {
      * 递归程序。 主要做两个事情
      * 1. 构建出updaterList， 包含所以需要更新的微信实例/数据
      * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 生命周期的正确执行
+     * 3. 构建出firstReplaceRList，包含所以新节点，这些节点需要使用_r 替换R，以免闪屏
      *
-     * //TODO 由于小程序groupSetData的合并， Object.keys(cp).length === 0 的判断是否还有必要？
      * @param doneCb
      * @param updaterList
      * @param groupPromise
+     * @param firstReplaceRList
+     * @param firstReplacePromise
      */
-    updateWXInner(doneCb, updaterList, groupPromise) {
+    updateWXInner(doneCb, updaterList, groupPromise, firstReplaceRList, firstReplacePromise) {
         const updatePros = []
         const updateObj = {}
         const children = this._c
@@ -197,35 +248,28 @@ export class BaseComponent {
                         }
                     })
 
-                    const p = new Promise(resolve => {
-                        groupPromise.then(() => {
-                            recursionMount(child)
-                            resolve()
-                        })
+                    firstReplaceRList.push(...getRAllList(child))
+                    firstReplacePromise.then(() => {
+                        recursionMount(child)
                     })
-                    updatePros.push(p)
+
+                    updatePros.push(firstReplacePromise)
                 }
             } else if (child.firstRender !== FR_DONE && !child.hocWrapped) {
                 updateObj[`${child._keyPath}R`] = getObjSubData(child._r)
 
-                const p = new Promise(resolve => {
-                    groupPromise.then(() => {
-                        recursionMount(child)
-                        resolve()
-                    })
+                firstReplaceRList.push(...getRAllList(child))
+                firstReplacePromise.then(() => {
+                    recursionMount(child)
                 })
-                updatePros.push(p)
+
+                updatePros.push(firstReplacePromise)
             } else if (child.shouldUpdate) {
                 // 已经存在的节点更新数据
                 const p = new Promise((resolve) => {
-                    child.updateWXInner(resolve, updaterList, groupPromise)
+                    child.updateWXInner(resolve, updaterList, groupPromise, firstReplaceRList, firstReplacePromise)
                 })
                 updatePros.push(p)
-            } else {
-                const wxInst = child.getWxInst()
-                if (!child.shouldUpdate && !wxInst.data._r) {
-                    recursionChildUpdater(child, updaterList)
-                }
             }
         }
 
@@ -242,20 +286,9 @@ export class BaseComponent {
             return
         }
 
-
-
-        let cp = null
-        const wxInst = this.getWxInst()
-        if (!wxInst.data._r) {
-            cp = {
-                _r: this._r,
-                ...updateObj
-            }
-        } else {
-            cp = {
-                ...getChangePath(this._r, this._or),
-                ...updateObj
-            }
+        const cp = {
+            ...getChangePath(this._r, this._or),
+            ...updateObj
         }
 
         // _or 不在有用
@@ -265,7 +298,7 @@ export class BaseComponent {
             updatePros.push(P_R)
         } else {
             updaterList.push({
-                inst: wxInst,
+                inst: this.getWxInst(),
                 data: cp
             })
             updatePros.push(groupPromise)

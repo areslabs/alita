@@ -25,14 +25,6 @@ export default function (CompMySelf, RNApp) {
             this.data.diuu && instanceManager.setWxCompInst(this.data.diuu, this)
         },
 
-        ready() {
-            // 页面组件
-            if (this.isPage) {
-                const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-                // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
-                compInst.firstUpdateUI()
-            }
-        },
 
         detached() {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
@@ -92,7 +84,10 @@ export default function (CompMySelf, RNApp) {
             this.data.diuu = uuid
             instanceManager.setWxCompInst(this.data.diuu, this)
 
-            this.isPage = true
+
+            const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
+            // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
+            compInst.firstUpdateWX()
         }
 
         o.methods.onShow = function () {
