@@ -67,6 +67,7 @@ export default function(ast, info) {
                 if(!isBindElement(jsxOp)) {
                     jsxOp.attributes.push(
                         t.jsxAttribute(t.jsxIdentifier('R'), t.stringLiteral(`{{${diuuKey}R}}`)),
+                        t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${diuuKey}style !== false}}`)),
                     )
                 }
 

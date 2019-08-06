@@ -643,9 +643,9 @@ function reportOuterWithExistsStyle(parentDiuu, inst, parentInst, dataPath) {
 function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath) {
     const outStyleKey = `${parentDiuu}style`
 
-    // render null
+    // render null，外层组件的节点 也应该消失
     if (subVnode === null || subVnode === undefined || typeof subVnode === 'boolean') {
-        const styleValue = 'display: none;'
+        const styleValue = false
         setStyleData(parentInst, outStyleKey, styleValue, dataPath)
         inst._myOutStyle = styleValue
         inst._keyPath = `${dataPath}.${parentDiuu}`

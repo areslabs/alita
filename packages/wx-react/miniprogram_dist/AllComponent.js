@@ -60,6 +60,25 @@ const P_R =  Promise.resolve()
  *
  */
 export class BaseComponent {
+
+    getHocTop() {
+        let diuu = null
+
+        if (this.hocWrapped) {
+            let p = this._p
+            while (p.hocWrapped) {
+                p = p._p
+            }
+
+            diuu = p.__diuu__
+        } else {
+            diuu = this.__diuu__
+        }
+
+        return instanceManager.getCompInstByUUID(diuu)
+    }
+
+
     getWxInst() {
         let diuu = null
 
@@ -215,36 +234,57 @@ export class BaseComponent {
 
             if (child.firstRender !== FR_DONE && child.hocWrapped) {
                 const allSubData = getObjSubData(child._r)
-                const wxInst = child.getWxInst()
 
-                // HOC 多次嵌套的情况，allSubData可能是{}
                 if (Object.keys(allSubData).length === 0) {
                     recursionMount(child)
                     updatePros.push(P_R)
                 } else {
-                    updaterList.push({
-                        inst: wxInst,
-                        data: {
-                            _r: allSubData
-                        }
+                    const hocTop = child.getHocTop()
+                    const hocTopParent = hocTop._p
+
+                    if (!hocTopParent) {
+                        // page
+                        updaterList.push({
+                            inst: hocTop.getWxInst(),
+                            data: {
+                                _r: allSubData,
+                            }
+                        })
+
+                        firstReplaceRList.push(...getRAllList(child, false))
+                    } else {
+                        updaterList.push({
+                            inst: hocTopParent.getWxInst(),
+                            data: {
+                                [`${hocTop._keyPath}R`]: allSubData
+                            }
+                        })
+
+                        firstReplaceRList.push(...getRAllList(child, true))
+                    }
+
+
+                    const p = new Promise((resolve) => {
+                        firstReplacePromise.then(() => {
+                            recursionMount(child)
+                            resolve()
+                        })
                     })
 
-                    firstReplaceRList.push(...getRAllList(child, false))
-                    firstReplacePromise.then(() => {
-                        recursionMount(child)
-                    })
-
-                    updatePros.push(firstReplacePromise)
+                    updatePros.push(p)
                 }
             } else if (child.firstRender !== FR_DONE && !child.hocWrapped) {
                 updateObj[`${child._keyPath}R`] = getObjSubData(child._r)
 
                 firstReplaceRList.push(...getRAllList(child, true))
-                firstReplacePromise.then(() => {
-                    recursionMount(child)
+                const p = new Promise((resolve) => {
+                    firstReplacePromise.then(() => {
+                        recursionMount(child)
+                        resolve()
+                    })
                 })
 
-                updatePros.push(firstReplacePromise)
+                updatePros.push(p)
             } else if (child.shouldUpdate) {
                 // 已经存在的节点更新数据
                 const p = new Promise((resolve) => {
@@ -417,9 +457,9 @@ export class Component extends BaseComponent {
             return
         }
 
-        let newOutStyle = ''
+        let newOutStyle = null
         if (subVnode === null || subVnode === undefined || typeof subVnode === 'boolean') {
-            newOutStyle = 'display: none;'
+            newOutStyle = false
             this._myOutStyle = newOutStyle
         } else {
             const {diuu} = subVnode
@@ -517,7 +557,8 @@ function getRAllList(inst, include) {
     const descendantList = []
     recursionCollectChild(inst, descendantList)
 
-    if (!include) {
+    // inst 可能在descendantList里面， 如果include为fasle， 需要移除
+    if (!include && descendantList[descendantList.length - 1] === inst) {
         descendantList.pop()
     }
 

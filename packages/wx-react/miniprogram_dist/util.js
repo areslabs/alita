@@ -97,20 +97,6 @@ export const HOCKEY = "HOCKEY"
 export const FR_PENDING = "PENDING"
 export const FR_DONE = "DONE"
 
-
-export function recursionUnmount(comp) {
-    const child = comp._c[0]
-    if (child) {
-        const childComp = instanceManager.getCompInstByUUID(child)
-        if (childComp.hocWrapped) {
-            recursionUnmount(childComp)
-        }
-    }
-
-    comp.componentWillUnmount && comp.componentWillUnmount()
-    instanceManager.removeUUID(comp.__diuu__)
-}
-
 export function recursionMount(comp) {
     for (let i = 0; i < comp._c.length; i++) {
         const inst = instanceManager.getCompInstByUUID(comp._c[i])
@@ -121,6 +107,15 @@ export function recursionMount(comp) {
 
     if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
         comp.componentDidFocus()
+    }
+
+    if (comp.hocWrapped) {
+        const wxInst = comp.getWxInst()
+        if (wxInst.relativeComps) {
+            wxInst.relativeComps.unshift(comp)
+        } else {
+            wxInst.relativeComps = [comp]
+        }
     }
 }
 
