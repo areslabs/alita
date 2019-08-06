@@ -14,33 +14,6 @@ import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
 
-
-function getRAllList(inst) {
-    const descendantList = []
-    recursionCollectChild(inst, descendantList)
-    return descendantList
-}
-
-function recursionCollectChild(inst, descendantList) {
-    const children = inst._c
-    for (let i = 0; i < children.length; i++) {
-        const childUuid = children[i]
-        const child = instanceManager.getCompInstByUUID(childUuid)
-
-        recursionCollectChild(child, descendantList)
-    }
-
-    if (inst instanceof HocComponent) {
-        return
-    }
-
-    if (Object.keys(inst._r).length === 0) {
-        return
-    }
-
-    descendantList.push(inst)
-}
-
 const P_R =  Promise.resolve()
 
 /**
@@ -112,26 +85,24 @@ export class BaseComponent {
         const allData = getObjSubData(this._r)
         const wxInst = instanceManager.getWxInstByUUID(diuu)
 
-        console.log('first wow:', allData, this)
         if (Object.keys(allData).length === 0) {
             recursionMount(this)
         } else {
+            const start = Date.now()
             wxInst.setData({_r: allData}, () => {
-                const firstReplaceRAllList = getRAllList(this)
+                console.log('first duration:', Date.now() - start)
+                const firstReplaceRAllList = getRAllList(this, false)
 
                 // 会把this 也收集进来，所以至少要2个
-                if (firstReplaceRAllList.length > 1) {
-                    console.log('first replace R:', firstReplaceRAllList)
+                if (firstReplaceRAllList.length > 0) {
+                    const start = Date.now()
                     wxInst.groupSetData(() => {
                         for(let i = 0; i < firstReplaceRAllList.length; i ++ ) {
                             const inst = firstReplaceRAllList[i]
-                            if (inst === this) {
-                                continue
-                            }
-
                             const wxItem = inst.getWxInst()
                             if (i === 0) {
                                 wxItem.setData({_r: inst._r}, () => {
+                                    console.log('first replace duration:', Date.now() - start)
                                     recursionMount(this)
                                 })
                             } else {
@@ -177,18 +148,24 @@ export class BaseComponent {
             return
         }
         /// groupSetData 来优化多次setData
+
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
 
         if (firstReplaceRList.length > 0) {
             groupPromise.then(() => {
+                const start = Date.now()
                 console.log('update Replace R:', firstReplaceRList)
                 topWX.groupSetData(() => {
                     for(let i = 0; i < firstReplaceRList.length; i ++ ) {
                         const inst = firstReplaceRList[i]
 
                         const wxItem = inst.getWxInst()
+
                         if (i === 0) {
-                            wxItem.setData({_r: inst._r}, frp)
+                            wxItem.setData({_r: inst._r}, () => {
+                                console.log('update Replace duration:', Date.now() - start)
+                                frp()
+                            })
                         } else {
                             wxItem.setData({_r: inst._r})
                         }
@@ -201,10 +178,14 @@ export class BaseComponent {
 
         topWX.groupSetData(() => {
             console.log('update wow:', updaterList)
+            const start = Date.now()
             for(let i = 0; i < updaterList.length; i ++ ) {
                 const {inst, data} = updaterList[i]
                 if (i === 0) {
-                    inst.setData(data, gpr)
+                    inst.setData(data, () => {
+                        console.log('update duration:', Date.now() - start)
+                        gpr()
+                    })
                 } else {
                     inst.setData(data)
                 }
@@ -214,9 +195,9 @@ export class BaseComponent {
 
     /**
      * 递归程序。 主要做两个事情
-     * 1. 构建出updaterList， 包含所以需要更新的微信实例/数据
-     * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 生命周期的正确执行
-     * 3. 构建出firstReplaceRList，包含所以新节点，这些节点需要使用_r 替换R，以免闪屏
+     * 1. 构建出updaterList， 包含所有此次需要更新的微信实例 + 数据
+     * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 等生命周期的正确执行
+     * 3. 构建出firstReplaceRList，包含所有新节点，这些节点需要使用_r 替换R，以免闪屏
      *
      * @param doneCb
      * @param updaterList
@@ -248,7 +229,7 @@ export class BaseComponent {
                         }
                     })
 
-                    firstReplaceRList.push(...getRAllList(child))
+                    firstReplaceRList.push(...getRAllList(child, false))
                     firstReplacePromise.then(() => {
                         recursionMount(child)
                     })
@@ -258,7 +239,7 @@ export class BaseComponent {
             } else if (child.firstRender !== FR_DONE && !child.hocWrapped) {
                 updateObj[`${child._keyPath}R`] = getObjSubData(child._r)
 
-                firstReplaceRList.push(...getRAllList(child))
+                firstReplaceRList.push(...getRAllList(child, true))
                 firstReplacePromise.then(() => {
                     recursionMount(child)
                 })
@@ -530,3 +511,36 @@ export class HocComponent extends Component {
 
 export class RNBaseComponent {
 }
+
+
+function getRAllList(inst, include) {
+    const descendantList = []
+    recursionCollectChild(inst, descendantList)
+
+    if (!include) {
+        descendantList.pop()
+    }
+
+    return descendantList
+}
+
+function recursionCollectChild(inst, descendantList) {
+    const children = inst._c
+    for (let i = 0; i < children.length; i++) {
+        const childUuid = children[i]
+        const child = instanceManager.getCompInstByUUID(childUuid)
+
+        recursionCollectChild(child, descendantList)
+    }
+
+    if (inst instanceof HocComponent) {
+        return
+    }
+
+    if (Object.keys(inst._r).length === 0) {
+        return
+    }
+
+    descendantList.push(inst)
+}
+

@@ -122,8 +122,6 @@ export function recursionMount(comp) {
     if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
         comp.componentDidFocus()
     }
-
-    comp.firstRenderRes && comp.firstRenderRes()
 }
 
 export const ReactWxEventMap = {
