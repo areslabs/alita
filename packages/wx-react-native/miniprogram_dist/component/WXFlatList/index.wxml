@@ -31,7 +31,7 @@
             lower-threshold="{{100}}"
             scroll-into-view="{{index_id}}"
     >
-        <view style="{{contentContainerStyle}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
+        <view id="container" style="{{contentContainerStyle}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
             <view
                     wx:if="{{onRefreshPassed}}"
                     style="height:80px;align-items:center;justify-content:center;"

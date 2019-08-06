@@ -195,13 +195,16 @@ Component({
                 return
             }
 
-            if (this.compInst.props.data === this.endReachedInvokeData) {
-                return
-            }
+            const query = wx.createSelectorQuery().in(this)
+            query.select('#container').boundingClientRect((res) => {
+                const height = res.height
+                if (this.lastHeight === height) return
 
-            this.endReachedInvokeData = this.compInst.props.data
-            const method = getPropsMethod(this, 'onEndReached')
-            method && method()
+
+                this.lastHeight = height
+                const method = getPropsMethod(this, 'onEndReached')
+                method && method()
+            }).exec()
         }
     },
     data: {
