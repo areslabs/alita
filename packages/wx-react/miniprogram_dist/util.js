@@ -69,14 +69,13 @@ export function filterContext(nodeName, parentContext) {
 
 
 export function setDeepData(inst, v, path) {
-    const arr = path.split('.')
+    const arr = path.split(/[.\[]/)
 
     let tmpObj = inst
     for (let i = 0; i < arr.length - 1; i++) {
         const sk = arr[i]
-
-        if (sk.charAt(0) === '[' && sk.charAt(sk.length - 1) === ']') {
-            const index = Number(sk.substring(1, sk.length - 1))
+        if (sk.charAt(sk.length - 1) === ']') {
+            const index = Number(sk.substring(0, sk.length - 1))
             if (!Number.isNaN(index)) {
                 tmpObj = tmpObj[index]
             } else {
