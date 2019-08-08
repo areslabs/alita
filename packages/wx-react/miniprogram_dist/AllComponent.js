@@ -9,7 +9,7 @@
 import instanceManager from "./InstanceManager";
 import render from "./render";
 import getChangePath from "./getChangePath";
-import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, FR_PENDING, recursionMount, EMPTY_FUNC} from './util'
+import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, FR_PENDING, recursionMount, EMPTY_FUNC, getRealOc} from './util'
 import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
@@ -61,7 +61,7 @@ const P_R =  Promise.resolve()
  */
 export class BaseComponent {
 
-    getHocTop() {
+    getTopDiuu() {
         let diuu = null
 
         if (this.hocWrapped) {
@@ -74,25 +74,17 @@ export class BaseComponent {
         } else {
             diuu = this.__diuu__
         }
+        return diuu
+    }
 
+    getHocTop() {
+        const diuu = this.getTopDiuu()
         return instanceManager.getCompInstByUUID(diuu)
     }
 
 
     getWxInst() {
-        let diuu = null
-
-        if (this.hocWrapped) {
-            let p = this._p
-            while (p.hocWrapped) {
-                p = p._p
-            }
-
-            diuu = p.__diuu__
-        } else {
-            diuu = this.__diuu__
-        }
-
+        const diuu = this.getTopDiuu()
         return instanceManager.getWxInstByUUID(diuu)
     }
 
@@ -110,16 +102,23 @@ export class BaseComponent {
             const start = Date.now()
             wxInst.setData({_r: allData}, () => {
                 console.log('first duration:', Date.now() - start)
-                const firstReplaceRAllList = getRAllList(this, false)
+                // this也会被收集进来，pop 把this移除掉
+                const firstReplaceRAllList = getRAllList(this)
 
-                // 会把this 也收集进来，所以至少要2个
+                let hasAddCb = false
                 if (firstReplaceRAllList.length > 0) {
                     const start = Date.now()
                     wxInst.groupSetData(() => {
-                        for(let i = 0; i < firstReplaceRAllList.length; i ++ ) {
+                        for(let i = firstReplaceRAllList.length - 1; i >= 0; i -- ) {
                             const inst = firstReplaceRAllList[i]
                             const wxItem = inst.getWxInst()
-                            if (i === 0) {
+
+                            if (wxItem.data._r) {
+                                continue
+                            }
+
+                            if (!hasAddCb) {
+                                hasAddCb = true
                                 wxItem.setData({_r: inst._r}, () => {
                                     console.log('first replace duration:', Date.now() - start)
                                     recursionMount(this)
@@ -162,6 +161,7 @@ export class BaseComponent {
             updaterList.push(styleUpdater)
         }
 
+        console.log('updaterList:', updaterList)
         if (updaterList.length === 0) {
             gpr()
             return
@@ -174,13 +174,19 @@ export class BaseComponent {
             groupPromise.then(() => {
                 const start = Date.now()
                 console.log('update Replace R:', firstReplaceRList)
+
+                let hasAddCb = false
                 topWX.groupSetData(() => {
-                    for(let i = 0; i < firstReplaceRList.length; i ++ ) {
+                    for(let i = firstReplaceRList.length - 1; i >= 0; i -- ) {
                         const inst = firstReplaceRList[i]
 
                         const wxItem = inst.getWxInst()
-
-                        if (i === 0) {
+                        if (wxItem.data._r) {
+                            continue
+                        }
+                        
+                        if (!hasAddCb) {
+                            hasAddCb = true
                             wxItem.setData({_r: inst._r}, () => {
                                 console.log('update Replace duration:', Date.now() - start)
                                 frp()
@@ -198,7 +204,8 @@ export class BaseComponent {
         topWX.groupSetData(() => {
             console.log('update wow:', updaterList)
             const start = Date.now()
-            for(let i = 0; i < updaterList.length; i ++ ) {
+
+            for(let i = updaterList.length - 1; i >= 0; i --) {
                 const {inst, data} = updaterList[i]
                 if (i === 0) {
                     inst.setData(data, () => {
@@ -213,7 +220,7 @@ export class BaseComponent {
     }
 
     /**
-     * 递归程序。 主要做两个事情
+     * 递归程序。 主要做三个事情
      * 1. 构建出updaterList， 包含所有此次需要更新的微信实例 + 数据
      * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 等生命周期的正确执行
      * 3. 构建出firstReplaceRList，包含所有新节点，这些节点需要使用_r 替换R，以免闪屏
@@ -226,43 +233,39 @@ export class BaseComponent {
      */
     updateWXInner(doneCb, updaterList, groupPromise, firstReplaceRList, firstReplacePromise) {
         const updatePros = []
-        const updateObj = {}
         const children = this._c
         for (let i = 0; i < children.length; i++) {
             const childUuid = children[i]
             const child = instanceManager.getCompInstByUUID(childUuid)
 
-            if (child.firstRender !== FR_DONE && child.hocWrapped) {
+            if (child.firstRender !== FR_DONE) {
+                // 子节点还未初始化
                 const allSubData = getObjSubData(child._r)
 
                 if (Object.keys(allSubData).length === 0) {
                     recursionMount(child)
                     updatePros.push(P_R)
                 } else {
-                    const hocTop = child.getHocTop()
-                    const hocTopParent = hocTop._p
-
-                    if (!hocTopParent) {
-                        // page
+                    const top = child.getHocTop()
+                    if (!top._p) {
                         updaterList.push({
-                            inst: hocTop.getWxInst(),
+                            inst: top.getWxInst(),
                             data: {
-                                _r: allSubData,
+                                _r : allSubData
                             }
                         })
-
-                        firstReplaceRList.push(...getRAllList(child, false))
                     } else {
+                        const topParent = top._p
+
                         updaterList.push({
-                            inst: hocTopParent.getWxInst(),
+                            inst: topParent.getWxInst(),
                             data: {
-                                [`${hocTop._keyPath}R`]: allSubData
+                                [`${top._keyPath}R`]: allSubData
                             }
                         })
-
-                        firstReplaceRList.push(...getRAllList(child, true))
                     }
 
+                    firstReplaceRList.push(...getRAllList(child))
 
                     const p = new Promise((resolve) => {
                         firstReplacePromise.then(() => {
@@ -273,18 +276,6 @@ export class BaseComponent {
 
                     updatePros.push(p)
                 }
-            } else if (child.firstRender !== FR_DONE && !child.hocWrapped) {
-                updateObj[`${child._keyPath}R`] = getObjSubData(child._r)
-
-                firstReplaceRList.push(...getRAllList(child, true))
-                const p = new Promise((resolve) => {
-                    firstReplacePromise.then(() => {
-                        recursionMount(child)
-                        resolve()
-                    })
-                })
-
-                updatePros.push(p)
             } else if (child.shouldUpdate) {
                 // 已经存在的节点更新数据
                 const p = new Promise((resolve) => {
@@ -295,8 +286,28 @@ export class BaseComponent {
         }
 
 
-        // HOC 组件不需要刷数据到 微信小程序， 直接done!
-        if (this instanceof HocComponent) {
+        // 页面节点render null
+        if (this.isPageComp && (Object.keys(this._r).length === 0)) {
+            updaterList.push({
+                inst: this.getWxInst(),
+                data: {
+                    _r: {}
+                }
+            })
+            updatePros.push(groupPromise)
+            Promise.all(updatePros)
+                .then(() => {
+                    doneCb()
+                    this.componentDidUpdate && this.componentDidUpdate()
+                })
+
+            return
+        }
+
+
+        // HOC 组件不需要刷数据到 微信小程序，直接done!
+        // this._r = {} 的节点 将会被销毁，直接done!
+        if (this instanceof HocComponent || Object.keys(this._r).length === 0) {
             updatePros.push(P_R)
             Promise.all(updatePros)
                 .then(() => {
@@ -307,23 +318,45 @@ export class BaseComponent {
             return
         }
 
-        const cp = {
-            ...getChangePath(this._r, this._or),
-            ...updateObj
-        }
-
-        // _or 不在有用
-        this._or = {}
-
-        if (Object.keys(cp).length === 0) {
-            updatePros.push(P_R)
+        const wxInst = this.getWxInst()
+        if (wxInst) {
+            const cp = getChangePath(this._r, this._or)
+            if (Object.keys(cp).length === 0) {
+                updatePros.push(P_R)
+            } else {
+                updaterList.push({
+                    inst: wxInst,
+                    data: cp
+                })
+                updatePros.push(groupPromise)
+            }
         } else {
+            // 自定义组件 render null 的情况
+            const top = this.getHocTop()
+            const topParent = top._p
+
             updaterList.push({
-                inst: this.getWxInst(),
-                data: cp
+                inst: topParent.getWxInst(),
+                data: {
+                    [`${top._keyPath}R`]: this._r
+                }
             })
-            updatePros.push(groupPromise)
+            firstReplaceRList.push(...getRAllList(this))
+            const p = new Promise((resolve) => {
+                firstReplacePromise.then(() => {
+                    for (let i = 0; i < this._c.length; i++) {
+                        const inst = instanceManager.getCompInstByUUID(this._c[i])
+                        recursionMount(inst)
+                    }
+
+                    resolve()
+                })
+            })
+
+            updatePros.push(p)
         }
+
+        this._or = {}
 
         Promise.all(updatePros)
             .then(() => {
@@ -378,12 +411,6 @@ export class Component extends BaseComponent {
             return
         }
 
-        // 没有找到对应wxInst
-        if (!this.getWxInst()) {
-            console.warn(`wxInst should not null, please create an issue!`)
-            return
-        }
-
         if (reactUpdate.inRe()) {
             this.updateQueue.push(newState)
             if (cb) {
@@ -428,6 +455,7 @@ export class Component extends BaseComponent {
 
         this._or = this._r
         this._r = {}
+        const oc = this._c
         this._c = []
         this.__eventHanderMap = {}
 
@@ -435,7 +463,12 @@ export class Component extends BaseComponent {
         const parentContext = this._parentContext
         const context = getCurrentContext(this, parentContext)
 
-        render(subVnode, this, context, this._r, this._or, '_r')
+        const oldChildren = []
+        render(subVnode, this, context, this._r, this._or, '_r', oldChildren)
+
+        getRealOc(oc, this._c, oldChildren)
+
+        invokeWillUnmount(oldChildren)
 
         // firstRender既不是DONE，也不是PENDING，此时调用setState需要刷新_r数据
         if (this.firstRender !== FR_DONE) {
@@ -451,7 +484,7 @@ export class Component extends BaseComponent {
      */
     flushDataToWx(subVnode, finalCb) {
         const oldOutStyle = this._myOutStyle
-
+        
         if (this.isPageComp) {
             this.updateWX(finalCb)
             return
@@ -553,15 +586,9 @@ export class RNBaseComponent {
 }
 
 
-function getRAllList(inst, include) {
+function getRAllList(inst) {
     const descendantList = []
     recursionCollectChild(inst, descendantList)
-
-    // inst 可能在descendantList里面， 如果include为fasle， 需要移除
-    if (!include && descendantList[descendantList.length - 1] === inst) {
-        descendantList.pop()
-    }
-
     return descendantList
 }
 
@@ -585,3 +612,20 @@ function recursionCollectChild(inst, descendantList) {
     descendantList.push(inst)
 }
 
+
+/**
+ * 由于微信小程序的detached的生命周期，触发并不准确，另外并不是每一个React组件都会有对应的小程序组件，所以willUnmount并没有选择通过
+ * detached生命周期实现，比如Hoc组件 没有对应的小程序组件， 自定义组件render 返回null 也不会有对应的小程序组件
+ * @param oldChildren
+ */
+function invokeWillUnmount(oldChildren) {
+    for(let i = 0; i < oldChildren.length; i ++ ) {
+        const item = oldChildren[i]
+
+        if(item.componentWillUnmount) {
+            item.componentWillUnmount()
+        }
+
+        instanceManager.removeCompInst(item.__diuu__)
+    }
+}

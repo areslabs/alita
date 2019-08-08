@@ -27,33 +27,8 @@ export default function (CompMySelf, RNApp) {
 
 
         detached() {
-            const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-
-            // 如果是React高价组件 Hoc3(Hoc2(Hoc1(A)))，在微信组件销毁的时候，Hoc3, Hoc2, Hoc1, A 都有可能执行componentWillUnmount
-            // 判断的准则是： 从关联的顶层组件（Hoc3）依次开始，若组件已经不在其父组件中存在，则此组件及其子孙组件应该被销毁，而销毁的顺序是
-            // 从底往上
-            if (compInst instanceof HocComponent) {
-                this.relativeComps.unshift(compInst)
-
-                let unmountComps = null
-                for(let i = 0; i < this.relativeComps.length; i ++) {
-                    const item = this.relativeComps[i]
-
-                    if (item._p._c.indexOf(item.__diuu__) === -1) {
-                        unmountComps = this.relativeComps.slice(i)
-                        break
-                    }
-                }
-
-                for(let i = unmountComps.length - 1; i >= 0; i --) {
-                    const item = unmountComps[i]
-                    item.componentWillUnmount && item.componentWillUnmount()
-                    instanceManager.removeUUID(item.__diuu__)
-                }
-            } else {
-                compInst.componentWillUnmount && compInst.componentWillUnmount()
-                instanceManager.removeUUID(this.data.diuu)
-            }
+            // 防止泄漏，当自定义组件render 返回null的时候，React组件存在，小程序组件应该销毁
+            instanceManager.removeWxInst(this.data.diuu)
         },
 
         methods: {
@@ -93,7 +68,11 @@ export default function (CompMySelf, RNApp) {
                     },
                 ),
                 null,
-                RNApp.childContext
+                RNApp.childContext,
+                null,
+                null,
+                null,
+                [],
             )
 
             this.data.diuu = uuid

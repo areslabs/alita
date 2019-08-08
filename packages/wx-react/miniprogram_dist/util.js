@@ -107,15 +107,6 @@ export function recursionMount(comp) {
     if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
         comp.componentDidFocus()
     }
-
-    if (comp.hocWrapped) {
-        const wxInst = comp.getWxInst()
-        if (wxInst.relativeComps) {
-            wxInst.relativeComps.unshift(comp)
-        } else {
-            wxInst.relativeComps = [comp]
-        }
-    }
 }
 
 export const ReactWxEventMap = {
@@ -141,3 +132,31 @@ export function getRootContext() {
 
 
 export const EMPTY_FUNC = () => {}
+
+
+export function getRealOc(oc, nc, r) {
+    if (!oc || oc.length === 0 ) {
+        return []
+    }
+
+    const ncs = new Set(nc)
+    for(let i = 0; i < oc.length; i ++) {
+        const item = oc[i]
+
+        if (ncs.has(item)) continue
+
+        const comp = instanceManager.getCompInstByUUID(item)
+
+        recursiveGetC(comp, r)
+    }
+}
+
+function recursiveGetC(c, r) {
+    for (let i = 0; i < c._c.length; i ++ ) {
+        const item = c._c[i]
+        const comp = instanceManager.getCompInstByUUID(item)
+        recursiveGetC(comp, r)
+    }
+
+    r.push(c)
+}

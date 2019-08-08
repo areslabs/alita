@@ -9,7 +9,7 @@
 import instanceManager from './InstanceManager'
 import geneUUID from './geneUUID'
 import tackleWithStyleObj from './tackleWithStyleObj'
-import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, setDeepData, ReactWxEventMap } from './util'
+import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, setDeepData, ReactWxEventMap, getRealOc} from './util'
 import { CPTComponent, FuncComponent, RNBaseComponent, HocComponent } from './AllComponent'
 import reactUpdate from './ReactUpdate'
 
@@ -22,8 +22,10 @@ import reactUpdate from './ReactUpdate'
  * @param data
  * @param oldData
  * @param dataPath
+ * @param oldChildren
  */
-export default function render(vnode, parentInst, parentContext, data, oldData, dataPath) {
+export default function render(vnode, parentInst, parentContext, data, oldData, dataPath, oldChildren) {
+
     try {
         if (Array.isArray(vnode)) {
             console.warn('小程序暂不支持渲染数组！')
@@ -129,7 +131,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]
-                render(childVnode, parentInst, parentContext, data, oldData, dataPath)
+                render(childVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
             }
 
 
@@ -209,7 +211,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     // 当Ua的key由Ka --> Kb 的时候， 那么组件变为Ub负责来渲染这一块， 故而需要给予Ub对应的数据
                     // 对于明确且唯一的key，  小程序和React处理是一致的
                     const vIndex = data[datakey].length - 1
-                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}[${vIndex}]`)
+                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}[${vIndex}]`, oldChildren)
                 }
             } else {
                 let oldSubData = null
@@ -220,7 +222,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 const subData = {}
                 data[datakey] = subData
 
-                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}`)
+                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}`, oldChildren)
             }
         } else if (nodeName === 'phblock') {
             // 用于FlatList等外层， 用来占位
@@ -236,7 +238,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]
-                render(childVnode, parentInst, parentContext, data, oldData, dataPath)
+                render(childVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
             }
         } else if (typeof nodeName === 'string' && nodeName.endsWith('CPT')) {
             // 抽象组件节点， 处理属性是xxComponent/children的情况
@@ -271,6 +273,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst._or = inst._r
             inst._r = {}
+            const oc  = inst._c
             inst._c = []
 
             inst.__eventHanderMap = {}
@@ -279,7 +282,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 CPTVnode.isFirstEle = true
             }
 
-            render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r')
+            render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r', oldChildren)
+            getRealOc(oc, inst._c, oldChildren)
 
             // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
             reportSubStyleToOuter(vnodeDiuu, CPTVnode, inst, parentInst, dataPath)
@@ -345,6 +349,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst._r = {}
             // children 重置， render过程的时候重新初始化， 因为children的顺序关系着渲染的顺序， 所以这里应该需要每次render都重置
+            const oc = inst._c
             inst._c = []
 
             inst.__eventHanderMap = {}
@@ -356,7 +361,9 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
             const context = getCurrentContext(inst, parentContext)
 
-            render(subVnode, inst, context, inst._r, inst._or, '_r')
+            render(subVnode, inst, context, inst._r, inst._or, '_r', oldChildren)
+
+            getRealOc(oc, inst._c, oldChildren)
 
             // 动画相关
             if (animation) {
@@ -448,7 +455,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const subVnode = children[i]
-                render(subVnode, parentInst, parentContext, data, oldData, dataPath)
+                render(subVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
             }
         } else if (typeof nodeName === 'function') {
             let inst = null
@@ -579,6 +586,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst._r = {}
             // children 重置， render过程的时候重新初始化， 因为children的顺序关系着渲染的顺序， 所以这里应该需要每次render都重置
+            const oc = inst._c
             inst._c = []
 
             inst.__eventHanderMap = {}
@@ -597,8 +605,9 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             inst._parentContext = parentContext
             const context = getCurrentContext(inst, parentContext)
 
-            render(subVnode, inst, context, inst._r, inst._or, '_r')
+            render(subVnode, inst, context, inst._r, inst._or, '_r', oldChildren)
 
+            getRealOc(oc, inst._c, oldChildren)
 
             if (typeof ref === 'function') {
                 ref(inst)

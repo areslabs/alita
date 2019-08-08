@@ -42,6 +42,20 @@ class InstanceManager {
         this.unmarriedSet.delete(uuid)
     }
 
+    removeWxInst(uuid) {
+        const key = `${uuid}${this.wxInstSuffix}`
+        if (this.innerMap[key]) {
+            delete this.innerMap[key]
+        }
+    }
+    
+    removeCompInst(uuid) {
+        const key = `${uuid}${this.compInstSuffix}`
+        if (this.innerMap[key]) {
+            delete this.innerMap[key]
+        }
+    }
+
     removeUnmarred() {
         if (this.unmarriedSet.size > 0) {
             const unmarriedSet = new Set([])
