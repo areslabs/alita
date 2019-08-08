@@ -9,7 +9,18 @@
 import instanceManager from "./InstanceManager";
 import render from "./render";
 import getChangePath from "./getChangePath";
-import {getCurrentContext, DEFAULTCONTAINERSTYLE, setDeepData, HOCKEY, FR_DONE, FR_PENDING, recursionMount, EMPTY_FUNC, getRealOc} from './util'
+import {
+    getCurrentContext,
+    DEFAULTCONTAINERSTYLE,
+    setDeepData,
+    HOCKEY,
+    FR_DONE,
+    FR_PENDING,
+    recursionMount,
+    EMPTY_FUNC,
+    getRealOc,
+    invokeWillUnmount
+} from './util'
 import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
@@ -612,20 +623,3 @@ function recursionCollectChild(inst, descendantList) {
     descendantList.push(inst)
 }
 
-
-/**
- * 由于微信小程序的detached的生命周期，触发并不准确，另外并不是每一个React组件都会有对应的小程序组件，所以willUnmount并没有选择通过
- * detached生命周期实现，比如Hoc组件 没有对应的小程序组件， 自定义组件render 返回null 也不会有对应的小程序组件
- * @param oldChildren
- */
-function invokeWillUnmount(oldChildren) {
-    for(let i = 0; i < oldChildren.length; i ++ ) {
-        const item = oldChildren[i]
-
-        if(item.componentWillUnmount) {
-            item.componentWillUnmount()
-        }
-
-        instanceManager.removeCompInst(item.__diuu__)
-    }
-}

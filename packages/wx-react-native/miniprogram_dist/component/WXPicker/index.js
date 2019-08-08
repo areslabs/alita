@@ -24,7 +24,7 @@ Component({
 
 
     detached() {
-        instanceManager.removeUUID(this.data.diuu)
+        instanceManager.removeWxInst(this.data.diuu)
     },
 
     methods: {

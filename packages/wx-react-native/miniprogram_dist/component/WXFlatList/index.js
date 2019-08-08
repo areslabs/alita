@@ -42,16 +42,7 @@ Component({
     },
 
     detached() {
-        const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-        compInst.componentWillUnmount && compInst.componentWillUnmount()
-
-        if (compInst._p) {
-            compInst._p._c = compInst._p._c.filter(
-                diuu => diuu !== this.data.diuu
-            )
-        }
-
-        instanceManager.removeUUID(this.data.diuu)
+        instanceManager.removeWxInst(this.data.diuu)
     },
 
     methods: {
