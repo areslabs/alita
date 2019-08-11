@@ -17,13 +17,6 @@ export default function createElement(comp, props, ...args) {
         return
     }
 
-    if (props && typeof comp === 'string' && comp.endsWith('CPT') && !props.CPTVnode) {
-        //TODO 这里假定对于this.props.xComponent的使用 只有两种情况1. 渲染为组件 2.逻辑代码判断 比如if(this.props.xComponent)
-        //TODO 情况1， CPTVnode 等于null就是不渲染，这里返回null 也是不渲染。 情况2 这里返回null表示false， 否则返回了下面的ReactElemnt对象 表示true
-        return props.CPTVnode
-    }
-
-
     let children = []
     for (let i = 0; i < args.length; i++) {
         if (args[i] instanceof Array) {

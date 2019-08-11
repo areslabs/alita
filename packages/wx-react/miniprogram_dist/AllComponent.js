@@ -71,7 +71,6 @@ const P_R =  Promise.resolve()
  *
  */
 export class BaseComponent {
-
     getTopDiuu() {
         let diuu = null
 
@@ -88,9 +87,41 @@ export class BaseComponent {
         return diuu
     }
 
-    getHocTop() {
-        const diuu = this.getTopDiuu()
-        return instanceManager.getCompInstByUUID(diuu)
+    /**
+     * 当组件新产生的时候，获取刷数据的 目标小程序实例，数据路径
+       需要考虑 自定义组件render返回null的时候，需要往回追溯
+     *
+     * @returns {*}
+     */
+    getTopWx() {
+        if (this.isPageComp) {
+            const diuu = this.getTopDiuu()
+            compInst = instanceManager.getCompInstByUUID(diuu)
+            return {
+                comp: compInst,
+                wx: this.getWxInst(),
+                key: '_r'
+            }
+        }
+
+        let compInst = this
+        let wxParent = null
+        let key = '_r'
+
+        while (!wxParent) {
+            const diuu = compInst.getTopDiuu()
+            compInst = instanceManager.getCompInstByUUID(diuu)
+
+            wxParent = compInst._p.getWxInst()
+            key = key.replace('_r', compInst._keyPath + 'R')
+            compInst = compInst._p
+        }
+
+        return {
+            comp: compInst,
+            wx: wxParent,
+            key: key,
+        }
     }
 
 
@@ -112,32 +143,21 @@ export class BaseComponent {
         } else {
             const start = Date.now()
             wxInst.setData({_r: allData}, () => {
-                console.log('first duration:', Date.now() - start)
-                // this也会被收集进来，pop 把this移除掉
                 const firstReplaceRAllList = getRAllList(this)
+                console.log('first duration:', Date.now() - start, this, allData)
 
-                let hasAddCb = false
                 if (firstReplaceRAllList.length > 0) {
                     const start = Date.now()
                     wxInst.groupSetData(() => {
-                        for(let i = firstReplaceRAllList.length - 1; i >= 0; i -- ) {
-                            const inst = firstReplaceRAllList[i]
-                            const wxItem = inst.getWxInst()
-
-                            if (wxItem.data._r) {
-                                continue
-                            }
-
-                            if (!hasAddCb) {
-                                hasAddCb = true
-                                wxItem.setData({_r: inst._r}, () => {
-                                    console.log('first replace duration:', Date.now() - start)
-                                    recursionMount(this)
-                                })
-                            } else {
-                                wxItem.setData({_r: inst._r})
-                            }
+                        for(let i = 0; i < firstReplaceRAllList.length; i ++ ) {
+                            const {inst, data} = firstReplaceRAllList[i]
+                            inst.setData(data)
                         }
+
+                        wxInst.setData({}, () => {
+                            console.log('first replace duration:', Date.now() - start, firstReplaceRAllList)
+                            recursionMount(this)
+                        })
                     })
                 } else {
                     recursionMount(this)
@@ -148,13 +168,15 @@ export class BaseComponent {
 
 
     /**
-     * 刷新数据到小程序
+     * 刷新数据到小程序，使用 groupSetData 来优化多次setData
      * @param cb
      * @param styleUpdater 上报样式的updater
      */
     updateWX(cb, styleUpdater) {
-        const updaterList = []
-        const firstReplaceRList = []
+        let updaterList = []
+
+        // 可能会收集出重复的，所以使用set结构
+        const firstReplaceRList = new Set()
 
         let gpr = null
         const groupPromise = new Promise((resolve) => {
@@ -177,35 +199,21 @@ export class BaseComponent {
             gpr()
             return
         }
-        /// groupSetData 来优化多次setData
 
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
 
-        if (firstReplaceRList.length > 0) {
+        if (firstReplaceRList.size > 0) {
             groupPromise.then(() => {
                 const start = Date.now()
-                console.log('update Replace R:', firstReplaceRList)
-
-                let hasAddCb = false
                 topWX.groupSetData(() => {
-                    for(let i = firstReplaceRList.length - 1; i >= 0; i -- ) {
-                        const inst = firstReplaceRList[i]
+                    firstReplaceRList.forEach(({inst ,data}) => {
+                        inst.setData(data)
+                    })
 
-                        const wxItem = inst.getWxInst()
-                        if (wxItem.data._r) {
-                            continue
-                        }
-                        
-                        if (!hasAddCb) {
-                            hasAddCb = true
-                            wxItem.setData({_r: inst._r}, () => {
-                                console.log('update Replace duration:', Date.now() - start)
-                                frp()
-                            })
-                        } else {
-                            wxItem.setData({_r: inst._r})
-                        }
-                    }
+                    topWX.setData({}, () => {
+                        console.log('update Replace duration:', Date.now() - start, firstReplaceRList)
+                        frp()
+                    })
                 })
             })
         } else {
@@ -213,20 +221,18 @@ export class BaseComponent {
         }
 
         topWX.groupSetData(() => {
-            console.log('update wow:', updaterList)
+            updaterList = simpleUpdaterList(updaterList)
             const start = Date.now()
 
-            for(let i = updaterList.length - 1; i >= 0; i --) {
+            for(let i = 0; i < updaterList.length; i ++) {
                 const {inst, data} = updaterList[i]
-                if (i === 0) {
-                    inst.setData(data, () => {
-                        console.log('update duration:', Date.now() - start)
-                        gpr()
-                    })
-                } else {
-                    inst.setData(data)
-                }
+                inst.setData(data)
             }
+
+            topWX.setData({}, () => {
+                console.log('update duration:', Date.now() - start, updaterList)
+                gpr()
+            })
         })
     }
 
@@ -257,29 +263,19 @@ export class BaseComponent {
                     recursionMount(child)
                     updatePros.push(P_R)
                 } else {
-                    const top = child.getHocTop()
-                    if (!top._p) {
-                        updaterList.push({
-                            inst: top.getWxInst(),
-                            data: {
-                                _r : allSubData
-                            }
-                        })
-                    } else {
-                        const topParent = top._p
+                    const {wx, comp, key} = child.getTopWx()
+                    updaterList.push({
+                        inst: wx,
+                        data: {
+                            [key]: allSubData
+                        }
+                    })
 
-                        updaterList.push({
-                            inst: topParent.getWxInst(),
-                            data: {
-                                [`${top._keyPath}R`]: allSubData
-                            }
-                        })
-                    }
-
-                    firstReplaceRList.push(...getRAllList(child))
+                    addAllReplaceR(firstReplaceRList, getRAllList(comp))
 
                     const p = new Promise((resolve) => {
                         firstReplacePromise.then(() => {
+                            console.log('recursionMount:', child)
                             recursionMount(child)
                             resolve()
                         })
@@ -342,29 +338,17 @@ export class BaseComponent {
                 updatePros.push(groupPromise)
             }
         } else {
-            // 自定义组件 render null 的情况
-            const top = this.getHocTop()
-            const topParent = top._p
-
+            // 自定义组件在上一次的render中，返回了null
+            const {wx, key, comp} = this.getTopWx()
             updaterList.push({
-                inst: topParent.getWxInst(),
+                inst: wx,
                 data: {
-                    [`${top._keyPath}R`]: this._r
+                    [key]: {...this._r} // 需要展开，以免_r 被污染
                 }
             })
-            firstReplaceRList.push(...getRAllList(this))
-            const p = new Promise((resolve) => {
-                firstReplacePromise.then(() => {
-                    for (let i = 0; i < this._c.length; i++) {
-                        const inst = instanceManager.getCompInstByUUID(this._c[i])
-                        recursionMount(inst)
-                    }
 
-                    resolve()
-                })
-            })
-
-            updatePros.push(p)
+            addAllReplaceR(firstReplaceRList, getRAllList(comp))
+            updatePros.push(groupPromise)
         }
 
         this._or = {}
@@ -620,6 +604,52 @@ function recursionCollectChild(inst, descendantList) {
         return
     }
 
-    descendantList.push(inst)
+    if (inst._myOutStyle === false) {
+        return
+    }
+
+    const wxInst = inst.getWxInst()
+    if (wxInst.data._r && !inst.isPageComp) {
+        return
+    }
+
+    descendantList.unshift({
+        inst: wxInst,
+        data: {
+            ...inst._r
+        }
+    })
 }
+
+
+function simpleUpdaterList(list) {
+
+    const instMap = new Map()
+    const simpleList = []
+
+    for(let i = list.length - 1; i >= 0; i --) {
+        const item = list[i]
+        const {inst, data} = item
+
+        if (instMap.has(inst)) {
+            Object.assign(simpleList[instMap.get(inst)].data, data)
+        } else {
+            simpleList.push({
+                inst,
+                data
+            })
+            instMap.set(inst, simpleList.length - 1)
+        }
+    }
+
+    return simpleList
+}
+
+
+function addAllReplaceR(rSet, nrList) {
+    nrList.forEach(item => {
+        rSet.add(item)
+    })
+}
+
 

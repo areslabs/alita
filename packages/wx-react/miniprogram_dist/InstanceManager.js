@@ -76,4 +76,6 @@ class InstanceManager {
     }
 }
 
-export default new InstanceManager()
+wx.__III = new InstanceManager()
+
+export default wx.__III
