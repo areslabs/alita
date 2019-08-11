@@ -45,14 +45,14 @@
 
 
             <ListHeaderComponentCPT
-                    wx:if="{{ListHeaderComponentDIUU}}"
+                    wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
                     diuu="{{ListHeaderComponentDIUU}}"
                     R="{{ListHeaderComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
             />
 
             <ListEmptyComponentCPT
-                    wx:if="{{ListEmptyComponentDIUU}}"
+                    wx:if="{{ListEmptyComponentDIUU && ListEmptyComponentDIUUstyle !== false}}"
                     diuu="{{ListEmptyComponentDIUU}}"
                     R="{{ListEmptyComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListEmptyComponentDIUUstyle)}}"
@@ -65,6 +65,7 @@
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
                                        R="{{item.renderItemDIUUR}}"
+                                       wx:if="{{item.renderItemDIUUstyle !== false}}"
                                        style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}};"/>
                     </view>
                 </view>
@@ -75,20 +76,23 @@
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
                                        R="{{item.renderItemDIUUR}}"
+                                       wx:if="{{item.renderItemDIUUstyle !== false}}"
                                        style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}{{sti['stickyStyle'+index]}}"/>
                     </view>
-                    <renderItemCPT
-                            wx:else
-                            id="id_{{index}}"
-                            diuu="{{item.renderItemDIUU}}"
-                            R="{{item.renderItemDIUUR}}"
-                            style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
-                    />
+                    <block wx:else>
+                        <renderItemCPT
+                                id="id_{{index}}"
+                                diuu="{{item.renderItemDIUU}}"
+                                R="{{item.renderItemDIUUR}}"
+                                wx:if="{{item.renderItemDIUUstyle !== false}}"
+                                style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+                        />
+                    </block>
                 </block>
             </block>
 
             <ListFooterComponentCPT
-                    wx:if="{{ListFooterComponentDIUU}}"
+                    wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
                     diuu="{{ListFooterComponentDIUU}}"
                     R="{{ListFooterComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"

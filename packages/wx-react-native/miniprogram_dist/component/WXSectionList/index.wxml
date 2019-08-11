@@ -28,7 +28,7 @@
             </view>
 
             <ListHeaderComponentCPT
-                    wx:if="{{ListHeaderComponentDIUU}}"
+                    wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
                     diuu="{{ListHeaderComponentDIUU}}"
                     R="{{ListHeaderComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
@@ -36,7 +36,7 @@
 
             <block wx:for="{{sectionsData}}" wx:key="key">
                 <renderSectionHeaderCPT
-                        wx:if="{{item.renderSectionHeaderDIUU}}"
+                        wx:if="{{item.renderSectionHeaderDIUU && item.renderSectionHeaderDIUUstyle !== false}}"
                         diuu="{{item.renderSectionHeaderDIUU}}"
                         R="{{item.renderSectionHeaderDIUUR}}"
                         style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
@@ -46,19 +46,20 @@
                     <renderItemCPT
                             diuu="{{item.renderItemDIUU}}"
                             R="{{item.renderItemDIUUR}}"
+                            wx:if="{{item.renderItemDIUUstyle !== false}}"
                             style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
                     />
                 </block>
 
                 <renderSectionFooterCPT
-                        wx:if="{{item.renderSectionFooterDIUU}}"
+                        wx:if="{{item.renderSectionFooterDIUU && item.renderSectionFooterDIUUstyle !== false}}"
                         diuu="{{item.renderSectionFooterDIUU}}"
                         R="{{item.renderSectionFooterDIUUR}}"
                         style="{{tools.getFinalStyle(item.renderSectionFooterDIUUstyle)}}"
                 />
             </block>
             <ListFooterComponentCPT
-                    wx:if="{{ListFooterComponentDIUU}}"
+                    wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
                     diuu="{{ListFooterComponentDIUU}}"
                     R="{{ListFooterComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"
