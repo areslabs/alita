@@ -45,7 +45,6 @@ class InstanceManager {
 
     // 基本组件的移除操作
     removeUUID(uuid) {
-        console.log('IM: removeUUID', uuid)
         const wxKey = `${uuid}${this.wxInstSuffix}`
         const compKey = `${uuid}${this.compInstSuffix}`
 
@@ -77,6 +76,4 @@ class InstanceManager {
     }
 }
 
-wx.__III = new InstanceManager()
-
-export default wx.__III
+export default new InstanceManager()

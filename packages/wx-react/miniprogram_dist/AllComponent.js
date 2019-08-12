@@ -142,9 +142,7 @@ export class BaseComponent {
         if (Object.keys(allData).length === 0) {
             recursionMount(this)
         } else {
-            const start = Date.now()
             wxInst.setData({_r: allData}, () => {
-                console.log('first duration:', Date.now() - start, this, allData)
                 rReplace(this, () => {
                     recursionMount(this)
                 })
@@ -186,7 +184,6 @@ export class BaseComponent {
             updaterList.push(styleUpdater)
         }
 
-        console.log('updaterList:', updaterList)
         if (updaterList.length === 0) {
             gpr()
             return
@@ -207,10 +204,7 @@ export class BaseComponent {
                 inst.setData(data)
             }
 
-            topWX.setData({}, () => {
-                console.log('update duration:', Date.now() - start, updaterList)
-                gpr()
-            })
+            topWX.setData({}, gpr)
         })
     }
 
@@ -580,8 +574,25 @@ function recursionCollectChild(inst, descendantList) {
         return
     }
 
+    const wxInst = inst.getWxInst()
+    if (!wxInst) {
+        // 不是所有组件都会对应wxInst
+        return
+    }
+
+    if (wxInst.data._r) {
+        return
+    }
+
     // descendantList的顺序需要从孙 ---> 子 ---> 父
-    descendantList.push(inst)
+    descendantList.push({
+        inst: wxInst,
+        data: {
+            _r: {
+                ...inst._r  // 需要展开，以免_r 被污染
+            }
+        }
+    })
 }
 
 
@@ -609,29 +620,7 @@ function simpleUpdaterList(list) {
 }
 
 function rReplace(topComp, cb) {
-    const tempList = getRAllList(topComp)
-    const finalList = []
-    tempList.forEach(item => {
-        const wxInst = item.getWxInst()
-        if (!wxInst) {
-            // 不是所有组件都会对应wxInst
-            console.log('rReplace null:', item)
-            return
-        }
-
-        if (wxInst.data._r) {
-            return
-        }
-
-        finalList.push({
-            p: item,
-            inst: wxInst,
-            data: {
-                _r: {...item._r} // 需要展开 以免React层的_r被污染
-            }
-        })
-    })
-
+    const finalList = getRAllList(topComp)
     if (finalList.length === 0) {
         cb && cb()
         return
@@ -646,7 +635,6 @@ function rReplace(topComp, cb) {
         }
 
         topWx.setData({}, () => {
-            console.log('rReplace', Date.now() - start, finalList.map(item => item.p))
             cb && cb()
         })
     })
