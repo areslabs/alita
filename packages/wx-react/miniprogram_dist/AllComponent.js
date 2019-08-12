@@ -67,7 +67,8 @@ const P_R =  Promise.resolve()
  *     }
  * 然后 father.setData(allUiDes) 。 初始结束以后，father会去收集所有新产生的节点，统一调用一次 groupSetData把数据在刷给每一个子孙节点，
  * 这一次groupSetData 可以lazy调用吗？即和下一次setState合并，其实是可以的，这样的好处是节省了一次groupSetData。但是实际运行情况表明，这样
- * 做了以后，在FlatList里面存在这闪屏现象。 所以最终的方案还是初始结束以后，就刷数据给子孙节点
+ * 做了以后，在FlatList里面存在这闪屏现象。 所以最终的方案还是初始结束以后，就刷数据给子孙节点，统一刷数据给小程序的时候需要注意，顺序是重要的
+ * 必须从孙 --> 子 --> 父， 因为如果先刷父的数据，有可能会预先导致子/孙的变化（可见groupSetData的实现，和React世界unstable_batchedUpdates并不一样）
  *
  */
 export class BaseComponent {
@@ -143,25 +144,10 @@ export class BaseComponent {
         } else {
             const start = Date.now()
             wxInst.setData({_r: allData}, () => {
-                const firstReplaceRAllList = getRAllList(this)
                 console.log('first duration:', Date.now() - start, this, allData)
-
-                if (firstReplaceRAllList.length > 0) {
-                    const start = Date.now()
-                    wxInst.groupSetData(() => {
-                        for(let i = 0; i < firstReplaceRAllList.length; i ++ ) {
-                            const {inst, data} = firstReplaceRAllList[i]
-                            inst.setData(data)
-                        }
-
-                        wxInst.setData({}, () => {
-                            console.log('first replace duration:', Date.now() - start, firstReplaceRAllList)
-                            recursionMount(this)
-                        })
-                    })
-                } else {
+                rReplace(this, () => {
                     recursionMount(this)
-                }
+                })
             })
         }
     }
@@ -175,8 +161,14 @@ export class BaseComponent {
     updateWX(cb, styleUpdater) {
         let updaterList = []
 
-        // 可能会收集出重复的，所以使用set结构
-        const firstReplaceRList = new Set()
+        // 从topComp开始搜索 需要_r 替换的节点
+        let topComp = null
+        if (this.getWxInst()) {
+            topComp = this
+        } else {
+            topComp = this.getTopWx().comp
+        }
+
 
         let gpr = null
         const groupPromise = new Promise((resolve) => {
@@ -188,7 +180,7 @@ export class BaseComponent {
             frp = resolve
         })
 
-        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise, firstReplaceRList, firstReplacePromise)
+        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise, firstReplacePromise)
 
         if (styleUpdater) {
             updaterList.push(styleUpdater)
@@ -202,23 +194,9 @@ export class BaseComponent {
 
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
 
-        if (firstReplaceRList.size > 0) {
-            groupPromise.then(() => {
-                const start = Date.now()
-                topWX.groupSetData(() => {
-                    firstReplaceRList.forEach(({inst ,data}) => {
-                        inst.setData(data)
-                    })
-
-                    topWX.setData({}, () => {
-                        console.log('update Replace duration:', Date.now() - start, firstReplaceRList)
-                        frp()
-                    })
-                })
-            })
-        } else {
-            frp()
-        }
+        groupPromise.then(() => {
+            rReplace(topComp, frp)
+        })
 
         topWX.groupSetData(() => {
             updaterList = simpleUpdaterList(updaterList)
@@ -240,15 +218,13 @@ export class BaseComponent {
      * 递归程序。 主要做三个事情
      * 1. 构建出updaterList， 包含所有此次需要更新的微信实例 + 数据
      * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 等生命周期的正确执行
-     * 3. 构建出firstReplaceRList，包含所有新节点，这些节点需要使用_r 替换R，以免闪屏
      *
      * @param doneCb
      * @param updaterList
      * @param groupPromise
-     * @param firstReplaceRList
      * @param firstReplacePromise
      */
-    updateWXInner(doneCb, updaterList, groupPromise, firstReplaceRList, firstReplacePromise) {
+    updateWXInner(doneCb, updaterList, groupPromise, firstReplacePromise) {
         const updatePros = []
         const children = this._c
         for (let i = 0; i < children.length; i++) {
@@ -263,7 +239,7 @@ export class BaseComponent {
                     recursionMount(child)
                     updatePros.push(P_R)
                 } else {
-                    const {wx, comp, key} = child.getTopWx()
+                    const {wx, key} = child.getTopWx()
                     updaterList.push({
                         inst: wx,
                         data: {
@@ -271,11 +247,8 @@ export class BaseComponent {
                         }
                     })
 
-                    addAllReplaceR(firstReplaceRList, getRAllList(comp))
-
                     const p = new Promise((resolve) => {
                         firstReplacePromise.then(() => {
-                            console.log('recursionMount:', child)
                             recursionMount(child)
                             resolve()
                         })
@@ -286,7 +259,7 @@ export class BaseComponent {
             } else if (child.shouldUpdate) {
                 // 已经存在的节点更新数据
                 const p = new Promise((resolve) => {
-                    child.updateWXInner(resolve, updaterList, groupPromise, firstReplaceRList, firstReplacePromise)
+                    child.updateWXInner(resolve, updaterList, groupPromise, firstReplacePromise)
                 })
                 updatePros.push(p)
             }
@@ -339,7 +312,7 @@ export class BaseComponent {
             }
         } else {
             // 自定义组件在上一次的render中，返回了null
-            const {wx, key, comp} = this.getTopWx()
+            const {wx, key} = this.getTopWx()
             updaterList.push({
                 inst: wx,
                 data: {
@@ -347,8 +320,7 @@ export class BaseComponent {
                 }
             })
 
-            addAllReplaceR(firstReplaceRList, getRAllList(comp))
-            updatePros.push(groupPromise)
+            updatePros.push(firstReplacePromise)
         }
 
         this._or = {}
@@ -608,17 +580,8 @@ function recursionCollectChild(inst, descendantList) {
         return
     }
 
-    const wxInst = inst.getWxInst()
-    if (wxInst.data._r && !inst.isPageComp) {
-        return
-    }
-
-    descendantList.unshift({
-        inst: wxInst,
-        data: {
-            ...inst._r
-        }
-    })
+    // descendantList的顺序需要从孙 ---> 子 ---> 父
+    descendantList.push(inst)
 }
 
 
@@ -645,11 +608,47 @@ function simpleUpdaterList(list) {
     return simpleList
 }
 
+function rReplace(topComp, cb) {
+    const tempList = getRAllList(topComp)
+    const finalList = []
+    tempList.forEach(item => {
+        const wxInst = item.getWxInst()
+        if (!wxInst) {
+            // 不是所有组件都会对应wxInst
+            console.log('rReplace null:', item)
+            return
+        }
 
-function addAllReplaceR(rSet, nrList) {
-    nrList.forEach(item => {
-        rSet.add(item)
+        if (wxInst.data._r) {
+            return
+        }
+
+        finalList.push({
+            p: item,
+            inst: wxInst,
+            data: {
+                _r: {...item._r} // 需要展开 以免React层的_r被污染
+            }
+        })
+    })
+
+    if (finalList.length === 0) {
+        cb && cb()
+        return
+    }
+
+    const topWx = topComp.getWxInst()
+    const start = Date.now()
+    topWx.groupSetData(() => {
+        for(let i = 0; i < finalList.length; i ++ ) {
+            const {inst, data} = finalList[i]
+            inst.setData(data)
+        }
+
+        topWx.setData({}, () => {
+            console.log('rReplace', Date.now() - start, finalList.map(item => item.p))
+            cb && cb()
+        })
     })
 }
-
 
