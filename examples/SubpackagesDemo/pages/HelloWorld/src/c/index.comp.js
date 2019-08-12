@@ -3,11 +3,6 @@ import { Text, View, WXButton } from "@areslabs/wx-react-native"
 import { history } from "@areslabs/wx-router"
 import styles from "../a/styles"
 export default class C extends Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     render() {
         return h(
             "view",
@@ -57,11 +52,8 @@ export default class C extends Component {
                         diuu: "DIUU00005"
                     },
                     h("template", {
-                        datakey: "CTDK00004",
-                        tempVnode: this.props.routerParams.text,
-                        "wx:if": "{{CTDK00004}}",
-                        is: "CTNP00003",
-                        data: "{{...CTDK00004}}"
+                        datakey: "CTDK00001",
+                        tempVnode: this.props.routerParams.text
                     })
                 )
             ),

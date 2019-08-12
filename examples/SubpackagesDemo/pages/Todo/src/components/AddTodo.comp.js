@@ -20,8 +20,6 @@ class AddTodo extends React.Component {
                 v: ""
             })
         }
-
-        this.__stateless__ = false
     }
 
     render() {

@@ -9,11 +9,6 @@ import actions from "../actions/visibilityFilter"
 import { connect } from "@areslabs/wx-react-redux"
 
 class Footer extends React.Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     render() {
         const {
             setVisibilityFilter,

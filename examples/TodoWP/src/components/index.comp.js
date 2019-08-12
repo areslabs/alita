@@ -54,8 +54,6 @@ class Index extends PureComponent {
         this.keyExtractor = item => {
             return item.id + ""
         }
-
-        this.__stateless__ = true
     }
 
     render() {
@@ -83,7 +81,6 @@ class Index extends PureComponent {
                 keyExtractor: this.keyExtractor,
                 data: todos,
                 renderItem: this.renderItem,
-                "generic:renderItemCPT": "ICNPaaaaa",
                 diuu: "DIUU00007"
             }),
             h(Footer, {

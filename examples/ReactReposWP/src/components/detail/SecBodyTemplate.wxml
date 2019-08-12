@@ -1,29 +1,23 @@
-
-    <wxs src="../../../commonwxs.wxs" module="tools" />
+<wxs src="../../../commonwxs.wxs" module="t" />
     
-<template name="CTNP00002">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+<template name="CTNP00001">
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
         
  <template name="ITNP00003">
-    <image src="{{DIUU00002src}}" mode="aspectFill" diuu="{{DIUU00002}}" tempName="ITNP00003" style="{{tools.getFinalStyle(DIUU00002style)}}"></image>
+    <image src="{{DIUU00002src}}" mode="aspectFill" diuu="{{DIUU00002}}" style="{{t.s(DIUU00002style)}}"></image>
   </template>
  
  <template name="ITNP00004">
-    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00001style)}}">
-            <template datakey="CTDK00003" wx:if="{{CTDK00003}}" is="CTNP00002" data="{{...CTDK00003}}"></template>
+    <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
+            <template wx:if="{{CTDK00001}} !== undefined" is="CTNP00001" data="{{d: CTDK00001}}"></template>
         </block>
   </template>
  

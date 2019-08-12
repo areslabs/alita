@@ -1,93 +1,67 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
-<template name="CTNP00013">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+<template name="CTNP00005">
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
-        
-<template name="CTNP00010">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
-</template>
-
-        
-<template name="CTNP00007">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
-</template>
-
         
 <template name="CTNP00004">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
+        
+<template name="CTNP00003">
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
+</template>
+        
+<template name="CTNP00002">
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
+</template>
         
 <template name="CTNP00001">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
         
  <template name="ITNP00007">
-    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00007" style="{{tools.getFinalStyle(DIUU00001style)}}">
-                <view style="{{tools.getFinalStyle(DIUU00002style)}}"><template datakey="CTDK00002" wx:if="{{CTDK00002}}" is="CTNP00001" data="{{...CTDK00002}}"></template>：<template datakey="CTDK00003" wx:if="{{CTDK00003}}" is="CTNP00001" data="{{...CTDK00003}}"></template>¥</view>
-                <view style="{{tools.getFinalStyle(DIUU00003style)}}"><template datakey="CTDK00005" wx:if="{{CTDK00005}}" is="CTNP00004" data="{{...CTDK00005}}"></template>：<template datakey="CTDK00006" wx:if="{{CTDK00006}}" is="CTNP00004" data="{{...CTDK00006}}"></template>¥</view>
-                <view style="{{tools.getFinalStyle(DIUU00004style)}}"><template datakey="CTDK00008" wx:if="{{CTDK00008}}" is="CTNP00007" data="{{...CTDK00008}}"></template>：<template datakey="CTDK00009" wx:if="{{CTDK00009}}" is="CTNP00007" data="{{...CTDK00009}}"></template>¥</view>
-                <view style="{{tools.getFinalStyle(DIUU00005style)}}"><template datakey="CTDK00011" wx:if="{{CTDK00011}}" is="CTNP00010" data="{{...CTDK00011}}"></template>：<template datakey="CTDK00012" wx:if="{{CTDK00012}}" is="CTNP00010" data="{{...CTDK00012}}"></template>¥</view>
-                <view style="{{tools.getFinalStyle(DIUU00006style)}}">总价：<template datakey="CTDK00014" wx:if="{{CTDK00014}}" is="CTNP00013" data="{{...CTDK00014}}"></template>¥</view>
+    <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
+                <view class="text" style="{{t.s(DIUU00002style)}}"><template wx:if="{{CTDK00001}} !== undefined" is="CTNP00001" data="{{d: CTDK00001}}"></template>：<template wx:if="{{CTDK00002}} !== undefined" is="CTNP00001" data="{{d: CTDK00002}}"></template>¥</view>
+                <view class="text" style="{{t.s(DIUU00003style)}}"><template wx:if="{{CTDK00003}} !== undefined" is="CTNP00002" data="{{d: CTDK00003}}"></template>：<template wx:if="{{CTDK00004}} !== undefined" is="CTNP00002" data="{{d: CTDK00004}}"></template>¥</view>
+                <view class="text" style="{{t.s(DIUU00004style)}}"><template wx:if="{{CTDK00005}} !== undefined" is="CTNP00003" data="{{d: CTDK00005}}"></template>：<template wx:if="{{CTDK00006}} !== undefined" is="CTNP00003" data="{{d: CTDK00006}}"></template>¥</view>
+                <view class="text" style="{{t.s(DIUU00005style)}}"><template wx:if="{{CTDK00007}} !== undefined" is="CTNP00004" data="{{d: CTDK00007}}"></template>：<template wx:if="{{CTDK00008}} !== undefined" is="CTNP00004" data="{{d: CTDK00008}}"></template>¥</view>
+                <view class="text" style="{{t.s(DIUU00006style)}}">总价：<template wx:if="{{CTDK00009}} !== undefined" is="CTNP00005" data="{{d: CTDK00009}}"></template>¥</view>
             </block>
   </template>
  

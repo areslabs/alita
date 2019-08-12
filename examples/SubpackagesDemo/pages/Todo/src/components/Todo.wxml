@@ -1,3 +1,2 @@
-<import src="./TodoTemplate.wxml"></import>
- <template wx:if="{{_r && _r.tempName}}" is="{{_r.tempName}}" data="{{..._r}}"></template>
- 
+<import src="./TodoTemplate.wxml"/>
+  <template wx:if="{{(_r && _r.tempName) || (R && R.tempName)}}" is="{{_r.tempName || R.tempName}}" data="{{...(_r || R)}}"/>

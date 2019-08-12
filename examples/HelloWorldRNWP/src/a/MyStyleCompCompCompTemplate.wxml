@@ -1,12 +1,11 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00005">
-    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00005" style="{{tools.getFinalStyle(DIUU00001style)}}">
-            <view style="{{tools.getFinalStyle(DIUU00002style)}}">
-                <view style="{{tools.getFinalStyle(DIUU00003style)}}">MyStyleCompCompComp</view>
+    <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
+            <view class="view" style="{{t.s(DIUU00002style)}}">
+                <view class="text" style="{{t.s(DIUU00003style)}}">MyStyleCompCompComp</view>
             </view>
-            <WXButton title="Change Boder Width" diuu="{{DIUU00004}}" style="{{tools.getFinalStyle(DIUU00004style)}}" />
+            <WXButton title="Change Boder Width" diuu="{{DIUU00004}}" style="{{t.s(DIUU00004style)}}" />
         </block>
   </template>
  

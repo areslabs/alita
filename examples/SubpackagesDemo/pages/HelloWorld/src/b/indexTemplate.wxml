@@ -1,101 +1,92 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
-<template name="CTNP00023">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+<template name="CTNP00002">
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
         
 <template name="CTNP00001">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
         
  <template name="ITNP00003">
-    <view tempName="ITNP00003" style="{{tools.getFinalStyle(DIUU00001style)}}">
-            <view style="{{tools.getFinalStyle(DIUU00002style)}}"><template datakey="CTDK00002" wx:if="{{CTDK00002}}" is="CTNP00001" data="{{...CTDK00002}}"></template></view>
+    <view class="view" style="{{t.s(DIUU00001style)}}">
+            <view class="text" style="{{t.s(DIUU00002style)}}"><template wx:if="{{CTDK00001}} !== undefined" is="CTNP00001" data="{{d: CTDK00001}}"></template></view>
         </view>
   </template>
  
- <template name="ITNP00015">
-    <view tempName="ITNP00015" style="{{tools.getFinalStyle(DIUU00012style)}}"><view style="{{tools.getFinalStyle(DIUU00013style)}}"></view><view style="{{tools.getFinalStyle(DIUU00014style)}}">ListFooterComponent</view></view>
+ <template name="ITNP00017">
+    <view class="view" style="{{t.s(DIUU00014style)}}"><view class="text" style="{{t.s(DIUU00015style)}}"></view><view class="text" style="{{t.s(DIUU00016style)}}">ListFooterComponent</view></view>
   </template>
  
- <template name="ITNP00018">
-    <view tempName="ITNP00018" style="{{tools.getFinalStyle(DIUU00016style)}}"><view style="{{tools.getFinalStyle(DIUU00017style)}}">ListHeaderComponent</view></view>
+ <template name="ITNP00020">
+    <view class="view" style="{{t.s(DIUU00018style)}}"><view class="text" style="{{t.s(DIUU00019style)}}">ListHeaderComponent</view></view>
   </template>
  
- <template name="ITNP00021">
-    <view tempName="ITNP00021" style="{{tools.getFinalStyle(DIUU00019style)}}"><view style="{{tools.getFinalStyle(DIUU00020style)}}">ListEmptyComponent</view></view>
+ <template name="ITNP00023">
+    <view class="view" style="{{t.s(DIUU00021style)}}"><view class="text" style="{{t.s(DIUU00022style)}}">ListEmptyComponent</view></view>
   </template>
  
- <template name="ITNP00028">
-    <view tempName="ITNP00028" style="{{tools.getFinalStyle(DIUU00026style)}}">
-                                    <image src="{{DIUU00027src}}" mode="scaleToFill" diuu="{{DIUU00027}}" style="{{tools.getFinalStyle(DIUU00027style)}}" />
+ <template name="ITNP00030">
+    <view class="view" style="{{t.s(DIUU00028style)}}">
+                                    <image src="{{DIUU00029src}}" mode="scaleToFill" diuu="{{DIUU00029}}" style="{{t.s(DIUU00029style)}}" />
                                 </view>
   </template>
  
- <template name="ITNP00039">
-    <WXScrollView contentContainerStyle="{{DIUU00004contentContainerStyle}}" diuu="{{DIUU00004}}" tempName="ITNP00039" style="{{tools.getFinalStyle(DIUU00004style)}}" refreshing="{{DIUU00004refreshing}}" onRefreshPassed="{{DIUU00004onRefreshPassed}}">
+ <template name="ITNP00041">
+    <WXScrollView contentContainerStyle="{{DIUU00004contentContainerStyle}}" diuu="{{DIUU00004}}" style="{{t.s(DIUU00004style)}}" refreshing="{{DIUU00004refreshing}}" onRefreshPassed="{{DIUU00004onRefreshPassed}}">
 
-                <view style="{{tools.getFinalStyle(DIUU00005style)}}">
-                    <view style="{{tools.getFinalStyle(DIUU00006style)}}">图片</view>
+                <view class="view" style="{{t.s(DIUU00005style)}}">
+                    <view class="text" style="{{t.s(DIUU00006style)}}">图片</view>
                 </view>
-                <view style="{{tools.getFinalStyle(DIUU00007style)}}">
-                    <image src="/pages/HelloWorld/src/b/local.png" mode="aspectFit" diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" />
-                    <image src="{{DIUU00009src}}" mode="aspectFill" diuu="{{DIUU00009}}" style="{{tools.getFinalStyle(DIUU00009style)}}" />
+                <view class="view" style="{{t.s(DIUU00007style)}}">
+                    <image src="/pages/HelloWorld/src/b/local.png" mode="aspectFit" diuu="{{DIUU00008}}" style="{{t.s(DIUU00008style)}}" />
+                    <image src="{{DIUU00009src}}" mode="aspectFill" diuu="{{DIUU00009}}" style="{{t.s(DIUU00009style)}}" />
                 </view>
 
 
-                
-                <view style="{{tools.getFinalStyle(DIUU00010style)}}">
-                    <view style="{{tools.getFinalStyle(DIUU00011style)}}">FlatList 列表</view>
+                <view class="view" style="{{t.s(DIUU00010style)}}">
+                    <WXButton title="点击 列表项 + 1" diuu="{{DIUU00011}}" style="{{t.s(DIUU00011style)}}" />
                 </view>
-                <WXFlatList generic:renderItemCPT="ICNPaaaaa" generic:ListFooterComponentCPT="ICNPaaaab" generic:ListHeaderComponentCPT="ICNPaaaac" generic:ListEmptyComponentCPT="ICNPaaaad" diuu="{{DIUU00022}}" style="{{tools.getFinalStyle(DIUU00022style)}}" _r="{{DIUU00022R}}" />
-                <view style="{{tools.getFinalStyle(DIUU00023style)}}">
-                    <view style="{{tools.getFinalStyle(DIUU00024style)}}">横向ScrollView</view>
+                <view class="view" style="{{t.s(DIUU00012style)}}">
+                    <view class="text" style="{{t.s(DIUU00013style)}}">FlatList 列表</view>
                 </view>
-                <WXScrollView horizontal="{{DIUU00025horizontal}}" diuu="{{DIUU00025}}" style="{{tools.getFinalStyle(DIUU00025style)}}" refreshing="{{DIUU00025refreshing}}" onRefreshPassed="{{DIUU00025onRefreshPassed}}">
-                    <template datakey="CTDK00024" wx:if="{{CTDK00024}}" is="CTNP00023" data="{{...CTDK00024}}"></template>
+                <WXFlatList generic:renderItemCPT="ICNPaaaaa" generic:ListFooterComponentCPT="ICNPaaaab" generic:ListHeaderComponentCPT="ICNPaaaac" generic:ListEmptyComponentCPT="ICNPaaaad" diuu="{{DIUU00024}}" style="{{t.s(DIUU00024style)}}" R="{{DIUU00024R}}" wx:if="{{DIUU00024style !== false}}" />
+                <view class="view" style="{{t.s(DIUU00025style)}}">
+                    <view class="text" style="{{t.s(DIUU00026style)}}">横向ScrollView</view>
+                </view>
+                <WXScrollView horizontal="{{DIUU00027horizontal}}" diuu="{{DIUU00027}}" style="{{t.s(DIUU00027style)}}" refreshing="{{DIUU00027refreshing}}" onRefreshPassed="{{DIUU00027onRefreshPassed}}">
+                    <template wx:if="{{CTDK00002}} !== undefined" is="CTNP00002" data="{{d: CTDK00002}}"></template>
                 </WXScrollView>
                 
-                <view style="{{tools.getFinalStyle(DIUU00029style)}}">
-                    <view style="{{tools.getFinalStyle(DIUU00030style)}}">输入框</view>
+                <view class="view" style="{{t.s(DIUU00031style)}}">
+                    <view class="text" style="{{t.s(DIUU00032style)}}">输入框</view>
                 </view>
-                <WXTextInput value="{{DIUU00031value}}" diuu="{{DIUU00031}}" style="{{tools.getFinalStyle(DIUU00031style)}}" />
-                <view style="{{tools.getFinalStyle(DIUU00032style)}}">
-                    <view style="{{tools.getFinalStyle(DIUU00033style)}}">其它</view>
+                <WXTextInput value="{{DIUU00033value}}" diuu="{{DIUU00033}}" style="{{t.s(DIUU00033style)}}" />
+                <view class="view" style="{{t.s(DIUU00034style)}}">
+                    <view class="text" style="{{t.s(DIUU00035style)}}">其它</view>
                 </view>
-                <WXSwitch value="{{DIUU00034value}}" diuu="{{DIUU00034}}" style="{{tools.getFinalStyle(DIUU00034style)}}" />
+                <WXSwitch value="{{DIUU00036value}}" diuu="{{DIUU00036}}" style="{{t.s(DIUU00036style)}}" />
 
-                <WXSlider value="{{DIUU00035value}}" diuu="{{DIUU00035}}" style="{{tools.getFinalStyle(DIUU00035style)}}" />
+                <WXSlider value="{{DIUU00037value}}" diuu="{{DIUU00037}}" style="{{t.s(DIUU00037style)}}" />
 
                 
-                <view catchtap="eventHandler" data-diuu="{{DIUU00036}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00036hoverClass}}" style="{{tools.getFinalStyle(DIUU00036style)}}">
-                    <view style="{{tools.getFinalStyle(DIUU00037style)}}">
-                        <view style="{{tools.getFinalStyle(DIUU00038style)}}">TouchableOpacity</view>
+                <view catchtap="eventHandler" data-diuu="{{DIUU00038}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00038hoverClass}}" class="view" style="{{t.s(DIUU00038style)}}">
+                    <view class="view" style="{{t.s(DIUU00039style)}}">
+                        <view class="text" style="{{t.s(DIUU00040style)}}">TouchableOpacity</view>
                     </view>
                 </view>
             </WXScrollView>

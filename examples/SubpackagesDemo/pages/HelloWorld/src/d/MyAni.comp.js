@@ -3,11 +3,6 @@ import { View, Image, Text } from "@areslabs/wx-react-native"
 import { AnimationEnable } from "@areslabs/wx-animated"
 
 class MyAni extends Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     render() {
         return h(
             "block",

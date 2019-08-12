@@ -12,7 +12,7 @@
 		"nodeModules": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.2.2",
+	"libVersion": "2.7.7",
 	"appid": "wx67a52214b440b81b",
 	"projectname": "RoomMobxWP",
 	"isGameTourist": false,

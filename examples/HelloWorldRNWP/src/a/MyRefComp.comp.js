@@ -13,8 +13,6 @@ export default class MyRefComp extends Component {
                 count: this.state.count + 1
             })
         }
-
-        this.__stateless__ = false
     }
 
     render() {
@@ -34,11 +32,8 @@ export default class MyRefComp extends Component {
                     diuu: "DIUU00002"
                 },
                 h("template", {
-                    datakey: "CTDK00002",
-                    tempVnode: this.state.count,
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
+                    datakey: "CTDK00001",
+                    tempVnode: this.state.count
                 })
             )
         )

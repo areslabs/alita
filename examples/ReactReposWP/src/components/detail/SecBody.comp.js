@@ -10,7 +10,6 @@ class SecBody extends Component {
         this.state = {
             users: []
         }
-        this.__stateless__ = false
     }
 
     componentDidMount() {
@@ -41,7 +40,7 @@ class SecBody extends Component {
                 tempName: "ITNP00004"
             },
             h("template", {
-                datakey: "CTDK00003",
+                datakey: "CTDK00001",
                 tempVnode: this.state.users.map(ele => {
                     return h("image", {
                         key: ele.id + "",
@@ -57,10 +56,7 @@ class SecBody extends Component {
                         diuu: "DIUU00002",
                         tempName: "ITNP00003"
                     })
-                }),
-                "wx:if": "{{CTDK00003}}",
-                is: "CTNP00002",
-                data: "{{...CTDK00003}}"
+                })
             })
         )
     }

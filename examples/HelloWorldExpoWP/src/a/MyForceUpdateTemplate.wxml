@@ -1,10 +1,9 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00004">
-    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00001style)}}">
-                <view catchtap="eventHandler" data-diuu="{{DIUU00002}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00002hoverClass}}" style="{{tools.getFinalStyle(DIUU00002style)}}">
-                    <MyForceUpdateInner diuu="{{DIUU00003}}" style="{{tools.getFinalStyle(DIUU00003style)}}" _r="{{DIUU00003R}}" />
+    <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
+                <view catchtap="eventHandler" data-diuu="{{DIUU00002}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00002hoverClass}}" class="view" style="{{t.s(DIUU00002style)}}">
+                    <MyForceUpdateInner diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" R="{{DIUU00003R}}" wx:if="{{DIUU00003style !== false}}" />
                 </view>
             </block>
   </template>

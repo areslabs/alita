@@ -2,11 +2,6 @@ import React, { Component, h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyForceUpdateInnerInner extends Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     shouldComponentUpdate() {
         console.log("MyForceUpdateInnerInner shouldComponentUpdate")
         return true
@@ -30,11 +25,8 @@ export default class MyForceUpdateInnerInner extends Component {
                 },
                 "forceUpdate: ",
                 h("template", {
-                    datakey: "CTDK00002",
-                    tempVnode: new Date().getTime(),
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
+                    datakey: "CTDK00001",
+                    tempVnode: new Date().getTime()
                 })
             )
         )

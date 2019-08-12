@@ -6,11 +6,6 @@ import {
     StyleSheet
 } from "@areslabs/wx-react-native"
 export default class Todo extends PureComponent {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     render() {
         const { onClick, completed, text } = this.props
         return h(
@@ -41,11 +36,8 @@ export default class Todo extends PureComponent {
                         diuu: "DIUU00003"
                     },
                     h("template", {
-                        datakey: "CTDK00002",
-                        tempVnode: text,
-                        "wx:if": "{{CTDK00002}}",
-                        is: "CTNP00001",
-                        data: "{{...CTDK00002}}"
+                        datakey: "CTDK00001",
+                        tempVnode: text
                     })
                 )
             )

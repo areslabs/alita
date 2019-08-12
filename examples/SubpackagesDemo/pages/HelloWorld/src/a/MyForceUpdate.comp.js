@@ -2,11 +2,6 @@ import React, { Component, h } from "@areslabs/wx-react"
 import { TouchableOpacity, View } from "@areslabs/wx-react-native"
 import MyForceUpdateInner from "./MyForceUpdateInner.comp"
 export default class MyForceUpdate extends Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = false
-    }
-
     shouldComponentUpdate() {
         console.log("MyForceUpdate shouldComponentUpdate")
         return true

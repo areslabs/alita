@@ -12,7 +12,6 @@ const down = "/src/assets/arrow_down.png"
 export default class Detail extends Component {
     constructor(props) {
         super(props)
-        this.__stateless__ = false
         const {
             stargazers_url,
             contributors_url,
@@ -83,16 +82,13 @@ export default class Detail extends Component {
                         diuu: "DIUU00004"
                     },
                     h("template", {
-                        datakey: "CTDK00003",
-                        tempVnode: description,
-                        "wx:if": "{{CTDK00003}}",
-                        is: "CTNP00002",
-                        data: "{{...CTDK00003}}"
+                        datakey: "CTDK00001",
+                        tempVnode: description
                     })
                 )
             ),
             h("template", {
-                datakey: "CTDK00011",
+                datakey: "CTDK00003",
                 tempVnode: this.state.secDatas.map((sec, index) => {
                     return h(
                         "view",
@@ -139,11 +135,8 @@ export default class Detail extends Component {
                                     diuu: "DIUU00007"
                                 },
                                 h("template", {
-                                    datakey: "CTDK00006",
-                                    tempVnode: sec.key,
-                                    "wx:if": "{{CTDK00006}}",
-                                    is: "CTNP00005",
-                                    data: "{{...CTDK00006}}"
+                                    datakey: "CTDK00002",
+                                    tempVnode: sec.key
                                 })
                             ),
                             h("image", {
@@ -164,10 +157,7 @@ export default class Detail extends Component {
                             diuu: "DIUU00009"
                         })
                     )
-                }),
-                "wx:if": "{{CTDK00011}}",
-                is: "CTNP00010",
-                data: "{{...CTDK00011}}"
+                })
             })
         )
     }

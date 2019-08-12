@@ -97,7 +97,6 @@ export default class A extends Component {
                 "item2"
             )
         )
-        this.__stateless__ = false
     }
 
     getChildContext() {
@@ -154,11 +153,8 @@ export default class A extends Component {
                     diuu: "DIUU00005"
                 },
                 h("template", {
-                    datakey: "CTDK00004",
-                    tempVnode: hello,
-                    "wx:if": "{{CTDK00004}}",
-                    is: "CTNP00003",
-                    data: "{{...CTDK00004}}"
+                    datakey: "CTDK00001",
+                    tempVnode: hello
                 })
             )
         )
@@ -233,11 +229,8 @@ export default class A extends Component {
                     },
                     "Platform: ",
                     h("template", {
-                        datakey: "CTDK00013",
-                        tempVnode: Platform.OS,
-                        "wx:if": "{{CTDK00013}}",
-                        is: "CTNP00012",
-                        data: "{{...CTDK00013}}"
+                        datakey: "CTDK00002",
+                        tempVnode: Platform.OS
                     })
                 )
             ),
@@ -246,25 +239,16 @@ export default class A extends Component {
                 diuu: "DIUU00018"
             }),
             h("template", {
-                datakey: "CTDK00037",
-                tempVnode: item1,
-                "wx:if": "{{CTDK00037}}",
-                is: "CTNP00036",
-                data: "{{...CTDK00037}}"
+                datakey: "CTDK00005",
+                tempVnode: item1
             }),
             h("template", {
-                datakey: "CTDK00038",
-                tempVnode: this.item2,
-                "wx:if": "{{CTDK00038}}",
-                is: "CTNP00036",
-                data: "{{...CTDK00038}}"
+                datakey: "CTDK00006",
+                tempVnode: this.item2
             }),
             h("template", {
-                datakey: "CTDK00039",
-                tempVnode: item3,
-                "wx:if": "{{CTDK00039}}",
-                is: "CTNP00036",
-                data: "{{...CTDK00039}}"
+                datakey: "CTDK00007",
+                tempVnode: item3
             }),
             h(
                 "view",
@@ -285,7 +269,7 @@ export default class A extends Component {
                 })
             ),
             h("template", {
-                datakey: "CTDK00040",
+                datakey: "CTDK00008",
                 tempVnode:
                     toggleClicked1 &&
                     h(
@@ -305,24 +289,15 @@ export default class A extends Component {
                             },
                             "clicked is true"
                         )
-                    ),
-                "wx:if": "{{CTDK00040}}",
-                is: "CTNP00036",
-                data: "{{...CTDK00040}}"
+                    )
             }),
             h("template", {
-                datakey: "CTDK00041",
-                tempVnode: this.getText1(),
-                "wx:if": "{{CTDK00041}}",
-                is: "CTNP00036",
-                data: "{{...CTDK00041}}"
+                datakey: "CTDK00009",
+                tempVnode: this.getText1()
             }),
             h("template", {
-                datakey: "CTDK00042",
-                tempVnode: this.getText2("function返回JSX"),
-                "wx:if": "{{CTDK00042}}",
-                is: "CTNP00036",
-                data: "{{...CTDK00042}}"
+                datakey: "CTDK00010",
+                tempVnode: this.getText2("function返回JSX")
             }),
             h(
                 "view",
@@ -332,7 +307,7 @@ export default class A extends Component {
                     diuu: "DIUU00024"
                 },
                 h("template", {
-                    datakey: "CTDK00022",
+                    datakey: "CTDK00004",
                     tempVnode: arr.map(ele =>
                         h(
                             "view",
@@ -344,18 +319,12 @@ export default class A extends Component {
                                 tempName: "ITNP00026"
                             },
                             h("template", {
-                                datakey: "CTDK00020",
-                                tempVnode: ele,
-                                "wx:if": "{{CTDK00020}}",
-                                is: "CTNP00019",
-                                data: "{{...CTDK00020}}"
+                                datakey: "CTDK00003",
+                                tempVnode: ele
                             }),
                             ","
                         )
-                    ),
-                    "wx:if": "{{CTDK00022}}",
-                    is: "CTNP00021",
-                    data: "{{...CTDK00022}}"
+                    )
                 })
             ),
             h(
@@ -421,8 +390,6 @@ export default class A extends Component {
                         )
                     )
                 },
-                "generic:headerComponentCPT": "ICNPaaaaa",
-                "generic:footerComponentCPT": "ICNPaaaab",
                 diuu: "DIUU00037"
             }),
             h(
@@ -434,7 +401,6 @@ export default class A extends Component {
             h(
                 MyChildComp,
                 {
-                    "generic:childrenCPT": "ICNPaaaac",
                     diuu: "DIUU00039"
                 },
                 h(

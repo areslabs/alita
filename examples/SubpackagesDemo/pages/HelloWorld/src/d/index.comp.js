@@ -147,8 +147,6 @@ export default class C extends Component {
                 })
             })
         }
-
-        this.__stateless__ = false
     }
 
     componentDidFocus() {

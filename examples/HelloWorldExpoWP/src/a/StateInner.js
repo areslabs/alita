@@ -1,2 +1,6 @@
-import { WxCPTComp } from "@areslabs/wx-react"
-Component(WxCPTComp())
+import CompMySelf from "./StateInner.comp"
+import { WxNormalComp } from "@areslabs/wx-react"
+import RNApp from "../../src/index.js"
+
+Component(WxNormalComp(CompMySelf, RNApp))
+    

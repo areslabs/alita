@@ -1,22 +1,21 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00010">
-    <view tempName="ITNP00010" style="{{tools.getFinalStyle(DIUU00001style)}}">
-                <view style="{{tools.getFinalStyle(DIUU00002style)}}">一个房子</view>
-                <view style="{{tools.getFinalStyle(DIUU00003style)}}">
-                    <Room diuu="{{DIUU00004}}" style="{{tools.getFinalStyle(DIUU00004style)}}" _r="{{DIUU00004R}}" />
+    <view class="view" style="{{t.s(DIUU00001style)}}">
+                <view class="text" style="{{t.s(DIUU00002style)}}">一个房子</view>
+                <view class="view" style="{{t.s(DIUU00003style)}}">
+                    <Room diuu="{{DIUU00004}}" style="{{t.s(DIUU00004style)}}" R="{{DIUU00004R}}" wx:if="{{DIUU00004style !== false}}" />
 
-                    <Room diuu="{{DIUU00005}}" style="{{tools.getFinalStyle(DIUU00005style)}}" _r="{{DIUU00005R}}" />
+                    <Room diuu="{{DIUU00005}}" style="{{t.s(DIUU00005style)}}" R="{{DIUU00005R}}" wx:if="{{DIUU00005style !== false}}" />
 
-                    <Room diuu="{{DIUU00006}}" style="{{tools.getFinalStyle(DIUU00006style)}}" _r="{{DIUU00006R}}" />
+                    <Room diuu="{{DIUU00006}}" style="{{t.s(DIUU00006style)}}" R="{{DIUU00006R}}" wx:if="{{DIUU00006style !== false}}" />
 
-                    <Room diuu="{{DIUU00007}}" style="{{tools.getFinalStyle(DIUU00007style)}}" _r="{{DIUU00007R}}" />
+                    <Room diuu="{{DIUU00007}}" style="{{t.s(DIUU00007style)}}" R="{{DIUU00007R}}" wx:if="{{DIUU00007style !== false}}" />
                 </view>
 
-                <TotalInfo diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" _r="{{DIUU00008R}}" />
+                <TotalInfo diuu="{{DIUU00008}}" style="{{t.s(DIUU00008style)}}" R="{{DIUU00008R}}" wx:if="{{DIUU00008style !== false}}" />
 
-                <WXButton title="重置" diuu="{{DIUU00009}}" style="{{tools.getFinalStyle(DIUU00009style)}}" />
+                <WXButton title="重置" diuu="{{DIUU00009}}" style="{{t.s(DIUU00009style)}}" />
             </view>
   </template>
  

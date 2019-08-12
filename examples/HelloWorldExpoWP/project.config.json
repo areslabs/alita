@@ -12,7 +12,7 @@
 		"nodeModules": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.4",
+	"libVersion": "2.7.7",
 	"appid": "wx67a52214b440b81b",
 	"projectname": "HelloWorldExpoWP",
 	"isGameTourist": false,

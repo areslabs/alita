@@ -1,10 +1,9 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00004">
-    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00001style)}}">
-                <WXTextInput autoCapitalize="none" autoFocus="{{DIUU00002autoFocus}}" ref="{{DIUU00002ref}}" value="{{DIUU00002value}}" diuu="{{DIUU00002}}" style="{{tools.getFinalStyle(DIUU00002style)}}" />
-                <WXButton title="ADD" diuu="{{DIUU00003}}" style="{{tools.getFinalStyle(DIUU00003style)}}" />
+    <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
+                <WXTextInput autoCapitalize="none" autoFocus="{{DIUU00002autoFocus}}" ref="{{DIUU00002ref}}" value="{{DIUU00002value}}" diuu="{{DIUU00002}}" style="{{t.s(DIUU00002style)}}" />
+                <WXButton title="ADD" diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" />
             </block>
   </template>
  

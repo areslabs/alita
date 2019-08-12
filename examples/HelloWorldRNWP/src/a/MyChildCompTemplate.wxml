@@ -1,11 +1,10 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00005">
-    <block original="View" diuu="{{DIUU00001}}" tempName="ITNP00005" style="{{tools.getFinalStyle(DIUU00001style)}}">
-                <childrenCPT diuu="{{DIUU00002}}" style="{{tools.getFinalStyle(DIUU00002style)}}" _r="{{DIUU00002R}}"></childrenCPT>
-                <childrenCPT diuu="{{DIUU00003}}" style="{{tools.getFinalStyle(DIUU00003style)}}" _r="{{DIUU00003R}}"></childrenCPT>
-                <childrenCPT diuu="{{DIUU00004}}" style="{{tools.getFinalStyle(DIUU00004style)}}" _r="{{DIUU00004R}}"></childrenCPT>
+    <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
+                <childrenCPT diuu="{{DIUU00002}}" style="{{t.s(DIUU00002style)}}" R="{{DIUU00002R}}" wx:if="{{DIUU00002style !== false}}"></childrenCPT>
+                <childrenCPT diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" R="{{DIUU00003R}}" wx:if="{{DIUU00003style !== false}}"></childrenCPT>
+                <childrenCPT diuu="{{DIUU00004}}" style="{{t.s(DIUU00004style)}}" R="{{DIUU00004R}}" wx:if="{{DIUU00004style !== false}}"></childrenCPT>
             </block>
   </template>
  

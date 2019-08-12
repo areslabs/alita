@@ -6,7 +6,6 @@ export default class MyStyleCompCompComp extends Component {
         this.state = {
             bw: 2
         }
-        this.__stateless__ = false
     }
 
     render() {

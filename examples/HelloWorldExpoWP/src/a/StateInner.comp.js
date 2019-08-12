@@ -1,11 +1,6 @@
 import React, { h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
 export default class StatelessTest extends React.Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     render() {
         const { label, name } = this.props
         return h(
@@ -22,11 +17,8 @@ export default class StatelessTest extends React.Component {
                     diuu: "DIUU00002"
                 },
                 h("template", {
-                    datakey: "CTDK00002",
-                    tempVnode: label,
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
+                    datakey: "CTDK00001",
+                    tempVnode: label
                 })
             ),
             h(StateInner, {

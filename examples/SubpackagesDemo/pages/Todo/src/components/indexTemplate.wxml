@@ -1,20 +1,19 @@
-
-    <wxs src="../../commonwxs.wxs" module="tools" />
+<wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00002">
-    <view tempName="ITNP00002" style="{{tools.getFinalStyle(DIUU00001style)}}">TodoList样例列表</view>
+    <view class="text" style="{{t.s(DIUU00001style)}}">TodoList样例列表</view>
   </template>
  
  <template name="ITNP00004">
-    <Todo diuu="{{DIUU00003}}" tempName="ITNP00004" style="{{tools.getFinalStyle(DIUU00003style)}}" _r="{{DIUU00003R}}" />
+    <Todo diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" R="{{DIUU00003R}}" wx:if="{{DIUU00003style !== false}}" />
   </template>
  
  <template name="ITNP00009">
-    <view tempName="ITNP00009" style="{{tools.getFinalStyle(DIUU00005style)}}">
-                <AddTodo diuu="{{DIUU00006}}" style="{{tools.getFinalStyle(DIUU00006style)}}" _r="{{DIUU00006R}}" />
-                <WXFlatList generic:renderItemCPT="ICNPaaaaa" diuu="{{DIUU00007}}" style="{{tools.getFinalStyle(DIUU00007style)}}" _r="{{DIUU00007R}}" />
+    <view class="view" style="{{t.s(DIUU00005style)}}">
+                <AddTodo diuu="{{DIUU00006}}" style="{{t.s(DIUU00006style)}}" R="{{DIUU00006R}}" wx:if="{{DIUU00006style !== false}}" />
+                <WXFlatList generic:renderItemCPT="ICNPaaaaa" diuu="{{DIUU00007}}" style="{{t.s(DIUU00007style)}}" R="{{DIUU00007R}}" wx:if="{{DIUU00007style !== false}}" />
 
-                <Footer diuu="{{DIUU00008}}" style="{{tools.getFinalStyle(DIUU00008style)}}" _r="{{DIUU00008R}}" />
+                <Footer diuu="{{DIUU00008}}" style="{{t.s(DIUU00008style)}}" R="{{DIUU00008R}}" wx:if="{{DIUU00008style !== false}}" />
             </view>
   </template>
  

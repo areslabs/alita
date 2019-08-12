@@ -1,11 +1,6 @@
 import React, { Component, h } from "@areslabs/wx-react"
 import { View } from "@areslabs/wx-react-native"
 export default class MyPropComp extends Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     render() {
         return h(
             "block",

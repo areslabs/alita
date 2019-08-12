@@ -79,11 +79,8 @@ export default class B extends Component {
                         diuu: "DIUU00002"
                     },
                     h("template", {
-                        datakey: "CTDK00002",
-                        tempVnode: item.name,
-                        "wx:if": "{{CTDK00002}}",
-                        is: "CTNP00001",
-                        data: "{{...CTDK00002}}"
+                        datakey: "CTDK00001",
+                        tempVnode: item.name
                     })
                 )
             )
@@ -92,8 +89,6 @@ export default class B extends Component {
         this.keyExtractor = item => {
             return item.name + ""
         }
-
-        this.__stateless__ = false
     }
 
     componentDidMount() {
@@ -293,10 +288,6 @@ export default class B extends Component {
                 onEndReached: () => {
                     this._onEndReached()
                 },
-                "generic:renderItemCPT": "ICNPaaaaa",
-                "generic:ListFooterComponentCPT": "ICNPaaaab",
-                "generic:ListHeaderComponentCPT": "ICNPaaaac",
-                "generic:ListEmptyComponentCPT": "ICNPaaaad",
                 diuu: "DIUU00022"
             }),
             h(
@@ -326,7 +317,7 @@ export default class B extends Component {
                     diuu: "DIUU00025"
                 },
                 h("template", {
-                    datakey: "CTDK00024",
+                    datakey: "CTDK00002",
                     tempVnode: this.state.scrollList.map(item => {
                         return h(
                             "view",
@@ -350,10 +341,7 @@ export default class B extends Component {
                                 diuu: "DIUU00027"
                             })
                         )
-                    }),
-                    "wx:if": "{{CTDK00024}}",
-                    is: "CTNP00023",
-                    data: "{{...CTDK00024}}"
+                    })
                 })
             ),
             h(

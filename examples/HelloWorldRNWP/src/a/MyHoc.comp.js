@@ -6,11 +6,6 @@ import styles from "./styles"
 let i = 6
 
 class MyHoc extends Component {
-    constructor(...args) {
-        super(...args)
-        this.__stateless__ = true
-    }
-
     componentDidMount() {
         console.log("MyHoc componentDidMount")
     }
@@ -54,27 +49,18 @@ class MyHoc extends Component {
                         diuu: "DIUU00005"
                     },
                     h("template", {
-                        datakey: "CTDK00004",
-                        tempVnode: this.props.txt,
-                        "wx:if": "{{CTDK00004}}",
-                        is: "CTNP00003",
-                        data: "{{...CTDK00004}}"
+                        datakey: "CTDK00001",
+                        tempVnode: this.props.txt
                     }),
                     ": name=",
                     h("template", {
-                        datakey: "CTDK00005",
-                        tempVnode: this.props.name,
-                        "wx:if": "{{CTDK00005}}",
-                        is: "CTNP00003",
-                        data: "{{...CTDK00005}}"
+                        datakey: "CTDK00002",
+                        tempVnode: this.props.name
                     }),
                     ", age=",
                     h("template", {
-                        datakey: "CTDK00006",
-                        tempVnode: this.props.age,
-                        "wx:if": "{{CTDK00006}}",
-                        is: "CTNP00003",
-                        data: "{{...CTDK00006}}"
+                        datakey: "CTDK00003",
+                        tempVnode: this.props.age
                     })
                 )
             )

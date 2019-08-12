@@ -71,11 +71,8 @@ export default class List extends Component {
                                 diuu: "DIUU00005"
                             },
                             h("template", {
-                                datakey: "CTDK00003",
-                                tempVnode: item.name,
-                                "wx:if": "{{CTDK00003}}",
-                                is: "CTNP00002",
-                                data: "{{...CTDK00003}}"
+                                datakey: "CTDK00001",
+                                tempVnode: item.name
                             })
                         ),
                         h(
@@ -101,11 +98,8 @@ export default class List extends Component {
                                     diuu: "DIUU00008"
                                 },
                                 h("template", {
-                                    datakey: "CTDK00006",
-                                    tempVnode: formatK(item.watchers),
-                                    "wx:if": "{{CTDK00006}}",
-                                    is: "CTNP00005",
-                                    data: "{{...CTDK00006}}"
+                                    datakey: "CTDK00002",
+                                    tempVnode: formatK(item.watchers)
                                 })
                             )
                         )
@@ -119,11 +113,8 @@ export default class List extends Component {
                             diuu: "DIUU00009"
                         },
                         h("template", {
-                            datakey: "CTDK00010",
-                            tempVnode: item.description,
-                            "wx:if": "{{CTDK00010}}",
-                            is: "CTNP00009",
-                            data: "{{...CTDK00010}}"
+                            datakey: "CTDK00003",
+                            tempVnode: item.description
                         })
                     ),
                     h(
@@ -134,13 +125,10 @@ export default class List extends Component {
                             diuu: "DIUU00010"
                         },
                         h("template", {
-                            datakey: "CTDK00012",
+                            datakey: "CTDK00004",
                             tempVnode: item.license
                                 ? item.license.spdx_id
-                                : "ISC",
-                            "wx:if": "{{CTDK00012}}",
-                            is: "CTNP00011",
-                            data: "{{...CTDK00012}}"
+                                : "ISC"
                         })
                     )
                 )
@@ -197,8 +185,6 @@ export default class List extends Component {
                 })
             }, 4000)
         }
-
-        this.__stateless__ = false
     }
 
     componentDidMount() {
@@ -221,16 +207,13 @@ export default class List extends Component {
                 tempName: "ITNP00019"
             },
             h("template", {
-                datakey: "CTDK00019",
+                datakey: "CTDK00005",
                 tempVnode:
                     this.state.repos.length === 0 &&
                     h(LoadingView, {
                         diuu: "DIUU00016",
                         tempName: "ITNP00017"
-                    }),
-                "wx:if": "{{CTDK00019}}",
-                is: "CTNP00018",
-                data: "{{...CTDK00019}}"
+                    })
             }),
             h(WXFlatList, {
                 refreshing: this.state.refreshing,
@@ -243,8 +226,6 @@ export default class List extends Component {
                 keyExtractor: this.keyExtractor,
                 onEndReached: this.onEndReached,
                 ListFooterComponent: this.lfc,
-                "generic:renderItemCPT": "ICNPaaaaa",
-                "generic:ListFooterComponentCPT": "ICNPaaaab",
                 diuu: "DIUU00018"
             })
         )

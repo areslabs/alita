@@ -43,12 +43,12 @@ const RNAppClass = (_temp = _class = class App extends PureComponent {
 }, _temp);
 React.render(h(RNAppClass, {
   diuu: React.rootUuid
-}), null, {});
+}), null, {}, null, null, null, []);
 const rootContext = React.getRootContext();
 export default {
   childContext: rootContext
 };
-wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {
+wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "A": "/pages/HelloWorld/src/a/index",
   "C": "/pages/HelloWorld/src/c/index",
   "E": "/pages/HelloWorld/src/e/index",

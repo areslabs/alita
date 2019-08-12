@@ -22,25 +22,16 @@ export default class MyFunComp extends React.FuncComponent {
                     diuu: "DIUU00002"
                 },
                 h("template", {
+                    datakey: "CTDK00001",
+                    tempVnode: name
+                }),
+                h("template", {
                     datakey: "CTDK00002",
-                    tempVnode: name,
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
+                    tempVnode: age
                 }),
                 h("template", {
                     datakey: "CTDK00003",
-                    tempVnode: age,
-                    "wx:if": "{{CTDK00003}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00003}}"
-                }),
-                h("template", {
-                    datakey: "CTDK00004",
-                    tempVnode: color,
-                    "wx:if": "{{CTDK00004}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00004}}"
+                    tempVnode: color
                 })
             )
         )
