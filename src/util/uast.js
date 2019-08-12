@@ -113,7 +113,7 @@ export function getFileInfo(ast) {
     let isEntry = false
     let isClassComp = false
     let isRNEntry = false
-    let invokeUpdateMethod = false
+
     traverse(ast, {
         ClassDeclaration: path => {
             const sc = path.node.superClass
@@ -145,29 +145,16 @@ export function getFileInfo(ast) {
             ) {
                 isRNEntry = true
             }
-
-            // 假定没有调用setState/forceUpdate的组件，都是不需要本身传递给渲染数据给小程序的组件，统称："stateless"
-            if (callee.type === 'MemberExpression'
-                && callee.object
-                && callee.object.type === 'ThisExpression'
-                && callee.property
-                && (callee.property.name === 'setState' || callee.property.name === 'forceUpdate')
-            ) {
-                invokeUpdateMethod = true
-            }
-
         }
     })
 
     const isFuncComp = isRF && !isClassComp
-    const isStatelessComp = (isFuncComp || (isClassComp && !invokeUpdateMethod))
 
     return {
         isRF,
         isRNEntry,
         isEntry,
         isFuncComp,
-        isStatelessComp
     }
 }
 

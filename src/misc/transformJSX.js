@@ -119,6 +119,21 @@ const transformJSX = (api, options) => {
         if (t.isJSXElement(path.node.value)) {
             path.node.value = t.jsxExpressionContainer(path.node.value);
         }
+
+        if (path.type === 'JSXAttribute' && path.node.name.type === 'JSXNamespacedName') {
+            path.remove()
+        }
+    };
+
+    visitor.JSXOpeningElement = function (path) {
+        if (path.node.name.name === 'template') {
+            path.node.attributes = path.node.attributes.filter(attr => {
+                return attr.type === 'JSXAttribute'
+                    && (attr.name.name === 'datakey'
+                        || attr.name.name === 'tempVnode'
+                    )
+            })
+        }
     };
 
     return {

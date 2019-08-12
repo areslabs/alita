@@ -318,7 +318,11 @@ export default function (ast, filepath) {
         }
     ),
     null,
-    {}
+    {},
+    null,
+    null,
+    null,
+    []
 )
 const rootContext = React.getRootContext()
 export default {

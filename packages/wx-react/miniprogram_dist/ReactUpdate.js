@@ -8,6 +8,11 @@
  
 import instanceManager from './InstanceManager'
 
+
+/**
+ * mini-react 批量更新策略
+ * //TODO 优化
+ */
 class ReactUpdate {
     flag = false
 

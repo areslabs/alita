@@ -41,6 +41,4 @@ export default class Hello extends React.Component {
             )
         )
     }
-
-    __stateless__ = true
 }

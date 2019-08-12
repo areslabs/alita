@@ -6,5 +6,5 @@
  *
  */
  
-import { WxCPTComp } from "@areslabs/wx-react"
-Component(WxCPTComp())
+import { WxNormalComp } from "@areslabs/wx-react"
+Component(WxNormalComp())

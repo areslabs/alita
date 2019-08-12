@@ -38,16 +38,6 @@ export default function compPreHandle(ast, info) {
             }
 
 
-            // 标明组件的无状态信息，render的时候会使用
-            if (path.type === 'ClassDeclaration' && isReactComponent(path.node.superClass)) {
-                const statelessCp = t.classProperty(
-                    t.identifier('__stateless__'),
-                    t.booleanLiteral(info.isStatelessComp),
-                )
-                path.node.body.body.push(statelessCp)
-                return
-            }
-
 
             // JSXExpressionContainer 只可能出现在3个地方： JSXAttribute，JSXElement， JSXFragment。 所以这里可以用else逻辑处理
             if (path.type === 'JSXExpressionContainer'

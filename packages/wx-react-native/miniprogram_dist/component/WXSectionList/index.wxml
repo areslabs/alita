@@ -1,65 +1,71 @@
-<wxs src="../commonwxs.wxs" module="tools" />
-<scroll-view
-        bindscrolltoupper="onScrollToupper"
-        scroll-y
-        scroll-top="{{_r.onRefreshPassed ? (sr ? 0: 80) : 0}}"
-        upper-threshold="3"
-        scroll-with-animation="{{withAni}}"
-        bindscroll="outScroll"
-        scroll-left="{{outLeft}}"
-        style="flex: 1; flex-basis: 0%;overflow:hidden;"
-        bindtouchstart='startTouch'
-        bindtouchend='leaveTouch'
-        bindscrolltolower="onEndReached"
-        lower-threshold="{{_r.onEndReachedThreshold}}"
->
-    <view style="{{_r.contentContainerStyle}}min-height: calc(100% + {{_r.onRefreshPassed ? 80 : 0}}px)">
-        <view
-                wx:if="{{_r.onRefreshPassed}}"
-                style="height:80px;align-items:center;justify-content:center;"
-        >
-            <image
-                    src="../../component/assets/loading.gif"
-                    mode="aspectFit"
-                    style="height: 30px"
-            />
-        </view>
+<wxs src="../../../../../commonwxs.wxs" module="tools" />
 
-        <ListHeaderComponentCPT
-                wx:if="{{_r.ListHeaderComponentDIUU}}"
-                diuu="{{_r.ListHeaderComponentDIUU}}"
-                _r="{{_r.ListHeaderComponentDIUUR}}"
-                style="{{tools.getFinalStyle(_r.ListHeaderComponentDIUUstyle)}}"
-        />
+<template name="sectionList">
+    <scroll-view
+            bindscrolltoupper="onScrollToupper"
+            scroll-y
+            scroll-top="{{onRefreshPassed ? (sr ? 0: 80) : 0}}"
+            upper-threshold="3"
+            scroll-with-animation="{{withAni}}"
+            bindscroll="outScroll"
+            scroll-left="{{outLeft}}"
+            style="flex: 1; flex-basis: 0%;overflow:hidden;"
+            bindtouchstart='startTouch'
+            bindtouchend='leaveTouch'
+            bindscrolltolower="onEndReached"
+            lower-threshold="{{onEndReachedThreshold}}"
+    >
+        <view style="{{contentContainerStyle}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
+            <view
+                    wx:if="{{onRefreshPassed}}"
+                    style="height:80px;align-items:center;justify-content:center;"
+            >
+                <image
+                        src="../../component/assets/loading.gif"
+                        mode="aspectFit"
+                        style="height: 30px"
+                />
+            </view>
 
-        <block wx:for="{{_r.sectionsData.v}}" wx:key="key">
-            <renderSectionHeaderCPT
-                    wx:if="{{item.renderSectionHeaderDIUU}}"
-                    diuu="{{item.renderSectionHeaderDIUU}}"
-                    _r="{{item.renderSectionHeaderDIUUR}}"
-                    style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
+            <ListHeaderComponentCPT
+                    wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
+                    diuu="{{ListHeaderComponentDIUU}}"
+                    R="{{ListHeaderComponentDIUUR}}"
+                    style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
             />
 
-            <block wx:for="{{item.renderItemData.v}}" wx:key="key">
-                <renderItemCPT
-                        diuu="{{item.renderItemDIUU}}"
-                        _r="{{item.renderItemDIUUR}}"
-                        style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+            <block wx:for="{{sectionsData}}" wx:key="key">
+                <renderSectionHeaderCPT
+                        wx:if="{{item.renderSectionHeaderDIUU && item.renderSectionHeaderDIUUstyle !== false}}"
+                        diuu="{{item.renderSectionHeaderDIUU}}"
+                        R="{{item.renderSectionHeaderDIUUR}}"
+                        style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
+                />
+
+                <block wx:for="{{item.renderItemData}}" wx:key="key">
+                    <renderItemCPT
+                            diuu="{{item.renderItemDIUU}}"
+                            R="{{item.renderItemDIUUR}}"
+                            wx:if="{{item.renderItemDIUUstyle !== false}}"
+                            style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+                    />
+                </block>
+
+                <renderSectionFooterCPT
+                        wx:if="{{item.renderSectionFooterDIUU && item.renderSectionFooterDIUUstyle !== false}}"
+                        diuu="{{item.renderSectionFooterDIUU}}"
+                        R="{{item.renderSectionFooterDIUUR}}"
+                        style="{{tools.getFinalStyle(item.renderSectionFooterDIUUstyle)}}"
                 />
             </block>
-
-            <renderSectionFooterCPT
-                    wx:if="{{item.renderSectionFooterDIUU}}"
-                    diuu="{{item.renderSectionFooterDIUU}}"
-                    _r="{{item.renderSectionFooterDIUUR}}"
-                    style="{{tools.getFinalStyle(item.renderSectionFooterDIUUstyle)}}"
+            <ListFooterComponentCPT
+                    wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
+                    diuu="{{ListFooterComponentDIUU}}"
+                    R="{{ListFooterComponentDIUUR}}"
+                    style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"
             />
-        </block>
-        <ListFooterComponentCPT
-                wx:if="{{_r.ListFooterComponentDIUU}}"
-                diuu="{{_r.ListFooterComponentDIUU}}"
-                _r="{{_r.ListFooterComponentDIUUR}}"
-                style="{{tools.getFinalStyle(_r.ListFooterComponentDIUUstyle)}}"
-        />
-    </view>
-</scroll-view>
+        </view>
+    </scroll-view>
+</template>
+
+<template is="sectionList" data="{{...(_r || R), withAni, outLeft, sr}}"/>

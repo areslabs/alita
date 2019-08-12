@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
 function hasMoreKeys(okeys, nkeys) {
     const nkeysSet = new Set(nkeys)
 
@@ -99,6 +99,12 @@ function getChangePathInner(newR, oldR, prefix, result) {
     }
 }
 
+
+/**
+ * 获取小程序更新的数据路径
+ * @param newRender
+ * @param oldRender
+ */
 export default function getChangePath(newRender, oldRender) {
     const result = {}
 

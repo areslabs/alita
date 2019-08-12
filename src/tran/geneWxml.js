@@ -67,20 +67,15 @@ export default function(info) {
         // 如果只使用一个child 小程序会报递归， 然后就不渲染了
         const subT = `
 <template name="${name}">
-    <block wx:if="{{isArray}}">
-        <block wx:for="{{v}}" wx:key="key">
-            <template wx:if="{{item.tempName}}" is="{{item.tempName}}" data="{{...item}}"></template>
-            <block wx:if="{{item.isLiteral}}">
-                {{item.v}}
-            </block>
-        </block>
-    </block>
-    <block wx:elif="{{isJSX}}">
-        <template is="{{v.tempName}}" data="{{...v}}"></template>
-    </block>
-    <block wx:elif="{{isLiteral}}">{{v}}</block>
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
 </template>
-
         `;
 
         templateWxml = subT + templateWxml;
@@ -88,8 +83,7 @@ export default function(info) {
 
     const utilWxsPath = getRootPathPrefix(filepath) + '/commonwxs.wxs'
 
-    templateWxml = `
-    <wxs src="${utilWxsPath}" module="tools" />
+    templateWxml = `<wxs src="${utilWxsPath}" module="t" />
     ${templateWxml}
     `
 
@@ -120,36 +114,9 @@ function geneAllOutComp(outComp, filepath) {
         );
 
         const wxmlAst = [];
-        wxmlAst.push(t.jsxElement(
-            t.jsxOpeningElement(
-                t.jsxIdentifier("import"),
-                [
-                    t.jsxAttribute(t.jsxIdentifier("src"), t.stringLiteral(`./${temppath}`))
-                ]
-            ),
-            t.jsxClosingElement(t.jsxIdentifier("import")),
-            [],
-            true
-        ));
-
-        wxmlAst.push(t.jsxText("\n "));
-
-        wxmlAst.push(t.jsxElement(
-            t.jsxOpeningElement(
-                t.jsxIdentifier("template"),
-                [
-                    t.jsxAttribute(t.jsxIdentifier("wx:if"), t.stringLiteral(`{{_r && _r.tempName}}`)),
-                    t.jsxAttribute(t.jsxIdentifier("is"), t.stringLiteral(`{{_r.tempName}}`)),
-                    t.jsxAttribute(t.jsxIdentifier("data"), t.stringLiteral(`{{..._r}}`))
-                ]
-            ),
-            t.jsxClosingElement(t.jsxIdentifier("template")),
-            [],
-            true
-        ));
-        wxmlAst.push(t.jsxText("\n "));
-
-
+        wxmlAst.push(t.jsxText(`<import src="./${temppath}"/>`))
+        wxmlAst.push(t.jsxText("\n"));
+        wxmlAst.push(t.jsxText(`<template wx:if="{{(_r && _r.tempName) || (R && R.tempName)}}" is="{{_r.tempName || R.tempName}}" data="{{...(_r || R)}}"/>`))
         let tmpWxmlAst = t.jsxElement(
             t.jsxOpeningElement(
                 t.jsxIdentifier("InnerTmpOpeningElement"),

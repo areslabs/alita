@@ -90,7 +90,8 @@ import {ChildTemplateDataKeyPrefix, ChildTemplateNamePrefix} from '../constants'
  * @returns {*}
  */
 export default function childrenToTemplate(ast, info) {
-    const go = geneOrder()
+    const goForCTNP = geneOrder()
+    const goForCTDK = geneOrder()
 
     traverse(ast, {
 
@@ -99,37 +100,39 @@ export default function childrenToTemplate(ast, info) {
                 && !isChildComp(path.node.openingElement.name.name)
             ) {
                 const children = path.node.children
-                const tempName = `${ChildTemplateNamePrefix}${go.next}`
-
-                let shouldAddChildTemplate = false
+                let tempName = null//`${ChildTemplateNamePrefix}${goForCTNP.next}`
 
                 path.node.children = children.map(ele => {
                     if (ele.type === 'JSXExpressionContainer') {
 
-                        const datakey = `${ChildTemplateDataKeyPrefix}${go.next}`
+                        if (!tempName) {
+                            tempName = `${ChildTemplateNamePrefix}${goForCTNP.next}`
+                        }
 
-                        shouldAddChildTemplate = true
+                        const datakey = `${ChildTemplateDataKeyPrefix}${goForCTDK.next}`
+
                         return t.jsxElement(
                             t.jsxOpeningElement(
                                 t.jsxIdentifier('template'),
                                 [
                                     t.jsxAttribute(t.jsxIdentifier('datakey'), t.stringLiteral(datakey)),
                                     t.jsxAttribute(t.jsxIdentifier('tempVnode'), ele),
-                                    t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${datakey}}}`)),
+                                    t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${datakey}}} !== undefined`)),
                                     t.jsxAttribute(t.jsxIdentifier('is'), t.stringLiteral(tempName)),
-                                    t.jsxAttribute(t.jsxIdentifier('data'), t.stringLiteral(`{{...${datakey}}}`))
+                                    t.jsxAttribute(t.jsxIdentifier('data'), t.stringLiteral(`{{d: ${datakey}}}`))
                                 ]
                             ),
                             t.jsxClosingElement(
                                 t.jsxIdentifier('template')
                             ),
-                            []
+                            [],
+                            true
                         )
                     }
                     return ele
                 })
 
-                if (shouldAddChildTemplate) {
+                if (tempName) {
                     info.childTemplates.push(tempName)
                 }
             }

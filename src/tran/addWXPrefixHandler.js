@@ -62,6 +62,7 @@ export default function addWXPrefixHandler (ast) {
 }
 
 function addWXPrefix(path) {
+    const {textComp} = global.execArgs
 
     // Picker.Item
     if (path.node.name.type === 'JSXMemberExpression') {
@@ -95,13 +96,13 @@ function addWXPrefix(path) {
     }
 
     // Text 特殊需要处理
-    if (name === 'Text' && isInText(path)) {
+    if (textComp.has(name) && isInText(path)) {
         path.node.name.name = `view`
         addViewOriginalAttri(path, "InnerText")
         return
     }
 
-    if (name === 'Text' && !isInText(path)) {
+    if (textComp.has(name) && !isInText(path)) {
         path.node.name.name = `view`
         addViewOriginalAttri(path, "OuterText")
         return
@@ -113,6 +114,7 @@ function addWXPrefix(path) {
 }
 
 function isInText(path) {
+    const {textComp} = global.execArgs
     if (path.parentPath.parentPath.node.openingElement) {
         const op = path.parentPath.parentPath.node.openingElement
 
@@ -124,10 +126,7 @@ function isInText(path) {
             })
         }
 
-
-        return (
-            op.name.name === 'Text'
-        )
+        return textComp.has(op.name.name)
     }
     return false
 }

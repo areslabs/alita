@@ -10,7 +10,8 @@ import instanceManager from "./InstanceManager";
 import {HOCKEY, FR_PENDING} from './util'
 
 function isDiuuKey(key) {
-    return key.startsWith("DIUU") && key.length === 9
+    // TODO 更加精确的方式？？
+    return key.includes('DIUU')
 }
 
 function getListSubData(list) {
@@ -54,7 +55,7 @@ export default function getObjSubData(data) {
 
         if (isDiuuKey(k)) {
             const compInst = instanceManager.getCompInstByUUID(v)
-            if (compInst && !compInst.stateless && compInst._r) {
+            if (compInst && compInst._r) {
                 newData[`${k}R`] = getObjSubData(compInst._r)
                 compInst.firstRender = FR_PENDING
             }

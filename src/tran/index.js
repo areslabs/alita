@@ -23,8 +23,10 @@ import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
 import addWXPrefixHandler from './addWXPrefixHandler'
 import cptCompHandler from './cptCompHandler'
+import literalTemplate from './literalTemplate'
+import classNameHandler from './classNameHandler'
 
-export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, isStatelessComp) {
+export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
     const info = {
         filepath: filepath,
         templates: [],
@@ -42,7 +44,6 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, i
         entryFilePath,
         isPageComp,
         isFuncComp,
-        isStatelessComp,
     }
 
     if (isFuncComp) {
@@ -65,7 +66,11 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp, i
 
     geneReactJS(ast, info)
 
+    //ast = literalTemplate(ast, info)
+
     ast = addEventHandler(ast, info)
+
+    ast = classNameHandler(ast, info)
 
     ast = geneAllTemplate(ast, info)
 

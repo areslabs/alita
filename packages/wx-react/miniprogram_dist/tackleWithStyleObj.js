@@ -5,7 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
+
+/**
+ * 样式适配模块，
+ * //TODO 考虑是否需要用wxs重新实现
+ */
+
+
 import {SCROLL, VIEW, INNERTEXT, OUTERTEXT} from './styleType'
 
 const AddPx = "ADDPX";

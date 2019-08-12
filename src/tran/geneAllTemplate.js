@@ -66,7 +66,8 @@ export default function(ast, info) {
 
                 if(!isBindElement(jsxOp)) {
                     jsxOp.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('_r'), t.stringLiteral(`{{${diuuKey}R}}`)),
+                        t.jsxAttribute(t.jsxIdentifier('R'), t.stringLiteral(`{{${diuuKey}R}}`)),
+                        t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${diuuKey}style !== false}}`)),
                     )
                 }
 
@@ -84,10 +85,13 @@ export default function(ast, info) {
             ) {
                 const jsxOp = path.node.openingElement
                 let tempName = ''
-                jsxOp.attributes.forEach(attr => {
+                jsxOp.attributes = jsxOp.attributes.filter(attr => {
                     if (attr.name && attr.name.name === 'tempName') {
                         tempName = attr.value.value
+                        return false
                     }
+
+                    return true
                 })
 
                 info.templates.push(decTemlate(tempName, path.node))
@@ -108,6 +112,7 @@ export default function(ast, info) {
                 if (name === 'tempVnode'
                     || name === 'CPTVnode'
                     || name === 'key'
+                    || name === 'datakey'
                 ) {
                     path.remove()
                     return
@@ -124,10 +129,6 @@ export default function(ast, info) {
                 const diuuAttr = getAttr(jsxOp, 'diuu')
                 const diuuKey = diuuAttr.value.value
 
-                if (diuuKey === 'thFabricate') {
-                    // TouchableHighlight 产生的占位节点
-                    return
-                }
 
                 const attr = path.node
 
@@ -207,7 +208,7 @@ function addStyleAttr(path, diuuKey) {
     const styleAttr = getAttr(jsxOp, 'style')
     if (!styleAttr) {
         jsxOp.attributes.push(
-            t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{tools.getFinalStyle(${diuuKey}style)}}`))
+            t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{t.s(${diuuKey}style)}}`))
         )
     }
 }

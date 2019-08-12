@@ -69,12 +69,21 @@ export function filterContext(nodeName, parentContext) {
 
 
 export function setDeepData(inst, v, path) {
-    const arr = path.split('.')
+    const arr = path.split(/[.\[]/)
 
     let tmpObj = inst
     for (let i = 0; i < arr.length - 1; i++) {
         const sk = arr[i]
-        tmpObj = tmpObj[sk]
+        if (sk.charAt(sk.length - 1) === ']') {
+            const index = Number(sk.substring(0, sk.length - 1))
+            if (!Number.isNaN(index)) {
+                tmpObj = tmpObj[index]
+            } else {
+                tmpObj = tmpObj[sk]
+            }
+        } else {
+            tmpObj = tmpObj[sk]
+        }
     }
 
     const endk = arr[arr.length - 1]
@@ -87,59 +96,17 @@ export const HOCKEY = "HOCKEY"
 export const FR_PENDING = "PENDING"
 export const FR_DONE = "DONE"
 
-
-export function recursionUnmount(comp) {
-    const child = comp._c[0]
-    if (child) {
-        const childComp = instanceManager.getCompInstByUUID(child)
-        if (childComp.hocWrapped) {
-            recursionUnmount(childComp)
-        }
-    }
-
-    comp.componentWillUnmount && comp.componentWillUnmount()
-    instanceManager.removeUUID(comp.__diuu__)
-}
-
 export function recursionMount(comp) {
     for (let i = 0; i < comp._c.length; i++) {
         const inst = instanceManager.getCompInstByUUID(comp._c[i])
         recursionMount(inst)
     }
-
-
     comp.firstRender = FR_DONE
-
     comp.componentDidMount && comp.componentDidMount()
 
-
-    if (comp.updateQueue && comp.updateQueue.length > 0) {
-        const newState = {}
-        for (let j = 0; j < comp.updateQueue.length; j++) {
-            Object.assign(newState, comp.updateQueue[j])
-        }
-        comp.updateQueue = []
-
-        let finalCb = null
-        if (comp.updateQueueCB.length > 0) {
-            const cbQueue = comp.updateQueueCB
-
-            finalCb = () => {
-                for (let i = 0; i < cbQueue.length; i++) {
-                    cbQueue[i]()
-                }
-            }
-            comp.updateQueueCB = []
-        }
-
-        const isForceUpdate = comp.isForceUpdate
-        comp.isForceUpdate = false
-
-        comp.updateInner(newState, finalCb, isForceUpdate)
+    if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
+        comp.componentDidFocus()
     }
-
-
-    comp.firstRenderRes && comp.firstRenderRes()
 }
 
 export const ReactWxEventMap = {
@@ -161,4 +128,52 @@ export function getRootContext() {
     }
 
     return getCurrentContext(topInst, topInst._parentContext)
+}
+
+
+export const EMPTY_FUNC = () => {}
+
+
+export function getRealOc(oc, nc, r) {
+    if (!oc || oc.length === 0 ) {
+        return []
+    }
+
+    const ncs = new Set(nc)
+    for(let i = 0; i < oc.length; i ++) {
+        const item = oc[i]
+
+        if (ncs.has(item)) continue
+
+        const comp = instanceManager.getCompInstByUUID(item)
+
+        recursiveGetC(comp, r)
+    }
+}
+
+export function recursiveGetC(c, r) {
+    for (let i = 0; i < c._c.length; i ++ ) {
+        const item = c._c[i]
+        const comp = instanceManager.getCompInstByUUID(item)
+        recursiveGetC(comp, r)
+    }
+
+    r.push(c)
+}
+
+/**
+ * 由于微信小程序的detached的生命周期，触发并不准确，另外并不是每一个React组件都会有对应的小程序组件，所以willUnmount并没有选择通过
+ * detached生命周期实现，比如Hoc组件 没有对应的小程序组件， 自定义组件render 返回null 也不会有对应的小程序组件
+ * @param oldChildren
+ */
+export function invokeWillUnmount(oldChildren) {
+    for(let i = 0; i < oldChildren.length; i ++ ) {
+        const item = oldChildren[i]
+
+        if(item.componentWillUnmount) {
+            item.componentWillUnmount()
+        }
+
+        instanceManager.removeCompInst(item.__diuu__)
+    }
 }

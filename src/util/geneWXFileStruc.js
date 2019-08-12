@@ -36,7 +36,7 @@ export default function geneWXFileStruc(targetpath) {
 		"nodeModules": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.2.2",
+	"libVersion": "",
 	"appid": "${appid}",
 	"projectname": "${name}",
 	"isGameTourist": false,

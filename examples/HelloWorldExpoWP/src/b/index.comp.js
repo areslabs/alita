@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    WXButton,
     WXSwitch,
     WXSlider,
     WXFlatList,
@@ -89,8 +90,8 @@ export default class B extends Component {
             )
         }
 
-        this.keyExtractor = item => {
-            return item.name + ""
+        this.keyExtractor = (item, index) => {
+            return index + ""
         }
 
         this.__stateless__ = false
@@ -136,7 +137,7 @@ export default class B extends Component {
                     backgroundColor: "#fff"
                 },
                 diuu: "DIUU00004",
-                tempName: "ITNP00039"
+                tempName: "ITNP00041"
             },
             h(
                 "view",
@@ -192,12 +193,33 @@ export default class B extends Component {
                     original: "View",
                     diuu: "DIUU00010"
                 },
+                h(WXButton, {
+                    title: "\u70B9\u51FB \u5217\u8868\u9879 + 1",
+                    onPress: () => {
+                        this.setState({
+                            users: this.state.users.map(user =>
+                                Object.assign({}, user, {
+                                    name: user.name + 1
+                                })
+                            )
+                        })
+                    },
+                    diuu: "DIUU00011"
+                })
+            ),
+            h(
+                "view",
+                {
+                    style: styles.button,
+                    original: "View",
+                    diuu: "DIUU00012"
+                },
                 h(
                     "view",
                     {
                         style: styles.title,
                         original: "OuterText",
-                        diuu: "DIUU00011"
+                        diuu: "DIUU00013"
                     },
                     "FlatList \u5217\u8868"
                 )
@@ -234,19 +256,19 @@ export default class B extends Component {
                             }
                         ],
                         original: "View",
-                        diuu: "DIUU00012",
-                        tempName: "ITNP00015"
+                        diuu: "DIUU00014",
+                        tempName: "ITNP00017"
                     },
                     h("view", {
                         style: styles.itemText,
                         original: "OuterText",
-                        diuu: "DIUU00013"
+                        diuu: "DIUU00015"
                     }),
                     h(
                         "view",
                         {
                             original: "OuterText",
-                            diuu: "DIUU00014"
+                            diuu: "DIUU00016"
                         },
                         "ListFooterComponent"
                     )
@@ -257,15 +279,15 @@ export default class B extends Component {
                         {
                             style: styles.item,
                             original: "View",
-                            diuu: "DIUU00016",
-                            tempName: "ITNP00018"
+                            diuu: "DIUU00018",
+                            tempName: "ITNP00020"
                         },
                         h(
                             "view",
                             {
                                 style: styles.itemText,
                                 original: "OuterText",
-                                diuu: "DIUU00017"
+                                diuu: "DIUU00019"
                             },
                             "ListHeaderComponent"
                         )
@@ -276,15 +298,15 @@ export default class B extends Component {
                         {
                             style: styles.item,
                             original: "View",
-                            diuu: "DIUU00019",
-                            tempName: "ITNP00021"
+                            diuu: "DIUU00021",
+                            tempName: "ITNP00023"
                         },
                         h(
                             "view",
                             {
                                 style: styles.itemText,
                                 original: "OuterText",
-                                diuu: "DIUU00020"
+                                diuu: "DIUU00022"
                             },
                             "ListEmptyComponent"
                         )
@@ -297,21 +319,21 @@ export default class B extends Component {
                 "generic:ListFooterComponentCPT": "ICNPaaaab",
                 "generic:ListHeaderComponentCPT": "ICNPaaaac",
                 "generic:ListEmptyComponentCPT": "ICNPaaaad",
-                diuu: "DIUU00022"
+                diuu: "DIUU00024"
             }),
             h(
                 "view",
                 {
                     style: styles.button,
                     original: "View",
-                    diuu: "DIUU00023"
+                    diuu: "DIUU00025"
                 },
                 h(
                     "view",
                     {
                         style: styles.title,
                         original: "OuterText",
-                        diuu: "DIUU00024"
+                        diuu: "DIUU00026"
                     },
                     "\u6A2A\u5411ScrollView"
                 )
@@ -323,10 +345,10 @@ export default class B extends Component {
                     style: {
                         width: "100%"
                     },
-                    diuu: "DIUU00025"
+                    diuu: "DIUU00027"
                 },
                 h("template", {
-                    datakey: "CTDK00024",
+                    datakey: "CTDK00026",
                     tempVnode: this.state.scrollList.map(item => {
                         return h(
                             "view",
@@ -337,8 +359,8 @@ export default class B extends Component {
                                     alignItems: "center"
                                 },
                                 original: "View",
-                                diuu: "DIUU00026",
-                                tempName: "ITNP00028"
+                                diuu: "DIUU00028",
+                                tempName: "ITNP00030"
                             },
                             h("image", {
                                 src: item.img,
@@ -347,13 +369,13 @@ export default class B extends Component {
                                     height: 160
                                 },
                                 mode: "scaleToFill",
-                                diuu: "DIUU00027"
+                                diuu: "DIUU00029"
                             })
                         )
                     }),
-                    "wx:if": "{{CTDK00024}}",
-                    is: "CTNP00023",
-                    data: "{{...CTDK00024}}"
+                    "wx:if": "{{CTDK00026}}",
+                    is: "CTNP00025",
+                    data: "{{...CTDK00026}}"
                 })
             ),
             h(
@@ -361,14 +383,14 @@ export default class B extends Component {
                 {
                     style: styles.button,
                     original: "View",
-                    diuu: "DIUU00029"
+                    diuu: "DIUU00031"
                 },
                 h(
                     "view",
                     {
                         style: styles.title,
                         original: "OuterText",
-                        diuu: "DIUU00030"
+                        diuu: "DIUU00032"
                     },
                     "\u8F93\u5165\u6846"
                 )
@@ -386,21 +408,21 @@ export default class B extends Component {
                         value
                     })
                 },
-                diuu: "DIUU00031"
+                diuu: "DIUU00033"
             }),
             h(
                 "view",
                 {
                     style: styles.button,
                     original: "View",
-                    diuu: "DIUU00032"
+                    diuu: "DIUU00034"
                 },
                 h(
                     "view",
                     {
                         style: styles.title,
                         original: "OuterText",
-                        diuu: "DIUU00033"
+                        diuu: "DIUU00035"
                     },
                     "\u5176\u5B83"
                 )
@@ -415,14 +437,14 @@ export default class B extends Component {
                         sv
                     })
                 },
-                diuu: "DIUU00034"
+                diuu: "DIUU00036"
             }),
             h(WXSlider, {
                 value: 0.2,
                 style: {
                     width: "100%"
                 },
-                diuu: "DIUU00035"
+                diuu: "DIUU00037"
             }),
             h(
                 "view",
@@ -431,14 +453,14 @@ export default class B extends Component {
                         console.log("click TouchableOpacity")
                     },
                     original: "TouchableOpacity",
-                    diuu: "DIUU00036"
+                    diuu: "DIUU00038"
                 },
                 h(
                     "view",
                     {
                         style: styles.button,
                         original: "View",
-                        diuu: "DIUU00037"
+                        diuu: "DIUU00039"
                     },
                     h(
                         "view",
@@ -448,7 +470,7 @@ export default class B extends Component {
                                 color: "#fff"
                             },
                             original: "OuterText",
-                            diuu: "DIUU00038"
+                            diuu: "DIUU00040"
                         },
                         "TouchableOpacity"
                     )

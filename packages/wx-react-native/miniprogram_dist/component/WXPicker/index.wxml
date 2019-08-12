@@ -1,19 +1,25 @@
-<wxs src="../commonwxs.wxs" module="tools"/>
-<picker-view
-        indicator-style="height: 50px"
-        style="position: absolute; height: {{_r.itemLength * 50}}px; width: 100%"
-        value="{{_r.seleIndex}}"
-        bindchange="onValueChange">
-    <picker-view-column>
-        <block
-                wx:for="{{_r.childrenData.v}}"
-                wx:key="key"
-        >
-            <childrenCPT
-                    diuu="{{item.childrenDIUU}}"
-                    _r="{{item.childrenDIUUR}}"
-                    style="{{tools.getFinalStyle(item.childrenDIUUstyle)}}; line-height: 50px;"
-            />
-        </block>
-    </picker-view-column>
-</picker-view>
+<wxs src="../../../../../commonwxs.wxs" module="tools" />
+
+<template name="picker">
+    <picker-view
+            indicator-style="height: 50px"
+            style="position: absolute; height: {{itemLength * 50}}px; width: 100%"
+            value="{{seleIndex}}"
+            bindchange="onValueChange">
+        <picker-view-column>
+            <block
+                    wx:for="{{childrenData}}"
+                    wx:key="key"
+            >
+                <childrenCPT
+                        diuu="{{item.childrenDIUU}}"
+                        R="{{item.childrenDIUUR}}"
+                        wx:if="{{item.childrenDIUUstyle !== false}}"
+                        style="{{tools.getFinalStyle(item.childrenDIUUstyle)}}; line-height: 50px;"
+                />
+            </block>
+        </picker-view-column>
+    </picker-view>
+</template>
+
+<template is="picker" data="{{...(_r || R)}}"/>

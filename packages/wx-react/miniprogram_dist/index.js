@@ -9,7 +9,6 @@
 import createElement from './createElement'
 import render from './render'
 import {PureComponent, Component, FuncComponent, HocComponent, RNBaseComponent} from './AllComponent'
-import WxCPTComp from './WxCPTComp'
 import WxNormalComp from './WxNormalComp'
 import tackleWithStyleObj from './tackleWithStyleObj'
 import styleType from './styleType'
@@ -25,7 +24,6 @@ export default {
     FuncComponent,
     HocComponent,
     createElement,
-    WxCPTComp,
     WxNormalComp,
     RNBaseComponent,
     tackleWithStyleObj,
@@ -45,7 +43,6 @@ export {
     FuncComponent,
     HocComponent,
     createElement,
-    WxCPTComp,
     WxNormalComp,
     RNBaseComponent,
     tackleWithStyleObj,

@@ -9,7 +9,7 @@
 import instanceManager from './InstanceManager'
 import geneUUID from './geneUUID'
 import tackleWithStyleObj from './tackleWithStyleObj'
-import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, setDeepData, ReactWxEventMap } from './util'
+import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, setDeepData, ReactWxEventMap, getRealOc} from './util'
 import { CPTComponent, FuncComponent, RNBaseComponent, HocComponent } from './AllComponent'
 import reactUpdate from './ReactUpdate'
 
@@ -22,8 +22,10 @@ import reactUpdate from './ReactUpdate'
  * @param data
  * @param oldData
  * @param dataPath
+ * @param oldChildren
  */
-export default function render(vnode, parentInst, parentContext, data, oldData, dataPath) {
+export default function render(vnode, parentInst, parentContext, data, oldData, dataPath, oldChildren) {
+
     try {
         if (Array.isArray(vnode)) {
             console.warn('小程序暂不支持渲染数组！')
@@ -53,19 +55,10 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
         // 由于小程序slot的性能问题， 把View/Touchablexxx/Image 等退化为view来避免使用slot。
         // 对于自定义组件，如果render的最外层是View， 这个View会退化成block。
         if (nodeName === 'view' || nodeName === 'block' || nodeName === 'image') {
-
-            let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
-
-            if (!shouldReuse) {
-                diuu = geneUUID()
-            }
-            data[diuuKey] = diuu
-
-
-
             const allKeys = Object.keys(props)
             let finalNodeType = props.original
 
+            let eventProps = []
             for (let i = 0; i < allKeys.length; i++) {
                 const k = allKeys[i]
                 const v = props[k]
@@ -75,11 +68,12 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 if (k === 'src') {
                     data[`${vnodeDiuu}${k}`] = v.uri || v
                 } else if (isEventProp(k)) {
-                    parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
+                    eventProps.push(k)
+                    // parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
                 } else if (k === 'mode') {
                     data[`${vnodeDiuu}${k}`] = resizeMode(v)
                 } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
-                    data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, finalNodeType)
+                    data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, (isFirstEle || vnode.TWFBStylePath) ? finalNodeType : null)
                 } else if (k === 'activeOpacity') {
                     data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(v)
                 } else {
@@ -87,7 +81,21 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 }
             }
 
-            if (!props.style && finalNodeType !== 'TouchableWithoutFeedback') {
+            // 如果基本组件有事件函数，需要产生唯一uuid
+            if (eventProps.length > 0) {
+                let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
+                if (!shouldReuse) {
+                    diuu = geneUUID()
+                }
+                data[diuuKey] = diuu
+
+                eventProps.forEach(k => {
+                    const v = props[k]
+                    parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
+                })
+            }
+
+            if (!props.style && finalNodeType !== 'TouchableWithoutFeedback' && (isFirstEle || vnode.TWFBStylePath)) {
                 data[`${vnodeDiuu}style`] = tackleWithStyleObj('', finalNodeType)
             }
 
@@ -99,7 +107,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
 
             if (props.numberOfLines !== undefined) {
-                data[`${vnodeDiuu}style`] = data[`${vnodeDiuu}style`] + sovleNumberOfLines(props.numberOfLines)
+                data[`${vnodeDiuu}style`] = (data[`${vnodeDiuu}style`] || '') + sovleNumberOfLines(props.numberOfLines)
             }
 
 
@@ -117,10 +125,13 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 }
             }
 
+            if (props.original === 'TouchableWithoutFeedback') {
+                children[0].TWFBStylePath = `${dataPath}.${vnodeDiuu}style`
+            }
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]
-                render(childVnode, parentInst, parentContext, data, oldData, dataPath)
+                render(childVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
             }
 
 
@@ -147,29 +158,23 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 || tempVnode === null
             ) {
                 // do nothing
-                return
+                data[datakey] = ''
             } else if (typeof tempVnode === 'string'
                 || typeof tempVnode === 'number'
             ) {
                 // 不是jsx的情况
-                data[datakey] = {
-                    isLiteral: true,
-                    v: tempVnode
-                }
+                data[datakey] = tempVnode
             } else if (Array.isArray(tempVnode)) {
-                // key必须明确指定，对于不知道key的情况， React和小程序处理可能存在差异，照成两个平台的行为差异
+                // key必须明确指定，对于不知道key的情况， React和小程序处理可能存在差异，造成两个平台的行为差异
 
                 let oldSubDataKeyMap = {}
-                if (oldData && oldData[datakey] && oldData[datakey].isArray) {
-                    const oldSubDataList = oldData[datakey].v
+                if (oldData && oldData[datakey] && Array.isArray(oldData[datakey])) {
+                    const oldSubDataList = oldData[datakey]
                     oldSubDataKeyMap = getKeyDataMap(oldSubDataList, 'key')
                 }
 
                 const subDataList = []
-                data[datakey] = {
-                    isArray: true,
-                    v: subDataList
-                }
+                data[datakey] = subDataList
                 for (let i = 0; i < tempVnode.length; i++) {
                     const subVnode = tempVnode[i]
 
@@ -180,10 +185,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     if (typeof subVnode === 'string'
                         || typeof subVnode === 'number'
                     ) {
-                        data[datakey].v.push({
-                            isLiteral: true,
-                            v: subVnode
-                        })
+                        data[datakey].push(subVnode)
                         continue
                     }
 
@@ -201,29 +203,26 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                     const subData = {
                         key: subKey,
-                        diuu: subVnode.diuu
+                        diuu: subVnode.diuu  // 用来判断复用逻辑
                     }
-                    data[datakey].v.push(subData)
+                    data[datakey].push(subData)
 
                     // 假设 Ua 对应的key为 Ka， Ub对应的key为 Kb。
                     // 当Ua的key由Ka --> Kb 的时候， 那么组件变为Ub负责来渲染这一块， 故而需要给予Ub对应的数据
                     // 对于明确且唯一的key，  小程序和React处理是一致的
-                    const vIndex = data[datakey].v.length - 1
-                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}.v.${vIndex}`)
+                    const vIndex = data[datakey].length - 1
+                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}[${vIndex}]`, oldChildren)
                 }
             } else {
                 let oldSubData = null
-                if (oldData && oldData[datakey] && oldData[datakey].isJSX) {
-                    oldSubData = oldData[datakey].v
+                if (oldData && oldData[datakey] && oldData[datakey].tempName) {
+                    oldSubData = oldData[datakey]
                 }
 
                 const subData = {}
-                data[datakey] = {
-                    isJSX: true,
-                    v: subData
-                }
+                data[datakey] = subData
 
-                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}.v`)
+                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}`, oldChildren)
             }
         } else if (nodeName === 'phblock') {
             // 用于FlatList等外层， 用来占位
@@ -239,7 +238,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]
-                render(childVnode, parentInst, parentContext, data, oldData, dataPath)
+                render(childVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
             }
         } else if (typeof nodeName === 'string' && nodeName.endsWith('CPT')) {
             // 抽象组件节点， 处理属性是xxComponent/children的情况
@@ -274,20 +273,21 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst._or = inst._r
             inst._r = {}
+            const oc  = inst._c
             inst._c = []
 
             inst.__eventHanderMap = {}
 
-            render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r')
+            if (CPTVnode && CPTVnode.isReactElement) {
+                CPTVnode.isFirstEle = true
+            }
+
+            render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r', oldChildren)
+            getRealOc(oc, inst._c, oldChildren)
 
             // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
             reportSubStyleToOuter(vnodeDiuu, CPTVnode, inst, parentInst, dataPath)
 
-
-            //TODO 临时方案，将随着React/小程序的数据交换方式的改变而改变
-            const outRKey = `${diuuKey}R`
-            data[outRKey] = inst._r
-            inst.stateless = true
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === FuncComponent) {
             // 函数组件， 没有声明周期， 没有setState
             let inst = null
@@ -349,6 +349,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst._r = {}
             // children 重置， render过程的时候重新初始化， 因为children的顺序关系着渲染的顺序， 所以这里应该需要每次render都重置
+            const oc = inst._c
             inst._c = []
 
             inst.__eventHanderMap = {}
@@ -360,7 +361,9 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
             const context = getCurrentContext(inst, parentContext)
 
-            render(subVnode, inst, context, inst._r, inst._or, '_r')
+            render(subVnode, inst, context, inst._r, inst._or, '_r', oldChildren)
+
+            getRealOc(oc, inst._c, oldChildren)
 
             // 动画相关
             if (animation) {
@@ -369,14 +372,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             if (!inst.isPageComp) {
                 reportSubStyleToOuter(vnodeDiuu, subVnode, inst, parentInst, dataPath)
-
-
-                if (!inst.hocWrapped) {
-                    //TODO 临时方案
-                    const outRKey = `${vnodeDiuu}R`
-                    data[outRKey] = inst._r
-                    inst.stateless = true
-                }
             }
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === RNBaseComponent) {
             // 与下面 typeof nodeName === 'function' 相比， 这里面应该都是 RN base 组件，
@@ -460,7 +455,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const subVnode = children[i]
-                render(subVnode, parentInst, parentContext, data, oldData, dataPath)
+                render(subVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
             }
         } else if (typeof nodeName === 'function') {
             let inst = null
@@ -529,14 +524,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                         // 当组件不需要更新的时候，直接返回， 但是这个时候由于父组件的_r 是新计算的，组件的样式就会丢失，
                         // 所以在组件返回之前， 需要把之前计算好的样式上报给父组件。
                         reportOuterWithExistsStyle(vnodeDiuu, inst, parentInst, dataPath)
-
-
-                        if(inst.__stateless__  && !inst.hocWrapped) {
-                            //TODO 临时方案
-                            const outRKey = `${vnodeDiuu}R`
-                            data[outRKey] = inst._r
-                            inst.stateless = true
-                        }
                         return
                     }
 
@@ -553,6 +540,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                     inst.componentWillMount && inst.componentWillMount()
                     inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
+                    inst.willMountDone = true
 
                     const instUUID = geneUUID()
                     data[diuuKey] = instUUID
@@ -587,6 +575,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                 inst.componentWillMount && inst.componentWillMount()
                 inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
+                inst.willMountDone = true
+
                 const instUUID = vnodeDiuu
                 inst.__diuu__ = instUUID
 
@@ -596,11 +586,16 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             inst._r = {}
             // children 重置， render过程的时候重新初始化， 因为children的顺序关系着渲染的顺序， 所以这里应该需要每次render都重置
+            const oc = inst._c
             inst._c = []
 
             inst.__eventHanderMap = {}
 
+            // _TWFBStylePath, _isFirstEle两个字段 FuncComp 不需要设置，因为他们只有在setState的起作用
             inst._isFirstEle = isFirstEle
+            if (vnode.TWFBStylePath) {
+                inst._TWFBStylePath = vnode.TWFBStylePath
+            }
 
             const subVnode = inst.render()
             if (subVnode && subVnode.isReactElement) {
@@ -610,8 +605,9 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             inst._parentContext = parentContext
             const context = getCurrentContext(inst, parentContext)
 
-            render(subVnode, inst, context, inst._r, inst._or, '_r')
+            render(subVnode, inst, context, inst._r, inst._or, '_r', oldChildren)
 
+            getRealOc(oc, inst._c, oldChildren)
 
             if (typeof ref === 'function') {
                 ref(inst)
@@ -625,13 +621,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             if (!inst.isPageComp) {
                 // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
                 reportSubStyleToOuter(vnodeDiuu, subVnode, inst, parentInst, dataPath)
-
-                if(inst.__stateless__  && !inst.hocWrapped) {
-                    //TODO 临时方案
-                    const outRKey = `${vnodeDiuu}R`
-                    data[outRKey] = inst._r
-                    inst.stateless = true
-                }
             }
         }
     } catch (e) {
@@ -663,12 +652,12 @@ function reportOuterWithExistsStyle(parentDiuu, inst, parentInst, dataPath) {
 function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath) {
     const outStyleKey = `${parentDiuu}style`
 
-    // render null
+    // render null，外层组件的节点 也应该消失
     if (subVnode === null || subVnode === undefined || typeof subVnode === 'boolean') {
-        const styleValue = 'display: none;'
+        const styleValue = false
         setStyleData(parentInst, outStyleKey, styleValue, dataPath)
         inst._myOutStyle = styleValue
-        inst._stylePath = `${dataPath}.${outStyleKey}`
+        inst._keyPath = `${dataPath}.${parentDiuu}`
         return
     }
 
@@ -683,7 +672,7 @@ function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath)
     const styleValue = inst._r[styleKey]
 
     inst._myOutStyle = styleValue
-    inst._stylePath = `${dataPath}.${outStyleKey}`
+    inst._keyPath = `${dataPath}.${parentDiuu}`
 
 
     inst._r[styleKey] = DEFAULTCONTAINERSTYLE
@@ -776,7 +765,7 @@ function getKeyDataMap(arr, key) {
 
 
 function shouldReuseButInstNull(vnode) {
-    console.warn('未知原因导致React 实例丢失！错误节点：', vnode)
+    console.warn('未知原因导致React 实例丢失， please create an issue! 错误节点：', vnode)
 }
 
 function sovleNumberOfLines (newVal){
