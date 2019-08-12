@@ -1,5 +1,6 @@
 <block wx:if="{{!horizontal}}">
     <scroll-view
+            enable-flex
             scroll-y
             scroll-with-animation="{{withAni}}"
             bindscroll="outScroll"
@@ -16,6 +17,7 @@
 </block>
 <block wx:else>
     <scroll-view
+            enable-flex
             scroll-x
             scroll-with-animation="{{withAni}}"
             bindscroll="outScroll"

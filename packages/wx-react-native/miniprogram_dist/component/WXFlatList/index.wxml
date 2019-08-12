@@ -17,6 +17,7 @@
 
 <template name="flatList">
     <scroll-view
+            enable-flex
             bindscrolltoupper="onScrollToupper"
             scroll-y
             scroll-top="{{onRefreshPassed ? (sr ? 0: 80) : 0}}"
