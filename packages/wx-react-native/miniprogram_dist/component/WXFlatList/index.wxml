@@ -1,4 +1,4 @@
-<wxs src="../../../../../commonwxs.wxs" module="tools" />
+<wxs src="../commonwxs.wxs" module="tools" />
 <wxs module="methods">
     var ArrayContains=function(arr,ele){
         var find=false

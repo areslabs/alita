@@ -1,4 +1,4 @@
-<wxs src="../../../../../commonwxs.wxs" module="tools" />
+<wxs src="../commonwxs.wxs" module="tools" />
 
 <template name="sectionList">
     <scroll-view

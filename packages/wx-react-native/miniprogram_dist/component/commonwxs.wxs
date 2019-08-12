@@ -1,0 +1,51 @@
+var DEFAULTVIEWSTYLE = "display: flex; flex-grow: 0; flex-shrink: 0; position: relative; flex-direction: column; box-sizing: border-box;border-width: 0; border-style: solid;min-width: 0;min-height: 0;";
+var DEFAULTTEXTWSTYLE = "display: inline-block; flex-grow: 0; flex-shrink: 0; " +
+    "overflow: hidden; position: relative; flex-direction: column; box-sizing: border-box ;border-width: 0; border-style: solid;min-width: 0;min-height: 0;";
+var DEFAULTINNERTEXTWSTYLE = "display: inline;min-width: 0;min-height: 0;";
+var DEFAULTSCROLLVIEWSTYLE = "display: flex; position: relative; flex-direction: column; box-sizing: border-box; flex: 1 ;border-width: 0; border-style: solid; min-width: 0;min-height: 0;";
+
+var DEFAULTCONTAINERSTYLE =
+    "display: flex; flex: 1; flex-basis: 100%; width: 100%; height: 100%;" +
+    " justify-content: inherit; align-items: inherit; flex-wrap: inherit; box-sizing: border-box; border:none; flex-direction: inherit; border-radius: inherit; position: static;min-width: 0;min-height: 0;"
+
+
+var getFinalStyle = function (d) {
+  if (!d) return ''
+
+  if (d === '_5_') return DEFAULTCONTAINERSTYLE
+
+  if (d.charAt(0) !== '_') {
+     return d
+  }
+
+
+  if (d.charAt(1) === '1') {
+     return d.replace('_1_', DEFAULTVIEWSTYLE)
+  }
+
+  if (d.charAt(1) === '2') {
+     return d.replace('_2_', DEFAULTTEXTWSTYLE)
+  }
+
+  if (d.charAt(1) === '3') {
+     return d.replace('_3_', DEFAULTINNERTEXTWSTYLE)
+  }
+
+  if (d.charAt(1) === '4') {
+     return d.replace('_4_', DEFAULTSCROLLVIEWSTYLE)
+  }
+}
+
+var lite = function(v) {
+    return v.constructor === 'Number' || v.constructor === 'String'
+}
+
+
+module.exports = {
+   getFinalStyle: getFinalStyle,
+   lite: lite,
+
+
+    s: getFinalStyle,
+    l: lite,
+};
