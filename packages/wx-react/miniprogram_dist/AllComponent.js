@@ -197,7 +197,6 @@ export class BaseComponent {
 
         topWX.groupSetData(() => {
             updaterList = simpleUpdaterList(updaterList)
-            const start = Date.now()
 
             for(let i = 0; i < updaterList.length; i ++) {
                 const {inst, data} = updaterList[i]
@@ -627,7 +626,6 @@ function rReplace(topComp, cb) {
     }
 
     const topWx = topComp.getWxInst()
-    const start = Date.now()
     topWx.groupSetData(() => {
         for(let i = 0; i < finalList.length; i ++ ) {
             const {inst, data} = finalList[i]
