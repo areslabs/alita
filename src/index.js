@@ -9,13 +9,14 @@
 import path from 'path'
 import getopts from 'getopts'
 import colors from 'colors'
-import fse from 'fs-extra'
-import {getDependenciesMap, getRNCompList, emptyDir} from './util/util'
+import fse, { exists } from 'fs-extra'
+import { getDependenciesMap, getRNCompList, emptyDir } from './util/util'
 import packagz from '../package.json'
 import filewatch from './filewatch/index'
 import geneWXFileStruc from './util/geneWXFileStruc'
 import getExtCompPathMaps from './util/getExtCompPathMaps'
 import geneWXPackageJSON from './util/geneWXPackageJSON'
+import program from 'commander'
 
 colors.setTheme({
     silly: 'rainbow',
@@ -29,6 +30,54 @@ colors.setTheme({
     debug: 'blue',
     error: 'red'
 });
+
+
+/**
+ * alita commands
+ *    - config
+ *    - init
+ */
+// console.log('Compile ReactNative to WX\n')
+const actionMap = {
+    i: {
+        description: 'transfert ReactNativeProject to WXProject',
+        usages: [
+            'alita -i inputDir -o outputDir',
+            'alita -i inputDir -o outputDir --comp',
+            'alita -i inputDir -o outputDir --watch'
+        ]
+    }
+}
+
+function help() {
+    console.log('\nExample:')
+    Object.keys(actionMap).forEach((action) => {
+        actionMap[action].usages.forEach(usage => {
+            console.log('  ' + usage)
+        });
+    });
+    console.log('\r')
+}
+
+program.usage(`-i <inputDir> -o <outputDir>`)
+program.on('-h', help)
+program.on('--help', help)
+program
+    .version(packagz.version, '-v --version')
+    .option('--watch', 'watch files and recompile when they change')
+    .option('--comp', 'transfer ReactNative Component to WX')
+    .option('--config', 'specify configuration file')
+    .option('-i', 'specify inputDir')
+    .option('-o', 'specify outputDir')
+    .parse(process.argv)
+
+
+
+// alita 不带参数时
+if (!process.argv.slice(2).length) {
+    program.outputHelp()
+}
+
 
 const options = getopts(process.argv, {
     alias: {
@@ -46,15 +95,10 @@ const options = getopts(process.argv, {
 const DEFAULTCONFIG = {
     name: '需要一个名字！',
     appid: '',
-
-
     isFileIgnore: () => false,
-
     subDir: '/',
-
     packageJSONPath: './package.json',
     dependenciesMap: getDependenciesMap('^1.0.0'),
-
     extCompLibs: [
         {
             name: 'react-native',
@@ -64,12 +108,29 @@ const DEFAULTCONFIG = {
     ]
 }
 
-if (options.version) {
-    console.log(packagz.version)
-    process.exit()
+const second = (process.argv.slice(2))[0]
+const fourth = (process.argv.slice(4))[0]
+
+function enterI() {
+    if (second === '-i' || fourth === '-i') {
+        return true
+    } else {
+        return false
+    }
 }
 
-if (!options.inputdir) {
+function enterO() {
+    if (second === '-o' || fourth === '-o') {
+        return true
+    } else {
+        return false
+    }
+}
+
+if (!enterI() || !enterO()) {
+    !process.exit()
+}
+if (!enterI() || !options.inputdir) {
     console.log('input dir must exists， check your -i argument'.error)
     process.exit()
 }
@@ -79,7 +140,7 @@ if (!fse.existsSync(INPUT_DIR)) {
     process.exit()
 }
 
-if (!options.outdir) {
+if (!enterO() || !options.outdir) {
     console.log('output dir must exists， check your -o argument'.error)
     process.exit()
 }
@@ -98,7 +159,9 @@ if (fse.existsSync(OUT_DIR)) {
 }
 
 
-const CONFIGPATH = path.resolve(INPUT_DIR, options.config || 'alita.config.js')
+const CONFIGPATH = options.config ?
+    path.resolve(options.config)
+    : path.resolve(INPUT_DIR, 'alita.config.js')
 let configObj = DEFAULTCONFIG
 
 if (fse.existsSync(CONFIGPATH)) {
@@ -116,29 +179,33 @@ if (fse.existsSync(CONFIGPATH)) {
             ...(userConfig.extCompLibs || [])
         ]
     }
+    main()
 } else {
     console.log('未发现配置文件，将使用默认配置'.info)
+    main()
 }
 
-global.execArgs = {
-    INPUT_DIR,
-    OUT_DIR,
-    watchMode: !!options.watch,
-    tranComp: !!options.component,
-    configObj,
-    beta: options.beta
+function main() {
+    global.execArgs = {
+        INPUT_DIR,
+        OUT_DIR,
+        watchMode: !!options.watch,
+        tranComp: !!options.component,
+        configObj,
+        beta: options.beta
+    }
+
+    global.execArgs = {
+        ...global.execArgs,
+        ...getExtCompPathMaps(configObj.extCompLibs)
+    }
+
+    // 生成微信目录结构
+    geneWXFileStruc(OUT_DIR)
+
+    // 生成微信package.json文件
+    geneWXPackageJSON()
+
+    const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
+    filewatch(ignored)
 }
-
-global.execArgs = {
-    ...global.execArgs,
-    ...getExtCompPathMaps(configObj.extCompLibs)
-}
-
-// 生成微信目录结构
-geneWXFileStruc(OUT_DIR)
-
-// 生成微信package.json文件
-geneWXPackageJSON()
-
-const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
-filewatch(ignored)
