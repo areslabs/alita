@@ -2,7 +2,7 @@
 	"component": true,
 	"usingComponents": {},
 	"componentGenerics": {
-		"childrenCPT": "true"
+		"childrenCPT": true
 	},
 	"disableScroll": true
 }
