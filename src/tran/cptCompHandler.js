@@ -179,7 +179,7 @@ export default function addWXPrefixHandler (ast, info) {
                 // <V  headerComponent={this.props.hhComponent}/> 这种简单情形， 对于负责的对于hhComponent处理， 然后再传递的情况
                 // 无法支持
                 if (compGenericName && isPropsComp(path) && compGenericName !== getGenericName('children') ) {
-                    info.json.componentGenerics[compGenericName] = "true"
+                    info.json.componentGenerics[compGenericName] = true
                     const jsxAttr = path.parentPath.parentPath
 
                     const nowGeneName = getGenericName(jsxAttr.node.name.name)
@@ -197,7 +197,7 @@ export default function addWXPrefixHandler (ast, info) {
 
                 if (compGenericName) {
                     const fpath = getFinalPath(path)
-                    info.json.componentGenerics[compGenericName] = "true"
+                    info.json.componentGenerics[compGenericName] = true
                     const pp = fpath.parentPath
                     let reElement = null
                     if (pp.type === 'CallExpression') {

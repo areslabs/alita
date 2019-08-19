@@ -3,6 +3,6 @@
   "usingComponents": {
   },
   "componentGenerics": {
-    "childrenCPT": "true"
+    "childrenCPT": true
   }
 }

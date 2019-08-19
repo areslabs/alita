@@ -36,9 +36,6 @@ export default function(info) {
 
     let renderJSONStr =  JSON.stringify(renderJSON, null, '\t')
 
-    //TODO 微信在npm自定义组件和componentGenerics 同用的时候有bug， 这里如果componentGenerics 里如果设置为true 会报错， 故设置为"true"
-    //TODO 详情在https://developers.weixin.qq.com/community/develop/doc/00008850dfc788ac9a774294b5b400?highLine=Path%2520must%2520be%2520a%2520string.%2520Received%2520true
-
     for(let i = 0; i < outComp.length; i ++) {
         const name = outComp[i]
 

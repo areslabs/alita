@@ -4,9 +4,9 @@
     "WXScrollView": "../WXScrollView/index"
   },
   "componentGenerics": {
-    "renderItemCPT": "true",
-    "ListFooterComponentCPT": "true",
-    "ListHeaderComponentCPT": "true",
-    "ListEmptyComponentCPT": "true"
+    "renderItemCPT": true,
+    "ListFooterComponentCPT": true,
+    "ListHeaderComponentCPT": true,
+    "ListEmptyComponentCPT": true
   }
 }
