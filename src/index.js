@@ -126,9 +126,9 @@ function enterO() {
 
 if (!enterI() || !enterO()) {
     program.outputHelp()
-    !process.exit()
+    process.exit()
 }
-if (!enterI() || !options.inputdir) {
+if (enterI() && !options.inputdir) {
     console.log('input dir must exists， check your -i argument'.error)
     process.exit()
 }
@@ -138,7 +138,7 @@ if (!fse.existsSync(INPUT_DIR)) {
     process.exit()
 }
 
-if (!enterO() || !options.outdir) {
+if (enterO() && !options.outdir) {
     console.log('output dir must exists， check your -o argument'.error)
     process.exit()
 }
