@@ -108,11 +108,8 @@ const DEFAULTCONFIG = {
     ]
 }
 
-const second = (process.argv.slice(2))[0]
-const fourth = (process.argv.slice(4))[0]
-
 function enterI() {
-    if (second === '-i' || fourth === '-i') {
+    if (process.argv.indexOf('-i') !== -1) {
         return true
     } else {
         return false
@@ -120,7 +117,7 @@ function enterI() {
 }
 
 function enterO() {
-    if (second === '-o' || fourth === '-o') {
+    if (process.argv.indexOf('-o') !== -1) {
         return true
     } else {
         return false
@@ -128,6 +125,7 @@ function enterO() {
 }
 
 if (!enterI() || !enterO()) {
+    program.outputHelp()
     !process.exit()
 }
 if (!enterI() || !options.inputdir) {
