@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/areslabs/alita/compare/1.1.1...1.2.1) (2019-08-21)
+
+### Bug Fixes
+* **alita:** 去除componentGenerics 产生的警告/错误
+
+### Features
+* **alita:** 提升alita命令行的友好提示 ，添加--help等
+
+
 # [1.2.0](https://github.com/areslabs/alita/compare/1.1.1...1.2.0) (2019-08-12)
 重新实现了小程序和mini-react之间的数据交互， 带来如下的改进
 * 首屏渲染优化
