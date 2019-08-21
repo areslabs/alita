@@ -16,6 +16,8 @@
 	"appid": "wx67a52214b440b81b",
 	"projectname": "HelloWorldExpoWP",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

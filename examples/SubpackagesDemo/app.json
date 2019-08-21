@@ -1,12 +1,12 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "subPackages": [
     {
@@ -21,9 +21,10 @@
     },
     {
       "root": "pages/Todo/",
-      "pages":  [
+      "pages": [
         "src/components/index"
       ]
     }
-  ]
+  ],
+  "sitemapLocation": "sitemap.json"
 }
