@@ -42,7 +42,7 @@ export default async function (srcpath, targetpath) {
 
         const {isEntry, isRF, isFuncComp, isRNEntry} = getFileInfo(ast)
         if (isRNEntry) return []
-
+        targetpath = targetpath.indexOf('.jsx') > 0 ? targetpath.replace('.jsx', '.js') : targetpath
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
             const entryResult = handleEntry(ast, targetpath)
             entryFilePath = entryResult.filepath
