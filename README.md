@@ -33,7 +33,9 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * 支持第三方/自定义组件库扩展， 扩展方式[详见](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
 
 ## Alita 原理相关
-Alita使用运行时React语法处理方案，区别现有社区使用的编译时方案，对React语法的支持更加完备，具体请看：[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
+1. Alita使用运行时React语法处理方案，区别现有社区使用的编译时方案，对React语法的支持更加完备，具体请看：[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
+
+2. 关于React和小程序的数据交互方式，请看：[React与小程序的数据交换](https://areslabs.github.io/alita/mini-react%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2%E6%96%B9%E5%BC%8F.html)
 
 ## Install
 通过npm安装即可
