@@ -70,6 +70,8 @@ const P_R =  Promise.resolve()
  * 做了以后，在FlatList里面存在这闪屏现象。 所以最终的方案还是初始结束以后，就刷数据给子孙节点，统一刷数据给小程序的时候需要注意，顺序是重要的
  * 必须从孙 --> 子 --> 父， 因为如果先刷父的数据，有可能会预先导致子/孙的变化（可见groupSetData的实现，和React世界unstable_batchedUpdates并不一样）
  *
+ *
+ * 记录一下：`groupSetData` 在百度小程序（groupSetData）和支付宝小程序（this.$page.$batchedUpdates）均有相关实现。
  */
 export class BaseComponent {
     getTopDiuu() {
