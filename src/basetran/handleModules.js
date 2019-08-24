@@ -225,6 +225,7 @@ function getRealSource(source, filepath) {
             .replace(/\\/g, '/')
 
         if(fse.existsSync(originalPath + '.js')
+            || fse.existsSync(originalPath + '.jsx')
             || fse.existsSync(originalPath + '.wx.js')
         ) {
             return source
