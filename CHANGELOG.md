@@ -1,3 +1,13 @@
+## [1.2.2](https://github.com/areslabs/alita/compare/1.2.1...1.2.2) (2019-08-26)
+
+
+### Bug Fixes
+
+* **alita:** 修复文件名后缀.jsx的bug ([99fcacb](https://github.com/areslabs/alita/commit/99fcacb)), closes [#13](https://github.com/areslabs/alita/issues/13)
+* **alita:** 修复文件名后缀.jsx的bug ([82775b8](https://github.com/areslabs/alita/commit/82775b8)), closes [#13](https://github.com/areslabs/alita/issues/13)
+
+
+
 ## [1.2.1](https://github.com/areslabs/alita/compare/1.1.1...1.2.1) (2019-08-21)
 
 ### Bug Fixes
