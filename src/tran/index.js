@@ -66,7 +66,7 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
 
     geneReactJS(ast, info)
 
-    //ast = literalTemplate(ast, info)
+    ast = literalTemplate(ast, info)
 
     ast = addEventHandler(ast, info)
 

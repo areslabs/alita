@@ -15,12 +15,13 @@ import * as t from "@babel/types"
  * @param info
  * @returns {*}
  */
-export default function literalTemplate (ast,info) {
+export default function literalTemplate (ast, info) {
 
     traverse(ast, {
         exit: path => {
-            if (path.type === 'JSXElement') {
-
+            if (path.type === 'JSXElement'
+                && isTextElement(path.node.openingElement)
+            ) {
                 const newChildren = []
                 path.node.children.forEach(item => {
                     if (
@@ -56,4 +57,13 @@ export default function literalTemplate (ast,info) {
     })
 
     return ast
+}
+
+function isTextElement(openingElement) {
+    if (openingElement.name.name !== 'view') return false
+
+    return openingElement.attributes.some(item =>
+        item.type === 'JSXAttribute'
+        && item.name.name === 'original'
+        && (item.value.value === 'OuterText' || item.value.value === 'InnerText'))
 }
