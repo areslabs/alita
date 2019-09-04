@@ -16,16 +16,14 @@ import {
     HOCKEY,
     FR_DONE,
     FR_PENDING,
-    recursionMount,
-    EMPTY_FUNC,
     getRealOc,
-    invokeWillUnmount
+    invokeWillUnmount,
+    recursionFirstFlushWX,
+    recursionMountOrUpdate
 } from './util'
 import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
-import getObjSubData from './getObjSubData'
 
-const P_R =  Promise.resolve()
 
 /**
  * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。比如如下的情形：
@@ -72,9 +70,79 @@ const P_R =  Promise.resolve()
  *
  *
  * 记录一下：`groupSetData` 在百度小程序（groupSetData）和支付宝小程序（this.$page.$batchedUpdates）均有相关实现。
+ *
+ *
+ * ## 方案二
+ * 假设结构如下：
+ *
+ *                     Father
+ *
+ *        son1        son2         son3
+ *
+ *   gs11   gs12  gs21   gs22   gs31  gs32     // gs为grandson的简写
+ *
+ *   假定在 Father的某次setState中， gs12， gs21， son3， gs31， gs32 节点新产生了， 而Father， son1， gs11， son2， gs22，这些节点
+ *   在这次setState中里面有更新，那么应该更新如下：
+ *
+ *   第一次：groupSetData(() => {
+ *       Father.setData()
+ *       son1.setDate()
+ *       gs11.setData()
+ *       son2.setData()
+ *       gs22.setData()
+ *   })
+ *
+ *   第二次：第一次groupSetData结束之后： gs12， gs21， son3 产生了，（注意 此刻gs31， gs32还未产生）
+ *       groupSetData(() => {
+ *           gs12.setData()
+ *           gs21.setData()
+ *           son3.setData()
+ *       })
+ *
+ *
+ *   第三次：第二次groupSetData结束之后： gs31， gs32产生了
+ *       groupSetData(() => {
+ *           gs31.setData()
+ *           gs32.setData()
+ *       })
+ *
+ *
+ *  特别的，当Father是页面组件，且是第一次初始化的时候，每一层级的节点将依次产生，一共会发生n（组件树层级）次groupSetData
+ *
  */
 export class BaseComponent {
-    getTopDiuu() {
+
+    /**
+     * 获取最后一层 hocWrapped节点
+     */
+    getDeepComp() {
+        let childComp = this
+        while (childComp instanceof HocComponent) {
+            if (childComp._c.length === 0) {
+                return null
+            }
+
+            const child = childComp._c[0]
+            childComp = instanceManager.getCompInstByUUID(child)
+        }
+        return childComp
+    }
+
+    /**
+     * 最近的存在wx节点的顶层组件
+     * @returns {*}
+     */
+    topExistWx() {
+        let inst = this
+
+        while (!inst._p.getWxInst()) {
+            inst = inst._p
+        }
+
+        return inst.getDeepComp()
+    }
+
+    getWxInst() {
         let diuu = null
 
         if (this.hocWrapped) {
@@ -87,49 +155,7 @@ export class BaseComponent {
         } else {
             diuu = this.__diuu__
         }
-        return diuu
-    }
 
-    /**
-     * 当组件新产生的时候，获取刷数据的 目标小程序实例，数据路径
-       需要考虑 自定义组件render返回null的时候，需要往回追溯
-     *
-     * @returns {*}
-     */
-    getTopWx() {
-        if (this.isPageComp) {
-            const diuu = this.getTopDiuu()
-            compInst = instanceManager.getCompInstByUUID(diuu)
-            return {
-                comp: compInst,
-                wx: this.getWxInst(),
-                key: '_r'
-            }
-        }
-
-        let compInst = this
-        let wxParent = null
-        let key = '_r'
-
-        while (!wxParent) {
-            const diuu = compInst.getTopDiuu()
-            compInst = instanceManager.getCompInstByUUID(diuu)
-
-            wxParent = compInst._p.getWxInst()
-            key = key.replace('_r', compInst._keyPath + 'R')
-            compInst = compInst._p
-        }
-
-        return {
-            comp: compInst,
-            wx: wxParent,
-            key: key,
-        }
-    }
-
-
-    getWxInst() {
-        const diuu = this.getTopDiuu()
         return instanceManager.getWxInstByUUID(diuu)
     }
 
@@ -137,194 +163,133 @@ export class BaseComponent {
      * 页面组件初始渲染
      */
     firstUpdateWX() {
-        const diuu = this.__diuu__
-        const allData = getObjSubData(this._r)
-        const wxInst = instanceManager.getWxInstByUUID(diuu)
+        const deepComp = this.getDeepComp()
 
-        if (Object.keys(allData).length === 0) {
-            recursionMount(this)
+        if (!deepComp || Object.keys(deepComp._r).length === 0) {
+            recursionMountOrUpdate(this)
         } else {
-            wxInst.setData({_r: allData}, () => {
-                rReplace(this, () => {
-                    recursionMount(this)
-                })
-            })
+            recursionFirstFlushWX(this, this.getWxInst(), [deepComp])
         }
     }
 
-
     /**
-     * 刷新数据到小程序，使用 groupSetData 来优化多次setData
+     * 刷新数据到小程序
      * @param cb
      * @param styleUpdater 上报样式的updater
      */
     updateWX(cb, styleUpdater) {
-        let updaterList = []
 
-        // 从topComp开始搜索 需要_r 替换的节点
+        // 页面组件特殊处理
         let topComp = null
-        if (this.getWxInst()) {
-            topComp = this
+        if (this.isPageComp) {
+            const dc = this.getDeepComp()
+            if (!dc || Object.keys(dc._r).length === 0) {
+                this.getWxInst().setData({
+                    _r: {}
+                }, () => {
+                    recursionMountOrUpdate(this)
+                    cb && cb()
+                })
+                return
+            } else {
+                topComp = dc
+            }
         } else {
-            topComp = this.getTopWx().comp
+            topComp = this
         }
 
+        const flushList = []
+        const firstFlushList = []
 
-        let gpr = null
-        const groupPromise = new Promise((resolve) => {
-            gpr = resolve
-        })
-
-        let frp = null
-        const firstReplacePromise = new Promise((resolve) => {
-            frp = resolve
-        })
-
-        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise, firstReplacePromise)
+        topComp.updateWXInner(flushList, firstFlushList)
 
         if (styleUpdater) {
-            updaterList.push(styleUpdater)
+            flushList.push(styleUpdater)
         }
 
-        if (updaterList.length === 0) {
-            gpr()
+        if (flushList.length === 0) {
+            recursionMountOrUpdate(this)
+            cb && cb()
             return
         }
 
+        /// groupSetData 来优化多次setData
+
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
-
-        groupPromise.then(() => {
-            rReplace(topComp, frp)
-        })
-
         topWX.groupSetData(() => {
-            updaterList = simpleUpdaterList(updaterList)
+            console.log('update wow:', flushList)
+            for(let i = 0; i < flushList.length; i ++ ) {
+                const {inst, data} = flushList[i]
 
-            for(let i = 0; i < updaterList.length; i ++) {
-                const {inst, data} = updaterList[i]
-                inst.setData(data)
+                if (i === 0) {
+                    inst.setData(data, () => {
+                        recursionFirstFlushWX(this, topWX, firstFlushList, cb)
+                    })
+                } else {
+                    inst.setData(data)
+                }
             }
-
-            topWX.setData({}, gpr)
         })
     }
 
+
     /**
-     * 递归程序。 主要做三个事情
-     * 1. 构建出updaterList， 包含所有此次需要更新的微信实例 + 数据
-     * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 等生命周期的正确执行
-     *
-     * @param doneCb
-     * @param updaterList
-     * @param groupPromise
-     * @param firstReplacePromise
+     * 递归程序。 主要做两个事情
+     * 1. 构建出flushList， 包含所以需要更新的微信实例/数据
+     * 3. 构建出firstFlushList，包含此次setData之后，所有新产生的节点数组 firstFlushList
+     * @param flushList
+     * @param firstFlushList
      */
-    updateWXInner(doneCb, updaterList, groupPromise, firstReplacePromise) {
-        const updatePros = []
-        const children = this._c
-        for (let i = 0; i < children.length; i++) {
-            const childUuid = children[i]
-            const child = instanceManager.getCompInstByUUID(childUuid)
+    updateWXInner(flushList, firstFlushList) {
+        if (this.firstRender !== FR_DONE) {
+            if (this._myOutStyle === false) {
+                return
+            }
 
-            if (child.firstRender !== FR_DONE) {
-                // 子节点还未初始化
-                const allSubData = getObjSubData(child._r)
+            const dc = this.getDeepComp()
+            firstFlushList.push(dc)
+        } else if (this.shouldUpdate) {
+            if (this._myOutStyle === false) {
+                return
+            }
 
-                if (Object.keys(allSubData).length === 0) {
-                    recursionMount(child)
-                    updatePros.push(P_R)
+            let shouldTraversalChild = false
+
+            if (this instanceof HocComponent) {
+                shouldTraversalChild = true
+            } else  {
+                const cp = getChangePath(this._r, this._or)
+                // _or 不在有用
+                this._or = {}
+
+                if (Object.keys(cp).length === 0) {
+                    shouldTraversalChild = true
                 } else {
-                    const {wx, key} = child.getTopWx()
-                    updaterList.push({
-                        inst: wx,
-                        data: {
-                            [key]: allSubData
-                        }
-                    })
-
-                    const p = new Promise((resolve) => {
-                        firstReplacePromise.then(() => {
-                            recursionMount(child)
-                            resolve()
+                    const wxInst = this.getWxInst()
+                    if (wxInst) {
+                        flushList.push({
+                            inst: wxInst,
+                            data: cp
                         })
-                    })
-
-                    updatePros.push(p)
+                        shouldTraversalChild = true
+                    } else {
+                        const top = this.topExistWx()//this.getDeepComp()
+                        firstFlushList.push(top)
+                    }
                 }
-            } else if (child.shouldUpdate) {
-                // 已经存在的节点更新数据
-                const p = new Promise((resolve) => {
-                    child.updateWXInner(resolve, updaterList, groupPromise, firstReplacePromise)
-                })
-                updatePros.push(p)
             }
-        }
 
+            if (shouldTraversalChild) {
+                const children = this._c
+                for (let i = 0; i < children.length; i++) {
+                    const childUuid = children[i]
+                    const child = instanceManager.getCompInstByUUID(childUuid)
 
-        // 页面节点render null
-        if (this.isPageComp && (Object.keys(this._r).length === 0)) {
-            updaterList.push({
-                inst: this.getWxInst(),
-                data: {
-                    _r: {}
+                    child.updateWXInner(flushList, firstFlushList)
                 }
-            })
-            updatePros.push(groupPromise)
-            Promise.all(updatePros)
-                .then(() => {
-                    doneCb()
-                    this.componentDidUpdate && this.componentDidUpdate()
-                })
-
-            return
-        }
-
-
-        // HOC 组件不需要刷数据到 微信小程序，直接done!
-        // this._r = {} 的节点 将会被销毁，直接done!
-        if (this instanceof HocComponent || Object.keys(this._r).length === 0) {
-            updatePros.push(P_R)
-            Promise.all(updatePros)
-                .then(() => {
-                    doneCb()
-                    this.componentDidUpdate && this.componentDidUpdate()
-                })
-
-            return
-        }
-
-        const wxInst = this.getWxInst()
-        if (wxInst) {
-            const cp = getChangePath(this._r, this._or)
-            if (Object.keys(cp).length === 0) {
-                updatePros.push(P_R)
-            } else {
-                updaterList.push({
-                    inst: wxInst,
-                    data: cp
-                })
-                updatePros.push(groupPromise)
             }
-        } else {
-            // 自定义组件在上一次的render中，返回了null
-            const {wx, key} = this.getTopWx()
-            updaterList.push({
-                inst: wx,
-                data: {
-                    [key]: {...this._r} // 需要展开，以免_r 被污染
-                }
-            })
 
-            updatePros.push(firstReplacePromise)
         }
-
-        this._or = {}
-
-        Promise.all(updatePros)
-            .then(() => {
-                doneCb()
-                this.componentDidUpdate && this.componentDidUpdate()
-            })
     }
 }
 
@@ -359,6 +324,7 @@ export class Component extends BaseComponent {
 
     updateInner(newState, cb, isForce) {
         // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
+        // TODO 是否可以在组件ready之后，在设置一次
         if (this.firstRender === FR_PENDING) {
             console.warn('组件未准备好调用setState，状态可能会丢失！')
             return
@@ -403,6 +369,7 @@ export class Component extends BaseComponent {
         shouldUpdate && this.UNSAFE_componentWillUpdate && this.UNSAFE_componentWillUpdate(this.props, nextState)
 
         this.state = nextState
+        this.shouldUpdate = shouldUpdate
 
         if (!shouldUpdate) {
             return // do nothing
@@ -477,8 +444,7 @@ export class Component extends BaseComponent {
                     const stylePath = p._TWFBStylePath || `${p._keyPath}style`
                     setDeepData(pp, newOutStyle, stylePath)
 
-                    const diuu = pp.__diuu__
-                    const wxInst = instanceManager.getWxInstByUUID(diuu)
+                    const wxInst = pp.getWxInst()
 
                     this.updateWX(finalCb, {
                         inst: wxInst,
@@ -546,97 +512,3 @@ export class HocComponent extends Component {
 
 export class RNBaseComponent {
 }
-
-
-function getRAllList(inst) {
-    const descendantList = []
-    recursionCollectChild(inst, descendantList)
-    return descendantList
-}
-
-function recursionCollectChild(inst, descendantList) {
-    const children = inst._c
-    for (let i = 0; i < children.length; i++) {
-        const childUuid = children[i]
-        const child = instanceManager.getCompInstByUUID(childUuid)
-
-        recursionCollectChild(child, descendantList)
-    }
-
-    if (inst instanceof HocComponent) {
-        return
-    }
-
-    if (Object.keys(inst._r).length === 0) {
-        return
-    }
-
-    if (inst._myOutStyle === false) {
-        return
-    }
-
-    const wxInst = inst.getWxInst()
-    if (!wxInst) {
-        // 不是所有组件都会对应wxInst
-        return
-    }
-
-    if (wxInst.data._r) {
-        return
-    }
-
-    // descendantList的顺序需要从孙 ---> 子 ---> 父
-    descendantList.push({
-        inst: wxInst,
-        data: {
-            _r: {
-                ...inst._r  // 需要展开，以免_r 被污染
-            }
-        }
-    })
-}
-
-
-function simpleUpdaterList(list) {
-
-    const instMap = new Map()
-    const simpleList = []
-
-    for(let i = list.length - 1; i >= 0; i --) {
-        const item = list[i]
-        const {inst, data} = item
-
-        if (instMap.has(inst)) {
-            Object.assign(simpleList[instMap.get(inst)].data, data)
-        } else {
-            simpleList.push({
-                inst,
-                data
-            })
-            instMap.set(inst, simpleList.length - 1)
-        }
-    }
-
-    return simpleList
-}
-
-function rReplace(topComp, cb) {
-    const finalList = getRAllList(topComp)
-    if (finalList.length === 0) {
-        cb && cb()
-        return
-    }
-
-    const topWx = topComp.getWxInst()
-    topWx.groupSetData(() => {
-        for(let i = 0; i < finalList.length; i ++ ) {
-            const {inst, data} = finalList[i]
-            inst.setData(data)
-        }
-
-        topWx.setData({}, () => {
-            cb && cb()
-        })
-    })
-}
-

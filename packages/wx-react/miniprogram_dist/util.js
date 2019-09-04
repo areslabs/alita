@@ -96,19 +96,6 @@ export const HOCKEY = "HOCKEY"
 export const FR_PENDING = "PENDING"
 export const FR_DONE = "DONE"
 
-export function recursionMount(comp) {
-    for (let i = 0; i < comp._c.length; i++) {
-        const inst = instanceManager.getCompInstByUUID(comp._c[i])
-        recursionMount(inst)
-    }
-    comp.firstRender = FR_DONE
-    comp.componentDidMount && comp.componentDidMount()
-
-    if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
-        comp.componentDidFocus()
-    }
-}
-
 export const ReactWxEventMap = {
     'onPress': 'tap',
     'onLongPress': 'longpress',
@@ -176,4 +163,64 @@ export function invokeWillUnmount(oldChildren) {
 
         instanceManager.removeCompInst(item.__diuu__)
     }
+}
+
+
+
+export function recursionMountOrUpdate(comp) {
+    for (let i = 0; i < comp._c.length; i++) {
+        const inst = instanceManager.getCompInstByUUID(comp._c[i])
+        recursionMountOrUpdate(inst)
+    }
+
+    if (comp.firstRender === FR_DONE) {
+        comp.componentDidUpdate && comp.componentDidUpdate()
+    } else {
+        comp.firstRender = FR_DONE
+        comp.componentDidMount && comp.componentDidMount()
+        if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
+            comp.componentDidFocus()
+        }
+    }
+}
+
+export function recursionFirstFlushWX(top, topWx, comps, cb) {
+    console.log('recursionFirstFlushWX:', comps)
+    if (comps.length === 0) {
+        recursionMountOrUpdate(top)
+        cb && cb()
+        return
+    }
+
+    topWx.groupSetData(() => {
+        const newComps = []
+        for(let i = 0; i < comps.length; i ++) {
+            const item = comps[i]
+            const wxItem = item.getWxInst()
+
+            item._c.forEach(child => {
+                let childComp = instanceManager.getCompInstByUUID(child)
+                // 组件render null
+                if (childComp._myOutStyle === false) {
+                    return
+                }
+
+                // 跳过hoc包裹的组件
+                childComp = childComp.getDeepComp()
+                newComps.push(childComp)
+            })
+
+            if (i === comps.length - 1) {
+                wxItem.setData({
+                    _r: item._r
+                }, () => {
+                    recursionFirstFlushWX(top, topWx, newComps, cb)
+                })
+            } else {
+                wxItem.setData({
+                    _r: item._r
+                })
+            }
+        }
+    })
 }
