@@ -30,7 +30,6 @@
             <ListHeaderComponentCPT
                     wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
                     diuu="{{ListHeaderComponentDIUU}}"
-                    R="{{ListHeaderComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
             />
 
@@ -38,14 +37,12 @@
                 <renderSectionHeaderCPT
                         wx:if="{{item.renderSectionHeaderDIUU && item.renderSectionHeaderDIUUstyle !== false}}"
                         diuu="{{item.renderSectionHeaderDIUU}}"
-                        R="{{item.renderSectionHeaderDIUUR}}"
                         style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
                 />
 
                 <block wx:for="{{item.renderItemData}}" wx:key="key">
                     <renderItemCPT
                             diuu="{{item.renderItemDIUU}}"
-                            R="{{item.renderItemDIUUR}}"
                             wx:if="{{item.renderItemDIUUstyle !== false}}"
                             style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
                     />
@@ -54,18 +51,16 @@
                 <renderSectionFooterCPT
                         wx:if="{{item.renderSectionFooterDIUU && item.renderSectionFooterDIUUstyle !== false}}"
                         diuu="{{item.renderSectionFooterDIUU}}"
-                        R="{{item.renderSectionFooterDIUUR}}"
                         style="{{tools.getFinalStyle(item.renderSectionFooterDIUUstyle)}}"
                 />
             </block>
             <ListFooterComponentCPT
                     wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
                     diuu="{{ListFooterComponentDIUU}}"
-                    R="{{ListFooterComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"
             />
         </view>
     </scroll-view>
 </template>
 
-<template is="sectionList" data="{{...(_r || R), withAni, outLeft, sr}}"/>
+<template is="sectionList" data="{{..._r, withAni, outLeft, sr}}"/>

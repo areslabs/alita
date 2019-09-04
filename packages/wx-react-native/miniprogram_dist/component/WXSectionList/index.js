@@ -12,7 +12,6 @@ const top = 80
 Component({
     properties: {
         diuu: null,
-        R: null
     },
 
     attached() {
@@ -25,7 +24,6 @@ Component({
         this.compInst = compInst
 
         const method = getPropsMethod(this, "onRefresh");
-        this.hasOnRefreshPassed = !!this.data.R.onRefreshPassed
         this.onRefreshMethod = method
 
         this.onScrollFunc = getPropsMethod(this, 'onScroll');
@@ -54,7 +52,7 @@ Component({
                 clearTimeout(this.stopTimerFlag)
             }
             this.stopTimerFlag = setTimeout(() => {
-                const refreshing = (this.data._r || this.data.R).refreshing
+                const refreshing = this.data._r.refreshing
                 if (this.lastVal <= 80 && !refreshing) {
                     this.setData({
                         sr: false
@@ -65,7 +63,7 @@ Component({
 
         outScroll(e) {
             this.lastVal = e.detail.scrollTop;
-            if (this.hasOnRefreshPassed && !this.underTouch) {
+            if (this.data._r.onRefreshPassed && !this.underTouch) {
                 this.recoverRefresh()
             }
 
@@ -95,7 +93,7 @@ Component({
             }
 
 
-            if (!this.hasOnRefreshPassed) return
+            if (!this.data._r.onRefreshPassed) return
 
             //业务逻辑模拟，执行onRefresh
             if (this.lastVal < 20) {
@@ -104,7 +102,7 @@ Component({
             }
             //松手归位
 
-            const refreshing = (this.data._r || this.data.R).refreshing
+            const refreshing = this.data._r.refreshing
             if (this.lastVal <= top && this.lastVal >= 20 && !refreshing) {
                 this.setData({
                     sr: false
@@ -113,7 +111,7 @@ Component({
         },
         onEndReached() {
             // 当有刷新头的时候（默认向上滚80），也会触发onEndReached， 但是这一次不应该调用
-            if (this.hasOnRefreshPassed && !this.hasRefreshFirstCall) {
+            if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall) {
                 this.hasRefreshFirstCall = true
                 return
             }

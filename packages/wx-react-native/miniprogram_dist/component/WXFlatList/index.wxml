@@ -47,14 +47,12 @@
             <ListHeaderComponentCPT
                     wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
                     diuu="{{ListHeaderComponentDIUU}}"
-                    R="{{ListHeaderComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
             />
 
             <ListEmptyComponentCPT
                     wx:if="{{ListEmptyComponentDIUU && ListEmptyComponentDIUUstyle !== false}}"
                     diuu="{{ListEmptyComponentDIUU}}"
-                    R="{{ListEmptyComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListEmptyComponentDIUUstyle)}}"
             />
 
@@ -64,7 +62,6 @@
                     <view wx:for="{{renderItemData}}" wx:key="key" style="width: {{100 / numColumns}}%">
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
-                                       R="{{item.renderItemDIUUR}}"
                                        wx:if="{{item.renderItemDIUUstyle !== false}}"
                                        style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}};"/>
                     </view>
@@ -75,7 +72,6 @@
                     <view wx:if="{{methods.ArrayContains(stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}">
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
-                                       R="{{item.renderItemDIUUR}}"
                                        wx:if="{{item.renderItemDIUUstyle !== false}}"
                                        style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}{{sti['stickyStyle'+index]}}"/>
                     </view>
@@ -83,7 +79,6 @@
                         <renderItemCPT
                                 id="id_{{index}}"
                                 diuu="{{item.renderItemDIUU}}"
-                                R="{{item.renderItemDIUUR}}"
                                 wx:if="{{item.renderItemDIUUstyle !== false}}"
                                 style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
                         />
@@ -94,11 +89,10 @@
             <ListFooterComponentCPT
                     wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
                     diuu="{{ListFooterComponentDIUU}}"
-                    R="{{ListFooterComponentDIUUR}}"
                     style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"
             />
         </view>
     </scroll-view>
 </template>
 
-<template is="flatList" data="{{...(_r || R), withAni, outLeft, index_id, sr, sti}}"/>
+<template is="flatList" data="{{..._r, withAni, outLeft, index_id, sr, sti}}"/>

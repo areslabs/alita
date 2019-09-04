@@ -13,7 +13,6 @@
             >
                 <childrenCPT
                         diuu="{{item.childrenDIUU}}"
-                        R="{{item.childrenDIUUR}}"
                         wx:if="{{item.childrenDIUUstyle !== false}}"
                         style="{{tools.getFinalStyle(item.childrenDIUUstyle)}}; line-height: 50px;"
                 />
@@ -22,4 +21,4 @@
     </picker-view>
 </template>
 
-<template is="picker" data="{{...(_r || R)}}"/>
+<template is="picker" data="{{..._r}}"/>

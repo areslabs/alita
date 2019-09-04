@@ -13,7 +13,6 @@ const top = 80
 Component({
     properties: {
         diuu: null,
-        R: null,
     },
 
     attached() {
@@ -26,19 +25,12 @@ Component({
         this.compInst = compInst
 
         const method = getPropsMethod(this, 'onRefresh');
-        this.hasOnRefreshPassed = !!this.data.R.onRefreshPassed
         this.onRefreshMethod = method
 
         this.onScrollFunc = getPropsMethod(this, 'onScroll');
         this.onScrollEndDragFunc = getPropsMethod(this, 'onScrollEndDrag');
 
         this.hasChanges = []
-        const infos = this.data.R.stickyInfos
-        if (Array.isArray(infos) && infos.length > 0) {
-            for (let k = 0; k < infos.length; k++) {
-                this.hasChanges.push(false)
-            }
-        }
     },
 
     detached() {
@@ -48,12 +40,12 @@ Component({
     methods: {
         scrollTo(pos) {
             const {x, y} = pos;
-            let mayY = this.hasOnRefreshPassed ? y + top : y
+            let mayY = this.data._r.onRefreshPassed ? y + top : y
             this.setData({outTop: mayY, outLeft: x})
         },
         scrollToOffset(pos) {
             const {offset} = pos
-            let mayY = this.hasOnRefreshPassed ? offset + top : offset
+            let mayY = this.data._r.onRefreshPassed ? offset + top : offset
             this.setData({outTop: mayY})
         },
         formatEvent(e) {
@@ -73,7 +65,7 @@ Component({
             }
             this.stopTimerFlag = setTimeout(() => {
 
-                const refreshing = (this.data._r || this.data.R).refreshing
+                const refreshing = this.data._r.refreshing
                 if (this.lastVal <= 80 && !refreshing) {
                     this.setData({
                         sr: false
@@ -84,7 +76,7 @@ Component({
 
         outScroll(e) {
             this.lastVal = e.detail.scrollTop;
-            if (this.hasOnRefreshPassed && !this.underTouch) {
+            if (this.data._r.onRefreshPassed && !this.underTouch) {
                 this.recoverRefresh()
             }
 
@@ -97,7 +89,7 @@ Component({
                 this.onScrollFunc(this.formatEvent(e));
             }
 
-            const stickyInfos = (this.data._r || this.data.R).stickyInfos
+            const stickyInfos = this.data._r.stickyInfos
             if (stickyInfos) {
                 const infos = stickyInfos
                 if (Array.isArray(infos) && infos.length > 0) {
@@ -138,7 +130,7 @@ Component({
             }
 
 
-            if (!this.hasOnRefreshPassed) return
+            if (!this.data._r.onRefreshPassed) return
 
             //业务逻辑模拟，执行onRefresh
             if (this.lastVal < 20) {
@@ -146,7 +138,7 @@ Component({
                 return;
             }
             //松手归位
-            const refreshing = (this.data._r || this.data.R).refreshing
+            const refreshing = this.data._r.refreshing
             if (this.lastVal <= top && this.lastVal >= 20 && !refreshing) {
                 this.setData({
                     sr: false
@@ -177,7 +169,7 @@ Component({
 
         onEndReached() {
             // 当有刷新头的时候（默认向上滚80），也会触发onEndReached， 但是这一次不应该调用
-            if (this.hasOnRefreshPassed && !this.hasRefreshFirstCall) {
+            if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall) {
                 this.hasRefreshFirstCall = true
                 return
             }

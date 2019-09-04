@@ -15,7 +15,6 @@ Component({
         },
         onValueChange: null,
         diuu: null,
-        R: null
     },
 
     attached() {
@@ -31,7 +30,7 @@ Component({
         onValueChange: function (e) {
             const index = e.detail.value[0];
 
-            const pickData = (this.data._r || this.data.R).pickData
+            const pickData = this.data._r.pickData
             const value = pickData[index].value
 
             const method = getPropsMethod(this, 'onValueChange')
