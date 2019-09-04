@@ -116,7 +116,7 @@ function geneAllOutComp(outComp, filepath) {
         const wxmlAst = [];
         wxmlAst.push(t.jsxText(`<import src="./${temppath}"/>`))
         wxmlAst.push(t.jsxText("\n"));
-        wxmlAst.push(t.jsxText(`<template wx:if="{{(_r && _r.tempName) || (R && R.tempName)}}" is="{{_r.tempName || R.tempName}}" data="{{...(_r || R)}}"/>`))
+        wxmlAst.push(t.jsxText(`<template wx:if="{{(_r && _r.tempName)}}" is="{{_r.tempName}}" data="{{..._r}}"/>`))
         let tmpWxmlAst = t.jsxElement(
             t.jsxOpeningElement(
                 t.jsxIdentifier("InnerTmpOpeningElement"),
