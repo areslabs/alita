@@ -184,10 +184,8 @@ export function recursionMountOrUpdate(comp) {
     }
 }
 
-export function recursionFirstFlushWX(top, topWx, comps, cb) {
-    console.log('recursionFirstFlushWX:', comps)
+export function recursionFirstFlushWX(top, topWx, comps, showUpdaterList, cb) {
     if (comps.length === 0) {
-        recursionMountOrUpdate(top)
         cb && cb()
         return
     }
@@ -211,10 +209,16 @@ export function recursionFirstFlushWX(top, topWx, comps, cb) {
             })
 
             if (i === comps.length - 1) {
+                if (newComps.length === 0) {
+                    showUpdaterList.forEach(({inst, data}) => {
+                       inst.setData(data)
+                    })
+                }
+
                 wxItem.setData({
                     _r: item._r
                 }, () => {
-                    recursionFirstFlushWX(top, topWx, newComps, cb)
+                    recursionFirstFlushWX(top, topWx, newComps, showUpdaterList, cb)
                 })
             } else {
                 wxItem.setData({
@@ -223,4 +227,44 @@ export function recursionFirstFlushWX(top, topWx, comps, cb) {
             }
         }
     })
+}
+
+/**
+ * 分层groupSetData的方式，存在一个问题：当父元素的大小，由子元素决定的时候，由于父元素先渲染会导致抖动。
+ * 解决这个问题的方式是： 先把顶层父元素设置为： opacity: 0; 当所有子孙元素都渲染完成之后统一在恢复样式
+ * @type {string}
+ */
+export const HIDDEN_STYLE = " opacity: 0;"
+
+
+export function getShowUpdaterMap(firstFlushList) {
+    const showUpdaterMap = new Map()
+    firstFlushList.forEach(comp => {
+        const topComp = comp.getTopComp()
+        const p = topComp._p.getWxInst()
+
+        const key = topComp._keyPath
+        const value = topComp._myOutStyle
+
+        const updater = showUpdaterMap.get(p)
+        if (updater) {
+            Object.assign(updater.hiddenData, {
+                [`${key}style`]: `${value}${HIDDEN_STYLE}`
+            })
+            Object.assign(updater.data, {
+                [`${key}style`]: value
+            })
+        } else {
+            showUpdaterMap.set(p, {
+                inst: p,
+                hiddenData: {
+                    [`${key}style`]: `${value}${HIDDEN_STYLE}`
+                },
+                data: {
+                    [`${key}style`]: value
+                }
+            })
+        }
+    })
+    return showUpdaterMap
 }

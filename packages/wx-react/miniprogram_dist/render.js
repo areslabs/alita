@@ -600,6 +600,11 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             const subVnode = inst.render()
             if (subVnode && subVnode.isReactElement) {
                 subVnode.isFirstEle = true
+
+                if (inst.isPageComp) {
+                    // 首屏渲染的时候 需要先设置这个style opacity为0。
+                    inst.firstStyleKey = subVnode.diuu + 'style'
+                }
             }
 
             inst._parentContext = parentContext

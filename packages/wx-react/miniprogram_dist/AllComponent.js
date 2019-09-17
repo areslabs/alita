@@ -19,6 +19,8 @@ import {
     getRealOc,
     invokeWillUnmount,
     recursionFirstFlushWX,
+    getShowUpdaterMap,
+    HIDDEN_STYLE,
     recursionMountOrUpdate
 } from './util'
 import reactUpdate from './ReactUpdate'
@@ -142,6 +144,23 @@ export class BaseComponent {
         return inst.getDeepComp()
     }
 
+    /**
+     * 如果是hocWrapped组件，一直往外追溯
+     * @returns {*}
+     */
+    getTopComp() {
+        if (this.hocWrapped) {
+            let p = this._p
+            while (p.hocWrapped) {
+                p = p._p
+            }
+
+            return instanceManager.getCompInstByUUID(p.__diuu__)
+        } else {
+            return this
+        }
+    }
+
     getWxInst() {
         let diuu = null
 
@@ -164,11 +183,49 @@ export class BaseComponent {
      */
     firstUpdateWX() {
         const deepComp = this.getDeepComp()
-
         if (!deepComp || Object.keys(deepComp._r).length === 0) {
+            // 页面组件render null
             recursionMountOrUpdate(this)
+            return
+        }
+
+
+        const pageWxInst = this.getWxInst()
+        const comps = []
+        // 收集下一次groupSetData的实例
+        deepComp._c.forEach(item => {
+            const child = instanceManager.getCompInstByUUID(item)
+            if (child._myOutStyle) {
+                const childComp = child.getDeepComp()
+                comps.push(childComp)
+            }
+        })
+        
+        if (comps.length === 0) {
+            pageWxInst.setData({
+                _r: deepComp._r
+            }, () => {
+                recursionMountOrUpdate(this)
+            })
         } else {
-            recursionFirstFlushWX(this, this.getWxInst(), [deepComp])
+            const styleKey = deepComp.firstStyleKey
+            const styleValue = deepComp._r[styleKey]
+            const pageShowUpdater = {
+                inst: pageWxInst,
+                data: {
+                    [`_r.${styleKey}`]: styleValue
+                }
+            }
+            pageWxInst.setData({
+                _r: {
+                    ...deepComp._r,
+                    [deepComp.firstStyleKey]: `${styleValue}${HIDDEN_STYLE}`
+                }
+            }, () => {
+                recursionFirstFlushWX(this, pageWxInst, comps, [pageShowUpdater], () => {
+                    recursionMountOrUpdate(this)
+                })
+            })
         }
     }
 
@@ -178,30 +235,10 @@ export class BaseComponent {
      * @param styleUpdater 上报样式的updater
      */
     updateWX(cb, styleUpdater) {
-
-        // 页面组件特殊处理
-        let topComp = null
-        if (this.isPageComp) {
-            const dc = this.getDeepComp()
-            if (!dc || Object.keys(dc._r).length === 0) {
-                this.getWxInst().setData({
-                    _r: {}
-                }, () => {
-                    recursionMountOrUpdate(this)
-                    cb && cb()
-                })
-                return
-            } else {
-                topComp = dc
-            }
-        } else {
-            topComp = this
-        }
-
         const flushList = []
         const firstFlushList = []
 
-        topComp.updateWXInner(flushList, firstFlushList)
+        this.updateWXInner(flushList, firstFlushList)
 
         if (styleUpdater) {
             flushList.push(styleUpdater)
@@ -213,17 +250,26 @@ export class BaseComponent {
             return
         }
 
+        const showUpdaterMap = getShowUpdaterMap(firstFlushList)
+
         /// groupSetData 来优化多次setData
 
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
         topWX.groupSetData(() => {
-            console.log('update wow:', flushList)
             for(let i = 0; i < flushList.length; i ++ ) {
                 const {inst, data} = flushList[i]
 
+                const updater = showUpdaterMap.get(inst)
+                if (updater) {
+                    Object.assign(data, updater.hiddenData)
+                }
+
                 if (i === 0) {
                     inst.setData(data, () => {
-                        recursionFirstFlushWX(this, topWX, firstFlushList, cb)
+                        recursionFirstFlushWX(this, topWX, firstFlushList, Array.from(showUpdaterMap.values()), () => {
+                            recursionMountOrUpdate(this)
+                            cb && cb()
+                        })
                     })
                 } else {
                     inst.setData(data)
@@ -241,7 +287,44 @@ export class BaseComponent {
      * @param firstFlushList
      */
     updateWXInner(flushList, firstFlushList) {
-        if (this.firstRender !== FR_DONE) {
+        let shouldTraversalChild = false
+        if (this.isPageComp) {
+            const dc = this.getDeepComp()
+            if (!dc || Object.keys(dc._r).length === 0) {
+                // 页面组件 render null
+                flushList.push({
+                    inst: this.getWxInst(),
+                    data: {
+                        _r: {}
+                    }
+                })
+                return
+            }
+
+
+            if (this.firstRender === FR_DONE && !this.shouldUpdate) {
+                return
+            }
+
+            if (this instanceof HocComponent) {
+                shouldTraversalChild = true
+            } else {
+                const cp = getChangePath(this._r, this._or)
+                // _or 不在有用
+                this._or = {}
+
+                if (Object.keys(cp).length === 0) {
+                    shouldTraversalChild = true
+                } else {
+                    const wxInst = this.getWxInst()
+                    flushList.push({
+                        inst: wxInst,
+                        data: cp
+                    })
+                    shouldTraversalChild = true
+                }
+            }
+        } else if (this.firstRender !== FR_DONE) {
             if (this._myOutStyle === false) {
                 return
             }
@@ -252,8 +335,6 @@ export class BaseComponent {
             if (this._myOutStyle === false) {
                 return
             }
-
-            let shouldTraversalChild = false
 
             if (this instanceof HocComponent) {
                 shouldTraversalChild = true
@@ -273,22 +354,21 @@ export class BaseComponent {
                         })
                         shouldTraversalChild = true
                     } else {
-                        const top = this.topExistWx()//this.getDeepComp()
+                        const top = this.topExistWx()
                         firstFlushList.push(top)
                     }
                 }
             }
+        }
 
-            if (shouldTraversalChild) {
-                const children = this._c
-                for (let i = 0; i < children.length; i++) {
-                    const childUuid = children[i]
-                    const child = instanceManager.getCompInstByUUID(childUuid)
+        if (shouldTraversalChild) {
+            const children = this._c
+            for (let i = 0; i < children.length; i++) {
+                const childUuid = children[i]
+                const child = instanceManager.getCompInstByUUID(childUuid)
 
-                    child.updateWXInner(flushList, firstFlushList)
-                }
+                child.updateWXInner(flushList, firstFlushList)
             }
-
         }
     }
 }
@@ -440,6 +520,7 @@ export class Component extends BaseComponent {
             /* eslint-disable-next-line */
             while (true) {
                 const pp = p._p
+                p._myOutStyle = newOutStyle
                 if (pp.isPageComp || !p._isFirstEle || p._TWFBStylePath) {
                     const stylePath = p._TWFBStylePath || `${p._keyPath}style`
                     setDeepData(pp, newOutStyle, stylePath)
