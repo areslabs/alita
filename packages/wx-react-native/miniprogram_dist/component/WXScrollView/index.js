@@ -51,9 +51,53 @@ Component({
     ready: function() {
         instanceManager.setWxCompInst(this.data.diuu, this)
         this.onScrollFunc = getPropsMethod(this, 'onScroll')
+
+        //onContentSizeChange
+        if (getPropsMethod(this, 'onContentSizeChange')) {
+            const query = wx.createSelectorQuery().in(this)
+            query.select('.scroll-area').boundingClientRect((res) => {
+                this.setData({
+                    contentHeight: res.height
+                })
+
+                this.watchContentSize()
+            }).exec()
+        }
     },
 
     methods: {
+        // 监听contentSize的变化
+        watchContentSize() {
+            const observer = wx.createIntersectionObserver(this, {observeAll: true})
+            observer.relativeTo('.scroll-area')
+                .observe('.ball', (res) => {
+                    const {id, intersectionRatio, relativeRect} = res
+                    if (id === 'above' && intersectionRatio === 0) {
+                        const onContentSizeChangeFunc = getPropsMethod(this, 'onContentSizeChange')
+                        onContentSizeChangeFunc(relativeRect.right - relativeRect.left, relativeRect.bottom - relativeRect.top)
+
+                        const query = wx.createSelectorQuery().in(this)
+                        query.select('.scroll-area').boundingClientRect((res) => {
+                            this.setData({
+                                contentHeight: res.height
+                            })
+                        }).exec()
+                    }
+
+                    if (id === 'below' && intersectionRatio === 1) {
+                        const onContentSizeChangeFunc = getPropsMethod(this, 'onContentSizeChange')
+                        onContentSizeChangeFunc(relativeRect.right - relativeRect.left, relativeRect.bottom - relativeRect.top)
+
+                        const query = wx.createSelectorQuery().in(this)
+                        query.select('.scroll-area').boundingClientRect((res) => {
+                            this.setData({
+                                contentHeight: res.height
+                            })
+                        }).exec()
+                    }
+                })
+        },
+
         scrollTo(pos) {
             const { x, y } = pos;
             this.setData({ outTop: y, outLeft: x })
@@ -88,5 +132,6 @@ Component({
         withAni: true,
         outLeft: 0,
         outTop: 0,
+        contentHeight: 0,
     }
 });
