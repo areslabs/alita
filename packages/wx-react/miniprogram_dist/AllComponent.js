@@ -16,8 +16,7 @@ import {
     HOCKEY,
     FR_DONE,
     FR_PENDING,
-    recursionMount,
-    EMPTY_FUNC,
+    recursionMountOrUpdate,
     getRealOc,
     invokeWillUnmount
 } from './util'
@@ -25,7 +24,6 @@ import reactUpdate from './ReactUpdate'
 import shallowEqual from './shallowEqual'
 import getObjSubData from './getObjSubData'
 
-const P_R =  Promise.resolve()
 
 /**
  * 组件更新：
@@ -200,11 +198,11 @@ export class BaseComponent {
         const wxInst = instanceManager.getWxInstByUUID(diuu)
 
         if (Object.keys(allData).length === 0) {
-            recursionMount(this)
+            recursionMountOrUpdate(this)
         } else {
             wxInst.setData({_r: allData}, () => {
                 rReplace(this, () => {
-                    recursionMount(this)
+                    recursionMountOrUpdate(this)
                 })
             })
         }
@@ -212,7 +210,11 @@ export class BaseComponent {
 
 
     /**
-     * 刷新数据到小程序，使用 groupSetData 来优化多次setData
+     * 刷新数据到小程序，一共有三步：
+     * 1. 遍历出所有的更新： groupSetData 一次
+     * 2. 如果第一步产生了新的节点，进行一次R 与 _r 的替换
+     * 3. 第一步，第二步结束以后，表示渲染完成，执行组件对应的渲染回调didMount/didUpdate
+     *
      * @param cb
      * @param styleUpdater 上报样式的updater
      */
@@ -227,33 +229,18 @@ export class BaseComponent {
             topComp = this.getTopWx().comp
         }
 
-
-        let gpr = null
-        const groupPromise = new Promise((resolve) => {
-            gpr = resolve
-        })
-
-        let frp = null
-        const firstReplacePromise = new Promise((resolve) => {
-            frp = resolve
-        })
-
-        this.updateWXInner(cb || EMPTY_FUNC, updaterList, groupPromise, firstReplacePromise)
+        this.updateWXInner(updaterList)
 
         if (styleUpdater) {
             updaterList.push(styleUpdater)
         }
 
         if (updaterList.length === 0) {
-            gpr()
+            recursionMountOrUpdate(this)
             return
         }
 
         const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
-
-        groupPromise.then(() => {
-            rReplace(topComp, frp)
-        })
 
         topWX.groupSetData(() => {
             updaterList = simpleUpdaterList(updaterList)
@@ -263,22 +250,20 @@ export class BaseComponent {
                 inst.setData(data)
             }
 
-            topWX.setData({}, gpr)
+            topWX.setData({}, () => {
+                rReplace(topComp, () => {
+                    recursionMountOrUpdate(this)
+                })
+            })
         })
     }
 
     /**
-     * 递归程序。 主要做三个事情
-     * 1. 构建出updaterList， 包含所有此次需要更新的微信实例 + 数据
-     * 2. 构建出组件完成渲染的Promise 回调关系，方便didUpdate/didMount 等生命周期的正确执行
+     * 递归程序 构建出updaterList，包含所有此次需要更新的微信实例 + 数据
      *
-     * @param doneCb
      * @param updaterList
-     * @param groupPromise
-     * @param firstReplacePromise
      */
-    updateWXInner(doneCb, updaterList, groupPromise, firstReplacePromise) {
-        const updatePros = []
+    updateWXInner(updaterList) {
         const children = this._c
         for (let i = 0; i < children.length; i++) {
             const childUuid = children[i]
@@ -288,10 +273,7 @@ export class BaseComponent {
                 // 子节点还未初始化
                 const allSubData = getObjSubData(child._r)
 
-                if (Object.keys(allSubData).length === 0) {
-                    recursionMount(child)
-                    updatePros.push(P_R)
-                } else {
+                if (Object.keys(allSubData).length !== 0) {
                     const {wx, key} = child.getTopWx()
                     updaterList.push({
                         inst: wx,
@@ -299,22 +281,10 @@ export class BaseComponent {
                             [key]: allSubData
                         }
                     })
-
-                    const p = new Promise((resolve) => {
-                        firstReplacePromise.then(() => {
-                            recursionMount(child)
-                            resolve()
-                        })
-                    })
-
-                    updatePros.push(p)
                 }
             } else if (child.shouldUpdate) {
                 // 已经存在的节点更新数据
-                const p = new Promise((resolve) => {
-                    child.updateWXInner(resolve, updaterList, groupPromise, firstReplacePromise)
-                })
-                updatePros.push(p)
+                child.updateWXInner(updaterList)
             }
         }
 
@@ -327,13 +297,7 @@ export class BaseComponent {
                     _r: {}
                 }
             })
-            updatePros.push(groupPromise)
-            Promise.all(updatePros)
-                .then(() => {
-                    doneCb()
-                    this.componentDidUpdate && this.componentDidUpdate()
-                })
-
+            this._or = {}
             return
         }
 
@@ -341,27 +305,18 @@ export class BaseComponent {
         // HOC 组件不需要刷数据到 微信小程序，直接done!
         // this._r = {} 的节点 将会被销毁，直接done!
         if (this instanceof HocComponent || Object.keys(this._r).length === 0) {
-            updatePros.push(P_R)
-            Promise.all(updatePros)
-                .then(() => {
-                    doneCb()
-                    this.componentDidUpdate && this.componentDidUpdate()
-                })
-
+            this._or = {}
             return
         }
 
         const wxInst = this.getWxInst()
         if (wxInst) {
             const cp = getChangePath(this._r, this._or)
-            if (Object.keys(cp).length === 0) {
-                updatePros.push(P_R)
-            } else {
+            if (Object.keys(cp).length !== 0) {
                 updaterList.push({
                     inst: wxInst,
                     data: cp
                 })
-                updatePros.push(groupPromise)
             }
         } else {
             // 自定义组件在上一次的render中，返回了null
@@ -372,17 +327,9 @@ export class BaseComponent {
                     [key]: {...this._r} // 需要展开，以免_r 被污染
                 }
             })
-
-            updatePros.push(firstReplacePromise)
         }
 
         this._or = {}
-
-        Promise.all(updatePros)
-            .then(() => {
-                doneCb()
-                this.componentDidUpdate && this.componentDidUpdate()
-            })
     }
 }
 

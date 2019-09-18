@@ -96,16 +96,20 @@ export const HOCKEY = "HOCKEY"
 export const FR_PENDING = "PENDING"
 export const FR_DONE = "DONE"
 
-export function recursionMount(comp) {
+export function recursionMountOrUpdate(comp) {
     for (let i = 0; i < comp._c.length; i++) {
         const inst = instanceManager.getCompInstByUUID(comp._c[i])
-        recursionMount(inst)
+        recursionMountOrUpdate(inst)
     }
-    comp.firstRender = FR_DONE
-    comp.componentDidMount && comp.componentDidMount()
 
-    if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
-        comp.componentDidFocus()
+    if (comp.firstRender === FR_DONE) {
+        comp.componentDidUpdate && comp.componentDidUpdate()
+    } else {
+        comp.firstRender = FR_DONE
+        comp.componentDidMount && comp.componentDidMount()
+        if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
+            comp.componentDidFocus()
+        }
     }
 }
 
@@ -129,10 +133,6 @@ export function getRootContext() {
 
     return getCurrentContext(topInst, topInst._parentContext)
 }
-
-
-export const EMPTY_FUNC = () => {}
-
 
 export function getRealOc(oc, nc, r) {
     if (!oc || oc.length === 0 ) {
