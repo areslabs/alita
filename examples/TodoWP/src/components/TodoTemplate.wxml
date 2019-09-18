@@ -15,7 +15,7 @@
     <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
             <view catchtap="eventHandler" data-diuu="{{DIUU00002}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00002hoverClass}}" class="view" style="{{t.s(DIUU00002style)}}">
                 <view class="text" style="{{t.s(DIUU00003style)}}">
-                    <template wx:if="{{CTDK00001}} !== undefined" is="CTNP00001" data="{{d: CTDK00001}}"></template>
+                    <block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template>
                 </view>
             </view>
         </block>

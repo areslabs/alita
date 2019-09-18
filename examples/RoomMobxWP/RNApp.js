@@ -23,6 +23,6 @@ const rootContext = React.getRootContext();
 export default {
   childContext: rootContext
 };
-wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {
+wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "RoomMobxinit": "/src/components/index"
 });
