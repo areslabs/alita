@@ -28,6 +28,7 @@ import getObjSubData from './getObjSubData'
 const P_R =  Promise.resolve()
 
 /**
+ * 组件更新：
  * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。比如如下的情形：
  *        Father
  *       /  |   \
@@ -45,6 +46,7 @@ const P_R =  Promise.resolve()
  *    })
  * 也就是说在更新的时候，我们利用groupSetData 可以做到本质上只交互一次。
  *
+ * 组件初始化：
  * 下面我们在考虑一下Father组件初始建立的过程： Father初始的时候，在wxFather（Father组件对应的小程序组件实例，这里暂时称为wxFather）的ready
  * 声明周期里，调用了 wxFather.setData(uiDes)，完成之后，分别会触发wxSon1, wxSon2, wxSon3的 ready 并调用setData设置数据。 这里会调用4次setData，
  * 我们有办法通过groupSetData，批量设置这里的数据吗？比较麻烦，不能简单的通过上面的方式使用groupSetData，因为只有当wxFather设置数据结束之后，son才有
@@ -72,6 +74,62 @@ const P_R =  Promise.resolve()
  *
  *
  * 记录一下：`groupSetData` 在百度小程序（groupSetData）和支付宝小程序（this.$page.$batchedUpdates）均有相关实现。
+ *
+ * 组件初始化还有一种分层groupSetData的方式，完整过程描述如下：
+ * 假设结构：
+ *
+ *                     Father
+ *
+ *        son1        son2         son3
+ *
+ *   gs11   gs12  gs21   gs22   gs31  gs32     // gs为grandson的简写
+ *
+ *   假定在 Father的某次setState中， gs12， gs21， son3， gs31， gs32 节点新产生了， 而Father， son1， gs11， son2， gs22，这些节点
+ *   在这次setState中里面有更新，那么应该更新如下：
+ *
+ *   第一次：groupSetData(() => {
+ *       Father.setData()
+ *       son1.setDate()
+ *       gs11.setData()
+ *       son2.setData()
+ *       gs22.setData()
+ *   })
+ *
+ *   第二次：第一次groupSetData结束之后： gs12， gs21， son3 产生了，（注意 此刻gs31， gs32还未产生）
+ *       groupSetData(() => {
+ *           gs12.setData()
+ *           gs21.setData()
+ *           son3.setData()
+ *       })
+ *
+ *
+ *   第三次：第二次groupSetData结束之后： gs31， gs32产生了
+ *       groupSetData(() => {
+ *           gs31.setData()
+ *           gs32.setData()
+ *       })
+ *
+ *
+ *  特别的，当Father是页面组件，且是第一次初始化的时候，每一层级的节点将依次产生，一共会发生n（组件树层级）次groupSetData
+ *
+ *
+ * 这种分层groupSetData的方式，相比把数据集中到父组件的方式，传递给小程序的数据更少，理论上来说性能会更加的好，但是这种分层groupSetData的方式有
+ * 一个巨大的问题无法避免，举例描述如下：
+ *
+ * render() {
+ *     return (
+ *         <View>
+ *             {x ? <L1/> : <L2/>}
+ *             <Text>1</Text>
+ *         </View>
+ *     )
+ * }
+ *
+ * 考虑上面的结构，由于分层groupSetData的方式，组件并不是一次性渲染完成的，当L1， L2的大小由其子节点决定的时候，会出现以下情况：
+ * 第一次groupSetData的时候，L1， L2 不占用空间，然后子节点groupSetData完成之后，L1， L2才占用空间，对于上面的结构，当我们不断变换
+ * x的值切换L1， L2的时候，会发现底部的<Text>1</Text> 会出现抖动。
+ *
+ *
  */
 export class BaseComponent {
     getTopDiuu() {
@@ -403,6 +461,7 @@ export class Component extends BaseComponent {
         shouldUpdate && this.UNSAFE_componentWillUpdate && this.UNSAFE_componentWillUpdate(this.props, nextState)
 
         this.state = nextState
+        this.shouldUpdate = shouldUpdate
 
         if (!shouldUpdate) {
             return // do nothing
@@ -473,12 +532,12 @@ export class Component extends BaseComponent {
             /* eslint-disable-next-line */
             while (true) {
                 const pp = p._p
+                p._myOutStyle = newOutStyle
                 if (pp.isPageComp || !p._isFirstEle || p._TWFBStylePath) {
                     const stylePath = p._TWFBStylePath || `${p._keyPath}style`
                     setDeepData(pp, newOutStyle, stylePath)
 
-                    const diuu = pp.__diuu__
-                    const wxInst = instanceManager.getWxInstByUUID(diuu)
+                    const wxInst = pp.getWxInst()
 
                     this.updateWX(finalCb, {
                         inst: wxInst,
