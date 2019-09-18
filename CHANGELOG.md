@@ -1,3 +1,23 @@
+## [1.2.4](https://github.com/areslabs/alita/compare/1.2.1...1.2.4) (2019-09-18)
+
+
+### Bug Fixes
+
+* **wx-react:** 1. 修复setState组件 shouldUpdate状态没有设置的bug; 2. 外层_myOutStyle没有设置的bug ([d7483a2](https://github.com/areslabs/alita/commit/d7483a2))
+* **wx-react:** 修复setState回调没有调用的bug ([cb78c93](https://github.com/areslabs/alita/commit/cb78c93))
+
+
+### Features
+
+* **wx-react-native:** ScrollView 添加onContentSizeChange, scrollToEnd 方法 ([5a0ced9](https://github.com/areslabs/alita/commit/5a0ced9)), closes [#22](https://github.com/areslabs/alita/issues/22)
+
+
+### Performance Improvements
+
+* **alita:** 对Text标签的子元素特殊处理 ([ec38d66](https://github.com/areslabs/alita/commit/ec38d66))
+
+
+
 ## [1.2.2](https://github.com/areslabs/alita/compare/1.2.1...1.2.2) (2019-08-26)
 
 
