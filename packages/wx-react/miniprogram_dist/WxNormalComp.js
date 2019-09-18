@@ -37,7 +37,7 @@ export default function (CompMySelf, RNApp) {
                 const eventKey = e.currentTarget.dataset.diuu + e.type
                 let compInst = instanceManager.getCompInstByUUID(this.data.diuu)
                 while (compInst && compInst instanceof HocComponent) {
-                    compInst = instanceManager.getCompInstByUUID(compInst._c[0])
+                    compInst = compInst._c[0]
                 }
                 const eh = compInst.__eventHanderMap[eventKey]
 

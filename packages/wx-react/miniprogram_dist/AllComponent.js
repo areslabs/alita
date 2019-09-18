@@ -266,8 +266,7 @@ export class BaseComponent {
     updateWXInner(updaterList) {
         const children = this._c
         for (let i = 0; i < children.length; i++) {
-            const childUuid = children[i]
-            const child = instanceManager.getCompInstByUUID(childUuid)
+            const child = children[i]
 
             if (child.firstRender !== FR_DONE) {
                 // 子节点还未初始化
@@ -563,8 +562,7 @@ function getRAllList(inst) {
 function recursionCollectChild(inst, descendantList) {
     const children = inst._c
     for (let i = 0; i < children.length; i++) {
-        const childUuid = children[i]
-        const child = instanceManager.getCompInstByUUID(childUuid)
+        const child =  children[i]
 
         recursionCollectChild(child, descendantList)
     }
