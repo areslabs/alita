@@ -237,6 +237,7 @@ export class BaseComponent {
 
         if (updaterList.length === 0) {
             recursionMountOrUpdate(this)
+            cb && cb()
             return
         }
 
@@ -253,6 +254,7 @@ export class BaseComponent {
             topWX.setData({}, () => {
                 rReplace(topComp, () => {
                     recursionMountOrUpdate(this)
+                    cb && cb()
                 })
             })
         })
