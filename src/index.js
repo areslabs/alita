@@ -16,6 +16,7 @@ import filewatch from './filewatch/index'
 import geneWXFileStruc from './util/geneWXFileStruc'
 import getExtCompPathMaps from './util/getExtCompPathMaps'
 import geneWXPackageJSON from './util/geneWXPackageJSON'
+import initProject from './util/initProject'
 import program from 'commander'
 
 colors.setTheme({
@@ -91,6 +92,10 @@ const options = getopts(process.argv, {
     },
 })
 
+if (options._.includes('init')) {
+    initProject(options._)
+    process.exit()
+}
 
 const DEFAULTCONFIG = {
     name: '需要一个名字！',
@@ -190,7 +195,9 @@ function main() {
         watchMode: !!options.watch,
         tranComp: !!options.component,
         configObj,
-        beta: options.beta
+        beta: options.beta,
+
+        outdir: options.outdir
     }
 
     global.execArgs = {

@@ -4,7 +4,7 @@
 > Alita，战斗天使阿丽塔，原型是《铳梦》中一位不断战斗和自我超越的生化改造少女。
 
 [![npm Version](https://img.shields.io/npm/v/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
-[![npm Downloads](https://img.shields.io/npm/dt/@areslabs/wx-react.svg)](https://www.npmjs.com/package/@areslabs/alita)
+[![npm Downloads](https://img.shields.io/npm/dt/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm License](https://img.shields.io/npm/l/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 
 
@@ -45,17 +45,22 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 若`-g`有权限问题，需要`sudo`
 
 ## Getting Started
-我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码，包括HelloWorld（Expo命令创建的HelloWorldExpo， 和react-native命令创建的HelloWorldRN）， Todo， ReactRepos。 强烈建议你clone出一份，然后使用Alita转化，你可以在这些样例代码上尝试任何你想要的功能。 
+我们在[examples](https://github.com/areslabs/alita/tree/master/examples)目录提供了丰富的样例代码， 强烈建议你clone出一份，然后使用Alita转化，你可以在这些样例代码上尝试任何你想要的功能。 
 
 
-当然你也可以建立自己的RN应用：
+当然你也可以使用如下的方式建立新的RN应用：
 ```
-    react-native init myproject
+    react-native init myproject && alita init myproject
 ``` 
 
-**注意** 应用的路由需要使用[@areslabs/router](https://areslabs.github.io/alita/%E8%B7%AF%E7%94%B1.html)组件
+`alita init`命令 会对rn项目做一些调整。 
 
-下面以`myproject`项目说明Alita的使用，由于Alita在转化的时候，依赖[@areslabs/router](https://areslabs.github.io/alita/%E8%B7%AF%E7%94%B1.html)，所以请先参考Example目录下项目，做些许修改，然后在使用alita转化
+**注意：** RN 0.60 以后的项目，IOS需要依赖`CocoaPods`，导致初始化项目极其缓慢，可以使用其他版本的RN
+```
+    react-native init myproject --version 0.59.9 && alita init myproject
+``` 
+
+下面以`myproject`项目说明Alita的使用。
  
 1. 调用alita命令将其转化为微信小程序应用
     ```
@@ -68,21 +73,16 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
     npm install
     ```
 
-3. 在[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)上运行`myprojectwp`代码。参考[微信小程序文档](https://developers.weixin.qq.com/miniprogram/dev/)，导入`myprojectwp `目录， 运行。
+3. [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)从`myprojectwp`目录导入项目
 
-   **Alita生成的小程序使用了小程序的npm功能， 所以需要在微信开发者工具下构建npm， 工具 --> 构建npm。如下图**
+4. 在微信开发者工具下构建npm， 工具 --> 构建npm。如下图
    
    ![buildnpm](./static/buildnpm.jpg)
    
-   (**如果开发者工具报：`﻿module "xxx" is not defined"`，说明npm模块没有构建好，需要点击上图构建。**) 
+
+5. 概率性的，由于构建npm发生在导入项目之后，可能会出现找不到包的错误，出现控制台错误，此时需要重启开发者工具，或者重新导入项目，[详见](https://github.com/areslabs/alita/issues/23)。
 
 这样React Native应用就运行在了微信小程序
-
-**注意**一般我们有两种方式创建React Native应用，一种是使用react-native命令， 另一种是使用expo。 这两种方式Alita都可以转化，但是不管是哪一种方式
-创建的项目，都会在项目根目录创建App.js， App.json文件。但是这两个文件在微信小程序平台有特别的意义，所以必须对这两个文件**重新命名**。 
-react-native 命令创建的项目只需要把App.js 重命名比如RNApp.js即可， 而expo的方式需要[参考](https://docs.expo.io/versions/latest/sdk/register-root-component/#what-if-i-want-to-name-my)
-
-另外， React Native命令默认会创建最新的版本，而目前最新的 0.45 及以上版本需要下载 boost 等几个第三方库编译。这些库在国内即便翻墙也很难下载成功，导致很多人无法运行iOS项目！！！中文网在论坛中提供了这些库的[国内下载链接](http://bbs.reactnative.cn/topic/4301/ios-rn-0-45%E4%BB%A5%E4%B8%8A%E7%89%88%E6%9C%AC%E6%89%80%E9%9C%80%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BC%96%E8%AF%91%E5%BA%93-boost%E7%AD%89)
 
 ## 命令行参数
 alita命令有以下参数：
