@@ -66,6 +66,10 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
     ```
     alita -i myproject -o myprojectwp
     ```
+    如果你需要边开发边看小程序效果可以添加`--watch` 参数，watch模式会监听文件修改：
+    ```
+    alita -i myproject -o myprojectwp --watch
+    ```
 
 2. 这样，你在`myprojectwp`目录就得到了一份小程序源代码。 进入`myprojectwp` 目录， 安装相关依赖
     ```
