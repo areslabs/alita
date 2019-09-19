@@ -1,3 +1,13 @@
+## [1.2.5](https://github.com/areslabs/alita/compare/1.2.4...1.2.5) (2019-09-19)
+
+
+### Features
+
+* **alita:** 改善编译完成之后的输出 ([d762ead](https://github.com/areslabs/alita/commit/d762ead))
+* **alita:** 添加init命令 ([abc8dba](https://github.com/areslabs/alita/commit/abc8dba))
+
+
+
 ## [1.2.4](https://github.com/areslabs/alita/compare/1.2.1...1.2.4) (2019-09-18)
 
 
