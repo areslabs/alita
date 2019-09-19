@@ -51,10 +51,23 @@ export default (ignored) => {
         .on('ready', () => {
             eventEmitter.once(DONE_EVENT, () => {
                 if (watchMode) {
-                    console.log(`转化完成！监听文件修改...`.info)
+                    successLog()
+                    console.log(`监听文件修改...`.info)
                 } else {
-                    console.log('转化完成!'.info)
+                    successLog()
                 }
             })
         })
+}
+
+function successLog() {
+    const {outdir} = global.execArgs
+    console.log('')
+    console.log('编译完成，Run instructions for 小程序:'.info)
+    console.log(`  • cd ${outdir}`.black)
+    console.log(`  • npm install`.black)
+    console.log(`  • 开发者工具从 ${outdir} 导入项目`.black)
+    console.log(`  • 从开发者工具构建npm： 工具 --> 构建npm`.black)
+    console.log(`    • 由于构建npm在导入项目之后，可能会出现找不到包的错误，此时需要重启开发者工具，或者重新导入项目`.warn)
+    console.log('')
 }
