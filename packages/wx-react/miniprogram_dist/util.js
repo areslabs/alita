@@ -111,7 +111,7 @@ export function getRootContext() {
         if (rootInst._c.length !== 1) {
             console.warn('Root页包裹路由的组件，不应该存在多个节点！')
         }
-        topInst = instanceManager.getCompInstByUUID(rootInst._c[0])
+        topInst = rootInst._c[0]
     }
 
     return getCurrentContext(topInst, topInst._parentContext)
@@ -128,11 +128,9 @@ export function getRealOc(oc, nc, r) {
 
     const ncs = new Set(nc)
     for(let i = 0; i < oc.length; i ++) {
-        const item = oc[i]
+        const comp = oc[i]
 
-        if (ncs.has(item)) continue
-
-        const comp = instanceManager.getCompInstByUUID(item)
+        if (ncs.has(comp)) continue
 
         recursiveGetC(comp, r)
     }
@@ -140,8 +138,7 @@ export function getRealOc(oc, nc, r) {
 
 export function recursiveGetC(c, r) {
     for (let i = 0; i < c._c.length; i ++ ) {
-        const item = c._c[i]
-        const comp = instanceManager.getCompInstByUUID(item)
+        const comp = c._c[i]
         recursiveGetC(comp, r)
     }
 
@@ -169,7 +166,7 @@ export function invokeWillUnmount(oldChildren) {
 
 export function recursionMountOrUpdate(comp) {
     for (let i = 0; i < comp._c.length; i++) {
-        const inst = instanceManager.getCompInstByUUID(comp._c[i])
+        const inst = comp._c[i]
         recursionMountOrUpdate(inst)
     }
 
@@ -196,8 +193,7 @@ export function recursionFirstFlushWX(top, topWx, comps, showUpdaterList, cb) {
             const item = comps[i]
             const wxItem = item.getWxInst()
 
-            item._c.forEach(child => {
-                let childComp = instanceManager.getCompInstByUUID(child)
+            item._c.forEach(childComp => {
                 // 组件render null
                 if (childComp._myOutStyle === false) {
                     return

@@ -253,7 +253,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     return
                 }
 
-                parentInst._c.push(diuu)
+                parentInst._c.push(inst)
                 inst._p = parentInst
                 inst.shouldUpdate = true
             } else {
@@ -263,7 +263,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 inst.__diuu__ = diuu
                 inst.__diuuKey = diuuKey
 
-                parentInst._c.push(diuu)
+                parentInst._c.push(inst)
                 inst._p = parentInst
 
 
@@ -307,7 +307,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.props = props
                     inst.context = filterContext(nodeName, parentContext)
 
-                    parentInst._c.push(diuu)
+                    parentInst._c.push(inst)
                     inst._p = parentInst
 
                     inst.shouldUpdate = true
@@ -321,7 +321,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.__diuu__ = instUUID
                     inst.__diuuKey = diuuKey
 
-                    parentInst._c.push(instUUID)
+                    parentInst._c.push(inst)
                     inst._p = parentInst // parent
 
                     if (parentInst instanceof HocComponent) {
@@ -516,7 +516,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.shouldUpdate = shouldUpdate
 
 
-                    parentInst._c.push(diuu)
+                    parentInst._c.push(inst)
                     inst._p = parentInst
 
 
@@ -547,7 +547,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.__diuu__ = instUUID
                     inst.__diuuKey = diuuKey
 
-                    parentInst._c.push(instUUID)
+                    parentInst._c.push(inst)
                     inst._p = parentInst // parent
 
                     if (parentInst instanceof HocComponent) {

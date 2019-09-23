@@ -124,8 +124,7 @@ export class BaseComponent {
                 return null
             }
 
-            const child = childComp._c[0]
-            childComp = instanceManager.getCompInstByUUID(child)
+            childComp = childComp._c[0]
         }
         return childComp
     }
@@ -193,8 +192,7 @@ export class BaseComponent {
         const pageWxInst = this.getWxInst()
         const comps = []
         // 收集下一次groupSetData的实例
-        deepComp._c.forEach(item => {
-            const child = instanceManager.getCompInstByUUID(item)
+        deepComp._c.forEach(child => {
             if (child._myOutStyle) {
                 const childComp = child.getDeepComp()
                 comps.push(childComp)
@@ -364,9 +362,7 @@ export class BaseComponent {
         if (shouldTraversalChild) {
             const children = this._c
             for (let i = 0; i < children.length; i++) {
-                const childUuid = children[i]
-                const child = instanceManager.getCompInstByUUID(childUuid)
-
+                const child = children[i]
                 child.updateWXInner(flushList, firstFlushList)
             }
         }
