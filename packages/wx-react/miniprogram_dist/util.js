@@ -167,6 +167,12 @@ export function invokeWillUnmount(oldChildren) {
 export function recursionMountOrUpdate(comp) {
     for (let i = 0; i < comp._c.length; i++) {
         const inst = comp._c[i]
+
+        // 组件不需要更新，提前返回的情况
+        if (inst.firstRender === FR_DONE && inst.shouldUpdate === false) {
+            continue
+        }
+
         recursionMountOrUpdate(inst)
     }
 
