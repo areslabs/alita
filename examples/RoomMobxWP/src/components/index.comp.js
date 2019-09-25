@@ -5,76 +5,77 @@ import { View, StyleSheet, Text, WXButton } from "@areslabs/wx-react-native"
 import { inject } from "@areslabs/wx-mobx-react"
 import TotalInfo from "./TotalInfo.comp"
 import Room from "./Room.comp"
-let Index = ((_dec = inject("room")),
-_dec(
-    (_class = class Index extends Component {
-        render() {
-            const {
-                bedRoom1,
-                bedRoom2,
-                kitchen,
-                bookroom,
-                reset
-            } = this.props.room
-            return h(
-                "view",
-                {
-                    style: styles.container,
-                    original: "View",
-                    diuu: "DIUU00001",
-                    tempName: "ITNP00010"
-                },
-                h(
+let Index =
+    ((_dec = inject("room")),
+    _dec(
+        (_class = class Index extends Component {
+            render() {
+                const {
+                    bedRoom1,
+                    bedRoom2,
+                    kitchen,
+                    bookroom,
+                    reset
+                } = this.props.room
+                return h(
                     "view",
                     {
-                        original: "OuterText",
-                        diuu: "DIUU00002"
-                    },
-                    "\u4E00\u4E2A\u623F\u5B50"
-                ),
-                h(
-                    "view",
-                    {
-                        style: styles.room,
+                        style: styles.container,
                         original: "View",
-                        diuu: "DIUU00003"
+                        diuu: "DIUU00001",
+                        tempName: "ITNP00010"
                     },
-                    h(Room, {
-                        autoFocus: true,
-                        style: styles.bedRoom1,
-                        data: bedRoom1,
-                        diuu: "DIUU00004"
+                    h(
+                        "view",
+                        {
+                            original: "OuterText",
+                            diuu: "DIUU00002"
+                        },
+                        "\u4E00\u4E2A\u623F\u5B50"
+                    ),
+                    h(
+                        "view",
+                        {
+                            style: styles.room,
+                            original: "View",
+                            diuu: "DIUU00003"
+                        },
+                        h(Room, {
+                            autoFocus: true,
+                            style: styles.bedRoom1,
+                            data: bedRoom1,
+                            diuu: "DIUU00004"
+                        }),
+                        h(Room, {
+                            style: styles.bedRoom2,
+                            data: bedRoom2,
+                            diuu: "DIUU00005"
+                        }),
+                        h(Room, {
+                            style: styles.kitchen,
+                            data: kitchen,
+                            diuu: "DIUU00006"
+                        }),
+                        h(Room, {
+                            style: styles.bookroom,
+                            data: bookroom,
+                            diuu: "DIUU00007"
+                        })
+                    ),
+                    h(TotalInfo, {
+                        diuu: "DIUU00008"
                     }),
-                    h(Room, {
-                        style: styles.bedRoom2,
-                        data: bedRoom2,
-                        diuu: "DIUU00005"
-                    }),
-                    h(Room, {
-                        style: styles.kitchen,
-                        data: kitchen,
-                        diuu: "DIUU00006"
-                    }),
-                    h(Room, {
-                        style: styles.bookroom,
-                        data: bookroom,
-                        diuu: "DIUU00007"
+                    h(WXButton, {
+                        title: "\u91CD\u7F6E",
+                        onPress: () => {
+                            this.props.room.reset()
+                        },
+                        diuu: "DIUU00009"
                     })
-                ),
-                h(TotalInfo, {
-                    diuu: "DIUU00008"
-                }),
-                h(WXButton, {
-                    title: "\u91CD\u7F6E",
-                    onPress: () => {
-                        this.props.room.reset()
-                    },
-                    diuu: "DIUU00009"
-                })
-            )
-        }
-    })
-) || _class)
+                )
+            }
+        })
+    ) || _class)
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -48,7 +48,7 @@ const rootContext = React.getRootContext();
 export default {
   childContext: rootContext
 };
-wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {
+wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "A": "/src/a/index",
   "C": "/src/c/index",
   "E": "/src/e/index",

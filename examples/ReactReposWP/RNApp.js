@@ -19,7 +19,7 @@ const rootContext = React.getRootContext();
 export default {
   childContext: rootContext
 };
-wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {
+wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "ReactReposlist": "/src/components/list/index",
   "ReactReposdetail": "/src/components/detail/index"
 });

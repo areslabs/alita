@@ -20,6 +20,15 @@ export default class WXScrollView extends RNBaseComponent{
         wxInst.scrollTo(position)
     }
 
+    scrollToEnd() {
+        const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)
+        wxInst.scrollTo({
+            x: 9999999,
+            y: 9999999
+        })
+    }
+
+
     getStyle(props) {
         return {
             style: tackleWithStyleObj(props.style, SCROLL),

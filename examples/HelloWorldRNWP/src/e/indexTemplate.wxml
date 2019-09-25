@@ -42,7 +42,7 @@
  
  <template name="ITNP00013">
     <view class="view" style="{{t.s(DIUU00011style)}}">
-                <view class="text" style="{{t.s(DIUU00012style)}}">type: <template wx:if="{{CTDK00001}} !== undefined" is="CTNP00001" data="{{d: CTDK00001}}"></template></view>
+                <view class="text" style="{{t.s(DIUU00012style)}}">type: <block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template></view>
 
                 <template wx:if="{{CTDK00002}} !== undefined" is="CTNP00002" data="{{d: CTDK00002}}"></template>
 

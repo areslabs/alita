@@ -48,7 +48,7 @@ const rootContext = React.getRootContext();
 export default {
   childContext: rootContext
 };
-wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {
+wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "HelloWorldRNA": "/src/a/index",
   "HelloWorldRNC": "/src/c/index",
   "HelloWorldRNE": "/src/e/index",

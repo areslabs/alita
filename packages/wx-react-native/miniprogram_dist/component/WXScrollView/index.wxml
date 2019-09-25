@@ -9,9 +9,12 @@
             bindtouchstart='startTouch'
             bindtouchend='leaveTouch'
     >
-        <view style="{{contentContainerStyle}}min-height: 100%;">
+        <view class="scroll-area" style="{{contentContainerStyle}}min-height: 100%;">
             <slot/>
         </view>
+        <!--ball 用来检查 contentSizeChange事件-->
+        <view id="above" class="ball" style="width: 1px; height: 1px; visibility: hidden; position: absolute; top: {{contentHeight - 1}}px;"/>
+        <view id="below" class="ball" style="width: 1px; height: 1px; visibility: hidden; position: absolute; top: {{contentHeight + 1}}px;"/>
     </scroll-view>
 </block>
 <block wx:else>
