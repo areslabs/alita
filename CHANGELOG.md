@@ -1,3 +1,20 @@
+## [1.2.6](https://github.com/areslabs/alita/compare/1.2.5...1.2.6) (2019-09-25)
+采用分组groupSetData的方式初始化组件
+
+### Bug Fixes
+
+* **wx-react:** 修复shouldComponent返回false的情况下，didUpdate仍然触发的bug ([952a0ed](https://github.com/areslabs/alita/commit/952a0ed))
+
+
+### Performance Improvements
+
+* **alita:** 依次R相关逻辑 ([f68c436](https://github.com/areslabs/alita/commit/f68c436))
+* **wx-react:** 1. 修改组件初始化时数据传递 ([c39f3b5](https://github.com/areslabs/alita/commit/c39f3b5))
+* **wx-react:** 1.分层setData的方式初始化组件 2. 使用opacity的方式防止页面抖动 ([77d3598](https://github.com/areslabs/alita/commit/77d3598))
+* **wx-react-native:** 修改组件初始化数据传递逻辑 ([6edfa68](https://github.com/areslabs/alita/commit/6edfa68))
+
+
+
 ## [1.2.5](https://github.com/areslabs/alita/compare/1.2.4...1.2.5) (2019-09-19)
 
 
