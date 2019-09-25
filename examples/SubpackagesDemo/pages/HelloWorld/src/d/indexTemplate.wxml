@@ -34,7 +34,7 @@
                 <view class="view" style="{{t.s(DIUU00017style)}}">
                     <view class="text" style="{{t.s(DIUU00018style)}}">自定义组件</view>
 
-                    <MyAni animation="{{DIUU00019animation}}" diuu="{{DIUU00019}}" style="{{t.s(DIUU00019style)}}" R="{{DIUU00019R}}" wx:if="{{DIUU00019style !== false}}" />
+                    <MyAni animation="{{DIUU00019animation}}" diuu="{{DIUU00019}}" style="{{t.s(DIUU00019style)}}" wx:if="{{DIUU00019style !== false}}" />
                 </view>
 
             </view>

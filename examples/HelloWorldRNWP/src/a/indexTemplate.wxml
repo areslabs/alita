@@ -107,7 +107,7 @@
                 <view class="view" style="{{t.s(DIUU00016style)}}">
                     <view class="text" style="{{t.s(DIUU00017style)}}">Platform: <block wx:if="{{t.l(CTDK00002)}}">{{CTDK00002}}</block><template wx:else is="CTNP00002" data="{{d: CTDK00002}}"></template></view>
                 </view>
-                <PlatformComp diuu="{{DIUU00018}}" style="{{t.s(DIUU00018style)}}" R="{{DIUU00018R}}" wx:if="{{DIUU00018style !== false}}" />
+                <PlatformComp diuu="{{DIUU00018}}" style="{{t.s(DIUU00018style)}}" wx:if="{{DIUU00018style !== false}}" />
 
                 <template wx:if="{{CTDK00005}} !== undefined" is="CTNP00005" data="{{d: CTDK00005}}"></template>
                 <template wx:if="{{CTDK00006}} !== undefined" is="CTNP00005" data="{{d: CTDK00006}}"></template>
@@ -128,30 +128,30 @@
                 </view>
 
 
-                <MyContext diuu="{{DIUU00027}}" style="{{t.s(DIUU00027style)}}" R="{{DIUU00027R}}" wx:if="{{DIUU00027style !== false}}" />
+                <MyContext diuu="{{DIUU00027}}" style="{{t.s(DIUU00027style)}}" wx:if="{{DIUU00027style !== false}}" />
 
 
                 <view class="view" style="{{t.s(DIUU00028style)}}">
                     <WXButton title="Add One" color="#fff" diuu="{{DIUU00029}}" style="{{t.s(DIUU00029style)}}" />
                 </view>
 
-                <MyRefComp diuu="{{DIUU00030}}" style="{{t.s(DIUU00030style)}}" R="{{DIUU00030R}}" wx:if="{{DIUU00030style !== false}}" />
+                <MyRefComp diuu="{{DIUU00030}}" style="{{t.s(DIUU00030style)}}" wx:if="{{DIUU00030style !== false}}" />
 
 
-                <MyPropComp generic:headerComponentCPT="ICNPaaaaa" generic:footerComponentCPT="ICNPaaaab" diuu="{{DIUU00037}}" style="{{t.s(DIUU00037style)}}" R="{{DIUU00037R}}" wx:if="{{DIUU00037style !== false}}" />
+                <MyPropComp generic:headerComponentCPT="ICNPaaaaa" generic:footerComponentCPT="ICNPaaaab" diuu="{{DIUU00037}}" style="{{t.s(DIUU00037style)}}" wx:if="{{DIUU00037style !== false}}" />
 
-                <MyFunComp diuu="{{DIUU00038}}" style="{{t.s(DIUU00038style)}}" R="{{DIUU00038R}}" wx:if="{{DIUU00038style !== false}}" />
+                <MyFunComp diuu="{{DIUU00038}}" style="{{t.s(DIUU00038style)}}" wx:if="{{DIUU00038style !== false}}" />
 
 
-                <MyChildComp generic:childrenCPT="ICNPaaaac" diuu="{{DIUU00039}}" style="{{t.s(DIUU00039style)}}" R="{{DIUU00039R}}" wx:if="{{DIUU00039style !== false}}"></MyChildComp>
+                <MyChildComp generic:childrenCPT="ICNPaaaac" diuu="{{DIUU00039}}" style="{{t.s(DIUU00039style)}}" wx:if="{{DIUU00039style !== false}}"></MyChildComp>
 
-                <MyHoc diuu="{{DIUU00049}}" style="{{t.s(DIUU00049style)}}" R="{{DIUU00049R}}" wx:if="{{DIUU00049style !== false}}" />
+                <MyHoc diuu="{{DIUU00049}}" style="{{t.s(DIUU00049style)}}" wx:if="{{DIUU00049style !== false}}" />
 
-                <MyStyleComp diuu="{{DIUU00050}}" style="{{t.s(DIUU00050style)}}" R="{{DIUU00050R}}" wx:if="{{DIUU00050style !== false}}" />
+                <MyStyleComp diuu="{{DIUU00050}}" style="{{t.s(DIUU00050style)}}" wx:if="{{DIUU00050style !== false}}" />
 
                 <Hi name="Yvette" textStyle="{{DIUU00051textStyle}}" diuu="{{DIUU00051}}" style="{{t.s(DIUU00051style)}}" />
 
-                <Hello diuu="{{DIUU00052}}" style="{{t.s(DIUU00052style)}}" R="{{DIUU00052R}}" wx:if="{{DIUU00052style !== false}}" />
+                <Hello diuu="{{DIUU00052}}" style="{{t.s(DIUU00052style)}}" wx:if="{{DIUU00052style !== false}}" />
 
                 
             </WXScrollView>

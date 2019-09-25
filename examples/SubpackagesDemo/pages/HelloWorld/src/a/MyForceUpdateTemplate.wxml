@@ -3,7 +3,7 @@
  <template name="ITNP00004">
     <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
                 <view catchtap="eventHandler" data-diuu="{{DIUU00002}}" hover-stop-propagation="" hover-start-time="0" hover-stay-time="100" hover-class="{{DIUU00002hoverClass}}" class="view" style="{{t.s(DIUU00002style)}}">
-                    <MyForceUpdateInner diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" R="{{DIUU00003R}}" wx:if="{{DIUU00003style !== false}}" />
+                    <MyForceUpdateInner diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" wx:if="{{DIUU00003style !== false}}" />
                 </view>
             </block>
   </template>

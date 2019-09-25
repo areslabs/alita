@@ -64,7 +64,7 @@
                 <view class="view" style="{{t.s(DIUU00012style)}}">
                     <view class="text" style="{{t.s(DIUU00013style)}}">FlatList 列表</view>
                 </view>
-                <WXFlatList generic:renderItemCPT="ICNPaaaaa" generic:ListFooterComponentCPT="ICNPaaaab" generic:ListHeaderComponentCPT="ICNPaaaac" generic:ListEmptyComponentCPT="ICNPaaaad" diuu="{{DIUU00024}}" style="{{t.s(DIUU00024style)}}" R="{{DIUU00024R}}" wx:if="{{DIUU00024style !== false}}" />
+                <WXFlatList generic:renderItemCPT="ICNPaaaaa" generic:ListFooterComponentCPT="ICNPaaaab" generic:ListHeaderComponentCPT="ICNPaaaac" generic:ListEmptyComponentCPT="ICNPaaaad" diuu="{{DIUU00024}}" style="{{t.s(DIUU00024style)}}" wx:if="{{DIUU00024style !== false}}" />
                 <view class="view" style="{{t.s(DIUU00025style)}}">
                     <view class="text" style="{{t.s(DIUU00026style)}}">横向ScrollView</view>
                 </view>

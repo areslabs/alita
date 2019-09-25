@@ -84,7 +84,7 @@
   </template>
  
  <template name="ITNP00017">
-    <LoadingView diuu="{{DIUU00016}}" style="{{t.s(DIUU00016style)}}" R="{{DIUU00016R}}" wx:if="{{DIUU00016style !== false}}" />
+    <LoadingView diuu="{{DIUU00016}}" style="{{t.s(DIUU00016style)}}" wx:if="{{DIUU00016style !== false}}" />
   </template>
  
  <template name="ITNP00019">
@@ -92,7 +92,7 @@
 
                 <template wx:if="{{CTDK00005}} !== undefined" is="CTNP00005" data="{{d: CTDK00005}}"></template>
 
-                <WXFlatList generic:renderItemCPT="ICNPaaaaa" generic:ListFooterComponentCPT="ICNPaaaab" diuu="{{DIUU00018}}" style="{{t.s(DIUU00018style)}}" R="{{DIUU00018R}}" wx:if="{{DIUU00018style !== false}}" />
+                <WXFlatList generic:renderItemCPT="ICNPaaaaa" generic:ListFooterComponentCPT="ICNPaaaab" diuu="{{DIUU00018}}" style="{{t.s(DIUU00018style)}}" wx:if="{{DIUU00018style !== false}}" />
             </view>
   </template>
  

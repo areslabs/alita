@@ -2,8 +2,8 @@
     
  <template name="ITNP00004">
     <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
-            <headerComponentCPT diuu="{{DIUU00002}}" style="{{t.s(DIUU00002style)}}" R="{{DIUU00002R}}" wx:if="{{DIUU00002style !== false}}"></headerComponentCPT>
-            <footerComponentCPT diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" R="{{DIUU00003R}}" wx:if="{{DIUU00003style !== false}}"></footerComponentCPT>
+            <headerComponentCPT diuu="{{DIUU00002}}" style="{{t.s(DIUU00002style)}}" wx:if="{{DIUU00002style !== false}}"></headerComponentCPT>
+            <footerComponentCPT diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" wx:if="{{DIUU00003style !== false}}"></footerComponentCPT>
         </block>
   </template>
  

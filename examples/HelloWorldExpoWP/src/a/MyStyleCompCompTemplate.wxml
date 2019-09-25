@@ -1,7 +1,7 @@
 <wxs src="../../commonwxs.wxs" module="t" />
     
  <template name="ITNP00002">
-    <MyStyleCompCompComp diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}" R="{{DIUU00001R}}" wx:if="{{DIUU00001style !== false}}" />
+    <MyStyleCompCompComp diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}" wx:if="{{DIUU00001style !== false}}" />
   </template>
  
  

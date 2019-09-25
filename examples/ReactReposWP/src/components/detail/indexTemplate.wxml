@@ -39,7 +39,7 @@
                                     <view class="text" style="{{t.s(DIUU00007style)}}"><block wx:if="{{t.l(CTDK00002)}}">{{CTDK00002}}</block><template wx:else is="CTNP00002" data="{{d: CTDK00002}}"></template></view>
                                     <image animation="{{DIUU00008animation}}" src="{{DIUU00008src}}" mode="aspectFill" diuu="{{DIUU00008}}" style="{{t.s(DIUU00008style)}}" />
                                 </view>
-                                <SecBody animation="{{DIUU00009animation}}" diuu="{{DIUU00009}}" style="{{t.s(DIUU00009style)}}" R="{{DIUU00009R}}" wx:if="{{DIUU00009style !== false}}" />
+                                <SecBody animation="{{DIUU00009animation}}" diuu="{{DIUU00009}}" style="{{t.s(DIUU00009style)}}" wx:if="{{DIUU00009style !== false}}" />
                             </view>
   </template>
  
