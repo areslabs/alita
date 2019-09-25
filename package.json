@@ -6,6 +6,7 @@
   "files": [
     "lib",
     "mptemp",
+    "rn-template",
     "package.json",
     "README.md"
   ],
@@ -17,7 +18,7 @@
     "weixin",
     "redux"
   ],
-  "version": "1.2.3-beta.1",
+  "version": "1.2.3-lgsd.1",
   "description": "首个ReactNative转微信小程序引擎",
   "main": "./lib/index.js",
   "scripts": {
