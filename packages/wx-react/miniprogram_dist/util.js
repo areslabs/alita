@@ -231,6 +231,57 @@ export function recursionFirstFlushWX(top, topWx, comps, showUpdaterList, cb) {
     })
 }
 
+export function recursionFirstFlushWXSync(top, topWx, comps, showUpdaterList, cb) {
+    const newComps = []
+    topWx.groupSetData(() => {
+        for(let i = 0; i < comps.length; i ++) {
+            const item = comps[i]
+            const wxItem = item.getWxInst()
+
+            item._c.forEach(childComp => {
+                // 组件render null
+                if (childComp._myOutStyle === false) {
+                    return
+                }
+
+                // 跳过hoc包裹的组件
+                childComp = childComp.getDeepComp()
+                newComps.push(childComp)
+            })
+
+
+            if (i === comps.length - 1) {
+                if (newComps.length === 0) {
+                    // 最后一次groupSetData
+                    showUpdaterList.forEach(({inst, data}) => {
+                        inst.setData(data)
+                    })
+
+                    wxItem.setData({
+                        _r: item._r
+                    }, () => {
+                        cb && cb()
+                    })
+                } else {
+                    wxItem.setData({
+                        _r: item._r
+                    })
+                }
+            } else {
+                wxItem.setData({
+                    _r: item._r
+                })
+            }
+        }
+
+
+        if (newComps.length !== 0) {
+            recursionFirstFlushWXSync(top, topWx, newComps, showUpdaterList, cb)
+        }
+    })
+}
+
+
 /**
  * 分层groupSetData的方式，存在一个问题：当父元素的大小，由子元素决定的时候，由于父元素先渲染会导致抖动。
  * 解决这个问题的方式是： 先把顶层父元素设置为： opacity: 0; 当所有子孙元素都渲染完成之后统一在恢复样式

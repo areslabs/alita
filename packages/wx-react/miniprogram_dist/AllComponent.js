@@ -19,6 +19,7 @@ import {
     getRealOc,
     invokeWillUnmount,
     recursionFirstFlushWX,
+    recursionFirstFlushWXSync,
     getShowUpdaterMap,
     HIDDEN_STYLE,
     recursionMountOrUpdate
@@ -110,6 +111,21 @@ import shallowEqual from './shallowEqual'
  *
  *
  *  特别的，当Father是页面组件，且是第一次初始化的时候，每一层级的节点将依次产生，一共会发生n（组件树层级）次groupSetData
+ *
+ *
+ *  另外微信小程序自定义组件的 setData行为是这样的（groupSetData同setData），当执行setData以后，新产生A组件的时候，调用如下：
+ *
+ *  A created
+ *  A attached
+ *  setData 调用返回
+ *  A ready
+ *  setData callback 调用
+ *
+ *  所以这里的setData/groupSetData 调用结束之后，A组件attached的生命周期已经执行，这个时候InstanceManager已经管理A，可以不用等到
+ *  callback之后去执行下一次groupSetData
+ *
+ *  但是其他版本的小程序【百度，支付宝】是否如此，暂无测试，所以保留 sync /async 两个版本的 firstUpdateWX updateWX recursionFirstFlushWX
+ *
  *
  */
 export class BaseComponent {
@@ -227,6 +243,57 @@ export class BaseComponent {
         }
     }
 
+    firstUpdateWXSync() {
+        const deepComp = this.getDeepComp()
+        if (!deepComp || Object.keys(deepComp._r).length === 0) {
+            // 页面组件render null
+            recursionMountOrUpdate(this)
+            return
+        }
+
+
+        const pageWxInst = this.getWxInst()
+        const comps = []
+        // 收集下一次groupSetData的实例
+        deepComp._c.forEach(child => {
+            if (child._myOutStyle) {
+                const childComp = child.getDeepComp()
+                comps.push(childComp)
+            }
+        })
+
+        if (comps.length === 0) {
+            pageWxInst.setData({
+                _r: deepComp._r
+            }, () => {
+                recursionMountOrUpdate(this)
+            })
+        } else {
+            const styleKey = deepComp.firstStyleKey
+            const styleValue = deepComp._r[styleKey]
+            const pageShowUpdater = {
+                inst: pageWxInst,
+                data: {
+                    [`_r.${styleKey}`]: styleValue
+                }
+            }
+
+            pageWxInst.groupSetData(() => {
+                pageWxInst.setData({
+                    _r: {
+                        ...deepComp._r,
+                        [deepComp.firstStyleKey]: `${styleValue}${HIDDEN_STYLE}`
+                    }
+                })
+
+                //pageWxInst.setData 之后 已经可以获取子组件实例
+                recursionFirstFlushWXSync(this, pageWxInst, comps, [pageShowUpdater], () => {
+                    recursionMountOrUpdate(this)
+                })
+            })
+        }
+    }
+
     /**
      * 刷新数据到小程序
      * @param cb
@@ -276,6 +343,65 @@ export class BaseComponent {
         })
     }
 
+    /**
+     * 刷新数据到小程序
+     * @param cb
+     * @param styleUpdater 上报样式的updater
+     */
+    updateWXSync(cb, styleUpdater) {
+        const flushList = []
+        const firstFlushList = []
+
+        this.updateWXInner(flushList, firstFlushList)
+
+        if (styleUpdater) {
+            flushList.push(styleUpdater)
+        }
+
+        if (flushList.length === 0) {
+            recursionMountOrUpdate(this)
+            cb && cb()
+            return
+        }
+
+        const showUpdaterMap = getShowUpdaterMap(firstFlushList)
+        const showUpdaterList = Array.from(showUpdaterMap.values())
+
+        /// groupSetData 来优化多次setData
+
+        const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
+        topWX.groupSetData(() => {
+            for(let i = 0; i < flushList.length; i ++ ) {
+                const {inst, data} = flushList[i]
+
+                const updater = showUpdaterMap.get(inst)
+                if (updater) {
+                    Object.assign(data, updater.hiddenData)
+                }
+
+
+                if (showUpdaterList.length === 0) {
+                    if (i === 0) {
+                        inst.setData(data, () => {
+                            recursionMountOrUpdate(this)
+                            cb && cb()
+                        })
+                    } else {
+                        inst.setData(data)
+                    }
+                } else {
+                    inst.setData(data)
+                }
+            }
+
+            if (showUpdaterList.length !== 0) {
+                recursionFirstFlushWXSync(this, topWX, firstFlushList, showUpdaterList, () => {
+                    recursionMountOrUpdate(this)
+                    cb && cb()
+                })
+            }
+        })
+    }
 
     /**
      * 递归程序。 主要做两个事情
@@ -491,7 +617,7 @@ export class Component extends BaseComponent {
         const oldOutStyle = this._myOutStyle
         
         if (this.isPageComp) {
-            this.updateWX(finalCb)
+            this.updateWXSync(finalCb)
             return
         }
 
@@ -523,7 +649,7 @@ export class Component extends BaseComponent {
 
                     const wxInst = pp.getWxInst()
 
-                    this.updateWX(finalCb, {
+                    this.updateWXSync(finalCb, {
                         inst: wxInst,
                         data: {
                             [stylePath]: newOutStyle
@@ -535,7 +661,7 @@ export class Component extends BaseComponent {
                 p = p._p
             }
         } else {
-            this.updateWX(finalCb)
+            this.updateWXSync(finalCb)
         }
     }
 }
