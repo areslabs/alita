@@ -1,3 +1,14 @@
+## [1.2.7](https://github.com/areslabs/alita/compare/1.2.6...1.2.7) (2019-10-09)
+
+
+### Performance Improvements
+
+* **wx-react:** 优化geneUUID的性能 ([e955b6d](https://github.com/areslabs/alita/commit/e955b6d))
+* **wx-react:** 提供Sync版本的groupSetData，提升组件初始化性能 ([96d3177](https://github.com/areslabs/alita/commit/96d3177))
+* **wx-react:** 重构react和mp之间的数据传输，解决闪屏问题 ([b5962f7](https://github.com/areslabs/alita/commit/b5962f7))
+
+
+
 ## [1.2.6](https://github.com/areslabs/alita/compare/1.2.5...1.2.6) (2019-09-25)
 采用分组groupSetData的方式初始化组件
 
