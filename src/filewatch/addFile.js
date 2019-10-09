@@ -86,8 +86,7 @@ export default async function addFile(filepath) {
         }
     }
 
-    console.log('process file:'.info, relativePath, ' start...')
     const allFilepaths = await struc(srcpath, targetpath)
-    console.log('process file:'.info, relativePath, ' end.')
+    console.log('process file:'.info, relativePath)
     return allFilepaths
 }

@@ -20,7 +20,7 @@ function getJSXElements(path) {
     }
 }
 
-function handleImport(path) {
+function handleImport(path, filepath) {
     const relativePath = path.node.source.value
     if (!path.node.source.extra) {
         // extra若不存在， 说明导入是在AST处理的时候 后加的
@@ -34,7 +34,7 @@ function handleImport(path) {
         let importElement = item.local.name;
 
         if(JSXElements.has(importElement)){
-            usedComponent[importElement] = isLibPath ? getCompFinalPath(originalPath, importElement) : relativePath;
+            usedComponent[importElement] = isLibPath ? getCompFinalPath(originalPath, importElement, filepath) : relativePath;
             isCompImport = true
         }
     }
@@ -45,7 +45,7 @@ function handleImport(path) {
 }
 
 
-function handleRequire(path) {
+function handleRequire(path, filepath) {
     const relativePath = path.node.arguments[0].value
 
     if (!path.node.arguments[0].extra) {
@@ -61,7 +61,7 @@ function handleRequire(path) {
     if (id.type === 'Identifier'
         && JSXElements.has(id.name)
     ) {
-        usedComponent[id.name] = isLibPath ? getCompFinalPath(originalPath, id.name) : relativePath
+        usedComponent[id.name] = isLibPath ? getCompFinalPath(originalPath, id.name, filepath) : relativePath
         isCompImport = true
     } else if (id.type === 'ObjectPattern') {
         const opp = id.properties
@@ -70,7 +70,7 @@ function handleRequire(path) {
             if (item.type === 'ObjectProperty') {
                 const name = item.key.name
                 if (JSXElements.has(name)) {
-                    usedComponent[name] = isLibPath ? getCompFinalPath(originalPath, name) : relativePath
+                    usedComponent[name] = isLibPath ? getCompFinalPath(originalPath, name, filepath) : relativePath
                     isCompImport = true
                 }
             }
@@ -116,7 +116,7 @@ export default function (ast, {filepath, json}){
         if (usedComponent[item] === undefined) {
             const backUpPath = getBackUpPath(item)
             if (backUpPath) {
-                console.log(`${item} 组件没有发现正常的导入路径！将使用全局搜索到的${backUpPath}`.warn)
+                console.log(`${filepath.replace(global.execArgs.OUT_DIR, '')}：${item} 组件没有发现正常的导入路径！将使用全局搜索到的${backUpPath}！`.warn)
                 usedComponent[item] = backUpPath
             }
         }
@@ -147,22 +147,24 @@ function judgeLibPath(relativePath) {
     return getLibPath(relativePath) === relativePath
 }
 
-function getCompFinalPath(originalPath, name) {
+function getCompFinalPath(originalPath, name, filepath) {
+    const relativeFilePath = filepath.replace(global.execArgs.OUT_DIR, '')
+
     if (originalPath === 'react-native'
         && RNNOTSUPPORTCOMP.has(name)
     ) {
-        console.log(`不支持React Native组件${name}`.warn)
+        console.log(`${relativeFilePath}: 不支持React Native组件${name}！`.warn)
         return
     }
 
 
     if (global.execArgs.extCompPathMaps[originalPath] === undefined) {
-        console.log(`${originalPath} 需要在配置文件extCompLibs字段指定！`.error)
+        console.log(`${relativeFilePath}: ${originalPath} 需要在配置文件extCompLibs字段指定！`.error)
         return
     }
 
     if (global.execArgs.extCompPathMaps[originalPath][name] === undefined) {
-        console.log(`组件${name} 没有在${originalPath}指定`.error)
+        console.log(`${relativeFilePath}: 组件${name} 没有在${originalPath}指定！`.error)
         return
     }
 
