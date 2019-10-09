@@ -11,8 +11,72 @@
  * 高效生成唯一uuid，需要全局不重复
  */
 
-const ORDER = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split('')
-let uuid = "a0000000".split('')
+const charMap = {
+    "0": "1",
+    "1": "2",
+    "2": "3",
+    "3": "4",
+    "4": "5",
+    "5": "6",
+    "6": "7",
+    "7": "8",
+    "8": "9",
+    "9": "A",
+    "A": "B",
+    "B": "C",
+    "C": "D",
+    "D": "E",
+    "E": "F",
+    "F": "G",
+    "G": "H",
+    "H": "I",
+    "I": "J",
+    "J": "K",
+    "K": "L",
+    "L": "M",
+    "M": "N",
+    "N": "O",
+    "O": "P",
+    "P": "Q",
+    "Q": "R",
+    "R": "S",
+    "S": "T",
+    "T": "U",
+    "U": "V",
+    "V": "W",
+    "W": "X",
+    "X": "Y",
+    "Y": "Z",
+    "Z": "a",
+    "a": "b",
+    "b": "c",
+    "c": "d",
+    "d": "e",
+    "e": "f",
+    "f": "g",
+    "g": "h",
+    "h": "i",
+    "i": "j",
+    "j": "k",
+    "k": "l",
+    "l": "m",
+    "m": "n",
+    "n": "o",
+    "o": "p",
+    "p": "q",
+    "q": "r",
+    "r": "s",
+    "s": "t",
+    "t": "u",
+    "u": "v",
+    "v": "w",
+    "w": "x",
+    "x": "y",
+    "y": "z",
+    "z": "0"
+}
+
+const uuid = ["a", "0", "0", "0", "0", "0", "0", "0"]
 export default function geneUUID() {
     let start = 7
     while (incr(start) && start > 0) {
@@ -25,13 +89,6 @@ export default function geneUUID() {
 
 function incr(index) {
     const v = uuid[index]
-
-    if (v === 'z') {
-        uuid[index] = '0'
-        return true
-    } else {
-        const nextIndex = ORDER.indexOf(v) + 1
-        uuid[index] = ORDER[nextIndex]
-        return false
-    }
+    uuid[index] = charMap[v]
+    return v === "z"
 }
