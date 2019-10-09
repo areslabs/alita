@@ -126,7 +126,9 @@ alita命令有以下参数：
 
 1. 转化之后的小程序，必须符合小程序的规范， 比如最终压缩的代码小于4m，分包8m， 路由深度不大于5层等。
 
-2. Alita本身的一些限制 详见[要求与限制](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， [静态限制](https://areslabs.github.io/alita/%E9%9D%99%E6%80%81%E9%99%90%E5%88%B6.html)
+2. 根据这篇[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)，其实
+   Alita在JSX语法上的限制是很少的，但是由于Alita在处理自定义组件的时候采用的是小程序自定义组件映射的方式，这两种自定义组件的实现存在一些差异，导致Alita会有一些框架层面的
+   限制，详见[要求与限制](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， [静态限制](https://areslabs.github.io/alita/%E9%9D%99%E6%80%81%E9%99%90%E5%88%B6.html)
 
 3. 如果使用了第三方React Native组件，需要使用[自定义组件库扩展](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 方式进行扩展
 
