@@ -80,7 +80,7 @@ export default function (CompMySelf, RNApp) {
 
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
             // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
-            compInst.firstUpdateWXSync()
+            compInst.firstUpdateWX()
         }
 
         o.methods.onShow = function () {
