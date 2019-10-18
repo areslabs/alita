@@ -35,7 +35,7 @@ export function isEventProp(name) {
 export const DEFAULTCONTAINERSTYLE = '_5_'
 
 export function getCurrentContext(inst, parentContext) {
-    const contextDec = Object.getPrototypeOf(inst).constructor.childContextTypes
+    const contextDec = inst.constructor.childContextTypes
 
     if (!contextDec) {
         return parentContext
@@ -156,74 +156,6 @@ export function invokeWillUnmount(oldChildren) {
         }
 
         instanceManager.removeCompInst(item.__diuu__)
-    }
-}
-
-
-
-export function recursionMountOrUpdate(comp) {
-    for (let i = 0; i < comp._c.length; i++) {
-        const inst = comp._c[i]
-
-        // 组件不需要更新，提前返回的情况
-        if (inst.firstRender === FR_DONE && inst.shouldUpdate === false) {
-            continue
-        }
-
-        recursionMountOrUpdate(inst)
-    }
-
-    if (comp.firstRender === FR_DONE) {
-        comp.componentDidUpdate && comp.componentDidUpdate()
-    } else {
-        comp.firstRender = FR_DONE
-        comp.componentDidMount && comp.componentDidMount()
-        if (comp.isPageComp && !comp.hocWrapped && comp.componentDidFocus) {
-            comp.componentDidFocus()
-        }
-    }
-}
-
-export function breadthRecursionFirstFlushWX(comps, cb) {
-    const newComps = []
-
-    for(let i = 0; i < comps.length; i ++) {
-        const item = comps[i]
-        const wxItem = item.getWxInst()
-
-        item._c.forEach(childComp => {
-            // 组件render null
-            if (childComp._myOutStyle === false) {
-                return
-            }
-
-            // 跳过hoc包裹的组件
-            childComp = childComp.getDeepComp()
-            newComps.push(childComp)
-        })
-
-
-        if (i === comps.length - 1) {
-            if (newComps.length === 0) {
-                wxItem.setData({
-                    _r: item._r
-                }, () => {
-                    cb && cb()
-                })
-            } else {
-                wxItem.setData({
-                    _r: item._r
-                })
-            }
-        } else {
-            wxItem.setData({
-                _r: item._r
-            })
-        }
-    }
-
-    if (newComps.length !== 0) {
-        breadthRecursionFirstFlushWX(newComps, cb)
     }
 }
 

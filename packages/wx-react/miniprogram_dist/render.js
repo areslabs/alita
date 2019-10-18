@@ -9,10 +9,79 @@
 import instanceManager from './InstanceManager'
 import geneUUID from './geneUUID'
 import tackleWithStyleObj from './tackleWithStyleObj'
-import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, setDeepData, ReactWxEventMap, getRealOc} from './util'
+import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, ReactWxEventMap, getRealOc} from './util'
 import { CPTComponent, FuncComponent, RNBaseComponent, HocComponent } from './AllComponent'
-import reactUpdate from './ReactUpdate'
 
+import {UPDATE_EFFECT, INIT_EFFECT, UpdateState, ForceUpdate, mpRoot} from './constants'
+import {rnvcReportExistStyle, rnvcReportStyle, rReportExistStyle, rReportStyle} from './reportStyle'
+import {enqueueEffect} from './effect'
+
+import {unstable_batchedUpdates} from './UpdateStrategy'
+
+export let oldChildren = []
+
+export function renderNextValidComps(inst) {
+    if (inst.didSelfUpdate) {
+        // setState / forceUpdate 的节点，将会被设置didSelfUpdate
+
+        const {hasForceUpdate, nextState, callbacks} = processUpdateQueue(inst)
+
+        // renderNextValidComps 方法里面的更新，props不会变化，props的变化的更新都属于render
+        const shouldUpdate = checkShouldComponentUpdate(inst, hasForceUpdate, inst.props, nextState)
+
+        shouldUpdate && inst.componentWillUpdate && inst.componentWillUpdate(inst.props, nextState)
+        shouldUpdate && inst.UNSAFE_componentWillUpdate && inst.UNSAFE_componentWillUpdate(inst.props, nextState)
+
+
+        inst.state = nextState
+
+        if (!shouldUpdate) {
+            if (inst.didChildUpdate) {
+                for(let i = 0; i < inst._c.length; i ++ ) {
+                    const child = inst._c[i]
+                    renderNextValidComps(child)
+                }
+
+                rnvcReportExistStyle(inst)
+            }
+
+            return
+        }
+
+        enqueueEffect({
+            tag: UPDATE_EFFECT,
+
+            inst,
+            callbacks,
+        })
+
+        const oc = inst._c
+        resetInstProps(inst)
+
+
+        const subVnode = inst.render()
+
+        if (subVnode && subVnode.isReactElement) {
+            inst._styleKey = `${subVnode.diuu}style`
+        } else {
+            inst._styleKey = undefined
+        }
+
+        const context = getCurrentContext(inst, inst._parentContext)
+        render(subVnode, inst, context, inst._r, inst._or, '_r')
+
+        getRealOc(oc, inst._c, oldChildren)
+
+        rnvcReportStyle(inst)
+    } else if (inst.didChildUpdate) {
+        for(let i = 0; i < inst._c.length; i ++ ) {
+            const child = inst._c[i]
+            renderNextValidComps(child)
+        }
+
+        rnvcReportExistStyle(inst)
+    }
+}
 
 /**
  * 转化引擎的核心渲染函数， 负责把React结构渲染成中间态的数据和结构
@@ -22,9 +91,8 @@ import reactUpdate from './ReactUpdate'
  * @param data
  * @param oldData
  * @param dataPath
- * @param oldChildren
  */
-export default function render(vnode, parentInst, parentContext, data, oldData, dataPath, oldChildren) {
+export default function render(vnode, parentInst, parentContext, data, oldData, dataPath) {
 
     try {
         if (Array.isArray(vnode)) {
@@ -131,7 +199,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]
-                render(childVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
+                render(childVnode, parentInst, parentContext, data, oldData, dataPath)
             }
 
 
@@ -211,7 +279,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     // 当Ua的key由Ka --> Kb 的时候， 那么组件变为Ub负责来渲染这一块， 故而需要给予Ub对应的数据
                     // 对于明确且唯一的key，  小程序和React处理是一致的
                     const vIndex = data[datakey].length - 1
-                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}[${vIndex}]`, oldChildren)
+                    render(subVnode, parentInst, parentContext, subData, oldSubDataKeyMap[subKey], `${dataPath}.${datakey}[${vIndex}]`)
                 }
             } else {
                 let oldSubData = null
@@ -222,7 +290,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 const subData = {}
                 data[datakey] = subData
 
-                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}`, oldChildren)
+                render(tempVnode, parentInst, parentContext, subData, oldSubData, `${dataPath}.${datakey}`)
             }
         } else if (nodeName === 'phblock') {
             // 用于FlatList等外层， 用来占位
@@ -238,7 +306,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const childVnode = children[i]
-                render(childVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
+                render(childVnode, parentInst, parentContext, data, oldData, dataPath)
             }
         } else if (typeof nodeName === 'string' && nodeName.endsWith('CPT')) {
             // 抽象组件节点， 处理属性是xxComponent/children的情况
@@ -282,11 +350,16 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 CPTVnode.isFirstEle = true
             }
 
-            render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r', oldChildren)
+            render(CPTVnode, inst, parentContext, inst._r, inst._or, '_r')
+
+            if (!inst._keyPath) {
+                inst._keyPath = `${dataPath}.${vnodeDiuu}`
+            }
+
             getRealOc(oc, inst._c, oldChildren)
 
             // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
-            reportSubStyleToOuter(vnodeDiuu, CPTVnode, inst, parentInst, dataPath)
+            reportSubStyleToOuter(inst)
 
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === FuncComponent) {
             // 函数组件， 没有声明周期， 没有setState
@@ -359,9 +432,15 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             if (subVnode && subVnode.isReactElement) {
                 subVnode.isFirstEle = true
             }
+
+
             const context = getCurrentContext(inst, parentContext)
 
-            render(subVnode, inst, context, inst._r, inst._or, '_r', oldChildren)
+            render(subVnode, inst, context, inst._r, inst._or, '_r')
+
+            if (!inst._keyPath) {
+                inst._keyPath = `${dataPath}.${vnodeDiuu}`
+            }
 
             getRealOc(oc, inst._c, oldChildren)
 
@@ -371,7 +450,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
 
             if (!inst.isPageComp) {
-                reportSubStyleToOuter(vnodeDiuu, subVnode, inst, parentInst, dataPath)
+                reportSubStyleToOuter(inst)
             }
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === RNBaseComponent) {
             // 与下面 typeof nodeName === 'function' 相比， 这里面应该都是 RN base 组件，
@@ -455,113 +534,61 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
             for (let i = 0; i < children.length; i++) {
                 const subVnode = children[i]
-                render(subVnode, parentInst, parentContext, data, oldData, dataPath, oldChildren)
+                render(subVnode, parentInst, parentContext, data, oldData, dataPath)
             }
         } else if (typeof nodeName === 'function') {
             let inst = null
-            if (parentInst) {
-                let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
 
-                if (shouldReuse) {
-                    // 复用组件实例
-                    inst = instanceManager.getCompInstByUUID(diuu)
+            let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
 
-                    if (!inst) {
-                        shouldReuseButInstNull(vnode)
-                        return
-                    }
+            if (shouldReuse) {
+                // 复用组件实例
+                inst = instanceManager.getCompInstByUUID(diuu)
 
-                    data[diuuKey] = diuu
-
-
-                    //TODO 应该和reactEnvWrapper 统一
-                    if (inst.componentWillReceiveProps) {
-                        reactUpdate.setFlag(true)
-                        inst.componentWillReceiveProps(props)
-                        reactUpdate.setFlag(false)
-                    }
-                    if (inst.UNSAFE_componentWillReceiveProps) {
-                        reactUpdate.setFlag(true)
-                        inst.UNSAFE_componentWillReceiveProps(props)
-                        reactUpdate.setFlag(false)
-                    }
-
-                    let nextState = null
-                    if (inst.updateQueue.length > 0) {
-                        nextState = {
-                            ...inst.state
-                        }
-                        for (let j = 0; j < inst.updateQueue.length; j++) {
-                            Object.assign(nextState, inst.updateQueue[j])
-                        }
-                        inst.updateQueue = []
-                    } else {
-                        nextState = inst.state
-                    }
-
-
-                    let shouldUpdate
-                    if (inst.shouldComponentUpdate) {
-                        shouldUpdate = inst.shouldComponentUpdate(props, nextState)
-                    } else {
-                        shouldUpdate = true
-                    }
-
-                    shouldUpdate && inst.componentWillUpdate && inst.componentWillUpdate(props, nextState)
-                    shouldUpdate && inst.UNSAFE_componentWillUpdate && inst.UNSAFE_componentWillUpdate(props, nextState)
-
-                    inst.props = props
-                    inst.context = filterContext(nodeName, parentContext)
-                    inst.state = nextState
-                    inst.shouldUpdate = shouldUpdate
-
-
-                    parentInst._c.push(inst)
-                    inst._p = parentInst
-
-
-                    if (!shouldUpdate) {
-                        // 当组件不需要更新的时候，直接返回， 但是这个时候由于父组件的_r 是新计算的，组件的样式就会丢失，
-                        // 所以在组件返回之前， 需要把之前计算好的样式上报给父组件。
-                        reportOuterWithExistsStyle(vnodeDiuu, inst, parentInst, dataPath)
-                        return
-                    }
-
-                    inst._or = inst._r
-                } else {
-                    const myContext = filterContext(nodeName, parentContext)
-                    inst = new nodeName(props, myContext)
-                    if (!inst.props) {
-                        inst.props = props
-                    }
-                    if (!inst.context) {
-                        inst.context = myContext
-                    }
-
-                    inst.componentWillMount && inst.componentWillMount()
-                    inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
-                    inst.willMountDone = true
-
-                    const instUUID = geneUUID()
-                    data[diuuKey] = instUUID
-                    inst.__diuu__ = instUUID
-                    inst.__diuuKey = diuuKey
-
-                    parentInst._c.push(inst)
-                    inst._p = parentInst // parent
-
-                    if (parentInst instanceof HocComponent) {
-                        inst.hocWrapped = true
-                        // 防止样式上报到HOC
-                        if (parentInst.isPageComp) {
-                            inst.isPageComp = true
-                        }
-                    }
-
-                    instanceManager.setCompInst(instUUID, inst)
+                if (!inst) {
+                    shouldReuseButInstNull(vnode)
+                    return
                 }
+
+                data[diuuKey] = diuu
+
+                // render里面的实例，一定存在来自父的更新，固componentWillReceiveProps一定执行
+                inst.componentWillReceiveProps && inst.componentWillReceiveProps(props)
+                inst.UNSAFE_componentWillReceiveProps && inst.UNSAFE_componentWillReceiveProps(props)
+
+
+                const {hasForceUpdate, nextState, callbacks} = processUpdateQueue(inst)
+                const shouldUpdate = checkShouldComponentUpdate(inst, hasForceUpdate, props, nextState)
+
+                shouldUpdate && inst.componentWillUpdate && inst.componentWillUpdate(props, nextState)
+                shouldUpdate && inst.UNSAFE_componentWillUpdate && inst.UNSAFE_componentWillUpdate(props, nextState)
+
+                inst.props = props
+                inst.context = filterContext(nodeName, parentContext)
+                inst.state = nextState
+                parentInst._c.push(inst)
+
+
+                if (!shouldUpdate) {
+                    if (inst.didChildUpdate) {
+                        for(let i = 0; i < inst._c.length; i ++ ) {
+                            const child = inst._c[i]
+                            renderNextValidComps(child)
+                        }
+
+                    }
+
+                    rReportExistStyle(inst)
+                    return
+                }
+
+                enqueueEffect({
+                    tag: UPDATE_EFFECT,
+
+                    inst,
+                    callbacks,
+                })
             } else {
-                // 页面组件， 页面组件不存在复用的情况
                 const myContext = filterContext(nodeName, parentContext)
                 inst = new nodeName(props, myContext)
                 if (!inst.props) {
@@ -571,25 +598,49 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.context = myContext
                 }
 
-                inst.isPageComp = true
-
                 inst.componentWillMount && inst.componentWillMount()
                 inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
-                inst.willMountDone = true
 
-                const instUUID = vnodeDiuu
+                // 页面组件 是由页面 onLoad 方法计算的
+                let instUUID = null
+                if (parentInst === mpRoot) {
+                    instUUID = vnodeDiuu
+                    inst.isPageComp = true
+                } else {
+                    instUUID = geneUUID()
+                }
+
+
+                data[diuuKey] = instUUID
                 inst.__diuu__ = instUUID
+                inst.__diuuKey = diuuKey
+
+                // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
+                inst._keyPath = `${dataPath}.${vnodeDiuu}`
+
+                parentInst._c.push(inst)
+                inst._p = parentInst // parent
+
+                if (parentInst instanceof HocComponent) {
+                    inst.hocWrapped = true
+                    // 防止样式上报到HOC
+                    if (parentInst.isPageComp) {
+                        inst.isPageComp = true
+                    }
+                }
 
                 instanceManager.setCompInst(instUUID, inst)
 
+                enqueueEffect({
+                    tag: INIT_EFFECT,
+                    inst,
+                })
             }
 
-            inst._r = {}
-            // children 重置， render过程的时候重新初始化， 因为children的顺序关系着渲染的顺序， 所以这里应该需要每次render都重置
-            const oc = inst._c
-            inst._c = []
 
-            inst.__eventHanderMap = {}
+            const oc = inst._c
+            resetInstProps(inst)
+
 
             // _TWFBStylePath, _isFirstEle两个字段 FuncComp 不需要设置，因为他们只有在setState的起作用
             inst._isFirstEle = isFirstEle
@@ -601,16 +652,14 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             if (subVnode && subVnode.isReactElement) {
                 subVnode.isFirstEle = true
 
-                if (inst.isPageComp) {
-                    // 首屏渲染的时候 需要先设置这个style opacity为0。
-                    inst.firstStyleKey = subVnode.diuu + 'style'
-                }
+                inst._styleKey = `${subVnode.diuu}style`
+            } else {
+                inst._styleKey = undefined
             }
 
             inst._parentContext = parentContext
             const context = getCurrentContext(inst, parentContext)
-
-            render(subVnode, inst, context, inst._r, inst._or, '_r', oldChildren)
+            render(subVnode, inst, context, inst._r, inst._or, '_r')
 
             getRealOc(oc, inst._c, oldChildren)
 
@@ -623,10 +672,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 data[`${vnodeDiuu}animation`] = animation
             }
 
-            if (!inst.isPageComp) {
-                // 普通组件/CPT组件 需要接受内部外层子元素的样式， 外层子元素只需要继承
-                reportSubStyleToOuter(vnodeDiuu, subVnode, inst, parentInst, dataPath)
-            }
+            rReportStyle(inst)
         }
     } catch (e) {
         console.error(e)
@@ -635,54 +681,39 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
 /**
  * 微信小程序的自定义组件会退化为一个节点， 所以需要把内部的节点样式上报给这个退化生成的节点
- * @param parentDiuu
  * @param inst
- * @param parentInst
- * @param dataPath
  */
-function reportOuterWithExistsStyle(parentDiuu, inst, parentInst, dataPath) {
-    const outStyleKey = `${parentDiuu}style` //parentDiuu + "STYLE"
+function reportOuterWithExistsStyle(inst) {
+    const parentInst = inst._p
     const styleValue = inst._myOutStyle
-    setStyleData(parentInst, outStyleKey, styleValue, dataPath)
+
+    setStyleData(parentInst, styleValue, inst._keyPath)
 }
 
 /**
  * 微信小程序的自定义组件会退化为一个节点， 所以需要把内部的节点样式上报给这个退化生成的节点
- * @param parentDiuu
- * @param subVnode
  * @param inst
- * @param parentInst
- * @param dataPath
  */
-function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath) {
-    const outStyleKey = `${parentDiuu}style`
+function reportSubStyleToOuter(inst) {
+    const parentInst = inst._p
+
+    const styleKey = inst._styleKey
+    let styleValue
 
     // render null，外层组件的节点 也应该消失
-    if (subVnode === null || subVnode === undefined || typeof subVnode === 'boolean') {
-        const styleValue = false
-        setStyleData(parentInst, outStyleKey, styleValue, dataPath)
-        inst._myOutStyle = styleValue
-        inst._keyPath = `${dataPath}.${parentDiuu}`
-        return
+    if (!styleKey) {
+        styleValue = false
+    } else {
+        /**
+         * 当 render <view/> 等基本组件的时候， inst._r[styleKey] 是tackleWithStyleObj算出来的
+         * 当 render <F/> 等非基本组件的时候，inst._r[styleKey] 是子元素上报上来的
+         */
+        styleValue = inst._r[styleKey]
+        inst._r[styleKey] = DEFAULTCONTAINERSTYLE
     }
 
-
-    const { diuu } = subVnode
-    const styleKey = `${diuu}style`
-
-    /**
-     * 当 subVnode.nodeName 是基本组件的时候， inst._r[styleKey] 是tackleWithStyleObj算出来的
-     * 当 subVnode.nodeName 不是基本组件的时候，inst._r[styleKey] 是子元素上报上来的
-     */
-    const styleValue = inst._r[styleKey]
-
+    setStyleData(parentInst, styleValue, inst._keyPath)
     inst._myOutStyle = styleValue
-    inst._keyPath = `${dataPath}.${parentDiuu}`
-
-
-    inst._r[styleKey] = DEFAULTCONTAINERSTYLE
-
-    setStyleData(parentInst, outStyleKey, styleValue, dataPath)
 }
 
 /**
@@ -692,19 +723,10 @@ function reportSubStyleToOuter(parentDiuu, subVnode, inst, parentInst, dataPath)
  */
 function reactEnvWrapper(func) {
     return function(...args) {
-        reactUpdate.setFlag(true)
-
-        const r = func.apply(this, args)
-
-        reactUpdate.setFlag(false)
-        reactUpdate.finalUpdate()
-
-        return r
+        unstable_batchedUpdates(() => {
+            func.apply(this, args)
+        })
     }
-}
-
-function setStyleData(inst, k, v, dp) {
-    setDeepData(inst, v, `${dp}.${k}`)
 }
 
 
@@ -802,3 +824,79 @@ function activeOpacityHandler(v) {
     const opa = Math.round(v * 10)
     return `touchableOpacity${opa}`
 }
+
+
+function processUpdateQueue(inst) {
+
+    if (!inst.updateQueue || inst.updateQueue.length === 0) {
+        return {
+            hasForceUpdate: false,
+            nextState: inst.state,
+            callbacks: undefined
+        }
+    }
+
+    let hasForceUpdate = false
+    const callbacks = []
+    const preState = Object.assign({}, inst.state)
+    let hasStateChange = false
+    for(let i = 0; i < inst.updateQueue; i ++ ) {
+        const update = inst.updateQueue[i]
+
+        if (update.tag === UpdateState) {
+            const payload = update.payload
+            if (typeof payload === 'function') {
+                const partState = payload.call(inst, preState)
+                Object.assign(preState, partState)
+            }
+
+            if (typeof payload === 'object') {
+                Object.assign(preState, payload)
+            }
+
+            hasStateChange = true
+        } else if (update.tag === ForceUpdate) {
+            hasForceUpdate = true
+        }
+
+        if (update.callback && typeof update.callback === 'function') {
+            callbacks.push(update.callback)
+        }
+    }
+
+    inst.updateQueue = []
+
+    return {
+        hasForceUpdate,
+        callbacks: callbacks.length > 0 ? callbacks : undefined,
+        nextState: hasStateChange ? preState : inst.state
+    }
+}
+
+function checkShouldComponentUpdate(inst, hasForceUpdate, nextProps, nextState) {
+    let shouldUpdate
+    if (hasForceUpdate) {
+        shouldUpdate = true
+    } else if (inst.shouldComponentUpdate) {
+        shouldUpdate = inst.shouldComponentUpdate(nextProps, nextState)
+    } else {
+        shouldUpdate = true
+    }
+
+    return shouldUpdate
+}
+
+// 某些实例属性的重置
+function resetInstProps(inst) {
+    inst._or = inst._r
+
+    // ui des
+    inst._r = {}
+
+    // children 重置， render过程的时候重新初始化， 因为children的顺序关系着渲染的顺序， 所以这里应该需要每次render都重置
+    inst._c = []
+
+    // text /button 等基本组件 事件回调存放在 __eventHanderMap字段
+    inst.__eventHanderMap = {}
+}
+

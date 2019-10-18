@@ -7,22 +7,12 @@
  */
  
 import instanceManager from "./InstanceManager";
-import render from "./render";
-import getChangePath from "./getChangePath";
-import {
-    getCurrentContext,
-    DEFAULTCONTAINERSTYLE,
-    setDeepData,
-    HOCKEY,
-    FR_DONE,
-    FR_PENDING,
-    getRealOc,
-    invokeWillUnmount,
-    breadthRecursionFirstFlushWX,
-    recursionMountOrUpdate
-} from './util'
-import reactUpdate from './ReactUpdate'
+import {HOCKEY} from './util'
+
 import shallowEqual from './shallowEqual'
+
+import {UpdateState, ForceUpdate} from './constants'
+import {performUpdater} from './UpdateStrategy'
 
 
 /**
@@ -159,190 +149,6 @@ export class BaseComponent {
 
         return instanceManager.getWxInstByUUID(diuu)
     }
-
-    /**
-     * 页面组件初始渲染
-     */
-    firstUpdateWX() {
-        const deepComp = this.getDeepComp()
-        if (!deepComp || Object.keys(deepComp._r).length === 0) {
-            // 页面组件render null
-            recursionMountOrUpdate(this)
-            return
-        }
-
-
-        const pageWxInst = this.getWxInst()
-        const comps = []
-        // 收集下一次groupSetData的实例
-        deepComp._c.forEach(child => {
-            if (child._myOutStyle) {
-                const childComp = child.getDeepComp()
-                comps.push(childComp)
-            }
-        })
-
-        if (comps.length === 0) {
-            pageWxInst.setData({
-                _r: deepComp._r
-            }, () => {
-                recursionMountOrUpdate(this)
-            })
-        } else {
-            pageWxInst.groupSetData(() => {
-                pageWxInst.setData({
-                    _r: deepComp._r
-                })
-
-                //pageWxInst.setData 之后 已经可以获取子组件实例
-                breadthRecursionFirstFlushWX(comps, () => {
-                    recursionMountOrUpdate(this)
-                })
-            })
-        }
-    }
-
-    /**
-     * 刷新数据到小程序
-     * @param cb
-     * @param styleUpdater 上报样式的updater
-     */
-    updateWX(cb, styleUpdater) {
-        const flushList = []
-        const firstFlushList = []
-
-        this.updateWXInner(flushList, firstFlushList)
-
-        if (styleUpdater) {
-            flushList.push(styleUpdater)
-        }
-
-        if (flushList.length === 0) {
-            recursionMountOrUpdate(this)
-            cb && cb()
-            return
-        }
-
-        /// groupSetData 来优化多次setData
-        const topWX = styleUpdater ? styleUpdater.inst : this.getWxInst()
-        topWX.groupSetData(() => {
-            for(let i = 0; i < flushList.length; i ++ ) {
-                const {inst, data} = flushList[i]
-
-                if (firstFlushList.length === 0) {
-                    if (i === 0) {
-                        inst.setData(data, () => {
-                            recursionMountOrUpdate(this)
-                            cb && cb()
-                        })
-                    } else {
-                        inst.setData(data)
-                    }
-                } else {
-                    inst.setData(data)
-                }
-            }
-
-            //flushList.setData 之后 已经可以获取子组件实例
-            if (firstFlushList.length !== 0) {
-                breadthRecursionFirstFlushWX(firstFlushList, () => {
-                    recursionMountOrUpdate(this)
-                    cb && cb()
-                })
-            }
-        })
-    }
-
-    /**
-     * 递归程序。 主要做两个事情
-     * 1. 构建出flushList， 包含所以需要更新的微信实例/数据
-     * 3. 构建出firstFlushList，包含此次setData之后，所有新产生的节点数组 firstFlushList
-     * @param flushList
-     * @param firstFlushList
-     */
-    updateWXInner(flushList, firstFlushList) {
-        let shouldTraversalChild = false
-        if (this.isPageComp) {
-            const dc = this.getDeepComp()
-            if (!dc || Object.keys(dc._r).length === 0) {
-                // 页面组件 render null
-                flushList.push({
-                    inst: this.getWxInst(),
-                    data: {
-                        _r: {}
-                    }
-                })
-                return
-            }
-
-
-            if (this.firstRender === FR_DONE && !this.shouldUpdate) {
-                return
-            }
-
-            if (this instanceof HocComponent) {
-                shouldTraversalChild = true
-            } else {
-                const cp = getChangePath(this._r, this._or)
-                // _or 不在有用
-                this._or = {}
-
-                if (Object.keys(cp).length === 0) {
-                    shouldTraversalChild = true
-                } else {
-                    const wxInst = this.getWxInst()
-                    flushList.push({
-                        inst: wxInst,
-                        data: cp
-                    })
-                    shouldTraversalChild = true
-                }
-            }
-        } else if (this.firstRender !== FR_DONE) {
-            if (this._myOutStyle === false) {
-                return
-            }
-
-            const dc = this.getDeepComp()
-            firstFlushList.push(dc)
-        } else if (this.shouldUpdate) {
-            if (this._myOutStyle === false) {
-                return
-            }
-
-            if (this instanceof HocComponent) {
-                shouldTraversalChild = true
-            } else  {
-                const cp = getChangePath(this._r, this._or)
-                // _or 不在有用
-                this._or = {}
-
-                if (Object.keys(cp).length === 0) {
-                    shouldTraversalChild = true
-                } else {
-                    const wxInst = this.getWxInst()
-                    if (wxInst) {
-                        flushList.push({
-                            inst: wxInst,
-                            data: cp
-                        })
-                        shouldTraversalChild = true
-                    } else {
-                        const top = this.topExistWx()
-                        firstFlushList.push(top)
-                    }
-                }
-            }
-        }
-
-        if (shouldTraversalChild) {
-            const children = this._c
-            for (let i = 0; i < children.length; i++) {
-                const child = children[i]
-                child.updateWXInner(flushList, firstFlushList)
-            }
-        }
-    }
 }
 
 export class CPTComponent extends BaseComponent {
@@ -363,156 +169,22 @@ export class Component extends BaseComponent {
         this.context = context
 
         this.updateQueue = []
-        this.updateQueueCB = []
     }
 
-    forceUpdate(cb) {
-        this.updateInner({}, cb, true)
+    forceUpdate(callback) {
+        performUpdater(this, {
+            tag: ForceUpdate,
+            callback,
+        })
     }
 
-    setState(newState, cb) {
-        this.updateInner(newState, cb, false)
-    }
+    setState(newState, callback) {
+        performUpdater(this, {
+            tag: UpdateState,
 
-    updateInner(newState, cb, isForce) {
-        // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
-        // TODO 是否可以在组件ready之后，在设置一次
-        if (this.firstRender === FR_PENDING) {
-            console.warn('组件未准备好调用setState，状态可能会丢失！')
-            return
-        }
-
-        // willMount之前的setState
-        if (!this.willMountDone) {
-            this.state = {
-                ...this.state,
-                ...newState,
-            }
-            return
-        }
-
-        if (reactUpdate.inRe()) {
-            this.updateQueue.push(newState)
-            if (cb) {
-                this.updateQueueCB.push(cb)
-            }
-            if (isForce) {
-                this.isForceUpdate = isForce
-            }
-            reactUpdate.addUpdateInst(this)
-            return
-        }
-
-        const nextState = {
-            ...this.state,
-            ...newState
-        }
-
-        let shouldUpdate
-        if (isForce) {
-            shouldUpdate = true
-        } else if (this.shouldComponentUpdate) {
-            shouldUpdate = this.shouldComponentUpdate(this.props, nextState)
-        } else {
-            shouldUpdate = true
-        }
-
-        shouldUpdate && this.componentWillUpdate && this.componentWillUpdate(this.props, nextState)
-        shouldUpdate && this.UNSAFE_componentWillUpdate && this.UNSAFE_componentWillUpdate(this.props, nextState)
-
-        this.state = nextState
-        this.shouldUpdate = shouldUpdate
-
-        if (!shouldUpdate) {
-            return // do nothing
-        }
-
-        const subVnode = this.render()
-        if (subVnode && subVnode.isReactElement) {
-            subVnode.isFirstEle = true
-        }
-
-        /// 重置实例字段：_or 旧的渲染数据， _r 渲染数据， _c 所以孩子实例 ， __eventHanderMap 方法回调map
-
-        this._or = this._r
-        this._r = {}
-        const oc = this._c
-        this._c = []
-        this.__eventHanderMap = {}
-
-
-        const parentContext = this._parentContext
-        const context = getCurrentContext(this, parentContext)
-
-        const oldChildren = []
-        render(subVnode, this, context, this._r, this._or, '_r', oldChildren)
-
-        getRealOc(oc, this._c, oldChildren)
-
-        invokeWillUnmount(oldChildren)
-
-        // firstRender既不是DONE，也不是PENDING，此时调用setState需要刷新_r数据
-        if (this.firstRender !== FR_DONE) {
-            return
-        }
-
-        this.flushDataToWx(subVnode, cb)
-    }
-
-    /**
-     * render过程结束之后，各组件渲染数据已经生成完毕，执行updateWX递归的把数据刷新到小程序。
-     * 此外：由于微信小程序自定义组件会生成一个节点，需要把内部最外层样式上报到这个节点
-     */
-    flushDataToWx(subVnode, finalCb) {
-        const oldOutStyle = this._myOutStyle
-        
-        if (this.isPageComp) {
-            this.updateWX(finalCb)
-            return
-        }
-
-        let newOutStyle = null
-        if (subVnode === null || subVnode === undefined || typeof subVnode === 'boolean') {
-            newOutStyle = false
-            this._myOutStyle = newOutStyle
-        } else {
-            const {diuu} = subVnode
-            const styleKey = `${diuu}style`
-            newOutStyle = this._r[styleKey]
-
-            this._myOutStyle = newOutStyle
-            this._r[styleKey] = DEFAULTCONTAINERSTYLE
-        }
-
-        // 如果setState之后 outStyle发生变化， 则需要上报到父（可能需要多次上报）
-        if (oldOutStyle !== newOutStyle) {
-
-            let p = this
-
-            /* eslint-disable-next-line */
-            while (true) {
-                const pp = p._p
-                p._myOutStyle = newOutStyle
-                if (pp.isPageComp || !p._isFirstEle || p._TWFBStylePath) {
-                    const stylePath = p._TWFBStylePath || `${p._keyPath}style`
-                    setDeepData(pp, newOutStyle, stylePath)
-
-                    const wxInst = pp.getWxInst()
-
-                    this.updateWX(finalCb, {
-                        inst: wxInst,
-                        data: {
-                            [stylePath]: newOutStyle
-                        }
-                    })
-
-                    return
-                }
-                p = p._p
-            }
-        } else {
-            this.updateWX(finalCb)
-        }
+            payload: newState,
+            callback: callback,
+        })
     }
 }
 

@@ -6,7 +6,7 @@
  *
  */
 
-import {render, createElement, HocComponent, unstable_batchedUpdates} from "./index"
+import {renderPage, createElement, HocComponent, unstable_batchedUpdates} from "./index"
 import geneUUID from "./geneUUID"
 import instanceManager from "./InstanceManager"
 import {FR_DONE, recursionUnmount, recursiveGetC, invokeWillUnmount} from './util'
@@ -58,7 +58,9 @@ export default function (CompMySelf, RNApp) {
             }
 
             const uuid = geneUUID()
-            render(
+            this.data.diuu = uuid
+
+            renderPage(
                 createElement(
                     CompMySelf,
                     {
@@ -66,27 +68,14 @@ export default function (CompMySelf, RNApp) {
                         diuu: uuid
                     },
                 ),
-                null,
-                RNApp.childContext,
-                null,
-                null,
-                null,
-                [],
+                this
             )
-
-            this.data.diuu = uuid
-            instanceManager.setWxCompInst(this.data.diuu, this)
-
-
-            const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-            // 在firstUpdate 接受到小程序的回调之前，如果组件调用setState 可能会丢失！
-            compInst.firstUpdateWX()
         }
 
         o.methods.onShow = function () {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
 
-            //如果组件还未初始化 didFocus方法，由firstUpdateUI负责
+            //TODO ??? 如果组件还未初始化 didFocus方法，由firstUpdateUI负责
             compInst.firstRender === FR_DONE && compInst.componentDidFocus && unstable_batchedUpdates(() => {
                 compInst.componentDidFocus()
             })

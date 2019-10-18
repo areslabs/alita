@@ -7,18 +7,18 @@
  */
  
 import createElement from './createElement'
-import render from './render'
+//import render from './render'
 import {PureComponent, Component, FuncComponent, HocComponent, RNBaseComponent} from './AllComponent'
 import WxNormalComp from './WxNormalComp'
 import tackleWithStyleObj from './tackleWithStyleObj'
 import styleType from './styleType'
 import instanceManager from './InstanceManager'
 import {getPropsMethod, getRootContext, rootUuid} from './util'
-import {unstable_batchedUpdates} from './unstable'
+import {unstable_batchedUpdates, renderPage} from './UpdateStrategy'
 
 
 export default {
-    render,
+    renderPage,
     Component,
     PureComponent,
     FuncComponent,
@@ -37,7 +37,7 @@ export default {
 }
 
 export {
-    render,
+    renderPage,
     Component,
     PureComponent,
     FuncComponent,
