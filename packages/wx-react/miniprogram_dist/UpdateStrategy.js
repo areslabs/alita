@@ -6,10 +6,10 @@
  *
  */
 
-import {invokeWillUnmount} from './util'
+import {getCurrentContext, invokeWillUnmount} from './util'
 import {mpRoot} from './constants'
 import render, {renderNextValidComps, oldChildren} from './render'
-import {firstEffect} from "./effect";
+import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
 
 let inRenderPhase = false
@@ -66,7 +66,8 @@ export function updateRoot() {
     invokeWillUnmount(oldChildren)
     oldChildren = []
 
-    commitWork(firstEffect)
+    const {firstEffect, lastEffect}  = resetEffect()
+    commitWork(firstEffect, lastEffect)
 }
 
 export function renderPage(pageVode, mpPageInst) {
@@ -83,7 +84,29 @@ export function renderPage(pageVode, mpPageInst) {
 
     instanceManager.setWxCompInst(mpPageInst.data.diuu, mpPageInst)
 
-    commitWork(firstEffect)
+    const {firstEffect, lastEffect}  = resetEffect()
+    commitWork(firstEffect, lastEffect)
+}
+
+export function renderApp(appClass) {
+    const fakeParent = {}
+    render(
+        h(appClass, {
+            diuu: "fakeUUID"
+        }),
+        fakeParent,
+        {},
+        null,
+        null,
+        null,
+    )
+
+    // 处理Provider 提供context的情况
+    const {lastEffect}  = resetEffect()
+    const lastInst = lastEffect.inst
+
+    const childContext = getCurrentContext(lastInst, lastInst._parentContext)
+    Object.assign(mpRoot.childContext, childContext)
 }
 
 /**
@@ -92,7 +115,9 @@ export function renderPage(pageVode, mpPageInst) {
  * 注意：不能直接使用 effect模块的firstEffect字段，因为在小程序渲染回调回来之前，可能发生其他的render，修改了effect.js模块的firstEffect
  *
  * @param firstEffect
+ * @param lastEffect
  */
-function commitWork(firstEffect) {
+function commitWork(firstEffect, lastEffect) {
     console.log('TODO commitWork by firstEffect:', firstEffect)
+    console.log('TODO commitWork by lastEffect:',  lastEffect)
 }

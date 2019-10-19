@@ -310,24 +310,7 @@ export default function (ast, filepath) {
                 // be lazy
                 path.node.body.push(
                     t.expressionStatement(
-                        t.identifier(`React.render(
-    h(
-        RNAppClass,
-        {
-          diuu: React.rootUuid
-        }
-    ),
-    null,
-    {},
-    null,
-    null,
-    null,
-    []
-)
-const rootContext = React.getRootContext()
-export default {
-    childContext: rootContext
-}`)
+                        t.identifier(`React.renderApp(RNAppClass)`)
                     )
                 )
 
