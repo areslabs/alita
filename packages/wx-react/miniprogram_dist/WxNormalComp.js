@@ -9,7 +9,7 @@
 import {renderPage, createElement, HocComponent, unstable_batchedUpdates} from "./index"
 import geneUUID from "./geneUUID"
 import instanceManager from "./InstanceManager"
-import {FR_DONE, recursionUnmount, recursiveGetC, invokeWillUnmount} from './util'
+import {FR_DONE, cleanPageComp} from './util'
 
 
 export default function (CompMySelf, RNApp) {
@@ -90,10 +90,7 @@ export default function (CompMySelf, RNApp) {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
             compInst.componentWillUnfocus && compInst.componentWillUnfocus()
 
-            const allChildren = []
-            recursiveGetC(compInst, allChildren)
-            allChildren.push(compInst)
-            invokeWillUnmount(allChildren)
+            cleanPageComp(compInst)
         }
     }
     return o

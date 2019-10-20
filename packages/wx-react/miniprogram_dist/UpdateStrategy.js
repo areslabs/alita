@@ -128,7 +128,7 @@ function commitWork(firstEffect, lastEffect) {
         return
     }
 
-    const topWx = getTopWx()
+    const currentPage = getMpCurrentPage()
 
     /**
      * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。自小程序2.4.0版本提供groupSetData之后，小程序提供了
@@ -140,10 +140,19 @@ function commitWork(firstEffect, lastEffect) {
      *    })
      * 也就是说在更新的时候，我们利用groupSetData 可以做到本质上只交互一次。
      */
-    topWx.groupSetData(() => {
+    currentPage.groupSetData(() => {
         let effect = firstEffect
         while (effect) {
             const {tag, inst} = effect
+
+            // 页面组件需要特殊处理
+            if (inst.isPageComp && inst instanceof HocComponent && Object.keys(inst._r).length === 0) {
+                // 这里不直接使用currentPage 的原因是 有可能在currentPage 是设置的是其他页面的组件
+                const thisPage = inst.getWxInst()
+                thisPage.setData({_r: {}})
+                effect = effect.nextEffect
+                continue
+            }
 
             /**
              * 1. HOC节点不对应小程序节点，不需要传递数据
@@ -180,7 +189,7 @@ function commitWork(firstEffect, lastEffect) {
             effect = effect.nextEffect
         }
 
-        topWx.setData({}, () => {
+        currentPage.setData({}, () => {
             unstable_batchedUpdates(() => {
                 commitLifeCycles(lastEffect)
             })
@@ -188,7 +197,7 @@ function commitWork(firstEffect, lastEffect) {
     })
 }
 
-function getTopWx() {
+function getMpCurrentPage() {
     const pages = getCurrentPages()
     return pages[pages.length - 1]
 }

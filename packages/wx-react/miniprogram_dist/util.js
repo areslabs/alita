@@ -7,6 +7,7 @@
  */
  
 import instanceManager from "./InstanceManager";
+import {mpRoot} from "./constants";
 
 export function getPropsMethod(wxInst, key) {
     const compInst = instanceManager.getCompInstByUUID(wxInst.data.diuu);
@@ -118,7 +119,7 @@ export function getRealOc(oc, nc, r) {
     }
 }
 
-export function recursiveGetC(c, r) {
+function recursiveGetC(c, r) {
     for (let i = 0; i < c._c.length; i ++ ) {
         const comp = c._c[i]
         recursiveGetC(comp, r)
@@ -142,5 +143,13 @@ export function invokeWillUnmount(oldChildren) {
 
         instanceManager.removeCompInst(item.__diuu__)
     }
+}
+
+
+export function cleanPageComp(pageComp) {
+    mpRoot._c = mpRoot._c.filter(child => child !== pageComp)
+    const allChildren = []
+    recursiveGetC(pageComp, allChildren)
+    invokeWillUnmount(allChildren)
 }
 
