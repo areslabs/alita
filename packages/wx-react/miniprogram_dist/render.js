@@ -61,6 +61,8 @@ export function renderNextValidComps(inst) {
         const subVnode = inst.render()
 
         if (subVnode && subVnode.isReactElement) {
+            subVnode.isFirstEle = true
+
             inst._styleKey = `${subVnode.diuu}style`
         } else {
             inst._styleKey = undefined

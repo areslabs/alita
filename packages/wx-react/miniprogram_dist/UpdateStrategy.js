@@ -121,5 +121,10 @@ export function renderApp(appClass) {
  * @param lastEffect
  */
 function commitWork(firstEffect, lastEffect) {
+    if (!firstEffect) {
+        // 没有产生任何更新
+        return
+    }
+
     console.log('TODO commitWork by firstEffect:', firstEffect, " lastEffect:", lastEffect)
 }
