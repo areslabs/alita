@@ -8,10 +8,11 @@
 
 import {getCurrentContext, invokeWillUnmount} from './util'
 import createElement from './createElement'
-import {mpRoot} from './constants'
+import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT} from './constants'
 import render, {renderNextValidComps} from './render'
 import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
+import getChangePath from './getChangePath'
 
 let inRenderPhase = false
 let shouldMerge = false
@@ -126,5 +127,71 @@ function commitWork(firstEffect, lastEffect) {
         return
     }
 
-    console.log('TODO commitWork by firstEffect:', firstEffect, " lastEffect:", lastEffect)
+    const topWx = getTopWx(firstEffect)
+
+    topWx.groupSetData(() => {
+        let effect = firstEffect
+        while (effect) {
+            const {tag, inst} = effect
+            if (tag === STYLE_EFFECT) {
+                const wxInst = inst.getWxInst()
+                wxInst.setData(effect.data)
+            }
+
+            if (tag === INIT_EFFECT) {
+                const wxInst = inst.getWxInst()
+                wxInst.setData({
+                    _r: inst._r
+                })
+            }
+
+            if (tag === UPDATE_EFFECT) {
+                const wxInst = inst.getWxInst()
+                const cp = getChangePath(inst._r, inst._or)
+                // _or 不再有用
+                inst._or = null
+                wxInst.setData(cp)
+            }
+
+            effect = effect.nextEffect
+        }
+
+        topWx.setData({}, () => {
+            unstable_batchedUpdates(commitLifeCycles)
+        })
+    })
+}
+
+function getTopWx(firstEffect) {
+    let effect = firstEffect
+
+    while (effect.tag === STYLE_EFFECT) {
+        effect = effect.nextEffect
+    }
+    const topComp = effect.inst
+    return topComp.getWxInst()
+}
+
+
+function commitLifeCycles(lastEffect) {
+    let effect = lastEffect
+    while (effect) {
+        const {tag, inst} = effect
+
+        // 如果 tag === STYLE_EFFECT , do nothing
+
+        if (tag === INIT_EFFECT) {
+            inst.componentDidMount && inst.componentDidMount()
+        }
+
+        if (tag === UPDATE_EFFECT) {
+            inst.componentDidUpdate && inst.componentDidUpdate()
+
+            effect.callbacks.forEach(cb => {
+                cb && cb()
+            })
+        }
+
+        effect = effect.preEffect
+    }
 }
