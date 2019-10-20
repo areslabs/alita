@@ -21,6 +21,7 @@ export const ForceUpdate = 2;
 
 // mpRoot
 export const mpRoot = {
-    childContext: {}
+    childContext: {},
+    _c: []
 }
 

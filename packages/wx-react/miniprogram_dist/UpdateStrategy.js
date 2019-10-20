@@ -7,14 +7,16 @@
  */
 
 import {getCurrentContext, invokeWillUnmount} from './util'
+import createElement from './createElement'
 import {mpRoot} from './constants'
-import render, {renderNextValidComps, oldChildren} from './render'
+import render, {renderNextValidComps} from './render'
 import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
 
 let inRenderPhase = false
 let shouldMerge = false
 
+export let oldChildren = []
 
 export function performUpdater(inst, updater) {
     inst.updateQueue.push(updater)
@@ -42,7 +44,7 @@ function setUpdateTagToRoot(inst) {
     inst.didSelfUpdate = true
 
     let p = inst._p
-    while(p !== mpRoot && !p.didChildUpdate) {
+    while(p && !p.didChildUpdate) {
         p.didChildUpdate = true
         p = p._p
     }
@@ -88,15 +90,15 @@ export function renderPage(pageVode, mpPageInst) {
     commitWork(firstEffect, lastEffect)
 }
 
+// render 一次入口路由组件，获取childContext等
 export function renderApp(appClass) {
-    const fakeParent = {}
     render(
-        h(appClass, {
+        createElement(appClass, {
             diuu: "fakeUUID"
         }),
-        fakeParent,
+        mpRoot,
         {},
-        null,
+        {},
         null,
         null,
     )
@@ -107,6 +109,7 @@ export function renderApp(appClass) {
 
     const childContext = getCurrentContext(lastInst, lastInst._parentContext)
     Object.assign(mpRoot.childContext, childContext)
+    mpRoot._c = []
 }
 
 /**
@@ -118,6 +121,5 @@ export function renderApp(appClass) {
  * @param lastEffect
  */
 function commitWork(firstEffect, lastEffect) {
-    console.log('TODO commitWork by firstEffect:', firstEffect)
-    console.log('TODO commitWork by lastEffect:',  lastEffect)
+    console.log('TODO commitWork by firstEffect:', firstEffect, " lastEffect:", lastEffect)
 }

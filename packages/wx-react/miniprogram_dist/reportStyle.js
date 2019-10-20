@@ -21,7 +21,7 @@
  */
 
 import {DEFAULTCONTAINERSTYLE, setDeepData} from "./util";
-import {STYLE_EFFECT} from "./constants";
+import {STYLE_EFFECT, mpRoot} from "./constants";
 import {unshiftEffect} from './effect'
 
 /**
@@ -29,10 +29,22 @@ import {unshiftEffect} from './effect'
  * @param inst
  */
 export function rnvcReportExistStyle(inst) {
-    if (inst.isPageComp) {
+    if (inst === mpRoot || inst.isPageComp) {
         // 页面组件不需要上报
+        if (inst.styleEffect) {
+            unshiftEffect({
+                inst,
+
+                tag: STYLE_EFFECT,
+                data: inst.styleEffect
+            })
+
+            inst.styleEffect = undefined
+        }
         return
     }
+
+
 
     const styleKey = inst._styleKey
     const styleValue = inst._r[styleKey]
@@ -69,7 +81,7 @@ export function rnvcReportExistStyle(inst) {
  * @param inst
  */
 export function rnvcReportStyle(inst) {
-    if (inst.isPageComp) {
+    if (inst === mpRoot || inst.isPageComp) {
         // 页面组件不需要上报
         return
     }
@@ -98,8 +110,16 @@ export function rnvcReportStyle(inst) {
  * @param inst
  */
 export function rReportExistStyle(inst) {
-    if (inst.isPageComp) {
-        // 页面组件不需要上报
+    if (inst === mpRoot || inst.isPageComp) {
+        if (inst.styleEffect) {
+            unshiftEffect({
+                inst,
+
+                tag: STYLE_EFFECT,
+                data: inst.styleEffect
+            })
+            inst.styleEffect = undefined
+        }
         return
     }
 
@@ -136,7 +156,7 @@ export function rReportExistStyle(inst) {
  * @param inst
  */
 export function rReportStyle(inst) {
-    if (inst.isPageComp) {
+    if (inst === mpRoot || inst.isPageComp) {
         // 页面组件不需要上报
         return
     }

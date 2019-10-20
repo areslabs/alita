@@ -16,9 +16,7 @@ import {UPDATE_EFFECT, INIT_EFFECT, UpdateState, ForceUpdate, mpRoot} from './co
 import {rnvcReportExistStyle, rnvcReportStyle, rReportExistStyle, rReportStyle} from './reportStyle'
 import {enqueueEffect} from './effect'
 
-import {unstable_batchedUpdates} from './UpdateStrategy'
-
-export let oldChildren = []
+import {unstable_batchedUpdates, oldChildren} from './UpdateStrategy'
 
 export function renderNextValidComps(inst) {
     if (inst.didSelfUpdate) {
@@ -32,7 +30,6 @@ export function renderNextValidComps(inst) {
         shouldUpdate && inst.componentWillUpdate && inst.componentWillUpdate(inst.props, nextState)
         shouldUpdate && inst.UNSAFE_componentWillUpdate && inst.UNSAFE_componentWillUpdate(inst.props, nextState)
 
-
         inst.state = nextState
 
         if (!shouldUpdate) {
@@ -45,6 +42,8 @@ export function renderNextValidComps(inst) {
                 rnvcReportExistStyle(inst)
             }
 
+            inst.didChildUpdate = false
+            inst.didSelfUpdate = false
             return
         }
 
@@ -73,6 +72,9 @@ export function renderNextValidComps(inst) {
         getRealOc(oc, inst._c, oldChildren)
 
         rnvcReportStyle(inst)
+
+        inst.didChildUpdate = false
+        inst.didSelfUpdate = false
     } else if (inst.didChildUpdate) {
         for(let i = 0; i < inst._c.length; i ++ ) {
             const child = inst._c[i]
@@ -80,6 +82,9 @@ export function renderNextValidComps(inst) {
         }
 
         rnvcReportExistStyle(inst)
+
+        inst.didChildUpdate = false
+        inst.didSelfUpdate = false
     }
 }
 
@@ -579,6 +584,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     }
 
                     rReportExistStyle(inst)
+                    inst.didChildUpdate = false
+                    inst.didSelfUpdate = false
                     return
                 }
 
@@ -608,15 +615,15 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.isPageComp = true
                 } else {
                     instUUID = geneUUID()
+
+                    data[diuuKey] = instUUID
+                    inst.__diuu__ = instUUID
+                    inst.__diuuKey = diuuKey
+
+                    // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
+                    inst._keyPath = `${dataPath}.${vnodeDiuu}`
                 }
 
-
-                data[diuuKey] = instUUID
-                inst.__diuu__ = instUUID
-                inst.__diuuKey = diuuKey
-
-                // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
-                inst._keyPath = `${dataPath}.${vnodeDiuu}`
 
                 parentInst._c.push(inst)
                 inst._p = parentInst // parent
@@ -673,6 +680,9 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             }
 
             rReportStyle(inst)
+
+            inst.didChildUpdate = false
+            inst.didSelfUpdate = false
         }
     } catch (e) {
         console.error(e)
@@ -827,7 +837,6 @@ function activeOpacityHandler(v) {
 
 
 function processUpdateQueue(inst) {
-
     if (!inst.updateQueue || inst.updateQueue.length === 0) {
         return {
             hasForceUpdate: false,
@@ -840,7 +849,7 @@ function processUpdateQueue(inst) {
     const callbacks = []
     const preState = Object.assign({}, inst.state)
     let hasStateChange = false
-    for(let i = 0; i < inst.updateQueue; i ++ ) {
+    for(let i = 0; i < inst.updateQueue.length; i ++ ) {
         const update = inst.updateQueue[i]
 
         if (update.tag === UpdateState) {
