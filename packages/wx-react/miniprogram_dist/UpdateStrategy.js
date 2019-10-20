@@ -128,7 +128,7 @@ function commitWork(firstEffect, lastEffect) {
         return
     }
 
-    const topWx = getTopWx(firstEffect)
+    const topWx = getTopWx()
 
     /**
      * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。自小程序2.4.0版本提供groupSetData之后，小程序提供了
@@ -181,19 +181,16 @@ function commitWork(firstEffect, lastEffect) {
         }
 
         topWx.setData({}, () => {
-            unstable_batchedUpdates(commitLifeCycles)
+            unstable_batchedUpdates(() => {
+                commitLifeCycles(lastEffect)
+            })
         })
     })
 }
 
-function getTopWx(firstEffect) {
-    let effect = firstEffect
-
-    while (effect.tag === STYLE_EFFECT) {
-        effect = effect.nextEffect
-    }
-    const topComp = effect.inst
-    return topComp.getWxInst()
+function getTopWx() {
+    const pages = getCurrentPages()
+    return pages[pages.length - 1]
 }
 
 
@@ -211,9 +208,11 @@ function commitLifeCycles(lastEffect) {
         if (tag === UPDATE_EFFECT) {
             inst.componentDidUpdate && inst.componentDidUpdate()
 
-            effect.callbacks.forEach(cb => {
-                cb && cb()
-            })
+            if (effect.callbacks) {
+                effect.callbacks.forEach(cb => {
+                    cb && cb()
+                })
+            }
         }
 
         effect = effect.preEffect
