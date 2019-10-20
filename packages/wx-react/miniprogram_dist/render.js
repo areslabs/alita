@@ -617,14 +617,13 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     inst.isPageComp = true
                 } else {
                     instUUID = geneUUID()
-
                     data[diuuKey] = instUUID
-                    inst.__diuu__ = instUUID
-                    inst.__diuuKey = diuuKey
-
                     // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
                     inst._keyPath = `${dataPath}.${vnodeDiuu}`
                 }
+
+                inst.__diuu__ = instUUID
+                inst.__diuuKey = diuuKey
 
 
                 parentInst._c.push(inst)

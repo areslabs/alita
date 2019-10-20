@@ -13,6 +13,7 @@ import render, {renderNextValidComps} from './render'
 import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
 import getChangePath from './getChangePath'
+import {HocComponent} from './AllComponent'
 
 let inRenderPhase = false
 let shouldMerge = false
@@ -129,10 +130,30 @@ function commitWork(firstEffect, lastEffect) {
 
     const topWx = getTopWx(firstEffect)
 
+    /**
+     * 出于对性能的考虑，我们希望react层和小程序层数据交互次数能够近可能的少。自小程序2.4.0版本提供groupSetData之后，小程序提供了
+     * 批量设置数据的功能。现在我们可以通过类似如下的代码来批量的设置小程序数据
+     *    father.groupSetData(() => {
+     *          son1.setData(uiDes1)
+     *          son2.setData(uiDes2)
+     *          son3.setData(uiDes3)
+     *    })
+     * 也就是说在更新的时候，我们利用groupSetData 可以做到本质上只交互一次。
+     */
     topWx.groupSetData(() => {
         let effect = firstEffect
         while (effect) {
             const {tag, inst} = effect
+
+            /**
+             * 1. HOC节点不对应小程序节点，不需要传递数据
+             * 2. myOutStyle 为false的节点，不产生小程序节点，不需要传递数据
+             */
+            if (inst instanceof HocComponent || inst._myOutStyle === false) {
+                effect = effect.nextEffect
+                continue
+            }
+
             if (tag === STYLE_EFFECT) {
                 const wxInst = inst.getWxInst()
                 wxInst.setData(effect.data)
@@ -150,7 +171,10 @@ function commitWork(firstEffect, lastEffect) {
                 const cp = getChangePath(inst._r, inst._or)
                 // _or 不再有用
                 inst._or = null
-                wxInst.setData(cp)
+
+                if (Object.keys(cp).length !== 0) {
+                    wxInst.setData(cp)
+                }
             }
 
             effect = effect.nextEffect
