@@ -75,8 +75,12 @@ export default function (CompMySelf, RNApp) {
         o.methods.onShow = function () {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
 
-            //TODO ??? 如果组件还未初始化 didFocus方法，由firstUpdateUI负责
-            compInst.firstRender === FR_DONE && compInst.componentDidFocus && unstable_batchedUpdates(() => {
+            //如果组件还未初始化 didFocus方法，由commitLifeCycles执行，保证执行顺序为： didMount --> didFocus
+            if (compInst.firstInvokeFocus) {
+                return
+            }
+
+            compInst.componentDidFocus && unstable_batchedUpdates(() => {
                 compInst.componentDidFocus()
             })
         }

@@ -11,6 +11,7 @@
 export const UPDATE_EFFECT = 0
 export const INIT_EFFECT = 1
 export const STYLE_EFFECT = 2
+export const INIT_FOCUS_EFFECT = 3
 
 
 // update type

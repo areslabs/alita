@@ -8,7 +8,7 @@
 
 import {getCurrentContext, invokeWillUnmount} from './util'
 import createElement from './createElement'
-import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT} from './constants'
+import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT, INIT_FOCUS_EFFECT} from './constants'
 import render, {renderNextValidComps} from './render'
 import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
@@ -168,7 +168,7 @@ function commitWork(firstEffect, lastEffect) {
                 wxInst.setData(effect.data)
             }
 
-            if (tag === INIT_EFFECT) {
+            if (tag === INIT_EFFECT || tag === INIT_FOCUS_EFFECT) {
                 const wxInst = inst.getWxInst()
                 wxInst.setData({
                     _r: inst._r
@@ -212,6 +212,12 @@ function commitLifeCycles(lastEffect) {
 
         if (tag === INIT_EFFECT) {
             inst.componentDidMount && inst.componentDidMount()
+        }
+
+        if (tag === INIT_FOCUS_EFFECT) {
+            inst.componentDidMount && inst.componentDidMount()
+            inst.componentDidFocus()
+            inst.firstInvokeFocus = false
         }
 
         if (tag === UPDATE_EFFECT) {

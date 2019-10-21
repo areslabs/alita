@@ -12,7 +12,7 @@ import tackleWithStyleObj from './tackleWithStyleObj'
 import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, ReactWxEventMap, getRealOc} from './util'
 import { CPTComponent, FuncComponent, RNBaseComponent, HocComponent } from './AllComponent'
 
-import {UPDATE_EFFECT, INIT_EFFECT, UpdateState, ForceUpdate, mpRoot} from './constants'
+import {UPDATE_EFFECT, INIT_EFFECT, UpdateState, ForceUpdate, mpRoot, INIT_FOCUS_EFFECT} from './constants'
 import {rnvcReportExistStyle, rnvcReportStyle, rReportExistStyle, rReportStyle} from './reportStyle'
 import {enqueueEffect} from './effect'
 
@@ -610,11 +610,17 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 inst.componentWillMount && inst.componentWillMount()
                 inst.UNSAFE_componentWillMount && inst.UNSAFE_componentWillMount()
 
+                let effectTag = INIT_EFFECT
                 // 页面组件 是由页面 onLoad 方法计算的
                 let instUUID = null
                 if (parentInst === mpRoot) {
                     instUUID = vnodeDiuu
                     inst.isPageComp = true
+
+                    if (inst.componentDidFocus) {
+                        effectTag = INIT_FOCUS_EFFECT
+                        inst.firstInvokeFocus = true
+                    }
                 } else {
                     instUUID = geneUUID()
                     data[diuuKey] = instUUID
@@ -640,7 +646,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 instanceManager.setCompInst(instUUID, inst)
 
                 enqueueEffect({
-                    tag: INIT_EFFECT,
+                    tag: effectTag,
                     inst,
                 })
             }
