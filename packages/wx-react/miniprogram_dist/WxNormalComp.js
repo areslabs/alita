@@ -6,10 +6,9 @@
  *
  */
 
-import {renderPage, createElement, HocComponent, unstable_batchedUpdates} from "./index"
+import {renderPage, createElement, HocComponent, unstable_batchedUpdates, instanceManager} from "./index"
 import geneUUID from "./geneUUID"
-import instanceManager from "./InstanceManager"
-import {FR_DONE, cleanPageComp} from './util'
+import {cleanPageComp} from './util'
 
 
 export default function (CompMySelf, RNApp) {

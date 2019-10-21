@@ -117,6 +117,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             return
         }
 
+        // isFirstEle 表示这个 vnode是否是render的第一个节点，对于第一个节点由于样式需要上报给外层，在计算样式的时候需要特殊处理
+        // TODO TWFBStylePath 作用同 isFirstEle， 考虑将其 移除到自定义实现， 它不应该侵犯render函数
         const {animation, ref, nodeName, children, props, tempVnode, CPTVnode, tempName, datakey, diuu: vnodeDiuu, isFirstEle} = vnode
 
         if (typeof ref === "string") {
@@ -336,7 +338,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
 
                 diuu = geneUUID()
                 inst.__diuu__ = diuu
-                inst.__diuuKey = diuuKey
 
                 parentInst._c.push(inst)
                 inst._p = parentInst
@@ -399,7 +400,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                     const instUUID = geneUUID()
                     data[diuuKey] = instUUID
                     inst.__diuu__ = instUUID
-                    inst.__diuuKey = diuuKey
 
                     parentInst._c.push(inst)
                     inst._p = parentInst // parent
@@ -629,7 +629,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 }
 
                 inst.__diuu__ = instUUID
-                inst.__diuuKey = diuuKey
 
 
                 parentInst._c.push(inst)
@@ -655,13 +654,6 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             const oc = inst._c
             resetInstProps(inst)
 
-
-            // _TWFBStylePath, _isFirstEle两个字段 FuncComp 不需要设置，因为他们只有在setState的起作用
-            inst._isFirstEle = isFirstEle
-            if (vnode.TWFBStylePath) {
-                inst._TWFBStylePath = vnode.TWFBStylePath
-            }
-
             const subVnode = inst.render()
             if (subVnode && subVnode.isReactElement) {
                 subVnode.isFirstEle = true
@@ -671,6 +663,7 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
                 inst._styleKey = undefined
             }
 
+            // 记录一下_parentContext，当组件setState的时候会使用到
             inst._parentContext = parentContext
             const context = getCurrentContext(inst, parentContext)
             render(subVnode, inst, context, inst._r, inst._or, '_r')

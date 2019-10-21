@@ -94,9 +94,6 @@ export function setDeepData(inst, v, path) {
 
 export const HOCKEY = "HOCKEY"
 
-export const FR_PENDING = "PENDING"
-export const FR_DONE = "DONE"
-
 export const ReactWxEventMap = {
     'onPress': 'tap',
     'onLongPress': 'longpress',
