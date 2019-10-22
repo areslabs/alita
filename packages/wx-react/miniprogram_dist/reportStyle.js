@@ -54,10 +54,10 @@ export function rnvcReportExistStyle(inst) {
 
         if (styleValue !== inst._myOutStyle) {
             inst._myOutStyle = styleValue
-            setStyleData(inst._p, styleValue, inst._keyPath)
+            setDeepData(inst._p, styleValue, inst._outStyleKey)
 
             const styleEffect = (inst._p.styleEffect = inst._p.styleEffect || {})
-            styleEffect[`${inst._keyPath}style`] = styleValue
+            styleEffect[inst._outStyleKey] = styleValue
         }
 
         // 如果styleValue !== DEFAULTCONTAINERSTYLE 说明此组件是连锁上报的中间组件，不需要更新操作
@@ -97,15 +97,15 @@ export function rnvcReportStyle(inst) {
 
     if (styleValue !== inst._myOutStyle) {
         inst._myOutStyle = styleValue
-        setStyleData(inst._p, styleValue, inst._keyPath)
+        setDeepData(inst._p, styleValue, inst._outStyleKey)
 
         const styleEffect = (inst._p.styleEffect = inst._p.styleEffect || {})
-        styleEffect[`${inst._keyPath}style`] = styleValue
+        styleEffect[inst._outStyleKey] = styleValue
     }
 }
 
 /**
- * render过程的节点，其父的_r 字段 已经清空，所以不管什么情况，都需要setStyleData
+ * render过程的节点，其父的_r 字段 已经清空，所以不管什么情况，都需要setDeepData
  *
  * @param inst
  */
@@ -137,7 +137,7 @@ export function rReportExistStyle(inst) {
         inst._myOutStyle = false
     }
 
-    setStyleData(inst._p, inst._myOutStyle, inst._keyPath)
+    setDeepData(inst._p, inst._myOutStyle, inst._outStyleKey)
 
 
     if (inst.styleEffect) {
@@ -152,7 +152,7 @@ export function rReportExistStyle(inst) {
 }
 
 /**
- * render过程的节点，其父的_r 字段 已经清空，所以不管什么情况，都需要setStyleData
+ * render过程的节点，其父的_r 字段 已经清空，所以不管什么情况，都需要setDeepData
  * @param inst
  */
 export function rReportStyle(inst) {
@@ -168,11 +168,7 @@ export function rReportStyle(inst) {
     } else {
         inst._myOutStyle = false
     }
-
-    setStyleData(inst._p, inst._myOutStyle, inst._keyPath)
+    
+    setDeepData(inst._p, inst._myOutStyle, inst._outStyleKey)
 }
 
-
-function setStyleData(inst, v, dp) {
-    setDeepData(inst, v, `${dp}style`)
-}

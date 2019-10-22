@@ -368,8 +368,6 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
         } else {
             instUUID = geneUUID()
             data[diuuKey] = instUUID
-            // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
-            inst._keyPath = `${dataPath}.${vnodeDiuu}`
         }
 
         inst.__diuu__ = instUUID
@@ -405,6 +403,8 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
     } else {
         inst._styleKey = undefined
     }
+    // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
+    inst._outStyleKey = `${dataPath}.${vnodeDiuu}style`
 
     const context = getCurrentContext(inst, parentContext)
     render(subVnode, inst, context, inst._r, inst._or, '_r')
@@ -450,8 +450,6 @@ function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dat
         diuu = geneUUID()
         inst.__diuu__ = diuu
 
-        inst._keyPath = `${dataPath}.${vnodeDiuu}`
-
         parentInst._c.push(inst)
         inst._p = parentInst
 
@@ -475,6 +473,8 @@ function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dat
     } else {
         inst._styleKey = undefined
     }
+    // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
+    inst._outStyleKey = `${dataPath}.${vnodeDiuu}style`
 
     render(subVnode, inst, parentContext, inst._r, inst._or, '_r')
 
@@ -655,8 +655,6 @@ function updateClassComponent(vnode, parentInst, parentContext, data, oldData, d
         } else {
             instUUID = geneUUID()
             data[diuuKey] = instUUID
-            // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
-            inst._keyPath = `${dataPath}.${vnodeDiuu}`
         }
 
         inst.__diuu__ = instUUID
@@ -693,7 +691,8 @@ function updateClassComponent(vnode, parentInst, parentContext, data, oldData, d
     } else {
         inst._styleKey = undefined
     }
-
+    // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
+    inst._outStyleKey = `${dataPath}.${vnodeDiuu}style`
     // 记录一下_parentContext，当组件setState的时候会使用到
     inst._parentContext = parentContext
     const context = getCurrentContext(inst, parentContext)
