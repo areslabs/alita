@@ -6,7 +6,7 @@
  *
  */
  
-import {parseElement, flattenStyle} from '@areslabs/wx-react/tackleWithStyleObj'
+import {parseElement, flattenStyle} from '@areslabs/wx-react'
 
 export default {
     create(obj) {

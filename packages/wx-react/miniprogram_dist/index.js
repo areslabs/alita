@@ -9,7 +9,7 @@
 import createElement from './createElement'
 import {PureComponent, Component, FuncComponent, HocComponent, RNBaseComponent} from './AllComponent'
 import WxNormalComp from './WxNormalComp'
-import tackleWithStyleObj from './tackleWithStyleObj'
+import tackleWithStyleObj, {parseElement, flattenStyle} from './tackleWithStyleObj'
 import styleType from './styleType'
 import instanceManager from './InstanceManager'
 import {getPropsMethod} from './util'
@@ -33,6 +33,8 @@ export default {
     WxNormalComp,
     RNBaseComponent,
     tackleWithStyleObj,
+    parseElement,
+    flattenStyle,
     styleType,
     h: createElement,
     instanceManager,
@@ -51,6 +53,8 @@ export {
     WxNormalComp,
     RNBaseComponent,
     tackleWithStyleObj,
+    parseElement,
+    flattenStyle,
     styleType,
     instanceManager,
     getPropsMethod,
