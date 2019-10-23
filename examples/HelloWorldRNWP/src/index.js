@@ -41,13 +41,7 @@ const RNAppClass = (_temp = _class = class App extends PureComponent {
   test: PropTypes.string,
   store: PropTypes.object
 }, _temp);
-React.render(h(RNAppClass, {
-  diuu: React.rootUuid
-}), null, {}, null, null, null, []);
-const rootContext = React.getRootContext();
-export default {
-  childContext: rootContext
-};
+React.renderApp(RNAppClass);
 wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "HelloWorldRNA": "/src/a/index",
   "HelloWorldRNC": "/src/c/index",

@@ -12,13 +12,7 @@ const RNAppClass = class App extends Component {
   }
 
 };
-React.render(h(RNAppClass, {
-  diuu: React.rootUuid
-}), null, {}, null, null, null, []);
-const rootContext = React.getRootContext();
-export default {
-  childContext: rootContext
-};
+React.renderApp(RNAppClass);
 wx._historyConfig = Object.assign({}, wx._historyConfig || {}, {}, {
   "ReactReposlist": "/src/components/list/index",
   "ReactReposdetail": "/src/components/detail/index"
