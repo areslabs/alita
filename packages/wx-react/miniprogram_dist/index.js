@@ -17,7 +17,14 @@ import {getPropsMethod, getRootContext, rootUuid} from './util'
 import {unstable_batchedUpdates, renderPage, renderApp} from './UpdateStrategy'
 
 
+const deprecatedInfo = "ERROR：请更新Alita，并重新转化!!\n\t更新：sudo npm install -g @areslabs/alita\n\t转化：alita -i RN源码目录 -o 输出小程序目录 "
+
+function deprecated() {
+    console.error(deprecatedInfo)
+}
+
 export default {
+    render: deprecated,
     renderPage,
     Component,
     PureComponent,
@@ -54,3 +61,4 @@ export {
     renderApp
 }
 export const h = createElement
+export const render = deprecated
