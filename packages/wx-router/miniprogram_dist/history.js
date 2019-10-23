@@ -6,7 +6,7 @@
  *
  */
  
-import instanceManager from "@areslabs/wx-react/InstanceManager";
+import { instanceManager } from "@areslabs/wx-react";
 
 /* eslint-disable-next-line */
 export default history = {
