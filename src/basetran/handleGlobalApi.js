@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+import npath from 'path'
+import fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {globalApiList} from "../constants";
-import {RNWXLIBMaps} from '../util/util'
+import {RNWXLIBMaps, getRootPathPrefix} from '../util/util'
 
 /**
  * 1. 处理全局函数的导入， 在RN里 fetch， alert是不需要导入的
@@ -47,7 +48,7 @@ export default function (ast, info) {
                 }
 
                 if(isAsync) {
-                    body.unshift(asyncRegeneratorRuntimeDec())
+                    body.unshift(asyncRegeneratorRuntimeDec(info.filepath))
                 }
             }
         }
@@ -63,11 +64,18 @@ function rnGlobalDec(info, usedApiList) {
     )
 }
 
-function asyncRegeneratorRuntimeDec() {
+function asyncRegeneratorRuntimeDec(filepath) {
+    const rrPath = getRootPathPrefix(filepath) + "/rn-polyfill/" + "regeneratorRuntime"
+
+    const rrFilePath = npath.resolve(global.execArgs.OUT_DIR, "rn-polyfill", "regeneratorRuntime.js")
+    if (!fse.existsSync(rrFilePath)) {
+        fse.copySync(npath.resolve(__dirname, '..', '..', 'rn-polyfill', "regeneratorRuntime.js"), rrFilePath)
+    }
+
     return t.importDeclaration(
         [
             t.importDefaultSpecifier(t.identifier('regeneratorRuntime'))
         ],
-        t.stringLiteral(`${RNWXLIBMaps.react}/regeneratorRuntime`)
+        t.stringLiteral(rrPath)
     )
 }
