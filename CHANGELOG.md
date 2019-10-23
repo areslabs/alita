@@ -1,3 +1,15 @@
+## [1.2.9](https://github.com/areslabs/alita/compare/1.2.7...1.2.9) (2019-10-23)
+
+1. 完善setState合并策略
+
+### Features
+* **alita**  完善setState合并策略
+* **alita**  减少render的时候，递归此时，提升性能
+* **alita:** process file 添加start ，end信息，方便错误定位 ([efcbfdd](https://github.com/areslabs/alita/commit/efcbfdd))
+* **alita:** 添加 组件未发现 等错误信息的时候，打印处文件路径，方便调试 ([4940fe5](https://github.com/areslabs/alita/commit/4940fe5))
+
+
+
 ## [1.2.7](https://github.com/areslabs/alita/compare/1.2.6...1.2.7) (2019-10-09)
 
 
