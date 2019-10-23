@@ -32,6 +32,7 @@ export function renderNextValidComps(inst) {
 
         inst.state = nextState
 
+        const effect = {}
         if (!shouldUpdate) {
             if (inst.didChildUpdate) {
                 for(let i = 0; i < inst._c.length; i ++ ) {
@@ -46,13 +47,10 @@ export function renderNextValidComps(inst) {
             inst.didSelfUpdate = false
             return
         }
-
-        enqueueEffect({
-            tag: UPDATE_EFFECT,
-
-            inst,
-            callbacks,
-        })
+        effect.tag = UPDATE_EFFECT
+        effect.callbacks = callbacks
+        effect.inst = inst
+        enqueueEffect(effect)
 
         const oc = inst._c
         resetInstProps(inst)
@@ -72,7 +70,7 @@ export function renderNextValidComps(inst) {
 
         getRealOc(oc, inst._c, oldChildren)
 
-        rnvcReportStyle(inst)
+        rnvcReportStyle(inst, effect)
 
         inst.didChildUpdate = false
         inst.didSelfUpdate = false
@@ -337,6 +335,7 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
     let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
     let inst = null
 
+    const effect = {}
     if (shouldReuse) {
         // 复用组件实例
         inst = instanceManager.getCompInstByUUID(diuu)
@@ -352,11 +351,9 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
 
         parentInst._c.push(inst)
 
-        enqueueEffect({
-            tag: UPDATE_EFFECT,
-
-            inst,
-        })
+        effect.tag = UPDATE_EFFECT
+        effect.inst = inst
+        enqueueEffect(effect)
     } else {
         const myContext = filterContext(nodeName, parentContext)
         inst = new nodeName(props, myContext)
@@ -385,10 +382,10 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
 
 
         instanceManager.setCompInst(instUUID, inst)
-        enqueueEffect({
-            tag: INIT_EFFECT,
-            inst,
-        })
+
+        effect.tag = INIT_EFFECT
+        effect.inst = inst
+        enqueueEffect(effect)
     }
 
 
@@ -416,7 +413,7 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
         data[`${vnodeDiuu}animation`] = animation
     }
 
-    rReportStyle(inst)
+    rReportStyle(inst, effect)
 
     inst.didChildUpdate = false
     inst.didSelfUpdate = false
@@ -429,6 +426,7 @@ function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dat
     const {CPTVnode: subVnode, diuu: vnodeDiuu} = vnode
     let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
 
+    const effect = {}
     let inst = null
     if (shouldReuse) {
         inst = instanceManager.getCompInstByUUID(diuu)
@@ -438,12 +436,9 @@ function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dat
         }
 
         parentInst._c.push(inst)
-
-        enqueueEffect({
-            tag: UPDATE_EFFECT,
-
-            inst,
-        })
+        effect.tag = UPDATE_EFFECT
+        effect.inst = inst
+        enqueueEffect(effect)
     } else {
         inst = new CPTComponent()
 
@@ -456,10 +451,9 @@ function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dat
 
         instanceManager.setCompInst(diuu, inst)
 
-        enqueueEffect({
-            tag: INIT_EFFECT,
-            inst,
-        })
+        effect.tag = INIT_EFFECT
+        effect.inst = inst
+        enqueueEffect(effect)
     }
     data[diuuKey] = diuu
 
@@ -480,7 +474,7 @@ function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dat
 
     getRealOc(oc, inst._c, oldChildren)
 
-    rReportStyle(inst)
+    rReportStyle(inst, effect)
     inst.didChildUpdate = false
     inst.didSelfUpdate = false
 }
@@ -579,6 +573,7 @@ function updateClassComponent(vnode, parentInst, parentContext, data, oldData, d
 
     let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
 
+    const effect = {}
     if (shouldReuse) {
         // 复用组件实例
         inst = instanceManager.getCompInstByUUID(diuu)
@@ -622,12 +617,10 @@ function updateClassComponent(vnode, parentInst, parentContext, data, oldData, d
             return
         }
 
-        enqueueEffect({
-            tag: UPDATE_EFFECT,
-
-            inst,
-            callbacks,
-        })
+        effect.tag = UPDATE_EFFECT
+        effect.inst = inst
+        effect.callbacks = callbacks
+        enqueueEffect(effect)
     } else {
         const myContext = filterContext(nodeName, parentContext)
         inst = new nodeName(props, myContext)
@@ -673,10 +666,9 @@ function updateClassComponent(vnode, parentInst, parentContext, data, oldData, d
 
         instanceManager.setCompInst(instUUID, inst)
 
-        enqueueEffect({
-            tag: effectTag,
-            inst,
-        })
+        effect.tag = effectTag
+        effect.inst = inst
+        enqueueEffect(effect)
     }
 
 
@@ -709,7 +701,7 @@ function updateClassComponent(vnode, parentInst, parentContext, data, oldData, d
         data[`${vnodeDiuu}animation`] = animation
     }
 
-    rReportStyle(inst)
+    rReportStyle(inst, effect)
 
     inst.didChildUpdate = false
     inst.didSelfUpdate = false

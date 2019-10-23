@@ -12,7 +12,7 @@ export const UPDATE_EFFECT = 0
 export const INIT_EFFECT = 1
 export const STYLE_EFFECT = 2
 export const INIT_FOCUS_EFFECT = 3
-
+export const STYLE_WXINIT_EFFECT = 4
 
 // update type
 export const UpdateState = 0;

@@ -8,7 +8,7 @@
 
 import {getCurrentContext, invokeWillUnmount} from './util'
 import createElement from './createElement'
-import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT, INIT_FOCUS_EFFECT} from './constants'
+import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT, INIT_FOCUS_EFFECT, STYLE_WXINIT_EFFECT} from './constants'
 import render, {renderNextValidComps} from './render'
 import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
@@ -168,6 +168,14 @@ function commitWork(firstEffect, lastEffect) {
                 wxInst.setData(effect.data)
             }
 
+            if (tag === STYLE_WXINIT_EFFECT) {
+                const wxInst = inst.getWxInst()
+                wxInst.setData({
+                    _r: inst._r
+                })
+            }
+
+
             if (tag === INIT_EFFECT || tag === INIT_FOCUS_EFFECT) {
                 const wxInst = inst.getWxInst()
                 wxInst.setData({
@@ -177,13 +185,20 @@ function commitWork(firstEffect, lastEffect) {
 
             if (tag === UPDATE_EFFECT) {
                 const wxInst = inst.getWxInst()
-                const cp = getChangePath(inst._r, inst._or)
+
+                if (effect.hasMpInit) {
+                    wxInst.setData({
+                        _r: inst._r
+                    })
+                } else {
+                    // getChangePath 在这里调用，而不是在render的过程调用，是考虑以后 render 采用fiber以后存在反复render的情况
+                    const cp = getChangePath(inst._r, inst._or)
+                    if (Object.keys(cp).length !== 0) {
+                        wxInst.setData(cp)
+                    }
+                }
                 // _or 不再有用
                 inst._or = null
-
-                if (Object.keys(cp).length !== 0) {
-                    wxInst.setData(cp)
-                }
             }
 
             effect = effect.nextEffect
@@ -208,7 +223,7 @@ function commitLifeCycles(lastEffect) {
     while (effect) {
         const {tag, inst} = effect
 
-        // 如果 tag === STYLE_EFFECT , do nothing
+        // 如果 tag === STYLE_** , do nothing
 
         if (tag === INIT_EFFECT) {
             inst.componentDidMount && inst.componentDidMount()

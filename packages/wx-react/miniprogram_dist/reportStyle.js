@@ -21,7 +21,7 @@
  */
 
 import {DEFAULTCONTAINERSTYLE, setDeepData} from "./util";
-import {STYLE_EFFECT, mpRoot} from "./constants";
+import {STYLE_EFFECT, STYLE_WXINIT_EFFECT, mpRoot} from "./constants";
 import {unshiftEffect} from './effect'
 
 /**
@@ -49,10 +49,21 @@ export function rnvcReportExistStyle(inst) {
     const styleKey = inst._styleKey
     const styleValue = inst._r[styleKey]
 
+    // 说明此组件是连锁上报的中间组件
     if (styleValue !== DEFAULTCONTAINERSTYLE) {
         inst._r[styleKey] = DEFAULTCONTAINERSTYLE
 
         if (styleValue !== inst._myOutStyle) {
+
+            if (inst._myOutStyle === false) {
+                // 组件从 render null 改变为render element，将导致小程序节点的初始化
+                unshiftEffect({
+                    tag: STYLE_WXINIT_EFFECT,
+                    inst
+                })
+            }
+
+
             inst._myOutStyle = styleValue
             setDeepData(inst._p, styleValue, inst._outStyleKey)
 
@@ -60,7 +71,7 @@ export function rnvcReportExistStyle(inst) {
             styleEffect[inst._outStyleKey] = styleValue
         }
 
-        // 如果styleValue !== DEFAULTCONTAINERSTYLE 说明此组件是连锁上报的中间组件，不需要更新操作
+        // 连锁上报的中间组件不需要更新操作
         inst.styleEffect = undefined
     }
 
@@ -79,8 +90,9 @@ export function rnvcReportExistStyle(inst) {
 /**
  * renderNextValidComps 过程的节点，其父_r 数据都是存在的，所以在样式没有变化的时候，不需要上报
  * @param inst
+ * @param effect
  */
-export function rnvcReportStyle(inst) {
+export function rnvcReportStyle(inst, effect) {
     if (inst === mpRoot || inst.isPageComp) {
         // 页面组件不需要上报
         return
@@ -96,6 +108,11 @@ export function rnvcReportStyle(inst) {
     }
 
     if (styleValue !== inst._myOutStyle) {
+        if (inst._myOutStyle === false) {
+            // 组件从 render null 改变为render element，将导致小程序节点的初始化
+            effect.hasMpInit = true
+        }
+
         inst._myOutStyle = styleValue
         setDeepData(inst._p, styleValue, inst._outStyleKey)
 
@@ -127,6 +144,16 @@ export function rReportExistStyle(inst) {
     if (styleKey) {
         // 被child 上报影响
         if (inst._r[styleKey] !== DEFAULTCONTAINERSTYLE) {
+
+            if (inst._r[styleKey] !== false && inst._myOutStyle === false) {
+                // 组件从 render null 改变为render element，将导致小程序节点的初始化
+                unshiftEffect({
+                    tag: STYLE_WXINIT_EFFECT,
+                    inst
+                })
+            }
+            
+            
             inst._myOutStyle = inst._r[styleKey]
             inst._r[styleKey] = DEFAULTCONTAINERSTYLE
 
@@ -154,8 +181,9 @@ export function rReportExistStyle(inst) {
 /**
  * render过程的节点，其父的_r 字段 已经清空，所以不管什么情况，都需要setDeepData
  * @param inst
+ * @param effect
  */
-export function rReportStyle(inst) {
+export function rReportStyle(inst, effect) {
     if (inst === mpRoot || inst.isPageComp) {
         // 页面组件不需要上报
         return
@@ -163,6 +191,12 @@ export function rReportStyle(inst) {
 
     const styleKey = inst._styleKey
     if (styleKey) {
+        if (inst._r[styleKey] !== false && inst._myOutStyle === false ) {
+            // 组件从 render null 改变为render element，将导致小程序节点的初始化
+            effect.hasMpInit = true
+        }
+
+
         inst._myOutStyle = inst._r[styleKey]
         inst._r[styleKey] = DEFAULTCONTAINERSTYLE
     } else {
