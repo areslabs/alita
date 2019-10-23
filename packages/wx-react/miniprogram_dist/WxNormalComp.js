@@ -69,16 +69,26 @@ export default function (CompMySelf, RNApp) {
                 ),
                 this
             )
+
+            const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
+            //如果组件还未初始化 didFocus方法，保证执行顺序为： didMount --> didFocus
+            if (compInst.componentDidFocus) {
+                const focusFunc = compInst.componentDidFocus
+                const didMountFunc = compInst.componentDidMount
+
+                compInst.componentDidFocus = undefined
+                compInst.componentDidMount = function () {
+                    didMountFunc && didMountFunc.call(compInst)
+                    focusFunc.call(compInst)
+                    compInst.componentDidFocus = focusFunc
+                    compInst.componentDidMount = didMountFunc
+                }
+
+            }
         }
 
         o.methods.onShow = function () {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-
-            //如果组件还未初始化 didFocus方法，由commitLifeCycles执行，保证执行顺序为： didMount --> didFocus
-            if (compInst.firstInvokeFocus) {
-                return
-            }
-
             compInst.componentDidFocus && unstable_batchedUpdates(() => {
                 compInst.componentDidFocus()
             })

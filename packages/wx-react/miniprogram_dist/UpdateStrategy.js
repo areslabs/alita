@@ -8,7 +8,7 @@
 
 import {getCurrentContext, invokeWillUnmount} from './util'
 import createElement from './createElement'
-import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT, INIT_FOCUS_EFFECT, STYLE_WXINIT_EFFECT} from './constants'
+import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT, STYLE_WXINIT_EFFECT} from './constants'
 import render, {renderNextValidComps} from './render'
 import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
@@ -65,8 +65,6 @@ export function updateRoot() {
     renderNextValidComps(mpRoot)
     inRenderPhase = false
 
-    //TODO invokeWillUnmount调用时机？这里调用有一个潜在的问题，即小程序渲染回调的时候，实例可能被另外一次的updateRoot给清理掉了
-    // 如果这个问题发生，需要考虑把调用时机放置到 回调之后
     invokeWillUnmount(oldChildren)
     oldChildren = []
 
@@ -176,7 +174,7 @@ function commitWork(firstEffect, lastEffect) {
             }
 
 
-            if (tag === INIT_EFFECT || tag === INIT_FOCUS_EFFECT) {
+            if (tag === INIT_EFFECT) {
                 const wxInst = inst.getWxInst()
                 wxInst.setData({
                     _r: inst._r
@@ -229,11 +227,6 @@ function commitLifeCycles(lastEffect) {
             inst.componentDidMount && inst.componentDidMount()
         }
 
-        if (tag === INIT_FOCUS_EFFECT) {
-            inst.componentDidMount && inst.componentDidMount()
-            inst.componentDidFocus()
-            inst.firstInvokeFocus = false
-        }
 
         if (tag === UPDATE_EFFECT) {
             inst.componentDidUpdate && inst.componentDidUpdate()
