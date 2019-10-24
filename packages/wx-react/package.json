@@ -10,8 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
-    "pub-beta": "npm publish --tag=beta",
-    "pub": "npm publish"
+    "pub-beta": "npm run build && npm publish --tag=beta",
+    "pub": "npm run build && npm publish"
   },
   "author": "",
   "license": "MIT"

@@ -8,13 +8,21 @@
  
 const hasOwn = Object.prototype.hasOwnProperty
 
-function is(x, y) {
-    if (x === y) {
-        return x !== 0 || y !== 0 || 1 / x === 1 / y
-    } else {
-        return x !== x && y !== y
+// 参考：https://github.com/facebook/react/pull/16212
+let is
+if (typeof Object.is === 'function') {
+    is = Object.is
+} else {
+    is = (x, y) => {
+        if (x === y) {
+            return x !== 0 || y !== 0 || 1 / x === 1 / y
+        } else {
+            return x !== x && y !== y
+        }
     }
 }
+
+
 
 export default function shallowEqual(objA, objB) {
     if (is(objA, objB)) return true
