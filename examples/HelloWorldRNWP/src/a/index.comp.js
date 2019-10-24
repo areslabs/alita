@@ -15,7 +15,7 @@ function _extends() {
     return _extends.apply(this, arguments)
 }
 
-import regeneratorRuntime from "@areslabs/wx-react/regeneratorRuntime"
+import regeneratorRuntime from "../../rn-polyfill/regeneratorRuntime"
 import React, { Component, h } from "@areslabs/wx-react"
 import PropTypes from "@areslabs/wx-prop-types"
 import {
