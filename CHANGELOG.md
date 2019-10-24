@@ -1,3 +1,20 @@
+## [1.2.10](https://github.com/areslabs/alita/compare/1.2.9...1.2.10) (2019-10-24)
+
+1. 添加flow支持
+2. wx-react 改为rollup 打包方式
+3. 添加 rn-polyfill 文件夹，处理rn和小程序执行环境的异同，包括async等
+
+### Features
+
+* **alita:** 添加flow支持 ([c94aaea](https://github.com/areslabs/alita/commit/c94aaea)), closes [#29](https://github.com/areslabs/alita/issues/29)
+
+
+### Performance Improvements
+
+* **wx-react:** optimize objectIs ([7d0a9ab](https://github.com/areslabs/alita/commit/7d0a9ab))
+
+
+
 ## [1.2.9](https://github.com/areslabs/alita/compare/1.2.7...1.2.9) (2019-10-23)
 
 1. 完善setState合并策略
