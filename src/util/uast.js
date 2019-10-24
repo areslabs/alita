@@ -64,6 +64,7 @@ export function geneReactCode(ast) {
     code = babel.transformSync(code, {
         babelrc: false,
         configFile: false,
+        presets: ["@babel/preset-flow"],
         plugins: [
             babelDecorators,
             babelRestSpread,
