@@ -29,6 +29,7 @@ export function parseCode(code) {
 
 
 const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
+const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
 const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
@@ -64,7 +65,7 @@ export function geneReactCode(ast) {
     code = babel.transformSync(code, {
         babelrc: false,
         configFile: false,
-        presets: ["@babel/preset-flow"],
+        presets: [babelFlow],
         plugins: [
             babelDecorators,
             babelRestSpread,
