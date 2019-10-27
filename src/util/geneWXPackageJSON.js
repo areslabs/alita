@@ -16,7 +16,14 @@ export default function geneWXPackageJSON() {
         INPUT_DIR,
         configObj,
         OUT_DIR,
+        tranComp
     } = global.execArgs
+
+    let packagePath = OUT_DIR
+    if (tranComp) {
+        // package.json 和miniprogram_npm 同级
+        packagePath = path.resolve(OUT_DIR, "..")
+    }
 
 
     const packJSONPath = path.resolve(INPUT_DIR, configObj.packageJSONPath)
@@ -52,7 +59,7 @@ export default function geneWXPackageJSON() {
         })
         newPack.dependencies = newDep
         fse.writeFileSync(
-            path.resolve(OUT_DIR, 'package.json'),
+            path.resolve(packagePath, 'package.json'),
             JSON.stringify(newPack, null, '\t'),
         )
     } else {

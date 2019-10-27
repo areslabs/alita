@@ -147,7 +147,7 @@ if (enterO() && !options.outdir) {
     console.log('output dir must exists， check your -o argument'.error)
     process.exit()
 }
-const OUT_DIR = path.resolve(options.outdir)
+const OUT_DIR = path.resolve(options.outdir, options.component ? 'miniprogram_npm': '')
 
 console.log(`输入目录: ${INPUT_DIR}`.info)
 console.log(`输出目录: ${OUT_DIR}`.info)
@@ -206,7 +206,7 @@ function main() {
     }
 
     // 生成微信目录结构
-    geneWXFileStruc(OUT_DIR)
+    geneWXFileStruc(OUT_DIR, options.component)
 
     // 生成微信package.json文件
     geneWXPackageJSON()
