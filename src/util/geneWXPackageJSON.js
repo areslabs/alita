@@ -11,7 +11,7 @@ import fse from 'fs-extra'
 /**
  * 生成微信小程序package.json
  */
-export default function geneWXPackageJSON() {
+export default function geneWXPackageJSON(wxName) {
     const {
         INPUT_DIR,
         configObj,
@@ -34,7 +34,7 @@ export default function geneWXPackageJSON() {
         if (!pack.name) {
             console.log('package.json文件缺少name字段'.warn)
         }
-        newPack.name = pack.name
+        newPack.name = wxName || pack.name
         newPack.version = pack.version || '1.0.0'
 
         global.execArgs.packageName = pack.name || ''

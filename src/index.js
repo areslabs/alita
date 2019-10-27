@@ -88,7 +88,8 @@ const options = getopts(process.argv, {
         v: 'version',
         config: 'config',
         beta: 'beta',
-        comp: 'component'
+        comp: 'component',
+        wxName: "wxName"
     },
 })
 
@@ -147,6 +148,11 @@ if (enterO() && !options.outdir) {
     console.log('output dir must exists， check your -o argument'.error)
     process.exit()
 }
+
+if (options.component && !options.wxName) {
+    console.log('--comp 需要配合 --wxName使用，来指定wx平台的包名！'.warn)
+}
+
 const OUT_DIR = path.resolve(options.outdir, options.component ? 'miniprogram_npm': '')
 
 console.log(`输入目录: ${INPUT_DIR}`.info)
@@ -209,7 +215,7 @@ function main() {
     geneWXFileStruc(OUT_DIR, options.component)
 
     // 生成微信package.json文件
-    geneWXPackageJSON()
+    geneWXPackageJSON(options.wxName)
 
     const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
     filewatch(ignored)
