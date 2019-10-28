@@ -1,0 +1,18 @@
+{
+  "name": "@areslabs/stringutil-rn",
+  "version": "1.0.1",
+  "files": [
+    "src",
+    "package.json"
+  ],
+  "description": "rn stringutil demo",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}
