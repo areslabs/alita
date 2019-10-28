@@ -16,10 +16,10 @@ export default class Hello extends React.Component {
                 <Text
                     style={this.props.textStyle}
                     onPress={() => {
-                        console.log('Hi ', this.props.name, ' !')
+                        console.log('Hello: ', this.props.name, ' !')
                         this.props.textPress && this.props.textPress()
                     }}
-                >Hi {this.props.name}!</Text>
+                >Hello: {this.props.name}!</Text>
             </View>
         )
     }

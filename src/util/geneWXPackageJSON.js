@@ -11,7 +11,7 @@ import fse from 'fs-extra'
 /**
  * 生成微信小程序package.json
  */
-export default function geneWXPackageJSON(wxName) {
+export default function geneWXPackageJSON(wxName, dm) {
     const {
         INPUT_DIR,
         configObj,
@@ -42,10 +42,10 @@ export default function geneWXPackageJSON(wxName) {
         const allDepKeys = Object.keys(pack.dependencies || {})
         const newDep = {}
         allDepKeys.forEach(depKey => {
-            if (configObj.dependenciesMap[depKey] === false) {
+            if (dm[depKey] === false) {
                 // remove
-            } else if (configObj.dependenciesMap[depKey] !== undefined) {
-                const newDepValue = configObj.dependenciesMap[depKey]
+            } else if (dm[depKey] !== undefined) {
+                const newDepValue = dm[depKey]
 
                 if (typeof newDepValue === 'string') {
                     newDep[newDepValue] = pack.dependencies[depKey]

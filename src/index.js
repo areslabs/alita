@@ -208,14 +208,14 @@ function main() {
 
     global.execArgs = {
         ...global.execArgs,
-        ...getExtCompPathMaps(configObj.extCompLibs)
+        ...getExtCompPathMaps(configObj.extCompLibs, configObj.dependenciesMap)
     }
 
     // 生成微信目录结构
     geneWXFileStruc(OUT_DIR, options.component)
 
     // 生成微信package.json文件
-    geneWXPackageJSON(options.wxName)
+    geneWXPackageJSON(options.wxName, configObj.dependenciesMap)
 
     const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
     filewatch(ignored)
