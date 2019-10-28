@@ -15,9 +15,9 @@
  * extChildComp： 需要处理children 为childrencpt的集合
  * extReactComp：一般来说对齐的组件 需要继承于 RNBaseComponent，但是有些复杂的组件需要继承于Component/PureComponent，比如FlatList
  * textComp: Text节点，一般来说只要官方的Text组件
- * allExtComp：所有组件，包括RN官方组件，配置在extCompLibs里的组件，这些组件在Alita转化的时候，会当做基本组件，基本组件的属性处理和自定义组件有一些区别
+ * allBaseComp：所有基本组件，包括RN官方组件，基本组件和自定义组件 Alita在转化的时候有一些区别
  *
- * @returns {{extCompPathMaps, extChildComp: Set, extReactComp: Set, allExtComp: Set, jsxPropsMap}}
+ * @returns {{extCompPathMaps, extChildComp: Set, extReactComp: Set, allBaseComp: Set, jsxPropsMap}}
  */
 export default function getExtCompPathMaps(extCompLibs, dm) {
     const extCompPathMaps = {}
@@ -25,7 +25,7 @@ export default function getExtCompPathMaps(extCompLibs, dm) {
     const extChildComp = new Set([])
     const extReactComp = new Set([])
     const textComp = new Set(['Text'])
-    const allExtComp = new Set([])
+    const allBaseComp = new Set([])
     for(let i = 0; i < extCompLibs.length; i ++) {
         const extLib = extCompLibs[i]
         const libName = extLib.name
@@ -44,7 +44,7 @@ export default function getExtCompPathMaps(extCompLibs, dm) {
             const compName = extLib.compLists[j]
             if (typeof compName === 'string') {
                 compPathMap[compName] = `${wxLibName}${compDir}${compName}/index`
-                allExtComp.add(compName)
+                allBaseComp.add(compName)
             } else {
                 const {
                     name,
@@ -61,6 +61,8 @@ export default function getExtCompPathMaps(extCompLibs, dm) {
 
                 if (extendsComponent === true) {
                     extReactComp.add(name)
+                } else {
+                    allBaseComp.add(name)
                 }
 
                 if (jsxProps) {
@@ -71,7 +73,6 @@ export default function getExtCompPathMaps(extCompLibs, dm) {
                     textComp.add(name)
                 }
 
-                allExtComp.add(name)
             }
 
         }
@@ -81,7 +82,7 @@ export default function getExtCompPathMaps(extCompLibs, dm) {
         extCompPathMaps,
         extChildComp,
         extReactComp,
-        allExtComp,
+        allBaseComp,
         textComp,
         jsxPropsMap
     }

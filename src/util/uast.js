@@ -225,7 +225,7 @@ export function isChildComp(name) {
     }
 
     // 基本组件children 不需要转化为childrencpt的组件
-    if (global.execArgs.allExtComp.has(name)) {
+    if (global.execArgs.allBaseComp.has(name)) {
         return false
     }
 
@@ -265,11 +265,7 @@ export function isBindElementByName(name) {
         return true
     }
 
-    if (global.execArgs.extReactComp.has(name)) {
-        return false
-    }
-
-    if (global.execArgs.allExtComp.has(name)) {
+    if (global.execArgs.allBaseComp.has(name)) {
         return true
     }
 

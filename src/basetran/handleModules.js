@@ -269,7 +269,8 @@ function getImagePath(filepath, source) {
  * @param rnName
  */
 function getWxNpmPackageName(rnName) {
-    const dm = global.execArgs.configObj.dependenciesMap
+    // deprecated
+    const dm = global.execArgs.dependenciesMap || global.execArgs.configObj.dependenciesMap
 
     for(let key in dm) {
         if (dm[key] === false) continue
