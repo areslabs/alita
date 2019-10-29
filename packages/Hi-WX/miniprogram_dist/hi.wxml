@@ -1,0 +1,4 @@
+<!--微信小程序自定义组件本身会退化为一个view节点，所以这里外层的view可以用block替代，或者直接去掉-->
+<block>
+    <view animation="{{ani}}" style="{{textStyle}}" catchtap="handlePress">Hi {{name}}!</view>
+</block>

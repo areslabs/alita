@@ -6,5 +6,5 @@
  *
  */
  
-import Hi from './Hi/index.comp'
+import Hi from './hi.comp'
 export default Hi
