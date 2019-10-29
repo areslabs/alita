@@ -159,7 +159,7 @@ if (options.component && !options.wxName) {
     console.log('--comp 需要配合 --wxName使用，来指定wx平台的包名！'.warn)
 }
 
-const OUT_DIR = path.resolve(options.outdir, options.component ? 'miniprogram_npm': '')
+const OUT_DIR = path.resolve(options.outdir, options.component ? 'miniprogram_dist': '')
 
 console.log(`输入目录: ${INPUT_DIR}`.info)
 console.log(`输出目录: ${OUT_DIR}`.info)
