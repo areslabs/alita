@@ -120,6 +120,7 @@ export function getFileInfo(ast) {
         ClassDeclaration: path => {
             const sc = path.node.superClass
             isClassComp = isReactComponent(sc)
+            isRF = true
         },
 
         JSXOpeningElement: path => {
