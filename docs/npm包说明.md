@@ -28,7 +28,7 @@
 
 一般这种情况，我们需要对`yyy`包手动处理。 需要在手动创建一个微信小程序平台的包，与之对应。
 
-假定我们在微信小程序端实现了一个`yyy-wx`包 来处理。那么需要在`alita.config.js`配置如下：
+假定我们在微信小程序端实现了一个`yyy-wx`包 来处理。那么需要在`alita.config.js`配置(alita.config.js 是alita[默认配置](./配置文件.md)文件)如下：
 
 ```javascript
 module.exports = {
