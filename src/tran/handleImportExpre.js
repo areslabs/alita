@@ -29,18 +29,17 @@ function handleImport(path, filepath) {
     const originalPath = path.node.source.extra.rawValue
 
     const isLibPath = judgeLibPath(relativePath)
-    let isCompImport = false
+
     for(let item of path.node.specifiers){
         let importElement = item.local.name;
 
         if(JSXElements.has(importElement)){
-            usedComponent[importElement] = isLibPath ? getCompFinalPath(originalPath, importElement, filepath) : relativePath;
-            isCompImport = true
+            if (isLibPath) {
+                usedComponent[importElement] = getCompFinalPath(originalPath, importElement, filepath)
+            } else {
+                usedComponent[importElement] = relativePath.replace('.comp', '')
+            }
         }
-    }
-
-    if (isCompImport && !isLibPath) {
-        path.node.source.value = `${relativePath}.comp`
     }
 }
 
@@ -56,13 +55,12 @@ function handleRequire(path, filepath) {
     const originalPath = path.node.arguments[0].extra.rawValue
 
     const isLibPath = judgeLibPath(relativePath)
-    let isCompImport = false
+
     const id = path.parentPath.node.id
     if (id.type === 'Identifier'
         && JSXElements.has(id.name)
     ) {
-        usedComponent[id.name] = isLibPath ? getCompFinalPath(originalPath, id.name, filepath) : relativePath
-        isCompImport = true
+        usedComponent[id.name] = isLibPath ? getCompFinalPath(originalPath, id.name, filepath) : relativePath.replace('.comp', '')
     } else if (id.type === 'ObjectPattern') {
         const opp = id.properties
         for(let i = 0; i < opp.length; i++) {
@@ -70,14 +68,10 @@ function handleRequire(path, filepath) {
             if (item.type === 'ObjectProperty') {
                 const name = item.key.name
                 if (JSXElements.has(name)) {
-                    usedComponent[name] = isLibPath ? getCompFinalPath(originalPath, name, filepath) : relativePath
-                    isCompImport = true
+                    usedComponent[name] = isLibPath ? getCompFinalPath(originalPath, name, filepath) : relativePath.replace('.comp', '')
                 }
             }
         }
-    }
-    if (isCompImport && !isLibPath) {
-        path.node.arguments[0].value = `${relativePath}.comp`
     }
 }
 
@@ -144,13 +138,16 @@ function judgeLibPath(relativePath) {
         return false
     }
 
-    return getLibPath(relativePath) === relativePath
+    return true
+
+    //return getLibPath(relativePath) === relativePath
 }
 
 function getCompFinalPath(originalPath, name, filepath) {
     const relativeFilePath = filepath.replace(global.execArgs.OUT_DIR, '')
 
-    if (originalPath === 'react-native'
+    const originalLib = getLibPath(originalPath)
+    if (originalLib === 'react-native'
         && RNNOTSUPPORTCOMP.has(name)
     ) {
         console.log(`${relativeFilePath}: 不支持React Native组件${name}！`.warn)
@@ -158,18 +155,18 @@ function getCompFinalPath(originalPath, name, filepath) {
     }
 
 
-    if (global.execArgs.extCompPathMaps[originalPath] === undefined) {
-        console.log(`${relativeFilePath}: ${originalPath} 需要在配置文件extCompLibs字段指定！`.error)
+    if (global.execArgs.extCompPathMaps[originalLib] === undefined) {
+        console.log(`${relativeFilePath}: ${originalLib} 需要在配置文件extCompLibs字段指定！`.error)
         return
     }
 
-    if (global.execArgs.extCompPathMaps[originalPath][name] === undefined) {
-        console.log(`${relativeFilePath}: 组件${name} 没有在${originalPath}指定！`.error)
+    if (global.execArgs.extCompPathMaps[originalLib][name] === undefined) {
+        console.log(`${relativeFilePath}: 组件${name} 没有在${originalLib}指定！`.error)
         return
     }
 
 
-    return global.execArgs.extCompPathMaps[originalPath][name]
+    return global.execArgs.extCompPathMaps[originalLib][name]
 }
 
 function getLibPath(path) {
