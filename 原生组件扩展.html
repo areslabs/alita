@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>属性传递JSX&组件 · GitBook</title>
+        <title>原生组件扩展 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="外部JSX片段.html" />
+    <link rel="next" href="Alita组件库.html" />
     
     
-    <link rel="prev" href="平台判断.html" />
+    <link rel="prev" href="第三方组件库扩展-手动对齐（二）.html" />
     
 
     </head>
@@ -167,7 +167,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.7" data-path="属性传递JSX&组件.html">
+        <li class="chapter " data-level="1.7" data-path="属性传递JSX&组件.html">
             
                 <a href="属性传递JSX&组件.html">
             
@@ -465,7 +465,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.19" data-path="原生组件扩展.html">
+        <li class="chapter active" data-level="1.19" data-path="原生组件扩展.html">
             
                 <a href="原生组件扩展.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >属性传递JSX&组件</a>
+        <a href="." >原生组件扩展</a>
     </h1>
 </div>
 
@@ -633,134 +633,8 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="&#x5C5E;&#x6027;&#x4F20;&#x9012;jsx&#x7EC4;&#x4EF6;">&#x5C5E;&#x6027;&#x4F20;&#x9012;JSX&amp;&#x7EC4;&#x4EF6;</h2>
-<p>&#x5728;&#x8BF4;&#x660E;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x4E4B;&#x524D;&#xFF0C;&#x6211;&#x4EEC;&#x5148;&#x6765;&#x770B;&#x4E00;&#x4E0B; React Native &#x4E2D;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x91CD;&#x8981;&#x7684;&#x7EC4;&#x4EF6; FlatList&#x3002;</p>
-<pre><code class="lang-javascript">&lt;FlatList
-  data={[{key: <span class="hljs-string">&apos;a&apos;</span>}, {key: <span class="hljs-string">&apos;b&apos;</span>}]}
-  renderItem={({item}) =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>{item.key}<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>}
-  ListHeaderComponent={<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Header</span>/&gt;</span></span>}
-/&gt;
-</code></pre>
-<ul>
-<li>&#x5C5E;&#x6027; <code>renderItem</code> &#x662F;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x8FD4;&#x56DE; <code>JSX</code> &#x7247;&#x6BB5;</li>
-<li>&#x5C5E;&#x6027; <code>ListHeaderComponent</code>&#xFF0C;&#x503C;&#x53EF;&#x4EE5;&#x662F;&#x65B9;&#x6CD5;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x662F; <code>JSX</code> &#x7247;&#x6BB5;</li>
-</ul>
-<p>&#x8FD9;&#x4E24;&#x79CD;&#x5199;&#x6CD5;&#x5C0F;&#x7A0B;&#x5E8F;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x90FD;&#x80FD;&#x591F;&#x5B8C;&#x7F8E;&#x652F;&#x6301;&#x3002; </p>
-<p>&#x4F46;&#x662F;&#x6709;&#x4E00;&#x70B9;&#x9700;&#x8981;&#x8BF4;&#x660E;&#xFF0C;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x5728;&#x5904;&#x7406;&#x8FD9;&#x4E9B;&#x5C5E;&#x6027;&#x7684;&#x65F6;&#x5019;&#x662F;&#x6709;&#x522B;&#x4E8E;&#x5176;&#x4ED6;&#x666E;&#x901A;&#x5C5E;&#x6027;&#x7684;&#xFF0C;&#x8FD9;&#x5C31;&#x8981;&#x6C42;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x5FC5;&#x987B;&#x5728;&#x9759;&#x6001;&#x5206;&#x6790;&#x7684;&#x65F6;&#x5019;&#x80FD;&#x591F;&#x8BC6;&#x522B;&#x51FA;&#x54EA;&#x4E9B;&#x5C5E;&#x6027;&#x662F; <code>JSX&#x7247;&#x6BB5;&#x5C5E;&#x6027;</code> , &#x5BF9;&#x4E8E; React Native &#x63D0;&#x4F9B;&#x7684; FlatList/SectionList &#x8FD9;&#x4E9B; RN &#x7EC4;&#x4EF6;&#xFF0C;&#x5C5E;&#x6027;&#x503C;&#x7C7B;&#x578B;&#x662F;&#x63D0;&#x524D;&#x77E5;&#x6653;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x5BF9;&#x4E8E;&#x81EA;&#x5B9A;&#x4E49;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x8F6C;&#x6362;&#x5F15;&#x64CE;&#x65E0;&#x6CD5;&#x83B7;&#x6089;&#xFF0C;&#x56E0;&#x6B64;&#x9700;&#x8981;&#x9075;&#x5B88;&#x4EE5;&#x4E0B;&#x7EA6;&#x5B9A;&#xFF1A;&#x6240;&#x6709;&#x9700;&#x8981;&#x8FD4;&#x56DE; <code>JSX&#x7247;&#x6BB5;&#x5C5E;&#x6027;</code> &#x7684;&#x5C5E;&#x6027;&#x540D;<strong>&#x5FC5;&#x987B;</strong>&#x4EE5; <code>Component</code> &#x7ED3;&#x5C3E;&#x3002;</p>
-<p>&#x4F8B;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-javascript">&lt;A
-   xxComponent={<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>xx<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>}
-   yyComponent={() =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>yy<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>}
-   headerComponent={<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Header</span>/&gt;</span></span>}
-/&gt;
-</code></pre>
-<p>&#x53E6;&#x5916;&#x5728;A&#x7EC4;&#x4EF6;&#x5185;&#x90E8;&#x4F7F;&#x7528; <code>xxComponent</code> &#x7684;&#x65F6;&#x5019;&#xFF0C;&#x9700;&#x8981;&#x4EE5;&#x4E0B;&#x7EA6;&#x5B9A;&#xFF1A;</p>
-<p>&#x9700;&#x8981;&#x5199; <code>this.props.xxComponent</code> &#x6216;&#x8005;  <code>props.yyComponent</code>&#x3002;</p>
-<p>&#x76F4;&#x63A5;&#x5199; <code>headerComponent</code> &#x662F;&#x4E0D;&#x884C;&#x7684;&#x3002;</p>
-<p>&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-
-    render() {
-        <span class="hljs-keyword">const</span> {headerComponent} = <span class="hljs-keyword">this</span>.props
-        <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props
-        <span class="hljs-keyword">return</span> (
-            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
-                 {this.props.xxComponent} // &#x53EF;&#x4EE5;
-                 {props.yyComponent} // &#x53EF;&#x4EE5;
-                 {headerComponent}   // &#x9519;&#x8BEF; &#x4E0D;&#x5141;&#x8BB8;&#x8FD9;&#x4E48;&#x4F7F;&#x7528;
-            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
-        )
-    }
-}
-</code></pre>
-<p><strong>&#x6CE8;&#x610F;&#xFF1A;</strong> <code>children</code> &#x548C; <code>xxComponnet</code> &#x7684;&#x5904;&#x7406; &#x662F;&#x4E00;&#x6837;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x5BF9;&#x4E8E; <code>children</code> &#x7684;&#x4F7F;&#x7528;&#xFF0C;&#x4E5F;&#x5FC5;&#x987B;&#x5199;&#x5168;&#xFF1A;<code>this.props.children</code> &#x6216;&#x8005; <code>props.children</code></p>
-<h3 id="&#x6CE8;&#x610F;&#x70B9;">&#x6CE8;&#x610F;&#x70B9;</h3>
-<p>&#x5C5E;&#x6027;&#x4F20;&#x9012; <code>JSX</code> &#x7247;&#x6BB5;/&#x7EC4;&#x4EF6;&#x65F6;&#xFF0C;&#x4E0D;&#x652F;&#x6301;&#x591A;&#x5C42;&#x7EA7;&#x7684;&#x4F20;&#x9012;&#xFF0C;&#x5982;&#xFF1A; </p>
-<p>main.js</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Main</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-    render() {
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">A</span>
-            <span class="hljs-attr">oneComponent</span>=<span class="hljs-string">{&lt;Text</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span>}
-        /&gt;
-    }
-}
-</span></code></pre>
-<p>a.js</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-
-    f = () =&gt; {
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>{this.props.oneComponent}<span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
-    }
-
-    render() {
-        <span class="hljs-keyword">return</span> (
-            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">B</span>
-                   <span class="hljs-attr">twoComponent</span>=<span class="hljs-string">{this.f}</span>
-                /&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span>
-        )
-    }
-}
-</span></code></pre>
-<p>b.js</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-
-    render() {
-        <span class="hljs-keyword">return</span> (
-            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
-                {this.props.twoComponent}
-            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
-        )
-    }
-}
-</code></pre>
-<p>&#x6211;&#x4EEC;&#x770B;&#x4E0B;&#x4E0A;&#x9762;&#x7684;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;Main&#x7EC4;&#x4EF6;&#x4F7F;&#x7528;&#x4E86;A&#x7EC4;&#x4EF6;&#xFF0C;A&#x7EC4;&#x4EF6;&#x901A;&#x8FC7; <code>oneComponent</code> &#x8FD9;&#x4E2A;&#x5C5E;&#x6027;&#x4F20;&#x9012;&#x4E86;&#x4E00;&#x4E2A; <code>JSX</code> &#x7247;&#x6BB5;&#xFF0C;&#x8FD9;&#x4E2A; <code>JSX</code> &#x7247;&#x6BB5;&#x6CA1;&#x6709;&#x76F4;&#x63A5;&#x5728;A&#x7EC4;&#x4EF6;&#x4F7F;&#x7528;&#xFF0C;&#x6211;&#x4EEC;&#x770B;&#x5230;&#x662F;&#x7531;B&#x7EC4;&#x4EF6;&#x7684; <code>twoComponent</code> &#x4F20;&#x9012;&#x7ED9;&#x4E86;B&#x7EC4;&#x4EF6;&#xFF0C;&#x771F;&#x6B63;&#x4F7F;&#x7528;&#x7684;&#x5730;&#x65B9;&#x5728;B&#x7EC4;&#x4EF6;&#xFF0C;&#x8FD9;&#x4E2A;&#x5C31;&#x662F;
-&#x591A;&#x5C42;&#x7EA7;&#x4F20;&#x9012;&#xFF0C;&#x8FD9;&#x79CD;&#x5728;&#x5C0F;&#x7A0B;&#x5E8F;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x4E2D;&#x662F;&#x4E0D;&#x652F;&#x6301;&#x7684;&#x3002; </p>
-<p>&#x53EA;&#x6709;&#x4E00;&#x79CD;&#x591A;&#x5C42;&#x7EA7;&#x8F6C;&#x9012;&#x662F;&#x652F;&#x6301;&#x7684;&#xFF0C;&#x5982;&#x4E0B;&#xFF1A;</p>
-<p>main.js</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Main</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-    render() {
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">A</span>
-            <span class="hljs-attr">oneComponent</span>=<span class="hljs-string">{&lt;Text</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span>}
-        /&gt;
-    }
-}
-</span></code></pre>
-<p>a.js</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-    render() {
-        <span class="hljs-keyword">return</span> (
-            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">B</span>
-                   <span class="hljs-attr">twoComponent</span>=<span class="hljs-string">{this.props.oneComponent}</span>
-                /&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span>
-        )
-    }
-}
-</span></code></pre>
-<p>b.js</p>
-<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-
-    render() {
-        <span class="hljs-keyword">return</span> (
-            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>
-                {this.props.twoComponent}
-            <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
-        )
-    }
-}
-</code></pre>
-<p>&#x6211;&#x4EEC;&#x770B;&#x5230;B&#x7EC4;&#x4EF6;&#x7684; <code>twoComponent</code> &#x662F;&#x76F4;&#x63A5; <code>this.props.oneComponent</code> &#x5E76;&#x6CA1;&#x6709;&#x5BF9; <code>this.props.oneComponent</code> &#x505A;&#x4EFB;&#x4F55;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x591A;&#x5C42;&#x7EA7;&#x4F20;&#x9012;&#x662F;&#x53EF;&#x4EE5;&#x7684;&#x3002;</p>
-<p>&#x5C3D;&#x7BA1;&#x5982;&#x6B64;&#xFF0C;&#x4ECD;&#x7136;&#x5E0C;&#x671B;&#x5927;&#x5BB6;&#x5C3D;&#x53EF;&#x80FD;&#x5C11;&#x7528;&#x591A;&#x5C42;&#x7EA7;&#x4F20;&#x9012;&#x3002;</p>
-<h3 id="&#x6700;&#x540E;">&#x6700;&#x540E;</h3>
-<ol>
-<li>&#x5C5E;&#x6027;&#x4F20;&#x9012;&#x7EC4;&#x4EF6;&#xFF0C;&#x5C5E;&#x6027;&#x4F20;&#x9012; <code>JSX</code> &#x7247;&#x6BB5; &#x5FC5;&#x987B;&#x51C6;&#x5B88;&#x5C5E;&#x6027;&#x540D;&#x7684;&#x7EA6;&#x5B9A;: &#x4EE5; <code>Component</code>&#x7ED3;&#x5C3E;</li>
-<li>&#x4F7F;&#x7528;&#x7684;&#x65F6;&#x5019;&#x8DEF;&#x5F84;&#x7684;&#x7EA6;&#x5B9A;&#xFF0C;&#x5199;&#x5168;&#x8DEF;&#x5F84; <code>this.props.xxComponent</code> &#x6216; <code>props.xxComponent</code></li>
-<li><code>children</code> &#x5728;&#x4F7F;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E5F;&#x5FC5;&#x987B;&#x5199;&#x5168;&#x8DEF;&#x5F84; <code>this.props.children</code> / <code>props.children</code></li>
-<li>&#x591A;&#x5C42;&#x7EA7;&#x4F20;&#x9012;&#x7EC4;&#x4EF6;/ <code>JSX</code> &#x7247;&#x6BB5;&#x7684;&#x652F;&#x6301;&#x5F88;&#x6709;&#x9650;&#xFF0C;&#x5E94;&#x8BE5;&#x907F;&#x514D;&#x4F7F;&#x7528;</li>
-</ol>
+                                <h2 id="&#x539F;&#x751F;&#x7EC4;&#x4EF6;&#x6269;&#x5C55;">&#x539F;&#x751F;&#x7EC4;&#x4EF6;&#x6269;&#x5C55;</h2>
+<p>TODO</p>
 
                                 
                                 </section>
@@ -788,12 +662,12 @@
 
             
                 
-                <a href="平台判断.html" class="navigation navigation-prev " aria-label="Previous page: 平台判断">
+                <a href="第三方组件库扩展-手动对齐（二）.html" class="navigation navigation-prev " aria-label="Previous page: 手动对齐（二）">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="外部JSX片段.html" class="navigation navigation-next " aria-label="Next page: 外部JSX片段">
+                <a href="Alita组件库.html" class="navigation navigation-next " aria-label="Next page: Alita组件库">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -804,7 +678,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"属性传递JSX&组件","level":"1.7","depth":1,"next":{"title":"外部JSX片段","level":"1.8","depth":1,"path":"外部JSX片段.md","ref":"./外部JSX片段.md","articles":[]},"previous":{"title":"平台判断","level":"1.6","depth":1,"path":"平台判断.md","ref":"./平台判断.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"属性传递JSX&组件.md","mtime":"2019-09-18T07:58:59.476Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-30T07:29:27.520Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"原生组件扩展","level":"1.19","depth":1,"next":{"title":"Alita组件库","level":"1.20","depth":1,"path":"Alita组件库.md","ref":"./Alita组件库.md","articles":[]},"previous":{"title":"手动对齐（二）","level":"1.18.3","depth":2,"path":"第三方组件库扩展-手动对齐（二）.md","ref":"./第三方组件库扩展-手动对齐（二）.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"原生组件扩展.md","mtime":"2019-10-30T07:20:56.158Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-30T07:29:27.520Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
