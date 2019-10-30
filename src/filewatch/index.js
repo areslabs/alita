@@ -72,7 +72,7 @@ function successLog() {
     console.log(`  • npm install`.black)
     console.log(`  • 开发者工具从 ${outdir} 导入项目`.black)
     console.log(`  • 从开发者工具构建npm： 工具 --> 构建npm`.black)
-    console.log(`    • 由于构建npm在导入项目之后，可能会出现找不到包的错误，此时需要重启开发者工具，或者重新导入项目`.warn)
+    console.log(`    • 由于构建npm在导入项目之后，可能会出现找不到包的错误，此时需要重启开发者工具，或者重新导入项目`.info)
     console.log('')
 }
 

@@ -21,7 +21,7 @@ export default function geneWXPackageJSON(wxName, dm) {
 
     let packagePath = OUT_DIR
     if (tranComp) {
-        // package.json 和miniprogram_npm 同级
+        // package.json 和miniprogram_dist 同级
         packagePath = path.resolve(OUT_DIR, "..")
     }
 
