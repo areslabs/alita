@@ -30,7 +30,20 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * [动画](https://areslabs.github.io/alita/%E5%8A%A8%E7%94%BB.html)
 * [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)
 * [支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
-* 支持第三方/自定义组件库扩展， 扩展方式[详见](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
+* [支持小程序分包](https://areslabs.github.io/alita/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%88%86%E5%8C%85%E9%9B%86%E6%88%90.html)
+
+## Alita限制
+主要以下几个方面的要求和限制， 在您决定选用Alita作为跨端解决方案时，需要知晓如下的Alita限制。
+
+* 转化之后的小程序，必须符合小程序的规范，比如最终压缩的代码小于2m，分包8m，路由深度不大于5层等。另外小程序页面需要配置在静态json文件中，
+   限制了alita的路由必须是静态可分析的，所以alita只支持[`@areslabs/router`](https://areslabs.github.io/alita/%E8%B7%AF%E7%94%B1.html)
+
+* Alita相比其他**编译时**方案，大大解放了React语法的自由，但是出于潜在的性能考虑，Alita选用了微信小程序自定义组件来对齐React组件，这又带来了
+   Alita语法上的一些限制。
+    
+以上2点要求和限制[详见 要求与限制文档](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， 另外
+   
+* 现阶段，Alita并不会去处理项目中的：node_modules目录。 对应第三方包，可能需要手动去处理。 参考[npm包说明](https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html)，[第三方组件库扩展](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 
 
 ## Alita 原理相关
 1. Alita使用运行时React语法处理方案，区别现有社区使用的编译时方案，对React语法的支持更加完备，具体请看：[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
@@ -96,7 +109,8 @@ alita命令有以下参数：
 3. -o  转化生成的小程序源代码目录
 4. --config 指定配置文件
 5. --watch 监听模式
-6. --comp 转化RN组件，而不是整个项目
+6. --comp 转化RN组件，而不是整个项目， 配合 --comp，一般有 --wxName 指定小程序报名，[详情](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95-%E5%91%BD%E4%BB%A4%E8%BD%AC%E5%8C%96.html)
+   
 
 ## Examples
 以下提供了一些样例代码以及他们转化出来的小程序代码。 当然你完全可以选择其他小程序源码输出目录，自行转化。
@@ -120,22 +134,6 @@ alita命令有以下参数：
 
 [SubpackagesDemo](https://github.com/areslabs/alita/tree/master/examples/SubpackagesDemo)， 通过[小程序分包集成的方式](https://areslabs.github.io/alita/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%88%86%E5%8C%85%E9%9B%86%E6%88%90.html)，集成的小程序包
 
-
-## 要求与限制
-主要有3个方面的要求和限制
-
-1. 转化之后的小程序，必须符合小程序的规范， 比如最终压缩的代码小于4m，分包8m， 路由深度不大于5层等。
-
-2. 根据这篇[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)，其实
-   Alita在JSX语法上的限制是很少的，但是由于Alita在处理自定义组件的时候采用的是小程序自定义组件映射的方式，这两种自定义组件的实现存在一些差异，导致Alita会有一些框架层面的
-   限制，详见[要求与限制](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， [静态限制](https://areslabs.github.io/alita/%E9%9D%99%E6%80%81%E9%99%90%E5%88%B6.html)
-
-3. 如果使用了第三方React Native组件，需要使用[自定义组件库扩展](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 方式进行扩展
-
-## 关于第三方包/组件库，原生组件
-Alita并不能直接转化第三方库组件库，RN原生扩展组件。需要你预先在微信小程序平台对齐好相应组件，这一点很像你在原生平台上扩展RN组件，这很好理解，比如你在RN上扩展了一个原生平台组件`MyComp`，小程序并不知道这个`MyComp`为何物，需要你预先对齐好小程序版的`MyComp`，第三方组件库也是一样，也是需要手动的对齐处理。我们提供两种对齐方式，具体请[参考](https://areslabs.github.io/alita/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)。另外，我们还会发布`alita-ui`，她会处理好RN社区常用的一些组件，是直接被Alita支持的。
-
-微信小程序对npm包有特殊的要求，你需要确定你的包是否可以直接在小程序端使用，我们在[配置文件](https://areslabs.github.io/alita/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html)的`dependenciesMap`字段对npm包的使用做了详细的说明。
 
 ## 配置文件
 Alita可以通过参数`--config`指定一个配置文件。当你的项目只使用了React Native官方组件和API的时候，这个配置文件是可以忽略的，使用系统默认配置就可以，但是当你的React Native应用足够复杂的，就需要使用配置文件了。
