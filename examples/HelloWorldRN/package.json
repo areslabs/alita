@@ -9,8 +9,9 @@
   },
   "dependencies": {
     "@areslabs/hello-rn": "^1.0.2",
-    "@areslabs/hi-rn": "^1.0.2",
+    "@areslabs/hi-rn": "^1.0.5",
     "@areslabs/router": "^1.0.1",
+    "@areslabs/stringutil-rn": "^1.0.1",
     "@areslabs/wx-animated": "^1.0.12",
     "prop-types": "^15.7.2",
     "react": "16.8.3",

@@ -149,11 +149,11 @@
 
                 <MyStyleComp diuu="{{DIUU00050}}" style="{{t.s(DIUU00050style)}}" wx:if="{{DIUU00050style !== false}}" />
 
-                <Hi name="Yvette" textStyle="{{DIUU00051textStyle}}" diuu="{{DIUU00051}}" style="{{t.s(DIUU00051style)}}" />
+                <Hi name="Yvette" textStyle="{{DIUU00051textStyle}}" textPress="{{DIUU00051textPress}}" diuu="{{DIUU00051}}" style="{{t.s(DIUU00051style)}}" />
 
                 <Hello diuu="{{DIUU00052}}" style="{{t.s(DIUU00052style)}}" wx:if="{{DIUU00052style !== false}}" />
 
-                
+
             </WXScrollView>
   </template>
  
