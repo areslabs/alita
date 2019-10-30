@@ -209,6 +209,89 @@ export function getRNCompList() {
     })
 }
 
+/**
+ *
+ * @param version
+ */
+export function buildDefaultDependencies(version) {
+    const r = []
+    const allKeys = Object.keys(RNWXLIBMaps)
+    for(let i = 0; i < allKeys.length; i ++) {
+        const k = allKeys[i]
+        const v = RNWXLIBMaps[k]
+
+        if (k === 'react-native') {
+            r.push({
+                name: k,
+                wxName: v,
+                wxVersion: version,
+
+                compLists: getRNDefaultCompList()
+            })
+        } else {
+            r.push({
+                name: k,
+                wxName: v,
+                wxVersion: version,
+            })
+        }
+    }
+    return r
+}
+
+/**
+ * 获取RN的组件配置
+ * @returns {any[]}
+ */
+export function getRNDefaultCompList() {
+    const allRNComps = Array.from(RNCOMPSET)
+    return allRNComps.map(comp => {
+        if (comp === 'FlatList') {
+            return {
+                name: `WX${comp}`,
+                path: `/component/WX${comp}/index`,
+                jsxProps: {
+                    ListHeaderComponent: 'ListHeaderComponentCPT',
+                    ListFooterComponent: 'ListFooterComponentCPT',
+                    ListEmptyComponent: 'ListEmptyComponentCPT',
+                    renderItem: 'renderItemCPT',
+                    ItemSeparatorComponent: 'ItemSeparatorCompoCPT'
+                },
+            }
+        }
+
+        if (comp === 'SectionList') {
+            return {
+                name: `WX${comp}`,
+                path: `/component/WX${comp}/index`,
+                jsxProps: {
+                    renderSectionHeader: 'renderSectionHeaderCPT',
+                    renderSectionFooter: 'renderSectionFooterCPT',
+                    renderItem: 'renderItemCPT',
+                    ListHeaderComponent: 'ListHeaderComponentCPT',
+                    ListFooterComponent: 'ListFooterComponentCPT',
+                    ListEmptyComponent: 'ListEmptyComponentCPT',
+                    SectionSeparatorComponent: 'SectionSeparatorCoCPT'
+                },
+            }
+        }
+
+        if (comp === 'Picker') {
+            return {
+                name: `WX${comp}`,
+                path: `/component/WX${comp}/index`,
+                needOperateChildren: true,
+            }
+        }
+
+        return {
+            name: `WX${comp}`,
+            base: true,
+            path: `/component/WX${comp}/index`
+        }
+    })
+}
+
 
 export function emptyDir(dir, ignoreArr) {
     const allFiles = fse.readdirSync(dir)

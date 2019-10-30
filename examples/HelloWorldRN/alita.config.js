@@ -1,16 +1,40 @@
 module.exports = {
-    dependenciesMap: {
-        "@areslabs/hi-rn": "@areslabs/hi-wx",
-        "@areslabs/hello-rn": "@areslabs/hello-wx"
-    },
+    dependencies: [
+        {
+            name: '@areslabs/stringutil-rn',
+            wxName: '@areslabs/stringutil-wx',
+            wxVersion: '1.0.0'
+        },
 
-
-    extCompLibs: [
         {
             name: '@areslabs/hi-rn',
+            wxName: '@areslabs/hi-wx',
             compLists: [
-                'Hi'
+                {
+                    name: 'Hi',
+                    path: '/hi',
+                    base: true
+                }
+            ]
+        },
+
+        {
+            name: '@areslabs/hello-rn',
+            wxName: '@areslabs/hello-wx',
+            compLists: [
+                {
+                    name: 'Hello',
+                    path: '/src/index'
+                },
+                {
+                    name: 'HelloRN',
+                    path: '/src/HelloRN'
+                },
+                {
+                    name: 'HelloWX',
+                    path: '/src/HelloWX'
+                }
             ]
         }
-    ]
+    ],
 }

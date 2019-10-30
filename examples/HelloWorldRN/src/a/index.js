@@ -31,7 +31,9 @@ import PlatformComp from './PlatformComp'
 import MyHoc from './MyHoc'
 import styles from './styles';
 import Hi from '@areslabs/hi-rn'
-import Hello from '@areslabs/hello-rn/index'
+import {Hello} from '@areslabs/hello-rn/index'
+
+import {camelCase} from '@areslabs/stringutil-rn'
 
 
 
@@ -91,7 +93,7 @@ export default class A extends Component {
     }
 
     componentDidMount() {
-        console.log('A componentDidMount:', Platform.OS)
+        console.log('A componentDidMount:', Platform.OS, camelCase("Yan Kang"))
     }
 
     componentDidUpdate() {
@@ -223,11 +225,17 @@ export default class A extends Component {
 
                 <MyStyleComp/>
 
-                <Hi name="Yvette" style={styles.item} textStyle={styles.itemText}/>
+                <Hi name="Yvette"
+                    style={styles.item}
+                    textStyle={styles.itemText}
+                    textPress={() => {
+                        console.log('hihi!!! textPress')
+                    }}
+                />
 
                 <Hello name="y5g" style={[styles.item, {borderBottomWidth: 0}]} textStyle={styles.itemText}/>
 
-                
+
             </ScrollView>
         )
     }

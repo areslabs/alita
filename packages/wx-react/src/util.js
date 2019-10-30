@@ -17,21 +17,6 @@ export function getPropsMethod(wxInst, key) {
     }
 }
 
-/**
- * onX
- * @param name
- * @returns {boolean}
- */
-export function isEventProp(name) {
-    if (!name || name.length <= 3) return false;
-    const trCode = name.charCodeAt(2);
-    return name.charCodeAt(0) === 111
-        && name.charCodeAt(1) === 110
-        && trCode >= 65
-        && trCode <= 90;
-}
-
-
 // 外层占位View， 作用是撑满小程序自定义组件生成的View
 export const DEFAULTCONTAINERSTYLE = '_5_'
 
@@ -149,4 +134,36 @@ export function cleanPageComp(pageComp) {
     recursiveGetC(pageComp, allChildren)
     invokeWillUnmount(allChildren)
 }
+
+export function reactCompHelper(obj) {
+    obj.properties = {
+        ...obj.properties,
+        diuu: null,
+    }
+
+    const rawAttached = obj.attached
+    obj.attached = function () {
+        const rawData = this.data
+        Object.defineProperty(this, 'data', {
+            get: function () {
+                const  compInst = instanceManager.getCompInstByUUID(rawData.diuu);
+                return {
+                    ...rawData,
+                    ...compInst.props
+                }
+            },
+        })
+        rawAttached && rawAttached.call(this)
+        instanceManager.setWxCompInst(this.data.diuu, this)
+    }
+
+    const rawDetached = obj.detached
+    obj.detached = function () {
+        rawDetached && rawDetached.call(this)
+        instanceManager.removeUUID(this.data.diuu)
+    }
+
+    return obj
+}
+
 

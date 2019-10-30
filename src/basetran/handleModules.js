@@ -10,6 +10,7 @@ import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import fse from 'fs-extra'
 import {isStaticRes, RNWXLIBMaps} from '../util/util'
+import isReactCompFile from '../util/isReactCompFile'
 import {RNCOMPSET} from "../constants";
 const npath = require('path')
 const colors = require('colors');
@@ -224,14 +225,34 @@ function getRealSource(source, filepath) {
             .replace(global.execArgs.OUT_DIR, global.execArgs.INPUT_DIR)
             .replace(/\\/g, '/')
 
-        if(fse.existsSync(originalPath + '.js')
-            || fse.existsSync(originalPath + '.jsx')
-            || fse.existsSync(originalPath + '.wx.js')
-        ) {
-            return source
+        let finalSource = source
+        let isReactComp
+        if (fse.existsSync(originalPath + '.wx.js')) {
+            isReactComp = isReactCompFile(originalPath + '.wx.js')
+        } else if (fse.existsSync(originalPath + '.jsx')) {
+            isReactComp = isReactCompFile(originalPath + '.jsx')
+        } else if (fse.existsSync(originalPath + '.js')) {
+            isReactComp = isReactCompFile(originalPath + '.js')
         } else {
-            return source + '/index'
+            // 导入目录
+            const fileDicPath = npath.resolve(originalPath, 'index')
+            finalSource = source + '/index'
+
+            if (fse.existsSync(fileDicPath + '.wx.js')) {
+                isReactComp = isReactCompFile(fileDicPath + '.wx.js')
+            } else if (fse.existsSync(fileDicPath + '.jsx')) {
+                isReactComp = isReactCompFile(fileDicPath + '.jsx')
+            } else if (fse.existsSync(fileDicPath + '.js')) {
+                isReactComp = isReactCompFile(fileDicPath + '.js')
+            }
+
         }
+
+        if (isReactComp) {
+            finalSource = finalSource + '.comp'
+        }
+
+        return finalSource
     } else {
         return source
     }
@@ -269,7 +290,8 @@ function getImagePath(filepath, source) {
  * @param rnName
  */
 function getWxNpmPackageName(rnName) {
-    const dm = global.execArgs.configObj.dependenciesMap
+    // deprecated
+    const dm = global.execArgs.dependenciesMap || global.execArgs.configObj.dependenciesMap
 
     for(let key in dm) {
         if (dm[key] === false) continue

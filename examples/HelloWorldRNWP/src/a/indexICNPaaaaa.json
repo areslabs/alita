@@ -11,8 +11,8 @@
 		"MyStyleComp": "./MyStyleComp",
 		"PlatformComp": "./PlatformComp",
 		"MyHoc": "./MyHoc",
-		"Hi": "@areslabs/hi-wx/Hi/index",
-		"Hello": "@areslabs/hello-wx/index",
+		"Hi": "@areslabs/hi-wx/hi",
+		"Hello": "@areslabs/hello-wx/src/index",
 		"ICNPaaaaa": "indexICNPaaaaa",
 		"ICNPaaaab": "indexICNPaaaab",
 		"ICNPaaaac": "indexICNPaaaac"

@@ -11,12 +11,19 @@ import fse from 'fs-extra'
 /**
  * 生成微信小程序package.json
  */
-export default function geneWXPackageJSON() {
+export default function geneWXPackageJSON(wxName, dm) {
     const {
         INPUT_DIR,
         configObj,
         OUT_DIR,
+        tranComp
     } = global.execArgs
+
+    let packagePath = OUT_DIR
+    if (tranComp) {
+        // package.json 和miniprogram_dist 同级
+        packagePath = path.resolve(OUT_DIR, "..")
+    }
 
 
     const packJSONPath = path.resolve(INPUT_DIR, configObj.packageJSONPath)
@@ -27,7 +34,7 @@ export default function geneWXPackageJSON() {
         if (!pack.name) {
             console.log('package.json文件缺少name字段'.warn)
         }
-        newPack.name = pack.name
+        newPack.name = wxName || pack.name
         newPack.version = pack.version || '1.0.0'
 
         global.execArgs.packageName = pack.name || ''
@@ -35,10 +42,10 @@ export default function geneWXPackageJSON() {
         const allDepKeys = Object.keys(pack.dependencies || {})
         const newDep = {}
         allDepKeys.forEach(depKey => {
-            if (configObj.dependenciesMap[depKey] === false) {
+            if (dm[depKey] === false) {
                 // remove
-            } else if (configObj.dependenciesMap[depKey] !== undefined) {
-                const newDepValue = configObj.dependenciesMap[depKey]
+            } else if (dm[depKey] !== undefined) {
+                const newDepValue = dm[depKey]
 
                 if (typeof newDepValue === 'string') {
                     newDep[newDepValue] = pack.dependencies[depKey]
@@ -47,12 +54,17 @@ export default function geneWXPackageJSON() {
                     newDep[name] = version
                 }
             }  else {
+
+                if (!depKey.startsWith('@areslabs')) {
+                    console.log(`${depKey} 未指定微信小程序版本，请确认此包在小程序环境运行正常！`.warn)
+                }
+                
                 newDep[depKey] = pack.dependencies[depKey]
             }
         })
         newPack.dependencies = newDep
         fse.writeFileSync(
-            path.resolve(OUT_DIR, 'package.json'),
+            path.resolve(packagePath, 'package.json'),
             JSON.stringify(newPack, null, '\t'),
         )
     } else {

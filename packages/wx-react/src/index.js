@@ -12,7 +12,7 @@ import WxNormalComp from './WxNormalComp'
 import tackleWithStyleObj, {parseElement, flattenStyle} from './tackleWithStyleObj'
 import styleType from './styleType'
 import instanceManager from './InstanceManager'
-import {getPropsMethod} from './util'
+import {getPropsMethod, reactCompHelper} from './util'
 import {unstable_batchedUpdates, renderPage, renderApp} from './UpdateStrategy'
 
 
@@ -40,7 +40,8 @@ export default {
     instanceManager,
     getPropsMethod,
     unstable_batchedUpdates,
-    renderApp
+    renderApp,
+    reactCompHelper
 }
 
 export {
@@ -59,7 +60,8 @@ export {
     instanceManager,
     getPropsMethod,
     unstable_batchedUpdates,
-    renderApp
+    renderApp,
+    reactCompHelper
 }
 export const h = createElement
 export const render = deprecated

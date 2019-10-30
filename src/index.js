@@ -10,11 +10,12 @@ import path from 'path'
 import getopts from 'getopts'
 import colors from 'colors'
 import fse, { exists } from 'fs-extra'
-import { getDependenciesMap, getRNCompList, emptyDir } from './util/util'
+import { getDependenciesMap, getRNCompList, emptyDir, buildDefaultDependencies } from './util/util'
 import packagz from '../package.json'
 import filewatch from './filewatch/index'
 import geneWXFileStruc from './util/geneWXFileStruc'
 import getExtCompPathMaps from './util/getExtCompPathMaps'
+import analyzingDependencies from './util/analyzingDependencies'
 import geneWXPackageJSON from './util/geneWXPackageJSON'
 import initProject from './util/initProject'
 import program from 'commander'
@@ -88,7 +89,8 @@ const options = getopts(process.argv, {
         v: 'version',
         config: 'config',
         beta: 'beta',
-        comp: 'component'
+        comp: 'component',
+        wxName: "wxName"
     },
 })
 
@@ -103,6 +105,10 @@ const DEFAULTCONFIG = {
     isFileIgnore: () => false,
     subDir: '/',
     packageJSONPath: './package.json',
+
+    /**
+     * deprecated
+     */
     dependenciesMap: getDependenciesMap('^1.0.0'),
     extCompLibs: [
         {
@@ -110,8 +116,9 @@ const DEFAULTCONFIG = {
             compDir: 'component',
             compLists: getRNCompList()
         }
-    ]
+    ],
 }
+
 
 function enterI() {
     if (process.argv.indexOf('-i') !== -1) {
@@ -147,7 +154,12 @@ if (enterO() && !options.outdir) {
     console.log('output dir must exists， check your -o argument'.error)
     process.exit()
 }
-const OUT_DIR = path.resolve(options.outdir)
+
+if (options.component && !options.wxName) {
+    console.log('--comp 需要配合 --wxName使用，来指定wx平台的包名！'.warn)
+}
+
+const OUT_DIR = path.resolve(options.outdir, options.component ? 'miniprogram_dist': '')
 
 console.log(`输入目录: ${INPUT_DIR}`.info)
 console.log(`输出目录: ${OUT_DIR}`.info)
@@ -170,9 +182,18 @@ let configObj = DEFAULTCONFIG
 if (fse.existsSync(CONFIGPATH)) {
     console.log('配置文件路径：'.info, CONFIGPATH)
     const userConfig = require(CONFIGPATH)
+
+    if (userConfig.dependenciesMap || userConfig.extCompLibs) {
+        console.log('\ndependenciesMap, extCompLibs配置项已经弃用！！！请使用dependencies替代，详情请参考文档。 \n'.warn)
+    }
+
     configObj = {
         ...DEFAULTCONFIG,
         ...userConfig,
+
+        /**
+         * deprecated
+         */
         dependenciesMap: {
             ...DEFAULTCONFIG.dependenciesMap,
             ...(userConfig.dependenciesMap || {})
@@ -182,6 +203,14 @@ if (fse.existsSync(CONFIGPATH)) {
             ...(userConfig.extCompLibs || [])
         ]
     }
+
+    if (userConfig.dependencies) {
+        configObj.dependencies = [
+            ...(buildDefaultDependencies('^1.0.0')),
+            ...userConfig.dependencies
+        ]
+    }
+
     main()
 } else {
     console.log('未发现配置文件，将使用默认配置'.info)
@@ -200,16 +229,56 @@ function main() {
         outdir: options.outdir
     }
 
-    global.execArgs = {
-        ...global.execArgs,
-        ...getExtCompPathMaps(configObj.extCompLibs)
+    if (configObj.dependencies) {
+        const {
+            dependenciesMap,
+            extCompPathMaps,
+            extChildComp,
+            extReactComp,
+            allBaseComp,
+            textComp,
+            jsxPropsMap
+        } = analyzingDependencies(configObj.dependencies)
+
+        // rn npm和wx npm包名映射
+        global.execArgs.dependenciesMap = dependenciesMap
+
+        // wx 组件名和路径的映射，方便生成小程序自定义组件的json文件
+        global.execArgs.extCompPathMaps = extCompPathMaps
+
+        // 需要操作children的RN组件，在转化的时候需要特殊处理，参考ScrollTabView
+        global.execArgs.extChildComp = extChildComp
+
+        // 所有配置在compLists，继承自非RNBaseComponent的组件，包括FlatList等
+        global.execArgs.extReactComp = extReactComp
+
+        // 所以继承RNBaseComponent的组件
+        global.execArgs.allBaseComp = allBaseComp
+
+        // 直接包裹文字的组件，需要特殊处理
+        global.execArgs.textComp = textComp
+
+        // 属性传递JSX的情况，需要特殊处理，参考FlatList的renderItem属性
+        global.execArgs.jsxPropsMap = jsxPropsMap
+
+        // 生成微信目录结构
+        geneWXFileStruc(OUT_DIR, options.component)
+
+        // 生成微信package.json文件
+        geneWXPackageJSON(options.wxName, dependenciesMap)
+    } else {
+        // deprecated
+        global.execArgs = {
+            ...global.execArgs,
+            ...getExtCompPathMaps(configObj.extCompLibs, configObj.dependenciesMap)
+        }
+
+        // 生成微信目录结构
+        geneWXFileStruc(OUT_DIR, options.component)
+
+        // 生成微信package.json文件
+        geneWXPackageJSON(options.wxName, configObj.dependenciesMap)
     }
-
-    // 生成微信目录结构
-    geneWXFileStruc(OUT_DIR)
-
-    // 生成微信package.json文件
-    geneWXPackageJSON()
 
     const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
     filewatch(ignored)

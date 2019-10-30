@@ -35,7 +35,8 @@ import PlatformComp from "./PlatformComp.comp"
 import MyHoc from "./MyHoc.comp"
 import styles from "./styles"
 import Hi from "@areslabs/hi-wx"
-import Hello from "@areslabs/hello-wx/index.comp"
+import { Hello } from "@areslabs/hello-wx/index"
+import { camelCase } from "@areslabs/stringutil-wx"
 import { history } from "@areslabs/wx-router"
 const item3 = h(
     "view",
@@ -123,7 +124,7 @@ export default class A extends Component {
     }
 
     componentDidMount() {
-        console.log("A componentDidMount:", Platform.OS)
+        console.log("A componentDidMount:", Platform.OS, camelCase("Yan Kang"))
     }
 
     componentDidUpdate() {
@@ -472,6 +473,9 @@ export default class A extends Component {
                 name: "Yvette",
                 style: styles.item,
                 textStyle: styles.itemText,
+                textPress: () => {
+                    console.log("hihi!!! textPress")
+                },
                 diuu: "DIUU00051"
             }),
             h(Hello, {

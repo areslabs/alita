@@ -19,7 +19,7 @@ const eventEmitter = new events.EventEmitter();
 const DONE_EVENT = 'DONE_EVENT'
 
 export default (ignored) => {
-    const {INPUT_DIR, watchMode} = global.execArgs
+    const {INPUT_DIR, watchMode, tranComp} = global.execArgs
 
     const fileSet = new Set([])
     const watcher = chokidar.watch(INPUT_DIR,
@@ -50,11 +50,15 @@ export default (ignored) => {
         })
         .on('ready', () => {
             eventEmitter.once(DONE_EVENT, () => {
-                if (watchMode) {
-                    successLog()
-                    console.log(`监听文件修改...`.info)
+
+                if (tranComp) {
+                    successCompLog()
                 } else {
                     successLog()
+                }
+
+                if (watchMode) {
+                    console.log(`监听文件修改...`.info)
                 }
             })
         })
@@ -68,6 +72,17 @@ function successLog() {
     console.log(`  • npm install`.black)
     console.log(`  • 开发者工具从 ${outdir} 导入项目`.black)
     console.log(`  • 从开发者工具构建npm： 工具 --> 构建npm`.black)
-    console.log(`    • 由于构建npm在导入项目之后，可能会出现找不到包的错误，此时需要重启开发者工具，或者重新导入项目`.warn)
+    console.log(`    • 由于构建npm在导入项目之后，可能会出现找不到包的错误，此时需要重启开发者工具，或者重新导入项目`.info)
     console.log('')
 }
+
+function successCompLog() {
+    const {outdir} = global.execArgs
+    console.log('')
+    console.log('编译完成:'.info)
+    console.log(`  • cd ${outdir}`.black)
+    console.log(`  • npm publish`.black)
+    console.log(`  • 其他项目要使用这个npm包的时候， 需要正确配置其 alita.config.js`.black)
+    console.log('')
+}
+

@@ -1,13 +1,6 @@
-/**
- * Copyright (c) Areslabs.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import React, { h } from "@areslabs/wx-react"
 import { View, Text } from "@areslabs/wx-react-native"
+import { camelCase } from "@areslabs/stringutil-wx"
 export default class Hello extends React.Component {
     render() {
         return h(
@@ -23,19 +16,16 @@ export default class Hello extends React.Component {
                 {
                     style: this.props.textStyle,
                     onPress: () => {
-                        console.log("Hi ", this.props.name, " !")
+                        console.log("Hello: ", this.props.name, " !")
                         this.props.textPress && this.props.textPress()
                     },
                     original: "OuterText",
                     diuu: "DIUU00002"
                 },
-                "Hi ",
+                "Hello: ",
                 h("template", {
-                    datakey: "CTDK00002",
-                    tempVnode: this.props.name,
-                    "wx:if": "{{CTDK00002}}",
-                    is: "CTNP00001",
-                    data: "{{...CTDK00002}}"
+                    datakey: "CTDK00001",
+                    tempVnode: camelCase(this.props.name)
                 }),
                 "!"
             )

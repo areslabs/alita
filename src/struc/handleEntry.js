@@ -131,7 +131,7 @@ export default function (ast, filepath) {
 
 
                 const name = compAttri.value.expression.name
-                const projectRelativePath = moduleMap[name]
+                const projectRelativePath = moduleMap[name].replace('.comp', '') // 组件的.comp 后缀需要移除
                 compImportMap[name] = moduleMap[name]
 
                 historyMap[global.execArgs.packageName + key]
@@ -154,7 +154,7 @@ export default function (ast, filepath) {
                         const oe = child.openingElement
                         const compAttri = oe.attributes.filter(ele => ele.name.name === 'component')[0]
                         const name = compAttri.value.expression.name
-                        const projectRelativePath = moduleMap[name]
+                        const projectRelativePath = moduleMap[name].replace('.comp', '') // 组件的.comp 后缀需要移除
                         compImportMap[name] = moduleMap[name]
 
                         initRoute = projectRelativePath
@@ -360,7 +360,7 @@ App({})
 
     return {
         filepath,
-        allCompSet: new Set(Object.values(compImportMap))
+        allCompSet: new Set(Object.values(compImportMap).map(compPath => compPath.replace('.comp', '')))
     }
 }
 

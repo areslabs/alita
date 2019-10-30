@@ -9,7 +9,7 @@
 import path from 'path'
 import fse from 'fs-extra'
 
-export default function geneWXFileStruc(targetpath) {
+export default function geneWXFileStruc(targetpath, tranComp) {
     const mptempDir = path.resolve(__dirname, '..', '..', 'mptemp')
     fse.copySync(mptempDir, targetpath)
 
@@ -19,6 +19,12 @@ export default function geneWXFileStruc(targetpath) {
         // 不要覆盖已有project.config.json， 因为开发者可能手动修改过这个文件
         return
     }
+
+    if (tranComp) {
+        // 转化组件，不需要project.config.json 文件
+        return
+    }
+
 
     // 生成 project.config.json 文件
     const {name, appid} = global.execArgs.configObj

@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/hi-rn",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "rn hi",
   "main": "index.js",
   "scripts": {

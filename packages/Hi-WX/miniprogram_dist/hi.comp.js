@@ -12,8 +12,16 @@ const {VIEW} = styleType
 export default class Hi extends RNBaseComponent{
     getStyle(props) {
         return {
-            style: tackleWithStyleObj(props.style, VIEW),
+            style: tackleWithStyleObj([props.style, styles.container], VIEW),
             textStyle: tackleWithStyleObj(props.textStyle),
         }
     }
 }
+
+const styles = {
+    container: {
+        borderWidth: 2,
+        backgroundColor: 'yellow',
+    }
+}
+

@@ -12,8 +12,9 @@
 		"PlatformComp": "./PlatformComp",
 		"MyHoc": "./MyHoc",
 		"MyForceUpdate": "./MyForceUpdate",
-		"Hi": "@areslabs/hi-wx/Hi/index",
-		"Hello": "@areslabs/hello-wx/index",
+		"DicComp": "./DicComp/index",
+		"Hi": "@areslabs/hi-wx/hi",
+		"Hello": "@areslabs/hello-wx/src/index",
 		"ICNPaaaaa": "indexICNPaaaaa",
 		"ICNPaaaab": "indexICNPaaaab",
 		"ICNPaaaac": "indexICNPaaaac"

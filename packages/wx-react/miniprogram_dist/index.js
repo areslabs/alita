@@ -199,21 +199,6 @@ function getPropsMethod(wxInst, key) {
     }
 }
 
-/**
- * onX
- * @param name
- * @returns {boolean}
- */
-function isEventProp(name) {
-    if (!name || name.length <= 3) return false;
-    const trCode = name.charCodeAt(2);
-    return name.charCodeAt(0) === 111
-        && name.charCodeAt(1) === 110
-        && trCode >= 65
-        && trCode <= 90;
-}
-
-
 // 外层占位View， 作用是撑满小程序自定义组件生成的View
 const DEFAULTCONTAINERSTYLE = '_5_';
 
@@ -330,6 +315,37 @@ function cleanPageComp(pageComp) {
     const allChildren = [];
     recursiveGetC(pageComp, allChildren);
     invokeWillUnmount(allChildren);
+}
+
+function reactCompHelper(obj) {
+    obj.properties = {
+        ...obj.properties,
+        diuu: null,
+    };
+
+    const rawAttached = obj.attached;
+    obj.attached = function () {
+        const rawData = this.data;
+        Object.defineProperty(this, 'data', {
+            get: function () {
+                const  compInst = instanceManager.getCompInstByUUID(rawData.diuu);
+                return {
+                    ...rawData,
+                    ...compInst.props
+                }
+            },
+        });
+        rawAttached && rawAttached.call(this);
+        instanceManager.setWxCompInst(this.data.diuu, this);
+    };
+
+    const rawDetached = obj.detached;
+    obj.detached = function () {
+        rawDetached && rawDetached.call(this);
+        instanceManager.removeUUID(this.data.diuu);
+    };
+
+    return obj
 }
 
 /**
@@ -1591,7 +1607,7 @@ function updateRNBaseComponent(vnode, parentInst, parentContext, data, oldData, 
             } else {
                 data[`${diuuKey}onRefreshPassed`] = false;
             }
-        } else if (isEventProp(k)) {
+        } else if (typeof v === 'function') {
             inst.props[k] = reactEnvWrapper(v);
         } else {
             //避免小程序因为setData undefined报错
@@ -1862,7 +1878,7 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
 
         if (k === 'src') {
             data[`${vnodeDiuu}${k}`] = v.uri || v;
-        } else if (isEventProp(k)) {
+        } else if (typeof v === 'function') {
             eventProps.push(k);
         } else if (k === 'mode') {
             data[`${vnodeDiuu}${k}`] = resizeMode(v);
@@ -2568,10 +2584,11 @@ var index = {
     instanceManager,
     getPropsMethod,
     unstable_batchedUpdates,
-    renderApp
+    renderApp,
+    reactCompHelper
 };
 const h = createElement;
 const render$1 = deprecated;
 
 export default index;
-export { Component, FuncComponent, HocComponent, PureComponent, RNBaseComponent, WxNormalComp, createElement, flattenStyle, getPropsMethod, h, instanceManager, parseElement, render$1 as render, renderApp, renderPage, styleType, tackleWithStyleObj, unstable_batchedUpdates };
+export { Component, FuncComponent, HocComponent, PureComponent, RNBaseComponent, WxNormalComp, createElement, flattenStyle, getPropsMethod, h, instanceManager, parseElement, reactCompHelper, render$1 as render, renderApp, renderPage, styleType, tackleWithStyleObj, unstable_batchedUpdates };

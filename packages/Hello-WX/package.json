@@ -1,5 +1,10 @@
 {
 	"name": "@areslabs/hello-wx",
-	"version": "1.0.3",
-	"main": "index.js"
+	"version": "1.0.5",
+	"dependencies": {
+		"@areslabs/wx-prop-types": "^1.0.0",
+		"@areslabs/wx-react": "^1.0.0",
+		"@areslabs/wx-react-native": "^1.0.0",
+		"@areslabs/stringutil-wx": "1.0.0"
+	}
 }

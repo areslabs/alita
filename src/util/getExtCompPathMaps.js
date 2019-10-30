@@ -15,17 +15,17 @@
  * extChildComp： 需要处理children 为childrencpt的集合
  * extReactComp：一般来说对齐的组件 需要继承于 RNBaseComponent，但是有些复杂的组件需要继承于Component/PureComponent，比如FlatList
  * textComp: Text节点，一般来说只要官方的Text组件
- * allExtComp：所有组件，包括RN官方组件，配置在extCompLibs里的组件，这些组件在Alita转化的时候，会当做基本组件，基本组件的属性处理和自定义组件有一些区别
- * @param extCompLibs
- * @returns {{extCompPathMaps, extChildComp: Set, extReactComp: Set, allExtComp: Set, jsxPropsMap}}
+ * allBaseComp：所有基本组件，包括RN官方组件，基本组件和自定义组件 Alita在转化的时候有一些区别
+ *
+ * @returns {{extCompPathMaps, extChildComp: Set, extReactComp: Set, allBaseComp: Set, jsxPropsMap}}
  */
-export default function getExtCompPathMaps(extCompLibs) {
+export default function getExtCompPathMaps(extCompLibs, dm) {
     const extCompPathMaps = {}
     const jsxPropsMap = {}
     const extChildComp = new Set([])
     const extReactComp = new Set([])
     const textComp = new Set(['Text'])
-    const allExtComp = new Set([])
+    const allBaseComp = new Set([])
     for(let i = 0; i < extCompLibs.length; i ++) {
         const extLib = extCompLibs[i]
         const libName = extLib.name
@@ -37,14 +37,14 @@ export default function getExtCompPathMaps(extCompLibs) {
             compDir = compDir.charAt(compDir.length - 1) !== '/' ? compDir + '/' : compDir
         }
 
-        const wxLibName = getWxLibName(libName)
+        const wxLibName = getWxLibName(libName, dm)
 
         let compPathMap = {}
         for(let j = 0; j < extLib.compLists.length; j ++) {
             const compName = extLib.compLists[j]
             if (typeof compName === 'string') {
                 compPathMap[compName] = `${wxLibName}${compDir}${compName}/index`
-                allExtComp.add(compName)
+                allBaseComp.add(compName)
             } else {
                 const {
                     name,
@@ -61,6 +61,8 @@ export default function getExtCompPathMaps(extCompLibs) {
 
                 if (extendsComponent === true) {
                     extReactComp.add(name)
+                } else {
+                    allBaseComp.add(name)
                 }
 
                 if (jsxProps) {
@@ -71,7 +73,6 @@ export default function getExtCompPathMaps(extCompLibs) {
                     textComp.add(name)
                 }
 
-                allExtComp.add(name)
             }
 
         }
@@ -81,17 +82,14 @@ export default function getExtCompPathMaps(extCompLibs) {
         extCompPathMaps,
         extChildComp,
         extReactComp,
-        allExtComp,
+        allBaseComp,
         textComp,
         jsxPropsMap
     }
 }
 
-function getWxLibName(libName) {
-    const {
-        configObj,
-    } = global.execArgs
-    const dm = configObj.dependenciesMap
+function getWxLibName(libName, dm) {
+
     if (dm[libName] === undefined) {
         return libName
     } else if (typeof dm[libName] === 'string') {

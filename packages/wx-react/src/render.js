@@ -9,7 +9,7 @@
 import instanceManager from './InstanceManager'
 import geneUUID from './geneUUID'
 import tackleWithStyleObj from './tackleWithStyleObj'
-import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, isEventProp, ReactWxEventMap, getRealOc} from './util'
+import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, ReactWxEventMap, getRealOc} from './util'
 import { CPTComponent, FuncComponent, RNBaseComponent, HocComponent } from './AllComponent'
 
 import {UPDATE_EFFECT, INIT_EFFECT, UpdateState, ForceUpdate, mpRoot} from './constants'
@@ -530,7 +530,7 @@ function updateRNBaseComponent(vnode, parentInst, parentContext, data, oldData, 
             } else {
                 data[`${diuuKey}onRefreshPassed`] = false
             }
-        } else if (isEventProp(k)) {
+        } else if (typeof v === 'function') {
             inst.props[k] = reactEnvWrapper(v)
         } else {
             //避免小程序因为setData undefined报错
@@ -801,7 +801,7 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
 
         if (k === 'src') {
             data[`${vnodeDiuu}${k}`] = v.uri || v
-        } else if (isEventProp(k)) {
+        } else if (typeof v === 'function') {
             eventProps.push(k)
         } else if (k === 'mode') {
             data[`${vnodeDiuu}${k}`] = resizeMode(v)

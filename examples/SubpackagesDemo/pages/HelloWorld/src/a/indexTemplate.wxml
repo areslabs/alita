@@ -99,7 +99,7 @@
     <view class="view" style="{{t.s(DIUU00046style)}}"><view class="text" style="{{t.s(DIUU00047style)}}">c</view></view>
   </template>
  
- <template name="ITNP00054">
+ <template name="ITNP00055">
     <WXScrollView contentContainerStyle="{{DIUU00013contentContainerStyle}}" diuu="{{DIUU00013}}" style="{{t.s(DIUU00013style)}}" refreshing="{{DIUU00013refreshing}}" onRefreshPassed="{{DIUU00013onRefreshPassed}}">
                 <view class="view" style="{{t.s(DIUU00014style)}}">
                     <WXButton color="#fff" title="PUSH C PAGE" diuu="{{DIUU00015}}" style="{{t.s(DIUU00015style)}}" />
@@ -151,9 +151,11 @@
 
                 <MyForceUpdate diuu="{{DIUU00051}}" style="{{t.s(DIUU00051style)}}" wx:if="{{DIUU00051style !== false}}" />
 
-                <Hi name="Yvette" textStyle="{{DIUU00052textStyle}}" diuu="{{DIUU00052}}" style="{{t.s(DIUU00052style)}}" />
+                <DicComp diuu="{{DIUU00052}}" style="{{t.s(DIUU00052style)}}" wx:if="{{DIUU00052style !== false}}" />
 
-                <Hello diuu="{{DIUU00053}}" style="{{t.s(DIUU00053style)}}" wx:if="{{DIUU00053style !== false}}" />
+                <Hi name="Yvette" textStyle="{{DIUU00053textStyle}}" diuu="{{DIUU00053}}" style="{{t.s(DIUU00053style)}}" />
+
+                <Hello diuu="{{DIUU00054}}" style="{{t.s(DIUU00054style)}}" wx:if="{{DIUU00054style !== false}}" />
 
                 
             </WXScrollView>
