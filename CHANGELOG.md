@@ -1,3 +1,31 @@
+# [1.3.0](https://github.com/areslabs/alita/compare/1.2.10...1.3.0) (2019-10-30)
+
+* 简化 第三方库/组件 接入的配置
+* 完善增强 --comp 参数，方便直接用alita命令转化纯JS组件
+* 提供reactCompHelper API，方便手动对齐
+* 完善简化 接入第三方库/组件 文档
+* 完善 配置文件 文档
+
+
+### Bug Fixes
+
+* **alita:** 修复 组件 render null 没有jsx标签的时候 判断错误的bug ([356bac6](https://github.com/areslabs/alita/commit/356bac6))
+* **alita:** 修复--comp 参数下 code应该转入miniprogram_dist ([ad65ae4](https://github.com/areslabs/alita/commit/ad65ae4))
+* **alita:** 修复判断是否是React文件的bug ([3f2a161](https://github.com/areslabs/alita/commit/3f2a161))
+
+
+### Features
+
+* **alita:** 完善--comp命令的支持 ([7176ace](https://github.com/areslabs/alita/commit/7176ace))
+* **alita:** 添加 对dependences配置项的完全支持 ([dd120ba](https://github.com/areslabs/alita/commit/dd120ba))
+* **alita:** 添加--wxName 配合--comp使用 ，指定小程序平台的包名 ([42f66d1](https://github.com/areslabs/alita/commit/42f66d1))
+* **alita:** 添加rn包没有映射时候的警告提示 ([8b3b496](https://github.com/areslabs/alita/commit/8b3b496))
+* **alita:** 移除 areslabs库的无效警告 ([331da1d](https://github.com/areslabs/alita/commit/331da1d))
+* **alita:** 简化配置项，Deprecated dependenciesMap extCompLibs。 启用dependencies配置项将其统一 ([a30baf6](https://github.com/areslabs/alita/commit/a30baf6))
+* **wx-react:** 提供 reactCompHelper方法，方便手动对齐组件 ([567b4ca](https://github.com/areslabs/alita/commit/567b4ca))
+
+
+
 ## [1.2.10](https://github.com/areslabs/alita/compare/1.2.9...1.2.10) (2019-10-24)
 
 1. 添加flow支持
