@@ -54,7 +54,11 @@ export default function geneWXPackageJSON(wxName, dm) {
                     newDep[name] = version
                 }
             }  else {
-                console.log(`${depKey} 未指定微信小程序版本，请确认此包在小程序环境运行正常！`.warn)
+
+                if (!depKey.startsWith('@areslabs')) {
+                    console.log(`${depKey} 未指定微信小程序版本，请确认此包在小程序环境运行正常！`.warn)
+                }
+                
                 newDep[depKey] = pack.dependencies[depKey]
             }
         })
