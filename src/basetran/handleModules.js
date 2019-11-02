@@ -55,6 +55,7 @@ export default function (ast, info) {
         }
     })
 
+    let hasAddedH = false
     traverse(ast, {
         exit: path => {
             // import react
@@ -65,17 +66,25 @@ export default function (ast, info) {
 
                 const spes = path.node.specifiers
 
-                // h = createElement
-                spes.push(t.importSpecifier(t.identifier('h'), t.identifier('h')))
+
+                if (!hasAddedH) {
+                    spes.push(t.importSpecifier(t.identifier('h'), t.identifier('h')))
+                    hasAddedH = true
+                }
+
                 return
             }
             // require react
             if (isTopRequire(path, 'react')) {
                 path.node.arguments[0].value = RNWXLIBMaps['react']
 
-                insertIntoRequireBody(path, t.variableDeclaration([
-                    t.variableDeclarator(t.identifier('h'), t.memberExpression(t.identifier('React'), t.identifier('h')))
-                ], 'const'))
+                if (!hasAddedH) {
+                    insertIntoRequireBody(path, t.variableDeclaration('const', [
+                        t.variableDeclarator(t.identifier('h'), t.memberExpression(t.identifier('React'), t.identifier('h')))
+                    ]))
+
+                    hasAddedH = true
+                }
 
                 return
             }
@@ -295,7 +304,7 @@ function isTopRequire(nodepath, moduleName) {
 
 
 function insertIntoRequireBody(nodepath, newnode) {
-    const ppp = nodepath.parentPath.parentPath.parentPath
+    const ppp = nodepath.parentPath.parentPath
     ppp.insertAfter(newnode)
 }
 
