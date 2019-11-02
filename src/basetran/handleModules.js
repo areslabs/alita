@@ -55,45 +55,26 @@ export default function (ast, info) {
         }
     })
 
-    let hasAddedH = false
     traverse(ast, {
         exit: path => {
-            // import react
+            // import 定义 React
             if (path.type === 'ImportDeclaration'
                 && path.node.source.value === 'react'
+                && isImportDecReact(path)
             ) {
-                path.node.source.value = RNWXLIBMaps['react']
-
-                const spes = path.node.specifiers
-
-
-                if (!hasAddedH) {
-                    spes.push(t.importSpecifier(t.identifier('h'), t.identifier('h')))
-                    hasAddedH = true
-                }
-
-                return
+                const hDec = t.identifier('const h = React.h')
+                path.insertAfter(hDec)
             }
-            // require react
-            if (isTopRequire(path, 'react')) {
-                path.node.arguments[0].value = RNWXLIBMaps['react']
-
-                if (!hasAddedH) {
-                    insertIntoRequireBody(path, t.variableDeclaration('const', [
-                        t.variableDeclarator(t.identifier('h'), t.memberExpression(t.identifier('React'), t.identifier('h')))
-                    ]))
-
-                    hasAddedH = true
-                }
-
-                return
+            // require 定义 React
+            if (isTopRequire(path, 'react') && isRequireDecReact(path)) {
+                const hDec = t.identifier('const h = React.h')
+                path.parentPath.parentPath.insertAfter(hDec)
             }
 
 
             if (path.type === 'ImportDeclaration'
                 && path.node.source.value === 'react-native'
             ) {
-                path.node.source.value = RNWXLIBMaps['react-native']
 
                 const spes = path.node.specifiers
                 for(let i = 0; i< spes.length; i++) {
@@ -104,13 +85,9 @@ export default function (ast, info) {
                         spe.imported.name = `WX${name}`
                     }
                 }
-
-                return
             }
 
             if (isTopRequire(path, 'react-native')) {
-                path.node.arguments[0].value = RNWXLIBMaps['react-native']
-
                 const id = path.parentPath.node.id
                 if (id.type === 'ObjectPattern') {
                     id.properties.forEach(pro => {
@@ -124,7 +101,6 @@ export default function (ast, info) {
                 } else {
                     console.log(`${filepath.replace(global.execArgs.OUT_DIR, '')}： 需要使用解构的方式引入react-native组件!`.error)
                 }
-                return
             }
 
             // import 其他 配置在dependenciesMap的npm包
@@ -368,4 +344,13 @@ function getFinalSource(filepath, source) {
             }
         }
     }
+}
+
+function isImportDecReact(path) {
+    return path.node.specifiers.some(spe => spe.local.name === 'React')
+}
+
+function isRequireDecReact(path) {
+    const pp = path.parentPath
+    return pp.type === 'VariableDeclarator'&& pp.node.id.name === 'React'
 }
