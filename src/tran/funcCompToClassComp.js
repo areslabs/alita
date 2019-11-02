@@ -8,6 +8,7 @@
  
 import traverse from "@babel/traverse";
 import * as t from "@babel/types";
+import {miscNameToJSName} from '../util/util'
 
 const npath = require('path')
 
@@ -36,7 +37,7 @@ const npath = require('path')
  * @returns {*}
  */
 export default function (ast, info) {
-    let compName = npath.basename(info.filepath, '.js')
+    let compName = npath.basename(miscNameToJSName(info.filepath), '.js')
     compName = compName.substring(0, 1).toUpperCase() + compName.substring(1)
 
     traverse(ast, {

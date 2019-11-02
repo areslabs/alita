@@ -9,8 +9,22 @@
 import fse from 'fs-extra'
 import {isStaticRes} from "../util/util"
 import struc from "../struc"
+import {supportExtname} from '../constants'
 
 const path = require('path')
+
+// 如果存在.wx.js 那么 .js 的文件不用处理
+function hasWxFile(srcpath) {
+    const extname = path.extname(srcpath)
+    if (supportExtname.has(extname)) {
+        const wxSrcpath = srcpath.replace(extname, `.wx${extname}`)
+        if (fse.existsSync(wxSrcpath)) {
+            return true
+        }
+    }
+
+    return false
+}
 
 /**
  * 新增一个文件的处理，按照如下规则
@@ -37,13 +51,12 @@ export default async function addFile(filepath) {
         return []
     }
 
-    // 如果存在.wx.js 那么 .js 的文件不用处理
-    if (srcpath.endsWith('.js')) {
-        const wxSrcpath = srcpath.replace('.js', '.wx.js')
-        if (fse.existsSync(wxSrcpath)) {
-            return []
-        }
+    const hasWx = hasWxFile(srcpath)
+    if (hasWx) {
+        console.log(`${srcpath.replace(global.execArgs.INPUT_DIR, '')} 检测到有wx后缀文件存在，忽略！`.info)
+        return []
     }
+
 
     // 如果 xx@3x.png 存在，则忽略xx@2x.png， xx.png
     if (isStaticRes(srcpath)) {

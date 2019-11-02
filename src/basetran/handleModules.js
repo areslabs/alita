@@ -13,7 +13,7 @@ import {isStaticRes, RNWXLIBMaps} from '../util/util'
 import isReactCompFile from '../util/isReactCompFile'
 import {RNCOMPSET} from "../constants";
 const npath = require('path')
-const colors = require('colors');
+
 
 /**
  * 1. 移除unused的import/require
@@ -113,7 +113,7 @@ export default function (ast, info) {
                         }
                     })
                 } else {
-                    console.log(colors.error(`需要使用解构的方式引入react-native组件， error file:, ${filepath}`))
+                    console.log(`${filepath.replace(global.execArgs.OUT_DIR, '')}： 需要使用解构的方式引入react-native组件!`.error)
                 }
                 return
             }
@@ -220,39 +220,7 @@ function getRealSource(source, filepath) {
         || source.startsWith('./')
         || source.startsWith('../')
     ) {
-        const originalPath = npath
-            .resolve(npath.dirname(filepath), source)
-            .replace(global.execArgs.OUT_DIR, global.execArgs.INPUT_DIR)
-            .replace(/\\/g, '/')
-
-        let finalSource = source
-        let isReactComp
-        if (fse.existsSync(originalPath + '.wx.js')) {
-            isReactComp = isReactCompFile(originalPath + '.wx.js')
-        } else if (fse.existsSync(originalPath + '.jsx')) {
-            isReactComp = isReactCompFile(originalPath + '.jsx')
-        } else if (fse.existsSync(originalPath + '.js')) {
-            isReactComp = isReactCompFile(originalPath + '.js')
-        } else {
-            // 导入目录
-            const fileDicPath = npath.resolve(originalPath, 'index')
-            finalSource = source + '/index'
-
-            if (fse.existsSync(fileDicPath + '.wx.js')) {
-                isReactComp = isReactCompFile(fileDicPath + '.wx.js')
-            } else if (fse.existsSync(fileDicPath + '.jsx')) {
-                isReactComp = isReactCompFile(fileDicPath + '.jsx')
-            } else if (fse.existsSync(fileDicPath + '.js')) {
-                isReactComp = isReactCompFile(fileDicPath + '.js')
-            }
-
-        }
-
-        if (isReactComp) {
-            finalSource = finalSource + '.comp'
-        }
-
-        return finalSource
+        return getFinalSource(filepath, source)
     } else {
         return source
     }
@@ -329,4 +297,66 @@ function isTopRequire(nodepath, moduleName) {
 function insertIntoRequireBody(nodepath, newnode) {
     const ppp = nodepath.parentPath.parentPath.parentPath
     ppp.insertAfter(newnode)
+}
+
+/**
+ * 获取 最终的导入路径，如果导入的是目录，需要补全index
+ * 如果导入的是组件，需要添加.comp
+ * @param filepath
+ * @param source
+ */
+function getFinalSource(filepath, source) {
+    const originalPath = npath
+        .resolve(npath.dirname(filepath), source)
+        .replace(global.execArgs.OUT_DIR, global.execArgs.INPUT_DIR)
+        .replace(/\\/g, '/')
+
+    const extname = npath.extname(filepath)
+
+    const indexFiles = npath.resolve(originalPath, 'index')
+
+    let fileSufix = '.js'
+    if (extname === '.ts' || extname === '.tsx') {
+        fileSufix = '.ts'
+    }
+
+    const allFiles = [
+        `${originalPath}.wx${fileSufix}`,
+        `${originalPath}${fileSufix}`,
+        `${originalPath}.wx${fileSufix}x`,
+        `${originalPath}${fileSufix}x`
+    ]
+
+
+
+    for(let i = 0; i < allFiles.length; i ++ ) {
+        const filePath = allFiles[i]
+
+        if (fse.existsSync(filePath)) {
+            if (isReactCompFile(filePath)) {
+                return `${source}.comp`
+            } else {
+                return source
+            }
+        }
+    }
+
+    const allIndexFiles = [
+        `${indexFiles}.wx${fileSufix}`,
+        `${indexFiles}${fileSufix}`,
+        `${indexFiles}.wx${fileSufix}x`,
+        `${indexFiles}${fileSufix}x`
+    ]
+
+    for(let i = 0; i < allIndexFiles.length; i ++ ) {
+        const filePath = allIndexFiles[i]
+
+        if (fse.existsSync(filePath)) {
+            if (isReactCompFile(filePath)) {
+                return `${source}/index.comp`
+            } else {
+                return `${source}/index`
+            }
+        }
+    }
 }

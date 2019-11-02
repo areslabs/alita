@@ -7,14 +7,14 @@
  */
  
 import fse from "fs-extra";
-import {getRelativePath, RNWXLIBMaps} from '../util/util'
-const prettier = require("prettier");
+import {getRelativePath, RNWXLIBMaps, miscNameToJSName} from '../util/util'
+
 const path = require('path')
 
 
 export default function (info) {
-    let {filepath, outComp, entryFilePath} = info
-    filepath = filepath.replace('.wx.js', '.js')
+    const {filepath, outComp, entryFilePath} = info
+    const finalJSPath = miscNameToJSName(filepath)
 
     const outCompCode = `
 import {
@@ -23,11 +23,11 @@ import {
 Component(WxNormalComp())
     `
 
-    const compFilename = path.basename(filepath, '.js')
+    const compFilename = path.basename(finalJSPath, '.js')
 
     let entryRelativePath = ''
     if (entryFilePath) {
-        entryRelativePath = getRelativePath(filepath, entryFilePath)
+        entryRelativePath = getRelativePath(finalJSPath, entryFilePath)
     }
 
     const RNAppCode = (entryFilePath ? `import RNApp from "${entryRelativePath}"` : `const RNApp = {}`)
@@ -43,7 +43,7 @@ Component(WxNormalComp(CompMySelf, RNApp))
     for(let i = 0; i < outComp.length; i++) {
         const name = outComp[i]
 
-        const jspath = (name === 'render' ? filepath: filepath.replace('.js', `${name}.js`))
+        const jspath = (name === 'render' ? finalJSPath: finalJSPath.replace('.js', `${name}.js`))
         const jscode = (name === 'render' ? renderCompCode : outCompCode)
         fse.writeFileSync(
             jspath,

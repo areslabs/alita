@@ -8,7 +8,7 @@
 
 import path from 'path'
 import fse from 'fs-extra'
-import {RNCOMPSET} from '../constants'
+import {RNCOMPSET, supportExtname} from '../constants'
 
 const constStr = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -308,5 +308,16 @@ export function emptyDir(dir, ignoreArr) {
         }
 
         fse.removeSync(absolutePath)
+    }
+}
+
+export function miscNameToJSName(filepath) {
+    const extname = path.extname(filepath)
+
+    if (supportExtname.has(extname)) {
+        return filepath.replace(extname, '.js')
+            .replace('.wx.js', '.js')
+    } else {
+        return filepath
     }
 }

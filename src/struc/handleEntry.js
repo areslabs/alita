@@ -9,7 +9,7 @@
 import fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
-import {isStaticRes} from '../util/util'
+import {isStaticRes, miscNameToJSName} from '../util/util'
 import { geneReactCode } from "../util/uast";
 
 import basetran from '../basetran'
@@ -348,18 +348,18 @@ App({})
 
 
 
-    const entryCode = geneReactCode(ast)
+    const entryCode = geneReactCode(ast, npath.extname(filepath))
     const dirname = npath.dirname(filepath)
     fse.mkdirsSync(dirname)
+
+    const realFilePath = miscNameToJSName(filepath)
     fse.writeFileSync(
-        filepath,
+        realFilePath,
         entryCode
     )
-
-
-
+    
     return {
-        filepath,
+        realFilePath,
         allCompSet: new Set(Object.values(compImportMap).map(compPath => compPath.replace('.comp', '')))
     }
 }

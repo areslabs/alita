@@ -8,7 +8,8 @@
 
 import fse from 'fs-extra'
 import {getFileInfo, parseCode} from '../util/uast'
-import {isStaticRes, base64Encode} from '../util/util'
+import {miscNameToJSName} from '../util/util'
+import {supportExtname} from '../constants'
 import handleEntry from './handleEntry'
 import handleRF from './handleRF'
 import handleBF from './handleBF'
@@ -36,16 +37,19 @@ export default async function (srcpath, targetpath) {
         return []
     }
 
-    if (srcpath.endsWith('.js') || srcpath.endsWith('.jsx')) { // js 文件需要处理
+    const extname = path.extname(srcpath)
+    if (supportExtname.has(extname)) { // js/ts 文件需要处理
+
         const code = fse.readFileSync(srcpath).toString()
-        const ast = parseCode(code)
+        const ast = parseCode(code, extname)
 
         const {isEntry, isRF, isFuncComp, isRNEntry} = getFileInfo(ast)
+
         if (isRNEntry) return []
-        targetpath = targetpath.indexOf('.jsx') > 0 ? targetpath.replace('.jsx', '.js') : targetpath
+
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
             const entryResult = handleEntry(ast, targetpath)
-            entryFilePath = entryResult.filepath
+            entryFilePath = entryResult.realFilePath
             allCompSet = entryResult.allCompSet
             for (let i = 0; i < RFFileList.length; i++) {
                 const {ast, targetpath, srcpath, isFuncComp, done} = RFFileList[i]
@@ -56,7 +60,7 @@ export default async function (srcpath, targetpath) {
                     console.log(colors.error(`tran ${srcpath} error ! reason: `), e)
                 }
             }
-            return [targetpath]
+            return [entryResult.realFilePath]
         } else if (isRF) {
             if (tranComp) {
                 try {
@@ -94,7 +98,7 @@ export default async function (srcpath, targetpath) {
 }
 
 function isPageComp(targetpath, allCompSet) {
-    const originPath = targetpath
+    const originPath = miscNameToJSName(targetpath)
         .replace(global.execArgs.OUT_DIR + path.sep, '')
         .replace('.js', '')
         .replace(/\\/g, '/') // 考虑win平台

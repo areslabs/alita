@@ -13,23 +13,35 @@ import generator from '@babel/generator'
 import * as t from "@babel/types"
 
 
-export function parseCode(code) {
-    return parse(code, {
-        sourceType: "module",
-        plugins: [
+export function parseCode(code, extname) {
+    const plugins = [
             'jsx',
             'classProperties',
             'objectRestSpread',
             'optionalChaining',
             ['decorators', {decoratorsBeforeExport: true}],
-            'flow'
         ]
+
+    if (extname === '.ts' || extname === '.tsx') {
+        plugins.push('typescript')
+    } else {
+        plugins.push('flow')
+    }
+
+    return parse(code, {
+        sourceType: "module",
+        plugins
     })
 }
 
 
 const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
+
+
 const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
+const babelTSX = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: true, allExtensions: true}], {type: 'presets'})
+const babelTS = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: false, allExtensions: true}], {type: 'presets'})
+
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
 const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
@@ -53,7 +65,7 @@ export function geneJSXCode(ast) {
     return code
 }
 
-export function geneReactCode(ast) {
+export function geneReactCode(ast, extname) {
     let code = generator(ast, {
         comments: false,
         jsescOption: {
@@ -61,11 +73,19 @@ export function geneReactCode(ast) {
         },
     }).code
 
+    const presets = []
+    if (extname === '.tsx') {
+        presets.push(babelTSX)
+    } else if (extname === '.ts') {
+        presets.push(babelTS)
+    } else {
+        presets.push(babelFlow)
+    }
 
     code = babel.transformSync(code, {
         babelrc: false,
         configFile: false,
-        presets: [babelFlow],
+        presets,
         plugins: [
             babelDecorators,
             babelRestSpread,
@@ -77,15 +97,6 @@ export function geneReactCode(ast) {
     }).code
 
     return code
-}
-
-/**
- * for test
- * @param code
- */
-export function printAST(code) {
-    const ast = parseCode(code)
-    console.log(JSON.stringify(ast))
 }
 
 

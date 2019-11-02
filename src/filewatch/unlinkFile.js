@@ -9,9 +9,28 @@
 import fse from 'fs-extra';
 import addFile from './addFile';
 import { isStaticRes } from "../util/util";
+import {supportExtname} from '../constants'
 import getFiles from './getFiles';
 
 const path = require('path');
+
+
+function isHandleFile(srcPath) {
+    const extname = path.extname(srcPath)
+
+    return supportExtname.has(extname)
+}
+
+function isWxFile(srcPath) {
+    if (isHandleFile(srcPath)) {
+        const extname = path.extname(srcPath)
+        return srcPath.replace(extname, '').endsWith('.wx')
+    }
+
+    return false
+}
+
+
 
 /**
  * 删除一个文件的处理，按照如下规则
@@ -50,7 +69,6 @@ const path = require('path');
  * @param filePath
  * @returns {Promise<void>}
  */
-
 export default async function unlinkFile(filePath) {
     const { INPUT_DIR, OUT_DIR, configObj } = global.execArgs;
 
@@ -81,27 +99,25 @@ export default async function unlinkFile(filePath) {
             //删除目标文件
             await resolveStaticRes(srcPath, targetPath, 0);
         }
-    } else if (srcPath.endsWith('.js')) {
-
-        let allFiles = [];
-        if (srcPath.endsWith('.wx.js')) {
-            //删除的是 .wx.js
-            allFiles = await getFiles(targetPath, '.wx.js');
-            await removeFiles(allFiles);
-            if (fse.existsSync(srcPath.replace('.wx.js', '.js'))) {
-                //是否存在同名 .js 文件
-                await addFile(srcPath.replace('.wx.js', '.js'));
-            }
+    } else if (isWxFile(srcPath)) {
+        //删除的是 .wx.js
+        const extname = path.extname(srcPath)
+        const allFiles = await getFiles(targetPath, `.wx${extname}`);
+        await removeFiles(allFiles);
+        if (fse.existsSync(srcPath.replace(`.wx${extname}`, extname))) {
+            //是否存在同名 .js 文件
+            await addFile(srcPath.replace(`.wx${extname}`, extname));
+        }
+    } else if (isHandleFile(srcPath)) {
+        //删除的是 .js
+        const extname = path.extname(srcPath)
+        const wxsrcPath = srcPath.replace(extname, `.wx${extname}`);
+        if (fse.existsSync(wxsrcPath)) {
+            //如果存在同名的 .wx.js
+            return [];
         } else {
-            //删除的是 .js
-            const wxsrcPath = srcPath.replace('.js', '.wx.js');
-            if (fse.existsSync(wxsrcPath)) {
-                //如果存在同名的 .wx.js
-                return [];
-            } else {
-                allFiles = await getFiles(targetPath, '.js');
-                await removeFiles(allFiles);
-            }
+            const allFiles = await getFiles(targetPath, extname);
+            await removeFiles(allFiles);
         }
     } else {
         await fse.remove(targetPath).catch(err => console.log(err));
