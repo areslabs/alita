@@ -103,12 +103,20 @@ export default function (ast, info) {
                 }
             }
 
-            // import 其他 配置在dependenciesMap的npm包
+            // import 配置在dependenciesMap的npm包
             if (path.type === 'ImportDeclaration' && getWxNpmPackageName(path.node.source.value)) {
                 const newV = getWxNpmPackageName(path.node.source.value)
                 path.node.source.value = newV
                 return
             }
+
+            // export {x} from 'xxx'
+            if (path.type === 'ExportNamedDeclaration' && path.node.source && getWxNpmPackageName(path.node.source.value)) {
+                const newV = getWxNpmPackageName(path.node.source.value)
+                path.node.source.value = newV
+                return
+            }
+
 
             // require 其他 配置在dependenciesMap的npm包
             if (path.type === 'CallExpression'
@@ -171,8 +179,9 @@ export default function (ast, info) {
             }
 
 
-            // import 目录， 小程序不支持需要处理
-            if (path.type === 'ImportDeclaration') {
+            // 1. import 目录， 小程序不支持需要处理
+            // 2. export {x} from './xxx' 这种情况
+            if (path.type === 'ImportDeclaration' || (path.type === 'ExportNamedDeclaration' && path.node.source)) {
                 const source = path.node.source.value
                 const rs = getRealSource(source, filepath)
                 path.node.source.value = rs
