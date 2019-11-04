@@ -90,12 +90,13 @@ const options = getopts(process.argv, {
         config: 'config',
         beta: 'beta',
         comp: 'component',
-        wxName: "wxName"
+        wxName: "wxName",
+        typescript: 'typescript'
     },
 })
 
 if (options._.includes('init')) {
-    initProject(options._)
+    initProject(options._, options.typescript)
     process.exit()
 }
 

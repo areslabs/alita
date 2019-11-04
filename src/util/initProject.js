@@ -12,8 +12,8 @@ import child_process from 'child_process'
 import {successInfo} from './util'
 
 
-export default function initProject(operands) {
-    console.log(`alita init ...`.info)
+export default function initProject(operands, typescript) {
+    console.log(`alita init ${typescript ? 'typescript': ''} ...`.info)
     console.log('\n')
     const initIndex = operands.indexOf('init')
     const projectName = operands[initIndex + 1]
@@ -25,22 +25,13 @@ export default function initProject(operands) {
 
     const targetpath = path.resolve(projectName)
 
-    const tempDir = path.resolve(__dirname, '..', '..', 'rn-template')
+    const tempDir = path.resolve(__dirname, '..', '..', typescript ? 'rn-typescript-template' : 'rn-template')
     fse.copySync(tempDir, targetpath)
 
     const appJSPath = path.resolve(targetpath, 'App.js')
     if (fse.existsSync(appJSPath)) {
         fse.unlinkSync(appJSPath)
     }
-
-    const pjsonPath = path.resolve(targetpath, 'package.json')
-    const packageObj = fse.readJsonSync(pjsonPath)
-    packageObj.dependencies = {
-        "@areslabs/router": "^1.0.0",
-        "@areslabs/wx-animated": "^1.0.0",
-        ...packageObj.dependencies,
-    }
-    fse.outputJsonSync(pjsonPath, packageObj, {spaces: '  '})
 
     if (fse.existsSync(path.resolve(targetpath, 'yarn.lock'))) {
         child_process.execSync('yarn add @areslabs/router', {
@@ -49,6 +40,12 @@ export default function initProject(operands) {
         child_process.execSync('yarn add @areslabs/wx-animated', {
             cwd: targetpath,
         })
+
+        if (typescript) {
+            child_process.execSync('yarn add --dev  @types/react-native', {
+                cwd: targetpath,
+            })
+        }
     } else {
         child_process.execSync('npm install --save @areslabs/router', {
             cwd: targetpath,
@@ -56,6 +53,12 @@ export default function initProject(operands) {
         child_process.execSync('npm install --save @areslabs/wx-animated', {
             cwd: targetpath,
         })
+
+        if (typescript) {
+            child_process.execSync('npm install --save-dev @types/react-native', {
+                cwd: targetpath,
+            })
+        }
     }
 
     console.log('  Run instructions for 小程序:'.blue)
