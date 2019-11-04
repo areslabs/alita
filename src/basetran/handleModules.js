@@ -321,7 +321,7 @@ function getFinalSource(filepath, source) {
     }
 
     if (!finalSource) {
-        console.log(`${filepath.replace(global.execArgs.OUT_DIR, '')}: 未找到${source}模块！`)
+        console.log(`${filepath.replace(global.execArgs.OUT_DIR, '')}: 未找到${source}模块！`.error)
     }
     return finalSource
 }
