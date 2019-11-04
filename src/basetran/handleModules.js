@@ -307,21 +307,32 @@ function getFinalSource(filepath, source) {
 
     const extname = npath.extname(filepath)
 
-    const indexFiles = npath.resolve(originalPath, 'index')
 
     let fileSufix = '.js'
+    let backupSufix = '.ts'
     if (extname === '.ts' || extname === '.tsx') {
         fileSufix = '.ts'
+        backupSufix = '.js'
     }
 
+    let finalSource = getFinalSourceByExtname(fileSufix, originalPath, source)
+    if (!finalSource) {
+        finalSource = getFinalSourceByExtname(backupSufix, originalPath, source)
+    }
+
+    if (!finalSource) {
+        console.log(`${filepath.replace(global.execArgs.OUT_DIR, '')}: 未找到${source}模块！`)
+    }
+    return finalSource
+}
+
+function getFinalSourceByExtname(fileSufix, originalPath, source) {
     const allFiles = [
         `${originalPath}.wx${fileSufix}`,
         `${originalPath}${fileSufix}`,
         `${originalPath}.wx${fileSufix}x`,
         `${originalPath}${fileSufix}x`
     ]
-
-
 
     for(let i = 0; i < allFiles.length; i ++ ) {
         const filePath = allFiles[i]
@@ -335,6 +346,7 @@ function getFinalSource(filepath, source) {
         }
     }
 
+    const indexFiles = npath.resolve(originalPath, 'index')
     const allIndexFiles = [
         `${indexFiles}.wx${fileSufix}`,
         `${indexFiles}${fileSufix}`,
