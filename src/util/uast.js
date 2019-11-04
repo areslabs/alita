@@ -39,8 +39,8 @@ const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX")
 
 
 const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
-const babelTSX = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: true, allExtensions: true}], {type: 'presets'})
-const babelTS = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: false, allExtensions: true}], {type: 'presets'})
+const babelTSX = babel.createConfigItem([require("@babel/plugin-syntax-typescript"), {isTSX: true}], {type: 'plugin'})
+const babelTS = babel.createConfigItem([require("@babel/plugin-syntax-typescript"), {isTSX: false}], {type: 'plugin'})
 
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
@@ -74,10 +74,17 @@ export function geneReactCode(ast, extname) {
     }).code
 
     const presets = []
+    const plugins = [
+        babelDecorators,
+        babelRestSpread,
+        babelClassProperties,
+        babelOptionalChaining,
+        babelTransformJSX,
+    ]
     if (extname === '.tsx') {
-        presets.push(babelTSX)
+        plugins.push(babelTSX)
     } else if (extname === '.ts') {
-        presets.push(babelTS)
+        plugins.push(babelTS)
     } else {
         presets.push(babelFlow)
     }
@@ -86,14 +93,7 @@ export function geneReactCode(ast, extname) {
         babelrc: false,
         configFile: false,
         presets,
-        plugins: [
-            babelDecorators,
-            babelRestSpread,
-            babelClassProperties,
-            babelOptionalChaining,
-            babelTransformJSX,
-            //TODO 对体积的减少是否明显？？ babelTransformRuntime
-        ]
+        plugins,
     }).code
 
     return code
