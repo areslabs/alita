@@ -8,9 +8,13 @@
 
 import path from 'path'
 import fse from 'fs-extra'
+import child_process from 'child_process'
 import {successInfo} from './util'
 
+
 export default function initProject(operands) {
+    console.log(`alita init ...`.info)
+    console.log('\n')
     const initIndex = operands.indexOf('init')
     const projectName = operands[initIndex + 1]
 
@@ -37,6 +41,23 @@ export default function initProject(operands) {
         ...packageObj.dependencies,
     }
     fse.outputJsonSync(pjsonPath, packageObj, {spaces: '  '})
+
+    if (fse.existsSync(path.resolve(targetpath, 'yarn.lock'))) {
+        child_process.execSync('yarn add @areslabs/router', {
+            cwd: targetpath,
+        })
+        child_process.execSync('yarn add @areslabs/wx-animated', {
+            cwd: targetpath,
+        })
+    } else {
+        child_process.execSync('npm install --save @areslabs/router', {
+            cwd: targetpath,
+        })
+        child_process.execSync('npm install --save @areslabs/wx-animated', {
+            cwd: targetpath,
+        })
+    }
+
     console.log('  Run instructions for 小程序:'.blue)
     console.log(`    • alita -i ${projectName} -o [目标小程序目录]   （若需要监听文件修改添加参数：--watch）`.black)
 }
