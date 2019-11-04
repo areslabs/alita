@@ -18,6 +18,75 @@ const eventEmitter = new events.EventEmitter();
 
 const DONE_EVENT = 'DONE_EVENT'
 
+
+const ignoreDics = [
+    'node_modules',
+    '.git',
+    '.expo',
+    'android',
+    'ios',
+    '.idea',
+    '__tests__',
+    '.vs_code',
+    '.iml'
+]
+
+const ignoreFilesSufix = [
+    '.ios.js',
+    '.ios.jsx',
+    '.ios.ts',
+    '.ios.tsx',
+    '.android.js',
+    '.android.jsx',
+    '.android.ts',
+    '.android.tsx',
+    '.web.js',
+    '.web.jsx',
+    '.web.ts',
+    '.web.tsx',
+
+    '.sh',
+    'alita.config.js',
+    'babel.config.js',
+    'metro.config.js',
+    '.gitignore',
+    'app.json',
+    'package.json',
+    'package-lock.json',
+    '.eslintrc.js',
+    '.eslintrc',
+    'yarn.lock',
+    '.test.js',
+    '.watchmanconfig',
+    '.buckconfig',
+    '.flowconfig',
+    '.gitattributes'
+]
+
+function isInIgnoreDic(path) {
+    let fPath = path
+    if (path.endsWith('/')) {
+        fPath = path.substring(0, path.length - 1)
+    }
+    for(let i = 0; i < ignoreDics.length; i ++ ) {
+        const ignoreDic = ignoreDics[i]
+
+        if (fPath.endsWith(`/${ignoreDic}`)) {
+            return true
+        }
+
+        if (fPath.includes(`/${ignoreDic}/`)) {
+            return true
+        }
+    }
+
+    return false
+}
+
+function isIgnoreSufix(path) {
+    return ignoreFilesSufix.some(sufix => path.endsWith(sufix))
+}
+
 export default (ignored) => {
     const {INPUT_DIR, watchMode, tranComp} = global.execArgs
 
@@ -25,7 +94,29 @@ export default (ignored) => {
     const watcher = chokidar.watch(INPUT_DIR,
         {
             persistent: watchMode,
-            ignored,
+            ignored: function(path) {
+                const finalPath = path.replace(/\\/g, '/') // windows 路径处理
+
+
+                if (isInIgnoreDic(finalPath)) {
+                    return true
+                }
+
+                if (isIgnoreSufix(finalPath)) {
+                    return true
+                }
+
+
+                const {INPUT_DIR, configObj} = global.execArgs
+                const relativePath = finalPath.replace(INPUT_DIR, '')
+                // 如果文件需要忽略， 则不处理
+                if (typeof configObj.isFileIgnore === "function" && configObj.isFileIgnore(relativePath)) {
+                    return true
+                }
+
+
+                return false
+            },
             interval: 200
         })
 

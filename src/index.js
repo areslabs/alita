@@ -280,6 +280,6 @@ function main() {
         geneWXPackageJSON(options.wxName, configObj.dependenciesMap)
     }
 
-    const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.web\.ts|\.web\.jsx|\.web\.tsx|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
-    filewatch(ignored)
+
+    filewatch()
 }

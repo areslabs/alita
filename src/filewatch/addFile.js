@@ -46,10 +46,6 @@ export default async function addFile(filepath) {
     const srcpath = filepath  //path.resolve(INPUT_DIR, filepath)
     let targetpath = filepath.replace(INPUT_DIR, OUT_DIR) //path.resolve(OUT_DIR, filepath)
 
-    // 如果文件需要忽略， 则不处理
-    if (typeof configObj.isFileIgnore === "function" && configObj.isFileIgnore(relativePath)) {
-        return []
-    }
 
     const hasWx = hasWxFile(srcpath)
     if (hasWx) {
