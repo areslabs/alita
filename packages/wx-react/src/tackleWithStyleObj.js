@@ -280,16 +280,17 @@ function parseObj(obj) {
     return out;
 }
 
-function flattenArray(arr, ans = []) {
-    if (!Array.isArray(arr)) return arr;
+function flattenArray(arr, ans = {}) {
+    if (!Array.isArray(arr)) return arr
+
     for (let m in arr) {
         if (!Array.isArray(arr[m])) {
-            ans.push(arr[m]);
+            Object.assign(ans, arr[m])
         } else {
-            flattenArray(arr[m], ans);
+            flattenArray(arr[m], ans)
         }
     }
-    return ans;
+    return ans
 }
 
 
@@ -298,6 +299,15 @@ function flattenArray(arr, ans = []) {
  * @param str
  */
 export function flattenStyle(str) {
+
+    if (Array.isArray(str)) {
+        return flattenArray(str)
+    }
+
+    if (typeof str === 'object') {
+        return str
+    }
+
     const array = str.split(';').filter(i => i)
     const obj = {}
     for (let k = 0; k < array.length; k++) {
