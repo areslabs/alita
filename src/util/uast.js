@@ -39,8 +39,8 @@ const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX")
 
 
 const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
-const babelTSX = babel.createConfigItem([require("@babel/plugin-syntax-typescript"), {isTSX: true}], {type: 'plugin'})
-const babelTS = babel.createConfigItem([require("@babel/plugin-syntax-typescript"), {isTSX: false}], {type: 'plugin'})
+const babelTSX = babel.createConfigItem([require("@babel/plugin-transform-typescript"), {isTSX: true}], {type: 'plugin'})
+const babelTS = babel.createConfigItem([require("@babel/plugin-transform-typescript"), {isTSX: false}], {type: 'plugin'})
 
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
