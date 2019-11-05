@@ -40,6 +40,9 @@ export default function initProject(operands, typescript) {
         child_process.execSync('yarn add @areslabs/wx-animated', {
             cwd: targetpath,
         })
+        child_process.execSync('yarn add @areslabs/stringutil-rn', {
+            cwd: targetpath,
+        })
 
         if (typescript) {
             child_process.execSync('yarn add --dev  @types/react-native', {
@@ -51,6 +54,9 @@ export default function initProject(operands, typescript) {
             cwd: targetpath,
         })
         child_process.execSync('npm install --save @areslabs/wx-animated', {
+            cwd: targetpath,
+        })
+        child_process.execSync('npm install --save @areslabs/stringutil-rn', {
             cwd: targetpath,
         })
 
