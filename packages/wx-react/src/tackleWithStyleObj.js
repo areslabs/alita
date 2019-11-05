@@ -280,17 +280,16 @@ function parseObj(obj) {
     return out;
 }
 
-function flattenArray(arr, ans = {}) {
-    if (!Array.isArray(arr)) return arr
-
+function flattenArray(arr, ans = []) {
+    if (!Array.isArray(arr)) return arr;
     for (let m in arr) {
         if (!Array.isArray(arr[m])) {
-            Object.assign(ans, arr[m])
+            ans.push(arr[m]);
         } else {
-            flattenArray(arr[m], ans)
+            flattenArray(arr[m], ans);
         }
     }
-    return ans
+    return ans;
 }
 
 
@@ -298,15 +297,13 @@ function flattenArray(arr, ans = {}) {
  * the inverse process of tackleWithStyleObj
  * @param str
  */
-export function flattenStyle(str) {
-
-    if (Array.isArray(str)) {
-        return flattenArray(str)
+export function flattenStyle(fstyle) {
+    let str = fstyle
+    if (typeof fstyle !== 'string') {
+        // 可能是数组，可能是字符串，可能是其组合
+        str = tackleWithStyleObj(fstyle)
     }
 
-    if (typeof str === 'object') {
-        return str
-    }
 
     const array = str.split(';').filter(i => i)
     const obj = {}
