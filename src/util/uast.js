@@ -15,17 +15,21 @@ import * as t from "@babel/types"
 
 export function parseCode(code, extname) {
     const plugins = [
-            'jsx',
             'classProperties',
             'objectRestSpread',
             'optionalChaining',
             ['decorators', {decoratorsBeforeExport: true}],
         ]
 
-    if (extname === '.ts' || extname === '.tsx') {
+
+    if (extname === '.ts') {
         plugins.push('typescript')
+    } else if (extname === '.tsx') {
+        plugins.push('typescript')
+        plugins.push('jsx')
     } else {
         plugins.push('flow')
+        plugins.push('jsx')
     }
 
     return parse(code, {
@@ -39,8 +43,8 @@ const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX")
 
 
 const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
-const babelTSX = babel.createConfigItem([require("@babel/plugin-transform-typescript"), {isTSX: true}], {type: 'plugin'})
-const babelTS = babel.createConfigItem([require("@babel/plugin-transform-typescript"), {isTSX: false}], {type: 'plugin'})
+const babelTSX = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: true, allExtensions: true}], {type: 'plugin'})
+const babelTS = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: false, allExtensions: true}], {type: 'plugin'})
 
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
@@ -82,12 +86,14 @@ export function geneReactCode(ast, extname) {
         babelTransformJSX,
     ]
     if (extname === '.tsx') {
-        plugins.push(babelTSX)
+        presets.push(babelTSX)
     } else if (extname === '.ts') {
-        plugins.push(babelTS)
+        presets.push(babelTS)
     } else {
         presets.push(babelFlow)
     }
+
+    console.log('plugins:', plugins)
 
     code = babel.transformSync(code, {
         babelrc: false,
