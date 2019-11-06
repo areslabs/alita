@@ -41,7 +41,7 @@ export default class HelloWorld extends Component {
                 />
 
                 <Text>
-                    Hello {Platform.OS}!
+                    {camelCase(`Hello ${Platform.OS}!`)}
                 </Text>
             </View>
 
