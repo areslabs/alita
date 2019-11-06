@@ -60,7 +60,8 @@ const ignoreFilesSufix = [
     '.watchmanconfig',
     '.buckconfig',
     '.flowconfig',
-    '.gitattributes'
+    '.gitattributes',
+    '.babelrc'
 ]
 
 function isInIgnoreDic(path) {
