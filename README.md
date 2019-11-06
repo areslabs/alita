@@ -25,14 +25,15 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 
 ## Features
 * 完备的React语法支持。runtime阶段处理JSX语法，对JSX支持更加完善，可以在组件内任何地方出现JSX片段，包括属性传递JSX片段，render方法之外的JSX片段等等， 
-* React生命周期
-* React Native组件/API
+* `React`生命周期
+* `React Native`组件/API
 * [动画](https://areslabs.github.io/alita/%E5%8A%A8%E7%94%BB.html)
 * [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)
 * [支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
 * [支持小程序分包](https://areslabs.github.io/alita/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%88%86%E5%8C%85%E9%9B%86%E6%88%90.html)
+* 支持`typescript`
 
-## Alita限制
+## Alita 使用前须知
 主要以下几个方面的要求和限制， 在您决定选用Alita作为跨端解决方案时，需要知晓如下的Alita限制。
 
 * 转化之后的小程序，必须符合小程序的规范，比如最终压缩的代码小于2m，分包8m，路由深度不大于5层等。另外小程序页面需要配置在静态json文件中，
@@ -43,7 +44,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
     
 以上2点要求和限制[详见 要求与限制文档](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， 另外
    
-* 现阶段，Alita并不会去处理项目中的：node_modules目录。 对应第三方包，可能需要手动去处理。 参考[npm包说明](https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html)，[第三方组件库扩展](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 
+* 另外，**RN开发者请注意：微信小程序npm包和RN的npm使用方式不同[详见](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)**， 所以对于第三方npm包，可能需要手动去处理。 参考[npm包处理说明](https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html)，[第三方组件库扩展](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 
 
 ## Alita 原理相关
 1. Alita使用运行时React语法处理方案，区别现有社区使用的编译时方案，对React语法的支持更加完备，具体请看：[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
@@ -67,6 +68,12 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 ``` 
 
 `alita init`命令 会对rn项目做一些调整。 
+
+如果需要初始化`typescript`项目，请添加`--typescript`参数
+```
+    react-native init myproject && alita init myproject --typescript
+``` 
+
 
 **注意：** RN 0.60 以后的项目，IOS需要依赖`CocoaPods`，导致初始化项目极其缓慢，可以使用其他版本的RN
 ```

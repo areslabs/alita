@@ -1,3 +1,32 @@
+## [1.3.1](https://github.com/areslabs/alita/compare/1.3.0...1.3.1) (2019-11-06)
+
+### Bug Fixes
+
+* **alita:** 修复 alita init 之后RN项目，无法直接启动的bug ([82a8d30](https://github.com/areslabs/alita/commit/82a8d30))
+* **alita:** 修复 h 函数的导入 ([169d318](https://github.com/areslabs/alita/commit/169d318))
+* **alita:** 修复 typescript ，javascript 文件互相导入的时候，解析错误的bug ([3e6658b](https://github.com/areslabs/alita/commit/3e6658b))
+* **alita:** 修复 typescript 下 .web.ts 未被忽略的情况 ([139afa8](https://github.com/areslabs/alita/commit/139afa8))
+* **alita:** 修复 函数组件文件转化错误的bug ([668bc3e](https://github.com/areslabs/alita/commit/668bc3e))
+* **alita:** 修复<> 类型推断 下，ts文件报错的bug ([b4f7864](https://github.com/areslabs/alita/commit/b4f7864))
+* **alita:** 修复async 在typescript下报错的bug ([27a3e5f](https://github.com/areslabs/alita/commit/27a3e5f))
+* **alita:** 修复h声明在 typescript情况下报错的bug ([0d623e4](https://github.com/areslabs/alita/commit/0d623e4))
+* **alita:** 修复tpyescript 语法处理bug ([e96d1bc](https://github.com/areslabs/alita/commit/e96d1bc))
+* **alita:** 未找到 import/require 模块 添加错误警告 ([89b4c81](https://github.com/areslabs/alita/commit/89b4c81))
+* **wx-react:** 修复 StyleSheet.flatten 方法接受数组/对象参数的时候报错 ([1b1c9a8](https://github.com/areslabs/alita/commit/1b1c9a8))
+* **wx-react:** 修复StyleSheet flatten ([e334318](https://github.com/areslabs/alita/commit/e334318))
+
+
+### Features
+
+* **alita:** support `export  from ` 语法 ([0ff1e49](https://github.com/areslabs/alita/commit/0ff1e49))
+* **alita:** support typescript ([9c6a5e6](https://github.com/areslabs/alita/commit/9c6a5e6))
+* **alita:** support typescript ([f7f6f6c](https://github.com/areslabs/alita/commit/f7f6f6c))
+* **alita:** support typescript namespace ([d199d96](https://github.com/areslabs/alita/commit/d199d96))
+* **alita:** 完善 js， ts init 初始化项目 ([ea3b37d](https://github.com/areslabs/alita/commit/ea3b37d))
+* **alita:** 添加 init typescript 模版 ([b7e5615](https://github.com/areslabs/alita/commit/b7e5615))
+
+
+
 # [1.3.0](https://github.com/areslabs/alita/compare/1.2.10...1.3.0) (2019-10-30)
 
 * 简化 第三方库/组件 接入的配置
