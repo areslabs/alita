@@ -90,12 +90,13 @@ const options = getopts(process.argv, {
         config: 'config',
         beta: 'beta',
         comp: 'component',
-        wxName: "wxName"
+        wxName: "wxName",
+        typescript: 'typescript'
     },
 })
 
 if (options._.includes('init')) {
-    initProject(options._)
+    initProject(options._, options.typescript)
     process.exit()
 }
 
@@ -280,6 +281,6 @@ function main() {
         geneWXPackageJSON(options.wxName, configObj.dependenciesMap)
     }
 
-    const ignored = /node_modules|\.git|\.expo|android|ios|\.idea|__tests__|.ios\.js|.android\.js|\.web\.js|\.sh|\.iml|\.vs_code|alita\.config\.js|babel\.config\.js|metro\.config\.js|\.gitignore|app\.json|package\.json|package-lock\.json|\.eslintrc\.js|\.eslintrc\.json|\.eslintrc|yarn\.lock|\.test\.js|.watchmanconfig/
-    filewatch(ignored)
+
+    filewatch()
 }

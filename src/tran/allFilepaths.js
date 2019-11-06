@@ -6,12 +6,15 @@
  *
  */
 
+import {miscNameToJSName} from "../util/util";
+
 /**
  * 返回所有生成的文件路径
  * @param info
  */
 export default function allFilepaths(info) {
     const {filepath, outComp} = info
+    const finalJSPath = miscNameToJSName(filepath)
 
     const r = []
     for (let i = 0; i < outComp.length; i++) {
@@ -19,20 +22,20 @@ export default function allFilepaths(info) {
 
         if (name === 'render') {
             r.push(
-                filepath,
-                filepath.replace('.js', '.comp.js'),
-                filepath.replace('.js', '.wxml'),
-                filepath.replace('.js', '.wxss'),
-                filepath.replace('.js', '.json'),
-                filepath.replace('.js', 'Template.wxml')
+                finalJSPath,
+                finalJSPath.replace('.js', '.comp.js'),
+                finalJSPath.replace('.js', '.wxml'),
+                finalJSPath.replace('.js', '.wxss'),
+                finalJSPath.replace('.js', '.json'),
+                finalJSPath.replace('.js', 'Template.wxml')
             )
         } else {
             r.push(
-                filepath,
-                filepath.replace('.js', `${name}.js`),
-                filepath.replace('.js', `${name}.wxml`),
-                filepath.replace('.js', `${name}.wxss`),
-                filepath.replace('.js', `${name}.json`)
+                finalJSPath,
+                finalJSPath.replace('.js', `${name}.js`),
+                finalJSPath.replace('.js', `${name}.wxml`),
+                finalJSPath.replace('.js', `${name}.wxss`),
+                finalJSPath.replace('.js', `${name}.json`)
             )
         }
     }

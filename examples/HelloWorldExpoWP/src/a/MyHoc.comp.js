@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { View, Text, WXButton } from "@areslabs/wx-react-native"
 import Hoc1 from "./Hoc1"
 import Hoc2 from "./Hoc2"

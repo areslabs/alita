@@ -9,6 +9,7 @@
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
 import { geneJSXCode } from "../util/uast";
+import {miscNameToJSName} from '../util/util'
 
 import {getRootPathPrefix} from '../util/util'
 
@@ -20,8 +21,8 @@ const nodepath = require("path")
  * @param info
  */
 export default function(info) {
-    let { templates, filepath, outComp, childTemplates} = info;
-    filepath = filepath.replace(".wx.js", ".js");
+    const { templates, filepath, outComp, childTemplates} = info;
+    const finalJSPath = miscNameToJSName(filepath)
 
     const newTemp = [];
     for (let i = 0; i < templates.length; i++) {
@@ -81,14 +82,14 @@ export default function(info) {
         templateWxml = subT + templateWxml;
     }
 
-    const utilWxsPath = getRootPathPrefix(filepath) + '/commonwxs.wxs'
+    const utilWxsPath = getRootPathPrefix(finalJSPath) + '/commonwxs.wxs'
 
     templateWxml = `<wxs src="${utilWxsPath}" module="t" />
     ${templateWxml}
     `
 
     fs.writeFileSync(
-        filepath.replace(".js", "Template.wxml"),
+        finalJSPath.replace(".js", "Template.wxml"),
         templateWxml,
         {
             flag: "w+"
@@ -97,20 +98,20 @@ export default function(info) {
 
 
     // gene all outComp
-    geneAllOutComp(outComp, filepath);
+    geneAllOutComp(outComp, finalJSPath);
 }
 
 
-function geneAllOutComp(outComp, filepath) {
-    const basename = nodepath.basename(filepath);
+function geneAllOutComp(outComp, finalJSPath) {
+    const basename = nodepath.basename(finalJSPath);
     const temppath = basename.replace(".js", "Template.wxml");
 
     for (let i = 0; i < outComp.length; i++) {
         const name = outComp[i];
 
         const wxmlFilepath = (name === "render"
-                ? filepath.replace(".js", ".wxml")
-                : filepath.replace(".js", `${name}.wxml`)
+                ? finalJSPath.replace(".js", ".wxml")
+                : finalJSPath.replace(".js", `${name}.wxml`)
         );
 
         const wxmlAst = [];

@@ -21,54 +21,137 @@ describe('function component to class component', () => {
         }
     })
 
-    it('箭头函数组件转化为类组件声明', () => {
+    it('声明变量，变量是函数组件', () => {
         const code = `
-        export default () => <View/> 
-        `
-        const expectCode = `
-        export default class MyFunc extends React.FuncComponent {
-          render() {
-            return <View />;
-          }
+        const f = (props) => <View/> 
         
+        const h = function() {
+             return <View/>
+        }
+        
+        const v = function v() {
+             return <View/>
+        }
+        
+        const g = (props) => {
+             return <View/>
         }
         `
-        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
-    })
-
-    it('普通函数组件转化为类组件声明', () => {
-        const code = `
-        export default function(props) {
-           const {a, b} = props
-           return (
-              <View>
-                  <Text>
-                     {a}
-                     {b}
-                  </Text>
-              </View>
-           )  
-        } 
-        `
         const expectCode = `
-        export default class MyFunc extends React.FuncComponent {
+        const f = class extends React.FuncComponent {
           render() {
             const props = this.props
-            const {
-              a,
-              b
-            } = props;
-            return (<View>
-                       <Text>
-                          {a}
-                          {b}
-                       </Text>
-                 </View>)
+            return <View />
           }
-        
         }
-       `
+        const h = class extends React.FuncComponent {
+          render() {
+            return <View />
+          }
+        }
+        const v = class v extends React.FuncComponent {
+          render() {
+            return <View />
+          }
+        }
+        const g = class extends React.FuncComponent {
+          render() {
+            const props = this.props
+            return <View />
+          }
+        }
+        `
         expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
     })
 
+
+    it('导出变量，变量是函数组件', () => {
+        const code = `
+        export const f = (props) => <View/> 
+        
+        export const h = function() {
+             return <View/>
+        }
+        
+        export const v = function v() {
+             return <View/>
+        }
+        
+        export const g = (props) => {
+             return <View/>
+        }
+        `
+        const expectCode = `
+        export const f = class extends React.FuncComponent {
+          render() {
+            const props = this.props
+            return <View />
+          }
+        }
+        export const h = class extends React.FuncComponent {
+          render() {
+            return <View />
+          }
+        }
+        export const v = class v extends React.FuncComponent {
+          render() {
+            return <View />
+          }
+        }
+        export const g = class extends React.FuncComponent {
+          render() {
+            const props = this.props
+            return <View />
+          }
+        }
+        `
+        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
+    })
+
+
+    it('默认导出 箭头函数组件', () => {
+        const code = `
+        export default (props) => <View/> 
+        `
+        const expectCode = `
+        export default (class extends React.FuncComponent {
+          render() {
+            const props = this.props
+            return <View />
+          }
+        })
+        `
+        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
+    })
+
+    it('默认导出 函数组件', () => {
+        const code = `
+        export default function h() {return <View/>} 
+        `
+        const expectCode = `
+        export default class h extends React.FuncComponent {
+          render() {
+            return <View />
+          }
+        }
+        `
+        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
+    })
+
+    it('props, context 声明', () => {
+        const code = `
+        export default function h({a, b}, {c, d}) {return <View/>} 
+        `
+        const expectCode = `
+        export default class h extends React.FuncComponent {
+          render() {
+            const { c, d } = this.context
+            const { a, b } = this.props
+            return <View />
+          }
+        }
+        `
+        expectNewCode(code, expectCode, {filepath: '/a/b/MyFunc.js'}, funcCompToClassComp)
+    })
 })
+

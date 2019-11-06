@@ -7,13 +7,14 @@
  */
  
 import fse from "fs-extra"
+import {miscNameToJSName} from '../util/util'
 const prettier = require("prettier")
 const path = require('path')
 
 
 export default function (code, info) {
     let {filepath} = info
-    filepath = filepath.replace('.wx.js', '.js')
+    filepath = miscNameToJSName(filepath)
 
     const prettierCode = prettier.format(code, {
         semi: false,

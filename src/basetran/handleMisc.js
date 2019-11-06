@@ -35,12 +35,9 @@ export default function (ast, {isFuncComp}) {
              * const x = 1
              * export default x
              *
-             * 函数式组件在后续会被处理为class组件，这里不需要处理
-             *
              */
 
-            if (!isFuncComp
-                && path.type === 'ExportDefaultDeclaration'
+            if (path.type === 'ExportDefaultDeclaration'
                 && path.node.declaration
                 && path.node.declaration.type === 'AssignmentExpression'
                 && path.node.declaration.left.type === 'Identifier'

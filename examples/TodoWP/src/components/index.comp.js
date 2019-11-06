@@ -15,7 +15,8 @@ function _extends() {
     return _extends.apply(this, arguments)
 }
 
-import React, { PureComponent, h } from "@areslabs/wx-react"
+import React, { PureComponent } from "@areslabs/wx-react"
+const h = React.h
 import { WXFlatList, StyleSheet, Text, View } from "@areslabs/wx-react-native"
 import { toggleTodo } from "../actions/index"
 import { connect } from "@areslabs/wx-react-redux"

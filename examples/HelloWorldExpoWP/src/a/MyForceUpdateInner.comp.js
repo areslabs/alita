@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import MyForceUpdateInnerInner from "./MyForceUpdateInnerInner.comp"
 export default class MyForceUpdateInner extends Component {
     shouldComponentUpdate() {

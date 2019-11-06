@@ -5,15 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
 import traverse from "@babel/traverse";
 import * as t from "@babel/types";
+import {miscNameToJSName} from '../util/util'
 
 const npath = require('path')
 
 
 /**
- * 把函数声明的组件， 转化为class
+ * 把函数声明的组件， 转化为FuncComponent 组件
  *
  * 1. export default () => {}
  *
@@ -32,96 +33,141 @@ const npath = require('path')
  *
  *
  * @param ast
- * @param info
  * @returns {*}
  */
-export default function (ast, info) {
-    let compName = npath.basename(info.filepath, '.js')
-    compName = compName.substring(0, 1).toUpperCase() + compName.substring(1)
+export default function funcCompToClassComp(ast, info) {
+
+    let funcPath = null
+    let hasJSXElement = false
 
     traverse(ast, {
-        exit: path => {
-            if (path.type === 'ExportDefaultDeclaration') {
-                const declaration = path.node.declaration
+        enter: path => {
+            // function x {}
+            if (path.type === 'FunctionDeclaration' && path.parentPath.type === 'Program') {
+                funcPath = path
+                hasJSXElement = false
+            }
 
-                let renderBody = getRenderBody(declaration)
-                path.node.declaration = t.classDeclaration(
-                    t.identifier(compName),
+            // const x = () => {}
+            if (path.type === 'ArrowFunctionExpression'
+                && path.parentPath.type === 'VariableDeclarator'
+                && path.parentPath.parentPath.parentPath.type === 'Program'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            // export const x = () => {}
+            if (path.type === 'ArrowFunctionExpression'
+                && path.parentPath.type === 'VariableDeclarator'
+                && path.parentPath.parentPath.parentPath.type === 'ExportNamedDeclaration'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            // const b = function (){}
+            if (path.type === 'FunctionExpression'
+                && path.parentPath.type === 'VariableDeclarator'
+                && path.parentPath.parentPath.parentPath.type === 'Program'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            // export const b = function (){}
+            if (path.type === 'FunctionExpression'
+                && path.parentPath.type === 'VariableDeclarator'
+                && path.parentPath.parentPath.parentPath.type === 'ExportNamedDeclaration'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            // export default () => {}
+            if (path.type === 'ArrowFunctionExpression'
+                && path.parentPath.type === 'ExportDefaultDeclaration'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            // export default function () {}
+            if (path.type === 'FunctionDeclaration'
+                && path.parentPath.type === 'ExportDefaultDeclaration'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            // export default (function () {})
+            if (path.type === 'FunctionExpression'
+                && path.parentPath.type === 'ExportDefaultDeclaration'
+            ) {
+                funcPath = path
+                hasJSXElement = false
+            }
+
+            if (path.type === 'JSXOpeningElement') {
+                hasJSXElement = true
+            }
+        },
+
+        exit: path => {
+            if (path.type === 'ClassDeclaration' || path.type === 'ClassExpression') {
+                // 下面的path.replaceWith 将导致exit 在执行一次
+                return
+            }
+
+            if (path === funcPath && hasJSXElement) {
+                const funcPathNode = funcPath.node
+
+                if (funcPathNode.body.type !== 'BlockStatement') {
+                    funcPathNode.body = t.blockStatement([
+                        t.returnStatement(funcPathNode.body)
+                    ])
+                }
+
+                const propsVar = funcPathNode.params[0]
+                if (propsVar) {
+                    const propDec = t.variableDeclaration('const', [
+                        t.variableDeclarator(propsVar, t.memberExpression(t.thisExpression(), t.identifier('props')))
+                    ])
+
+                    funcPathNode.body.body.unshift(propDec)
+                }
+
+                const contextVar = funcPathNode.params[1]
+                if (contextVar) {
+                    const contextDec = t.variableDeclaration('const', [
+                        t.variableDeclarator(contextVar, t.memberExpression(t.thisExpression(), t.identifier('context')))
+                    ])
+
+                    funcPathNode.body.body.unshift(contextDec)
+                }
+
+
+                const classDec = t.classExpression(
+                    path.node.id,
                     t.memberExpression(t.identifier('React'), t.identifier('FuncComponent')),
                     t.classBody([
                         t.classMethod(
                             'method',
                             t.identifier('render'),
                             [],
-                            t.blockStatement(renderBody)
+                            funcPathNode.body
                         )
                     ])
                 )
+
+                if (funcPathNode.type === 'FunctionDeclaration') {
+                    classDec.type = 'ClassDeclaration'
+                }
+
+                path.replaceWith(classDec)
             }
         }
     })
 
     return ast
-}
-
-
-function getRenderBody(declaration) {
-    let renderBody = null
-    let params = null
-    if (declaration.type === 'AssignmentExpression') {
-        const { operator, right} = declaration
-        if (operator === '=' && (right.type === 'ArrowFunctionExpression' || right.type === 'FunctionExpression')) {
-
-            params = right.params
-
-            if (right.body.body) {
-                renderBody = [...right.body.body]
-            } else {
-                renderBody = [
-                    t.returnStatement(right.body)
-                ]
-            }
-        }
-    }
-
-    if (declaration.type === 'ArrowFunctionExpression') {
-        const func = declaration
-        params = func.params
-        if (func.body.body) {
-            renderBody = [...func.body.body]
-        } else {
-            renderBody = [
-                t.returnStatement(func.body)
-            ]
-        }
-    }
-
-    if (declaration.type === 'FunctionDeclaration') {
-        const func = declaration
-        params = func.params
-        renderBody = [
-            ...func.body.body
-        ]
-    }
-
-
-    const propsVar = params[0]
-    if (propsVar) {
-        const propDec = t.variableDeclaration('const', [
-            t.variableDeclarator(propsVar, t.memberExpression(t.thisExpression(), t.identifier('props')))
-        ])
-
-        renderBody.unshift(propDec)
-    }
-
-    const contextVar = params[1]
-    if (contextVar) {
-        const contextDec = t.variableDeclaration('const', [
-            t.variableDeclarator(contextVar, t.memberExpression(t.thisExpression(), t.identifier('context')))
-        ])
-
-        renderBody.unshift(contextDec)
-    }
-
-    return renderBody
 }

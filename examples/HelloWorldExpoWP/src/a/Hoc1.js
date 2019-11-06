@@ -1,4 +1,5 @@
-import React, { HocComponent, h } from "@areslabs/wx-react"
+import React, { HocComponent } from "@areslabs/wx-react"
+const h = React.h
 export default function(WrappedComponent) {
     var _temp
 

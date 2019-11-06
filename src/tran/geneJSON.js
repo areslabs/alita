@@ -7,13 +7,15 @@
  */
  
 import fse from "fs-extra";
+import {miscNameToJSName} from '../util/util'
 const path = require('path')
 
 /**
  */
 export default function(info) {
-    let {json, filepath, outComp} = info
-    filepath = filepath.replace('.wx.js', '.js')
+    const {json, filepath, outComp} = info
+    const finalJSPath = miscNameToJSName(filepath)
+
 
     const renderUsingComponents = {
         ...json.usingComponents
@@ -24,7 +26,7 @@ export default function(info) {
         if (name === 'render') {
             continue
         } else {
-            renderUsingComponents[name] = path.basename(filepath).replace('.js', `${name}`)
+            renderUsingComponents[name] = path.basename(finalJSPath).replace('.js', `${name}`)
         }
     }
 
@@ -39,7 +41,7 @@ export default function(info) {
     for(let i = 0; i < outComp.length; i ++) {
         const name = outComp[i]
 
-        const comppath = (name === 'render' ? filepath.replace('.js', `.json`) : filepath.replace('.js', `${name}.json`))
+        const comppath = (name === 'render' ? finalJSPath.replace('.js', `.json`) : finalJSPath.replace('.js', `${name}.json`))
         fse.writeFileSync(
             comppath,
             renderJSONStr,

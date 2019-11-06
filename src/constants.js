@@ -74,3 +74,10 @@ export const RNNOTSUPPORTCOMP = new Set([
      'TimePickerAndroid',
      'ToastAndroid',
 ])
+
+export const supportExtname = new Set([
+    '.js',
+    '.jsx',
+    '.ts',
+    '.tsx'
+])

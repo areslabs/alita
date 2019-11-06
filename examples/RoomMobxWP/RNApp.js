@@ -1,4 +1,5 @@
-import React, { PureComponent, h } from "@areslabs/wx-react";
+import React, { PureComponent } from "@areslabs/wx-react";
+const h = React.h;
 import { Router, Route } from "@areslabs/wx-router";
 import { Provider } from "@areslabs/wx-mobx-react";
 import Room from './src/store/Room';

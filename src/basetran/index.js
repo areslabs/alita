@@ -6,6 +6,7 @@
  *
  */
  
+import path from 'path'
 import handleModules from './handleModules'
 import handleGlobalApi from './handleGlobalApi'
 import handleMisc from './handleMisc'
@@ -25,6 +26,7 @@ export default function (ast, filepath, justTran, isFuncComp) {
     if (justTran) {
         return
     } else {
-        geneJS(geneReactCode(ast), info)
+        const extname = path.extname(filepath)
+        geneJS(geneReactCode(ast, extname), info)
     }
 }

@@ -72,10 +72,5 @@ function asyncRegeneratorRuntimeDec(filepath) {
         fse.copySync(npath.resolve(__dirname, '..', '..', 'rn-polyfill', "regeneratorRuntime.js"), rrFilePath)
     }
 
-    return t.importDeclaration(
-        [
-            t.importDefaultSpecifier(t.identifier('regeneratorRuntime'))
-        ],
-        t.stringLiteral(rrPath)
-    )
+    return t.expressionStatement(t.identifier(`const regeneratorRuntime = require('${rrPath}');`))
 }

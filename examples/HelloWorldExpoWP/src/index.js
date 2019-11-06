@@ -1,6 +1,7 @@
 var _class, _temp;
 
-import React, { PureComponent, h } from "@areslabs/wx-react";
+import React, { PureComponent } from "@areslabs/wx-react";
+const h = React.h;
 import PropTypes from "@areslabs/wx-prop-types";
 import { Router, Route, TabRouter } from "@areslabs/wx-router";
 const RNAppClass = (_temp = _class = class App extends PureComponent {

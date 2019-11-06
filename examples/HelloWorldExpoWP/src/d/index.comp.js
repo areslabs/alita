@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { StyleSheet, Text, View, Dimensions } from "@areslabs/wx-react-native"
 import {
     AnimatedText,

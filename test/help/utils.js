@@ -6,7 +6,7 @@
  *
  */
 
-import {parseCode, geneCode} from '../../src/util/uast'
+import {parseCode, geneJSXCode} from '../../src/util/uast'
 
 /**
  * 通过trans把code转化为newCode
@@ -17,13 +17,13 @@ import {parseCode, geneCode} from '../../src/util/uast'
  */
 export function getNewCode(code, info, ...trans) {
 
-    let ast = parseCode(code)
+    let ast = parseCode(code, '.js')
     for(let i = 0; i < trans.length; i ++) {
         const tranFunc = trans[i]
         ast = tranFunc.call(null, ast, info)
     }
 
-    return geneCode(ast)
+    return geneJSXCode(ast)
 }
 
 export function expectNewCode(code, expectCode, info, ...trans) {

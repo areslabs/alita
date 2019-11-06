@@ -7,6 +7,17 @@ import { StyleSheet, Text, View, Platform } from "react-native"
  */
 import {AnimatedImage, createAnimation} from '@areslabs/wx-animated'
 
+/**
+ *  @areslabs/stringutil-rn 由于在alita.config.js 的dependencies字段有对应配置，所有在微信小程序平台，会把替换为
+ *  '@areslabs/stringutil-wx'。 语句将变成 ：import {camelCase} from '@areslabs/stringutil-wx'
+ *
+ *  对于不能直接在小程序运行的npm包，需要做类似处理。详情参考：
+ *  普通npm包：https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html
+ *  组件包： https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html
+ *
+ */
+import {camelCase} from '@areslabs/stringutil-rn'
+
 import rnLogoPng from './rn_logo.png'
 
 export default class HelloWorld extends Component {
@@ -30,7 +41,7 @@ export default class HelloWorld extends Component {
                 />
 
                 <Text>
-                    Hello {Platform.OS}!
+                    {camelCase(`Hello ${Platform.OS}!`)}
                 </Text>
             </View>
 

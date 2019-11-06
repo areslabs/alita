@@ -297,7 +297,14 @@ function flattenArray(arr, ans = []) {
  * the inverse process of tackleWithStyleObj
  * @param str
  */
-export function flattenStyle(str) {
+export function flattenStyle(fstyle) {
+    let str = fstyle
+    if (typeof fstyle !== 'string') {
+        // 可能是数组，可能是字符串，可能是其组合
+        str = tackleWithStyleObj(fstyle)
+    }
+
+
     const array = str.split(';').filter(i => i)
     const obj = {}
     for (let k = 0; k < array.length; k++) {

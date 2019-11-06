@@ -1,6 +1,7 @@
 var _class
 
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { View, WXTextInput, Text } from "@areslabs/wx-react-native"
 import { observer } from "@areslabs/wx-mobx-react"
 

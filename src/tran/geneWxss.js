@@ -7,22 +7,22 @@
  */
  
 import fse from "fs-extra";
-import {getRootPathPrefix} from '../util/util'
+import {getRootPathPrefix, miscNameToJSName} from '../util/util'
 
 export default function geneWxss(info) {
-    let {filepath, isPageComp, outComp} = info
-    filepath = filepath.replace(".wx.js", ".js");
+    const {filepath, isPageComp, outComp} = info
+    const finalJSPath = miscNameToJSName(filepath)
 
     for (let i = 0; i < outComp.length; i++) {
         const name = outComp[i];
 
         const wxssFilepath = (name === "render"
-                ? filepath.replace(".js", ".wxss")
-                : filepath.replace(".js", `${name}.wxss`)
+                ? finalJSPath.replace(".js", ".wxss")
+                : finalJSPath.replace(".js", `${name}.wxss`)
         );
 
-        const pageCommonPath = getRootPathPrefix(filepath) + "/pageCommon.wxss"
-        const compCommonPath = getRootPathPrefix(filepath) + "/compCommon.wxss"
+        const pageCommonPath = getRootPathPrefix(finalJSPath) + "/pageCommon.wxss"
+        const compCommonPath = getRootPathPrefix(finalJSPath) + "/compCommon.wxss"
 
         let wxssCode = null
         if (name === 'render' && isPageComp) {
