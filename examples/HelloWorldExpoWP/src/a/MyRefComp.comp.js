@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"
 export default class MyRefComp extends Component {

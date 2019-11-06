@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import MyStyleCompCompComp from "./MyStyleCompCompComp.comp"
 export default class MyStyleCompComp extends Component {
     render() {

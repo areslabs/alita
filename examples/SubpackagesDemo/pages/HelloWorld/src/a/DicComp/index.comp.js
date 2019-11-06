@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { Text, View } from "@areslabs/wx-react-native"
 export default class DicComp extends Component {
     render() {

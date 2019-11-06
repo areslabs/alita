@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { TouchableOpacity, View } from "@areslabs/wx-react-native"
 import MyForceUpdateInner from "./MyForceUpdateInner.comp"
 export default class MyForceUpdate extends Component {

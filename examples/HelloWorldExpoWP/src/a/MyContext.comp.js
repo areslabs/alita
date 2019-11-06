@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import PropTypes from "@areslabs/wx-prop-types"
 import { View, Text } from "@areslabs/wx-react-native"
 import styles from "./styles"

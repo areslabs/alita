@@ -1,5 +1,6 @@
 import { fetch } from "@areslabs/wx-react-native/index"
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { View, Image } from "@areslabs/wx-react-native"
 import { AnimationEnable } from "@areslabs/wx-animated"
 import { token } from "../../util/index"

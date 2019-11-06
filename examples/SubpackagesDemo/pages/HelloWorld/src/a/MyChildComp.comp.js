@@ -1,4 +1,5 @@
-import React, { h } from "@areslabs/wx-react"
+import React from "@areslabs/wx-react"
+const h = React.h
 import { View } from "@areslabs/wx-react-native"
 export default class MyChildComp extends React.Component {
     render() {

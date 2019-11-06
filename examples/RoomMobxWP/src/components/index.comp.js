@@ -1,6 +1,7 @@
 var _dec, _class
 
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { View, StyleSheet, Text, WXButton } from "@areslabs/wx-react-native"
 import { inject } from "@areslabs/wx-mobx-react"
 import TotalInfo from "./TotalInfo.comp"

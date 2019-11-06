@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react"
+import React, { Component } from "@areslabs/wx-react"
+const h = React.h
 import { View } from "@areslabs/wx-react-native"
 export default class MyPropComp extends Component {
     render() {

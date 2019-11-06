@@ -1,4 +1,5 @@
-import React, { PureComponent, h } from "@areslabs/wx-react";
+import React, { PureComponent } from "@areslabs/wx-react";
+const h = React.h;
 import { createStore, applyMiddleware } from "@areslabs/wx-redux";
 import promiseMiddleware from "@areslabs/wx-redux-promise";
 import thunk from "@areslabs/wx-redux-thunk";

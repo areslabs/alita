@@ -1,4 +1,5 @@
-import React, { Component, h } from "@areslabs/wx-react";
+import React, { Component } from "@areslabs/wx-react";
+const h = React.h;
 import { Router, Route } from "@areslabs/wx-router";
 const RNAppClass = class App extends Component {
   render() {
