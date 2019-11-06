@@ -43,8 +43,8 @@ const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX")
 
 
 const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
-const babelTSX = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: true, allExtensions: true}], {type: 'plugin'})
-const babelTS = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: false, allExtensions: true}], {type: 'plugin'})
+const babelTSX = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: true, allExtensions: true, allowNamespaces: true}], {type: 'plugin'})
+const babelTS = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: false, allExtensions: true, allowNamespaces: true}], {type: 'plugin'})
 
 const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
 const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
@@ -92,8 +92,6 @@ export function geneReactCode(ast, extname) {
     } else {
         presets.push(babelFlow)
     }
-
-    console.log('plugins:', plugins)
 
     code = babel.transformSync(code, {
         babelrc: false,
