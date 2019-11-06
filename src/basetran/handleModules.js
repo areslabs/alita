@@ -288,11 +288,6 @@ function isTopRequire(nodepath, moduleName) {
 }
 
 
-function insertIntoRequireBody(nodepath, newnode) {
-    const ppp = nodepath.parentPath.parentPath
-    ppp.insertAfter(newnode)
-}
-
 /**
  * 获取 最终的导入路径，如果导入的是目录，需要补全index
  * 如果导入的是组件，需要添加.comp
