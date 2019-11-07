@@ -13,6 +13,7 @@ import {supportExtname} from '../constants'
 import handleEntry from './handleEntry'
 import handleRF from './handleRF'
 import handleBF from './handleBF'
+import precheck from '../precheck'
 
 const path = require('path')
 const colors = require('colors');
@@ -46,6 +47,11 @@ export default async function (srcpath, targetpath) {
         const {isEntry, isRF, isFuncComp, isRNEntry} = getFileInfo(ast)
 
         if (isRNEntry) return []
+
+        const checkPass = precheck(ast, isRNEntry, isRF, srcpath, code)
+        if (!checkPass) {
+            return []
+        }
 
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
             const entryResult = handleEntry(ast, targetpath)

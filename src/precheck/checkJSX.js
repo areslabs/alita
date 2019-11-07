@@ -1,0 +1,326 @@
+import traverse from "@babel/traverse";
+import {RNCOMPSET} from '../constants'
+import {printError} from './util'
+
+/**
+ * Copyright (c) Areslabs.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+const ignoreCompSet = new Set([
+    'PureComponent',
+    'HocComponent',
+    'WrappedComponent',
+    'Component'
+])
+
+const unsupportRNAPI = new Set([
+    'NativeModules',
+    'Keyboard',
+    'PanResponder',
+    'Linking',
+    'LayoutAnimation',
+
+    'AccessibilityInfo',
+    'ActionSheetIOS',
+    'AlertIOS',
+    'AppRegistry',
+    'AppState',
+    'BackHandler',
+    'CameraRoll',
+    'Clipboard',
+    'DatePickerAndroid',
+    'Easing',
+    'Geolocation',
+    'ImageEditor',
+    'ImagePickerIOS',
+    'InteractionManager',
+    'Keyboard',
+    'LayoutAnimation',
+    'Linking',
+    'PanResponder',
+    'PermissionsAndroid',
+    'PushNotificationIOS',
+    'Systrace',
+    'TimePickerAndroid',
+    'ToastAndroid',
+    'Vibration',
+])
+
+const unsupportRNComponents = new Set([
+    'DatePickerIOS',
+    'ViewPagerAndroid',
+    'StatusBar',
+    'DatePickerAndroid',
+    'DrawerAndroid',
+    'MaskedView',
+    'ProgressBarAndroid',
+    'ProgressViewIOS',
+    'SegmentedControlIOS',
+    'TabBarIOS',
+    'TimePickerAndroid',
+    'ToastAndroid',
+    'ToolbarAndroid',
+    'ViewPager',
+    'ImageBackground',
+
+    'ActivityIndicator',
+    'KeyboardAvoidingView',
+    'MaskedViewIOS',
+    'SafeAreaView',
+    'ToolbarAndroid',
+    'VirtualizedList'
+])
+
+const notSupportCommonAttris = new Set([
+    'onLayout',
+    'onStartShouldSetResponder',
+    'onMoveShouldSetResponder',
+    'onResponderGrant',
+    'onResponderReject',
+    'onResponderMove',
+    'onResponderRelease',
+    'onResponderTerminationRequest',
+    'onResponderTerminate'
+])
+
+
+const notSupportJSXElementAttris = {
+    FlatList: new Set([
+        'ItemSeparatorComponent',
+        'columnWrapperStyle',
+        'extraData',
+        'inverted',
+        'onViewableItemsChanged',
+        'progressViewOffset',
+        'legacyImplementation',
+    ]),
+    ScrollView: new Set([
+        'onMomentumScrollBegin',
+        'onMomentumScrollEnd',
+        'pagingEnabled',
+        'scrollEnabled',
+    ])
+    //TODO 补充。。。
+}
+
+const backToView = new Set([
+    'Image',
+    'Text',
+    'TextInner',
+    'View',
+    'TouchableHighlight',
+    'TouchableOpacity',
+    'TouchableWithoutFeedback',
+])
+
+/**
+ *
+ * @param ast
+ * @param filepath
+ * @param rawCode
+ */
+export default function checkJSX(ast, filepath, rawCode) {
+    let checkPass = true
+
+    // 收集所有 import/require 组件
+    const allModuleVarSet  = new Set([])
+
+    // 单文件单组件
+    let alreadyHasComponent = false
+
+    traverse(ast, {
+
+        enter: path => {
+            if (path.type === 'ImportDeclaration') {
+                path.node.specifiers.forEach(item => {
+                    allModuleVarSet.add(item.local.name)
+                })
+            }
+
+            if (path.type === 'CallExpression'
+                && path.node.callee.name === 'require'
+                && path.node.arguments.length === 1
+            ) {
+
+                const pp = path.parentPath
+                const id = pp.node.id
+
+
+                if (id && id.type === 'Identifier') {
+                    allModuleVarSet.add(id.name)
+                }
+
+                if (id && id.type === 'ObjectPattern') {
+                    id.properties.forEach(pro => {
+                        if (pro.type === 'Property') {
+                            allModuleVarSet.add(pro.value.name)
+                        }
+                    })
+                }
+            }
+
+        },
+
+        exit: path => {
+            if (path.type === 'JSXOpeningElement') {
+
+                if (path.node.name.type === 'JSXIdentifier') {
+                    const name = path.node.name.name
+                    if (!allModuleVarSet.has(name)) {
+                        printError(filepath, path, rawCode, `组件${name}的导入，需要在import/require语句`)
+                        checkPass = false
+                    }
+
+                }
+
+            }
+
+
+            if (path.type === 'ImportDeclaration' && path.node.source.value === 'react-native') {
+                path.node.specifiers.forEach(item => {
+                    const importedName = item.imported.name
+                    const localName = item.local.name
+
+                    if ((RNCOMPSET.has(importedName) || backToView.has(importedName)) && importedName !== localName) {
+                        printError(filepath, path, rawCode, `导入RN组件的时候，不能使用import {xx as yy} 写法`)
+                        checkPass = false
+                    }
+                })
+            }
+        },
+
+        Identifier(path) {
+            if (path.node.name === "children") {
+                const p = path.parentPath
+                if (p.type !== 'MemberExpression') {
+                    printError(filepath, path, rawCode, `禁止直接使用children标识符，若是组件children属性this.props.children/props.children`)
+                    checkPass = false
+                }
+            }
+
+            if (path.node.name.endsWith('Component')) {
+                const name = path.node.name
+
+                if (ignoreCompSet.has(name)) {
+                    return
+                }
+
+                const p = path.parentPath
+                if (p.type !== 'MemberExpression') {
+                    printError(filepath, path, rawCode, `禁止使用xxComponent标识符，若是组件属性请使用this.props.xxComponent/props.xxComponent 替换`)
+                    checkPass = false
+                }
+            }
+
+            if (path.node.name === "h") {
+                printError(filepath, path, rawCode, `不允许声明/导入 名字为h的变量`)
+                checkPass = false
+            }
+
+            if (path.node.name === 'HocComponent') {
+                printError(filepath, path, rawCode, `HOC组件，需要使用React.createElement创建元素`)
+                checkPass = false
+            }
+        },
+
+
+        JSXSpreadAttribute: (path) => {
+            const elementName = path.parentPath.node.name.name
+            if (global.execArgs.allBaseComp.has(elementName) ||  backToView.has(elementName)) {
+                printError(filepath, path, rawCode, `基本组件不支持属性展开`)
+                checkPass = false
+            }
+        },
+
+        JSXMemberExpression: path => {
+            printError(filepath, path, rawCode, `小程序不允许存在<A.B/> 形式`)
+            checkPass = false
+        },
+
+
+        ImportDeclaration: (path) => {
+            const node = path.node
+            if (node.source.value !== 'react-native') return
+
+            node.specifiers.forEach(item => {
+                if (item.local.name === 'Animated')  {
+                    printError(filepath, path, rawCode, `不支持Animated组件， 需要使用@areslabs/wx-animated库替换`)
+                    checkPass = false
+                }
+
+                if (item.local.name === 'WebView') {
+                    printError(filepath, path, rawCode, `小程序webview占满全屏，和RN不同, 避免使用`)
+                    checkPass = false
+                }
+
+                if (unsupportRNAPI.has(item.local.name)) {
+                    printError(filepath, path, rawCode, `React Native API ${item.local.name}尚未支持，可以提个issue`)
+                    checkPass = false
+                }
+
+                if (unsupportRNComponents.has(item.local.name)) {
+                    printError(filepath, path, rawCode, `React Native 组件 ${item.local.name}尚未支持，可以提个issue`)
+                    checkPass = false
+                }
+            })
+        },
+
+        JSXAttribute: (path) => {
+            const node = path.node
+            const name = node.name.name
+            if (notSupportCommonAttris.has(name)) {
+                printError(filepath, path, rawCode, `不支持${name}属性`)
+                // checkPass = false, 属性不支持的情况，转化继续
+            } else {
+                const jop = path.parentPath
+                const elementName = jop.node.name.name
+
+                const jsxEleAttr = notSupportJSXElementAttris[elementName]
+                if (jsxEleAttr && jsxEleAttr.has(name)) {
+                    printError(filepath, path, rawCode, `组件${elementName}不支持${name}属性`)
+                    // checkPass = false, 属性不支持的情况，转化继续
+                }
+            }
+        },
+
+        ClassDeclaration: (path) => {
+            const node = path.node
+            if (isReactComp(node.superClass)) {
+                if (alreadyHasComponent) {
+                    printError(filepath, path, rawCode, `一个文件最多只允许存在一个组件`)
+                    checkPass = false
+                }
+
+                alreadyHasComponent = true
+            }
+        }
+    })
+
+    return checkPass
+}
+
+function isReactComp(superClass) {
+    if (!superClass) return false
+
+    let suName = ""
+    if (superClass.type === 'MemberExpression') {
+        suName = superClass.property.name
+    }
+
+    if (superClass.type === 'Identifier')  {
+        suName = superClass.name
+    }
+
+    if (suName === 'Component'
+        || suName === 'PureComponent'
+        || suName === 'StaticComponent'
+    ) {
+        return true
+    }
+
+    return false
+}

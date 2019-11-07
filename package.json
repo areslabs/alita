@@ -42,6 +42,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@babel/code-frame": "^7.5.5",
     "@babel/core": "^7.1.2",
     "@babel/helper-builder-react-jsx": "^7.0.0",
     "@babel/helper-plugin-utils": "^7.0.0",
