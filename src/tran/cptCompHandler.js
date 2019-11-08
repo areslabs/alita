@@ -13,7 +13,7 @@ import {geneOrder, getGenericName} from "../util/util"
 import {getPropsChain, isChildComp} from "../util/uast"
 
 
-export default function addWXPrefixHandler (ast, info) {
+export default function cptCompHandler (ast, info) {
     const ALLCPTCOMPMAP = global.execArgs.jsxPropsMap
     const go = geneOrder()
     traverse(ast, {

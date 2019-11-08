@@ -156,7 +156,7 @@ function getCompFinalPath(originalPath, name, filepath) {
 
 
     if (global.execArgs.extCompPathMaps[originalLib] === undefined) {
-        console.log(`${relativeFilePath}: ${originalLib} 需要在配置文件extCompLibs字段指定！`.error)
+        console.log(`${relativeFilePath}: ${originalLib} 需要在配置文件dependencies字段指定！`.error)
         return
     }
 

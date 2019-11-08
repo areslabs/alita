@@ -16,8 +16,13 @@ export default async function changeFile(path) {
     const targetPath = path.replace(INPUT_DIR, OUT_DIR);
     let oldFiles = [];
 
-    if (supportExtname.has(npath.extname(path))) {
-        oldFiles = await getFiles(targetPath, '.js')
+    const extname = npath.extname(path)
+    if (supportExtname.has(extname)) {
+        if (path.endsWith(`.wx${extname}`)) {
+            oldFiles = await getFiles(targetPath, `.wx${extname}`)
+        } else {
+            oldFiles = await getFiles(targetPath, extname)
+        }
     }
 
     let newFiles = await addFile(path);
