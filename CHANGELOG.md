@@ -1,3 +1,22 @@
+## [1.3.2](https://github.com/areslabs/alita/compare/1.3.1...1.3.2-beta.0) (2019-11-08)
+
+
+### Bug Fixes
+
+* **alita:** 修复 cptCompHandler 方法名错误的bug ([d6b276b](https://github.com/areslabs/alita/commit/d6b276b))
+* **alita:** 修复watch模式下 删除ts文件，小程序文件仍然存在的bug ([c582a82](https://github.com/areslabs/alita/commit/c582a82))
+* **alita:** 更新组件为对应的警告信息 ([e0a4cfe](https://github.com/areslabs/alita/commit/e0a4cfe))
+
+
+### Features
+
+* **alita:** 完善转化之前的check，添加entry check ([5e32980](https://github.com/areslabs/alita/commit/5e32980))
+* **alita:** 检测到多个入口文件，提供报错提示消息 ([b76e6be](https://github.com/areslabs/alita/commit/b76e6be))
+* **alita:** 添加 对JSX属性的precheck ([2fcbc4c](https://github.com/areslabs/alita/commit/2fcbc4c))
+* **alita:** 添加不和规则JSX的提升 ([c3a26e9](https://github.com/areslabs/alita/commit/c3a26e9))
+
+
+
 ## [1.3.1](https://github.com/areslabs/alita/compare/1.3.0...1.3.1) (2019-11-06)
 
 ### Bug Fixes
