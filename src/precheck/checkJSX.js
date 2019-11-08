@@ -136,6 +136,16 @@ export default function checkJSX(ast, filepath, rawCode) {
     // 单文件单组件
     let alreadyHasComponent = false
 
+    // 收集所有JSX fun
+
+    let jsxFuncs = new Set([])
+    let hasJSXTag = false
+
+    let hasAttributeJSXTag = false
+
+
+    const ALLCPTCOMPMAP = global.execArgs.jsxPropsMap
+
     traverse(ast, {
 
         enter: path => {
@@ -165,6 +175,19 @@ export default function checkJSX(ast, filepath, rawCode) {
                         }
                     })
                 }
+            }
+
+            if (path.type === 'ClassMethod' || path.type === 'ClassProperty') {
+                hasJSXTag = false
+            }
+
+            if (path.type === 'JSXAttribute') {
+                hasAttributeJSXTag = false
+            }
+
+            if (path.type === 'JSXOpeningElement') {
+                hasJSXTag = true
+                hasAttributeJSXTag = true
             }
 
         },
@@ -205,6 +228,31 @@ export default function checkJSX(ast, filepath, rawCode) {
                         checkPass = false
                     }
                 })
+            }
+
+            if ((path.type === 'ClassMethod' || path.type === 'ClassProperty') && hasJSXTag) {
+                jsxFuncs.add(path.node.key.name)
+            }
+
+            if (path.type === 'JSXAttribute' && hasAttributeJSXTag) {
+                const JSXName = path.parentPath.node.name.name
+                const attrName = path.node.name.name
+
+                if (RNCOMPSET.has(JSXName)) {
+                    return
+                }
+
+                // 配置的jsx属性，不需要check
+                if (ALLCPTCOMPMAP[JSXName] && ALLCPTCOMPMAP[JSXName][attrName]) {
+                    return
+                }
+
+                if (attrName.endsWith('Component')) {
+                    return
+                }
+
+
+                printWarn(filepath, path, rawCode, `props为JSX片段的，属性名需要以Component结尾！可改为：<${JSXName} ${attrName}Component={...} >`)
             }
         },
 
@@ -304,6 +352,63 @@ export default function checkJSX(ast, filepath, rawCode) {
                 }
 
                 alreadyHasComponent = true
+            }
+        },
+    })
+
+
+    traverse(ast, {
+
+
+        // this.xx
+        JSXAttribute(path) {
+            const jsxOp = path.parentPath.node
+            const JSXName = jsxOp.name.name
+            const attrName = path.node.name.name
+
+            if (RNCOMPSET.has(JSXName)) {
+                return
+            }
+
+            // 配置的jsx属性，不需要check
+            if (ALLCPTCOMPMAP[JSXName] && ALLCPTCOMPMAP[JSXName][attrName]) {
+                return
+            }
+
+            if (path.node.value.type === 'JSXExpressionContainer'
+                && path.node.value.expression
+                && path.node.value.expression.type === 'MemberExpression'
+                && path.node.value.expression.object.type === 'ThisExpression'
+            ) {
+                const name = path.node.value.expression.property.name
+
+                if (jsxFuncs.has(name) && !attrName.endsWith('Component')) {
+                    printWarn(filepath, path, rawCode, `props为JSX片段的，属性名需要以Component结尾！可改为<${JSXName} ${attrName}Component={...}>`)
+                }
+            }
+
+
+            // this.xx.bind(this)
+            if (path.node.value.type === 'JSXExpressionContainer'
+                && path.node.value.expression
+                && path.node.value.expression.type === 'CallExpression'
+                && path.node.value.expression.callee.type === 'MemberExpression'
+                && path.node.value.expression.callee.property.name === 'bind'
+                && path.node.value.expression.arguments.length > 0
+                && path.node.value.expression.arguments[0].type === 'ThisExpression'
+            ) {
+
+                const obj = path.node.value.expression.callee.object
+
+                if (obj.type === 'MemberExpression'
+                    && obj.object.type === 'ThisExpression'
+
+                ) {
+                    const name = obj.property.name
+                    if (jsxFuncs.has(name) && !attrName.endsWith('Component')) {
+                        printWarn(filepath, path, rawCode, `props为JSX片段的，属性名需要以Component结尾！可改为<${JSXName} ${attrName}Component={...}/>`)
+                    }
+                }
             }
         },
     })
