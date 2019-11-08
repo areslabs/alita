@@ -48,7 +48,7 @@ export default async function (srcpath, targetpath) {
 
         if (isRNEntry) return []
 
-        const checkPass = precheck(ast, isRNEntry, isRF, srcpath, code)
+        const checkPass = precheck(ast, isEntry, isRF, srcpath, code)
         if (!checkPass) {
             return []
         }

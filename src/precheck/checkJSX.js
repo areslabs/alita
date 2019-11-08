@@ -1,6 +1,6 @@
 import traverse from "@babel/traverse";
 import {RNCOMPSET} from '../constants'
-import {printError} from './util'
+import {printError, printWarn} from './util'
 
 /**
  * Copyright (c) Areslabs.
@@ -118,6 +118,10 @@ const backToView = new Set([
 ])
 
 /**
+ *  在转化之前，提前check一次代码，并对错误给出友好提示。
+ *
+ *  printError： 后续转化停止 checkPass设置为false
+ *  printWarn：  由于平台判断等情况存在，后续转化继续
  *
  * @param ast
  * @param filepath
@@ -191,6 +195,17 @@ export default function checkJSX(ast, filepath, rawCode) {
                     }
                 })
             }
+
+            if (path.type === 'ClassProperty' && path.node.key.name === 'wxNavigationOptions' && path.node.static === true) {
+                const v = path.node.value
+
+                v.properties.forEach(op => {
+                    if (!op.value.type.endsWith('Literal')) {
+                        printError(filepath, path, rawCode, `wxNavigationOptions 属性值，值需要是字面量`)
+                        checkPass = false
+                    }
+                })
+            }
         },
 
         Identifier(path) {
@@ -237,8 +252,7 @@ export default function checkJSX(ast, filepath, rawCode) {
         },
 
         JSXMemberExpression: path => {
-            printError(filepath, path, rawCode, `小程序不允许存在<A.B/> 形式`)
-            checkPass = false
+            printWarn(filepath, path, rawCode, `小程序不允许存在<A.B/> 形式`)
         },
 
 
@@ -248,23 +262,19 @@ export default function checkJSX(ast, filepath, rawCode) {
 
             node.specifiers.forEach(item => {
                 if (item.local.name === 'Animated')  {
-                    printError(filepath, path, rawCode, `不支持Animated组件， 需要使用@areslabs/wx-animated库替换`)
-                    checkPass = false
+                    printWarn(filepath, path, rawCode, `不支持Animated组件， 需要使用@areslabs/wx-animated库替换`)
                 }
 
                 if (item.local.name === 'WebView') {
-                    printError(filepath, path, rawCode, `小程序webview占满全屏，和RN不同, 避免使用`)
-                    checkPass = false
+                    printWarn(filepath, path, rawCode, `小程序webview占满全屏，和RN不同, 避免使用`)
                 }
 
                 if (unsupportRNAPI.has(item.local.name)) {
-                    printError(filepath, path, rawCode, `React Native API ${item.local.name}尚未支持，可以提个issue`)
-                    checkPass = false
+                    printWarn(filepath, path, rawCode, `React Native API ${item.local.name}尚未支持，可以提个issue`)
                 }
 
                 if (unsupportRNComponents.has(item.local.name)) {
-                    printError(filepath, path, rawCode, `React Native 组件 ${item.local.name}尚未支持，可以提个issue`)
-                    checkPass = false
+                    printWarn(filepath, path, rawCode, `React Native 组件 ${item.local.name}尚未支持，可以提个issue`)
                 }
             })
         },
@@ -273,16 +283,14 @@ export default function checkJSX(ast, filepath, rawCode) {
             const node = path.node
             const name = node.name.name
             if (notSupportCommonAttris.has(name)) {
-                printError(filepath, path, rawCode, `不支持${name}属性`)
-                // checkPass = false, 属性不支持的情况，转化继续
+                printWarn(filepath, path, rawCode, `不支持${name}属性`)
             } else {
                 const jop = path.parentPath
                 const elementName = jop.node.name.name
 
                 const jsxEleAttr = notSupportJSXElementAttris[elementName]
                 if (jsxEleAttr && jsxEleAttr.has(name)) {
-                    printError(filepath, path, rawCode, `组件${elementName}不支持${name}属性`)
-                    // checkPass = false, 属性不支持的情况，转化继续
+                    printWarn(filepath, path, rawCode, `组件${elementName}不支持${name}属性`)
                 }
             }
         },
@@ -297,7 +305,7 @@ export default function checkJSX(ast, filepath, rawCode) {
 
                 alreadyHasComponent = true
             }
-        }
+        },
     })
 
     return checkPass

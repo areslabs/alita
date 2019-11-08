@@ -1,5 +1,6 @@
 import checkJSX from './checkJSX'
 import checkBase from './checkBase'
+import checkEntry from './checkEntry'
 
 export default function precheck(ast, isEntry, isR, filepath, rawCode) {
 
@@ -7,7 +8,9 @@ export default function precheck(ast, isEntry, isR, filepath, rawCode) {
 
 
     if (isEntry) {
-        return true
+        const basePass = checkBase(ast, relativePath, rawCode)
+        const entryPass = checkEntry(ast, relativePath, rawCode)
+        return basePass && entryPass
     } else if (isR) {
         const basePass = checkBase(ast, relativePath, rawCode)
         const jsxPass = checkJSX(ast, relativePath, rawCode)

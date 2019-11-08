@@ -19,3 +19,16 @@ export function printError(filepath, path, rawCode, message) {
     });
     console.log(result)
 }
+
+
+export function printWarn(filepath, path, rawCode, message) {
+    const loc = path.node.loc
+    console.log(`${filepath} 行${loc.start.line}: ${message}`.warn)
+
+    const result = codeFrameColumns(rawCode, loc, {
+        highlightCode: true,
+        linesAbove: 2,
+        linesBelow: 2,
+    });
+    console.log(result)
+}
