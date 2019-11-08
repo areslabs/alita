@@ -54,6 +54,11 @@ export default async function (srcpath, targetpath) {
         }
 
         if (isEntry && isRF) { // 入口文件 保证入口文件一定最先处理
+            if (entryFilePath) {
+                console.log(`${srcpath.replace(global.execArgs.INPUT_DIR, '')} ：发现两个入口文件！`.error)
+            }
+
+
             const entryResult = handleEntry(ast, targetpath)
             entryFilePath = entryResult.realFilePath
             allCompSet = entryResult.allCompSet
