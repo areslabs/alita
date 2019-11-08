@@ -42,7 +42,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * Alita相比其他**编译时**方案，大大解放了React语法的自由，但是出于潜在的性能考虑，Alita选用了微信小程序自定义组件来对齐React组件，这又带来了
    Alita语法上的一些限制。
     
-以上2点要求和限制[详见 要求与限制文档](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， 另外
+以上2点 Alita在转化的时候会对 **代码预检测，对不符合的代码将会给出友好提升**。 这里可以看到相关要求和限制的具体文档[要求与限制文档](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， 另外
    
 * 另外，**RN开发者请注意：微信小程序npm包和RN的npm使用方式不同[详见](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)**， 所以对于第三方npm包，可能需要手动去处理。 参考[npm包处理说明](https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html)，[第三方组件库扩展](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 
 
