@@ -147,10 +147,6 @@ Alita可以通过参数`--config`指定一个配置文件。当你的项目只�
 
 [详细介绍](https://areslabs.github.io/alita/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html)
 
-## eslint检查
-虽然Alita支持了大部分的React语法，但是还是有一些情况Alita无法处理，比如原生RN动画库。另外Alita在转化代码的过程中，使用了一些保留字。我们希望这些来自Alita的限制可以近早的被发现，所以我们提供了一个eslint plugin。通过配置此plugin，可以让你在使用Alita转化代码之前，对你的代码进行静态的检查。
-
-[详细介绍](https://areslabs.github.io/alita/%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5&Eslint.html)
 
 ## 已有RN项目转化
 Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存在的RN应用。但是不可避免的，已有项目会更多的触及到Alita的限制，包括路由组件，动画组件。当你需要转化已有RN项目时，我们梳理了需要注意和必要的修改点
