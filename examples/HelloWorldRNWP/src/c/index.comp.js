@@ -54,7 +54,8 @@ export default class C extends Component {
                     },
                     h("template", {
                         datakey: "CTDK00001",
-                        tempVnode: this.props.routerParams.text
+                        tempVnode: this.props.routerParams.text,
+                        isTextElement: true
                     })
                 )
             ),

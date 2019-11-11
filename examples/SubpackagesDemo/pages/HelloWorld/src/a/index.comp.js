@@ -157,7 +157,8 @@ export default class A extends Component {
                 },
                 h("template", {
                     datakey: "CTDK00001",
-                    tempVnode: hello
+                    tempVnode: hello,
+                    isTextElement: true
                 })
             )
         )
@@ -233,7 +234,8 @@ export default class A extends Component {
                     "Platform: ",
                     h("template", {
                         datakey: "CTDK00002",
-                        tempVnode: Platform.OS
+                        tempVnode: Platform.OS,
+                        isTextElement: true
                     })
                 )
             ),
@@ -323,7 +325,8 @@ export default class A extends Component {
                             },
                             h("template", {
                                 datakey: "CTDK00003",
-                                tempVnode: ele
+                                tempVnode: ele,
+                                isTextElement: true
                             }),
                             ","
                         )

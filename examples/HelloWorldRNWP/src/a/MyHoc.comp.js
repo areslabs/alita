@@ -51,17 +51,20 @@ class MyHoc extends Component {
                     },
                     h("template", {
                         datakey: "CTDK00001",
-                        tempVnode: this.props.txt
+                        tempVnode: this.props.txt,
+                        isTextElement: true
                     }),
                     ": name=",
                     h("template", {
                         datakey: "CTDK00002",
-                        tempVnode: this.props.name
+                        tempVnode: this.props.name,
+                        isTextElement: true
                     }),
                     ", age=",
                     h("template", {
                         datakey: "CTDK00003",
-                        tempVnode: this.props.age
+                        tempVnode: this.props.age,
+                        isTextElement: true
                     })
                 )
             )

@@ -13,7 +13,7 @@
         
  <template name="ITNP00005">
     <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
-                <view class="text" style="{{t.s(DIUU00002style)}}"><block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template>：</view>
+                <view class="text" style="{{t.s(DIUU00002style)}}">{{CTDK00001}}：</view>
                 <WXTextInput autoFocus="{{DIUU00003autoFocus}}" value="{{DIUU00003value}}" diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" />
                 <view class="text" style="{{t.s(DIUU00004style)}}"> 元</view>
             </block>

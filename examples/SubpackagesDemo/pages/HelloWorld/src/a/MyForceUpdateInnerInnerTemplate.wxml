@@ -13,7 +13,7 @@
         
  <template name="ITNP00003">
     <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
-                <view class="text" style="{{t.s(DIUU00002style)}}">forceUpdate: <block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template></view>
+                <view class="text" style="{{t.s(DIUU00002style)}}">forceUpdate: {{CTDK00001}}</view>
             </block>
   </template>
  

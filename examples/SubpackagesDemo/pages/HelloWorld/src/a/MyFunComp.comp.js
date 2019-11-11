@@ -24,15 +24,18 @@ export default class MyFunComp extends React.FuncComponent {
                 },
                 h("template", {
                     datakey: "CTDK00001",
-                    tempVnode: name
+                    tempVnode: name,
+                    isTextElement: true
                 }),
                 h("template", {
                     datakey: "CTDK00002",
-                    tempVnode: age
+                    tempVnode: age,
+                    isTextElement: true
                 }),
                 h("template", {
                     datakey: "CTDK00003",
-                    tempVnode: color
+                    tempVnode: color,
+                    isTextElement: true
                 })
             )
         )

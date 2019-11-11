@@ -60,7 +60,7 @@
   </template>
  
  <template name="ITNP00006">
-    <view class="view" style="{{t.s(DIUU00004style)}}"><view class="text" style="{{t.s(DIUU00005style)}}"><block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template></view></view>
+    <view class="view" style="{{t.s(DIUU00004style)}}"><view class="text" style="{{t.s(DIUU00005style)}}">{{CTDK00001}}</view></view>
   </template>
  
  <template name="ITNP00009">
@@ -76,7 +76,7 @@
   </template>
  
  <template name="ITNP00026">
-    <view class="text" style="{{t.s(DIUU00025style)}}"><block wx:if="{{t.l(CTDK00003)}}">{{CTDK00003}}</block><template wx:else is="CTNP00003" data="{{d: CTDK00003}}"></template>,</view>
+    <view class="text" style="{{t.s(DIUU00025style)}}">{{CTDK00003}},</view>
   </template>
  
  <template name="ITNP00033">
@@ -105,7 +105,7 @@
                     <WXButton color="#fff" title="PUSH C PAGE" diuu="{{DIUU00015}}" style="{{t.s(DIUU00015style)}}" />
                 </view>
                 <view class="view" style="{{t.s(DIUU00016style)}}">
-                    <view class="text" style="{{t.s(DIUU00017style)}}">Platform: <block wx:if="{{t.l(CTDK00002)}}">{{CTDK00002}}</block><template wx:else is="CTNP00002" data="{{d: CTDK00002}}"></template></view>
+                    <view class="text" style="{{t.s(DIUU00017style)}}">Platform: {{CTDK00002}}</view>
                 </view>
                 <PlatformComp diuu="{{DIUU00018}}" style="{{t.s(DIUU00018style)}}" wx:if="{{DIUU00018style !== false}}" />
 

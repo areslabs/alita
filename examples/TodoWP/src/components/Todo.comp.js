@@ -38,7 +38,8 @@ export default class Todo extends PureComponent {
                     },
                     h("template", {
                         datakey: "CTDK00001",
-                        tempVnode: text
+                        tempVnode: text,
+                        isTextElement: true
                     })
                 )
             )

@@ -57,11 +57,11 @@
         
  <template name="ITNP00007">
     <block original="View" diuu="{{DIUU00001}}" style="{{t.s(DIUU00001style)}}">
-                <view class="text" style="{{t.s(DIUU00002style)}}"><block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template>：<block wx:if="{{t.l(CTDK00002)}}">{{CTDK00002}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00002}}"></template>¥</view>
-                <view class="text" style="{{t.s(DIUU00003style)}}"><block wx:if="{{t.l(CTDK00003)}}">{{CTDK00003}}</block><template wx:else is="CTNP00002" data="{{d: CTDK00003}}"></template>：<block wx:if="{{t.l(CTDK00004)}}">{{CTDK00004}}</block><template wx:else is="CTNP00002" data="{{d: CTDK00004}}"></template>¥</view>
-                <view class="text" style="{{t.s(DIUU00004style)}}"><block wx:if="{{t.l(CTDK00005)}}">{{CTDK00005}}</block><template wx:else is="CTNP00003" data="{{d: CTDK00005}}"></template>：<block wx:if="{{t.l(CTDK00006)}}">{{CTDK00006}}</block><template wx:else is="CTNP00003" data="{{d: CTDK00006}}"></template>¥</view>
-                <view class="text" style="{{t.s(DIUU00005style)}}"><block wx:if="{{t.l(CTDK00007)}}">{{CTDK00007}}</block><template wx:else is="CTNP00004" data="{{d: CTDK00007}}"></template>：<block wx:if="{{t.l(CTDK00008)}}">{{CTDK00008}}</block><template wx:else is="CTNP00004" data="{{d: CTDK00008}}"></template>¥</view>
-                <view class="text" style="{{t.s(DIUU00006style)}}">总价：<block wx:if="{{t.l(CTDK00009)}}">{{CTDK00009}}</block><template wx:else is="CTNP00005" data="{{d: CTDK00009}}"></template>¥</view>
+                <view class="text" style="{{t.s(DIUU00002style)}}">{{CTDK00001}}：{{CTDK00002}}¥</view>
+                <view class="text" style="{{t.s(DIUU00003style)}}">{{CTDK00003}}：{{CTDK00004}}¥</view>
+                <view class="text" style="{{t.s(DIUU00004style)}}">{{CTDK00005}}：{{CTDK00006}}¥</view>
+                <view class="text" style="{{t.s(DIUU00005style)}}">{{CTDK00007}}：{{CTDK00008}}¥</view>
+                <view class="text" style="{{t.s(DIUU00006style)}}">总价：{{CTDK00009}}¥</view>
             </block>
   </template>
  

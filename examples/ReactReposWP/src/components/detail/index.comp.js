@@ -84,7 +84,8 @@ export default class Detail extends Component {
                     },
                     h("template", {
                         datakey: "CTDK00001",
-                        tempVnode: description
+                        tempVnode: description,
+                        isTextElement: true
                     })
                 )
             ),
@@ -137,7 +138,8 @@ export default class Detail extends Component {
                                 },
                                 h("template", {
                                     datakey: "CTDK00002",
-                                    tempVnode: sec.key
+                                    tempVnode: sec.key,
+                                    isTextElement: true
                                 })
                             ),
                             h("image", {

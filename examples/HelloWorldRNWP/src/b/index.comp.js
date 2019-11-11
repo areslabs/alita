@@ -81,7 +81,8 @@ export default class B extends Component {
                     },
                     h("template", {
                         datakey: "CTDK00001",
-                        tempVnode: item.name
+                        tempVnode: item.name,
+                        isTextElement: true
                     })
                 )
             )

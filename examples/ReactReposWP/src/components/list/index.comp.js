@@ -73,7 +73,8 @@ export default class List extends Component {
                             },
                             h("template", {
                                 datakey: "CTDK00001",
-                                tempVnode: item.name
+                                tempVnode: item.name,
+                                isTextElement: true
                             })
                         ),
                         h(
@@ -100,7 +101,8 @@ export default class List extends Component {
                                 },
                                 h("template", {
                                     datakey: "CTDK00002",
-                                    tempVnode: formatK(item.watchers)
+                                    tempVnode: formatK(item.watchers),
+                                    isTextElement: true
                                 })
                             )
                         )
@@ -115,7 +117,8 @@ export default class List extends Component {
                         },
                         h("template", {
                             datakey: "CTDK00003",
-                            tempVnode: item.description
+                            tempVnode: item.description,
+                            isTextElement: true
                         })
                     ),
                     h(
@@ -129,7 +132,8 @@ export default class List extends Component {
                             datakey: "CTDK00004",
                             tempVnode: item.license
                                 ? item.license.spdx_id
-                                : "ISC"
+                                : "ISC",
+                            isTextElement: true
                         })
                     )
                 )
