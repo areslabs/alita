@@ -61,12 +61,17 @@ export default function createElement(comp, props, ...args) {
 
     finalProps.children = children
 
+    let finalDiuu = diuu
+    if (!diuu && typeof comp === 'function') {
+        finalDiuu = TmpKey
+    }
+
     return {
         isReactElement: true,
         nodeName: comp,
         props: finalProps,
         key: key,
-        diuu : diuu || TmpKey,
+        diuu : finalDiuu,
         ref,
         children,
 
