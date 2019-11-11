@@ -712,12 +712,25 @@ function updateTemplate(vnode, parentInst, parentContext, data, oldData, dataPat
     ) {
         // do nothing
         data[datakey] = ''
-    } else if (typeof tempVnode === 'string'
+        return
+    }
+
+    if (typeof tempVnode === 'string'
         || typeof tempVnode === 'number'
     ) {
         // 不是jsx的情况
         data[datakey] = tempVnode
-    } else if (Array.isArray(tempVnode)) {
+        return
+    }
+
+    if (vnode.props.isTextElement) {
+        let message = "Text子元素JSX表达式的值只能是简单类型！"
+        console.error(message)
+        data[datakey] = ''
+        return
+    }
+
+    if (Array.isArray(tempVnode)) {
         // key必须明确指定，对于不知道key的情况， React和小程序处理可能存在差异，造成两个平台的行为差异
 
         let oldSubDataKeyMap = {}
