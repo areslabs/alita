@@ -76,9 +76,6 @@ export function setDeepData(inst, v, path) {
     tmpObj[endk] = v
 }
 
-
-export const HOCKEY = "HOCKEY"
-
 export const ReactWxEventMap = {
     'onPress': 'tap',
     'onLongPress': 'longpress',

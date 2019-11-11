@@ -5,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
+
+// 一般情况下 uuid都应该是存在的， 但是HOC的包裹的组件，uuid需要手动设置
+const TmpKey = "HOCKEY"
+
 export default function createElement(comp, props, ...args) {
     if (!comp) {
         console.error(`组件为${comp}, 是否忘记导入？？`)
@@ -63,7 +66,7 @@ export default function createElement(comp, props, ...args) {
         nodeName: comp,
         props: finalProps,
         key: key,
-        diuu,
+        diuu : diuu || TmpKey,
         ref,
         children,
 
