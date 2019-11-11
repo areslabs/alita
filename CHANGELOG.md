@@ -1,3 +1,18 @@
+## [1.3.3](https://github.com/areslabs/alita/compare/1.3.2...1.3.3) (2019-11-11)
+
+
+### Bug Fixes
+
+* **wx-react:** 修复 移除hocProps引起的样式错乱的bug ([0389a50](https://github.com/areslabs/alita/commit/0389a50))
+
+
+### Features
+
+* **alita:** 简化Text类型标签的处理 ([be8bc48](https://github.com/areslabs/alita/commit/be8bc48))
+* **wx-react:** 移除Hoc需手动设置hocProps的限制 ([de2979f](https://github.com/areslabs/alita/commit/de2979f))
+
+
+
 ## [1.3.2](https://github.com/areslabs/alita/compare/1.3.1...1.3.2-beta.0) (2019-11-08)
 
 
