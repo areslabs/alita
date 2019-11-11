@@ -10,7 +10,7 @@ import traverse from "@babel/traverse";
 import * as t from "@babel/types"
 
 import {geneOrder} from '../util/util'
-import {isChildComp} from '../util/uast'
+import {isChildComp, isTextElement} from '../util/uast'
 
 import {ChildTemplateDataKeyPrefix, ChildTemplateNamePrefix} from '../constants'
 
@@ -96,6 +96,7 @@ export default function childrenToTemplate(ast, info) {
     traverse(ast, {
 
         exit: path => {
+
             if (path.type === 'JSXElement'
                 && !isChildComp(path.node.openingElement.name.name)
             ) {
@@ -111,16 +112,23 @@ export default function childrenToTemplate(ast, info) {
 
                         const datakey = `${ChildTemplateDataKeyPrefix}${goForCTDK.next}`
 
+
+                        const templateAttris = [
+                            t.jsxAttribute(t.jsxIdentifier('datakey'), t.stringLiteral(datakey)),
+                            t.jsxAttribute(t.jsxIdentifier('tempVnode'), ele),
+                            t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${datakey}}} !== undefined`)),
+                            t.jsxAttribute(t.jsxIdentifier('is'), t.stringLiteral(tempName)),
+                            t.jsxAttribute(t.jsxIdentifier('data'), t.stringLiteral(`{{d: ${datakey}}}`))
+                        ]
+
+                        if (isTextElement(path.node.openingElement)) {
+                            templateAttris.push(t.jsxAttribute(t.jsxIdentifier('isTextElement')))
+                        }
+
                         return t.jsxElement(
                             t.jsxOpeningElement(
                                 t.jsxIdentifier('template'),
-                                [
-                                    t.jsxAttribute(t.jsxIdentifier('datakey'), t.stringLiteral(datakey)),
-                                    t.jsxAttribute(t.jsxIdentifier('tempVnode'), ele),
-                                    t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${datakey}}} !== undefined`)),
-                                    t.jsxAttribute(t.jsxIdentifier('is'), t.stringLiteral(tempName)),
-                                    t.jsxAttribute(t.jsxIdentifier('data'), t.stringLiteral(`{{d: ${datakey}}}`))
-                                ]
+                                templateAttris
                             ),
                             t.jsxClosingElement(
                                 t.jsxIdentifier('template')

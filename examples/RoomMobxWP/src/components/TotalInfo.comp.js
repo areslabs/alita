@@ -37,12 +37,14 @@ let TotalInfo =
                                 },
                                 h("template", {
                                     datakey: "CTDK00001",
-                                    tempVnode: bedRoom1.label
+                                    tempVnode: bedRoom1.label,
+                                    isTextElement: true
                                 }),
                                 "\uFF1A",
                                 h("template", {
                                     datakey: "CTDK00002",
-                                    tempVnode: bedRoom1.price
+                                    tempVnode: bedRoom1.price,
+                                    isTextElement: true
                                 }),
                                 "\xA5"
                             ),
@@ -54,12 +56,14 @@ let TotalInfo =
                                 },
                                 h("template", {
                                     datakey: "CTDK00003",
-                                    tempVnode: bedRoom2.label
+                                    tempVnode: bedRoom2.label,
+                                    isTextElement: true
                                 }),
                                 "\uFF1A",
                                 h("template", {
                                     datakey: "CTDK00004",
-                                    tempVnode: bedRoom2.price
+                                    tempVnode: bedRoom2.price,
+                                    isTextElement: true
                                 }),
                                 "\xA5"
                             ),
@@ -71,12 +75,14 @@ let TotalInfo =
                                 },
                                 h("template", {
                                     datakey: "CTDK00005",
-                                    tempVnode: kitchen.label
+                                    tempVnode: kitchen.label,
+                                    isTextElement: true
                                 }),
                                 "\uFF1A",
                                 h("template", {
                                     datakey: "CTDK00006",
-                                    tempVnode: kitchen.price
+                                    tempVnode: kitchen.price,
+                                    isTextElement: true
                                 }),
                                 "\xA5"
                             ),
@@ -88,12 +94,14 @@ let TotalInfo =
                                 },
                                 h("template", {
                                     datakey: "CTDK00007",
-                                    tempVnode: bookroom.label
+                                    tempVnode: bookroom.label,
+                                    isTextElement: true
                                 }),
                                 "\uFF1A",
                                 h("template", {
                                     datakey: "CTDK00008",
-                                    tempVnode: bookroom.price
+                                    tempVnode: bookroom.price,
+                                    isTextElement: true
                                 }),
                                 "\xA5"
                             ),
@@ -106,7 +114,8 @@ let TotalInfo =
                                 "\u603B\u4EF7\uFF1A",
                                 h("template", {
                                     datakey: "CTDK00009",
-                                    tempVnode: total
+                                    tempVnode: total,
+                                    isTextElement: true
                                 }),
                                 "\xA5"
                             )

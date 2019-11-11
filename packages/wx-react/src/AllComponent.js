@@ -7,7 +7,6 @@
  */
  
 import instanceManager from "./InstanceManager";
-import {HOCKEY} from './util'
 
 import shallowEqual from './shallowEqual'
 
@@ -103,11 +102,6 @@ export class PureComponent extends Component {
 export class HocComponent extends Component {
     constructor(props, context) {
         super(props, context)
-
-        this.hocProps = {
-            diuu: HOCKEY
-        }
-
     }
 }
 

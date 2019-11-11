@@ -292,5 +292,15 @@ export function isBindElementByName(name) {
 }
 
 
+export function isTextElement(openingElement) {
+    if (openingElement.name.name !== 'view') return false
+
+    return openingElement.attributes.some(item =>
+        item.type === 'JSXAttribute'
+        && item.name.name === 'original'
+        && (item.value.value === 'OuterText' || item.value.value === 'InnerText'))
+}
+
+
 
 

@@ -131,6 +131,7 @@ const transformJSX = (api, options) => {
                 return attr.type === 'JSXAttribute'
                     && (attr.name.name === 'datakey'
                         || attr.name.name === 'tempVnode'
+                        || attr.name.name === 'isTextElement'
                     )
             })
         }

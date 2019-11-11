@@ -34,7 +34,8 @@ export default class MyRefComp extends Component {
                 },
                 h("template", {
                     datakey: "CTDK00001",
-                    tempVnode: this.state.count
+                    tempVnode: this.state.count,
+                    isTextElement: true
                 })
             )
         )

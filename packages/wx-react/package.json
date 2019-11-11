@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react",
-  "version": "1.0.33",
+  "version": "1.0.35",
   "description": "微信版本的React",
   "files": [
     "miniprogram_dist",

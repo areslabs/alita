@@ -90,7 +90,8 @@ export default class C extends Component {
                 "type: ",
                 h("template", {
                     datakey: "CTDK00001",
-                    tempVnode: type
+                    tempVnode: type,
+                    isTextElement: true
                 })
             ),
             h("template", {

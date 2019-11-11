@@ -14,7 +14,7 @@
  <template name="ITNP00010">
     <view class="view" style="{{t.s(DIUU00001style)}}">
                 <view class="view" style="{{t.s(DIUU00002style)}}"><view class="text" style="{{t.s(DIUU00003style)}}">Hello</view></view>
-                <view class="view" style="{{t.s(DIUU00004style)}}"><view class="text" style="{{t.s(DIUU00005style)}}"><block wx:if="{{t.l(CTDK00001)}}">{{CTDK00001}}</block><template wx:else is="CTNP00001" data="{{d: CTDK00001}}"></template></view></view>
+                <view class="view" style="{{t.s(DIUU00004style)}}"><view class="text" style="{{t.s(DIUU00005style)}}">{{CTDK00001}}</view></view>
 
                 <view class="view" style="{{t.s(DIUU00006style)}}">
                     <WXButton title="PUSH E PAGE" color="#FFF" diuu="{{DIUU00007}}" style="{{t.s(DIUU00007style)}}" />

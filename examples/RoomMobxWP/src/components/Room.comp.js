@@ -27,7 +27,8 @@ let Room =
                         },
                         h("template", {
                             datakey: "CTDK00001",
-                            tempVnode: data.label
+                            tempVnode: data.label,
+                            isTextElement: true
                         }),
                         "\uFF1A"
                     ),

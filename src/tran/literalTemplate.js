@@ -8,6 +8,7 @@
 
 import traverse from "@babel/traverse";
 import * as t from "@babel/types"
+import {isTextElement} from '../util/uast'
 
 /**
  * 如果 由childrenToTemplate生成的template 最终运行的结果是literal，那直接展示
@@ -22,8 +23,9 @@ export default function literalTemplate (ast, info) {
             if (path.type === 'JSXElement'
                 && isTextElement(path.node.openingElement)
             ) {
-                const newChildren = []
-                path.node.children.forEach(item => {
+
+                const children = path.node.children
+                path.node.children = children.map(item => {
                     if (
                         item.type === 'JSXElement'
                         && item.openingElement.name.name === 'template'
@@ -31,25 +33,16 @@ export default function literalTemplate (ast, info) {
 
                         let datakey = null
                         item.openingElement.attributes.forEach(attr => {
-                            if (attr.type === 'JSXAttribute' && attr.name.name === 'wx:if') {
-                                attr.name.name = 'wx:else'
-                                attr.value = null
-                            }
-
                             if (attr.type === 'JSXAttribute' && attr.name.name === 'datakey') {
                                 datakey = attr.value.value
                             }
                         })
 
-                        newChildren.push(
-                            t.jsxText(`<block wx:if="{{t.l(${datakey})}}">{{${datakey}}}</block>`)
-                        )
+                        return t.jsxText(`{{${datakey}}}`)
+                    } else {
+                        return item
                     }
-
-                    newChildren.push(item)
                 })
-
-                path.node.children = newChildren
             }
 
         }
@@ -59,11 +52,3 @@ export default function literalTemplate (ast, info) {
     return ast
 }
 
-function isTextElement(openingElement) {
-    if (openingElement.name.name !== 'view') return false
-
-    return openingElement.attributes.some(item =>
-        item.type === 'JSXAttribute'
-        && item.name.name === 'original'
-        && (item.value.value === 'OuterText' || item.value.value === 'InnerText'))
-}

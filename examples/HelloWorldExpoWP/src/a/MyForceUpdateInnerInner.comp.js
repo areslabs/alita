@@ -27,7 +27,8 @@ export default class MyForceUpdateInnerInner extends Component {
                 "forceUpdate: ",
                 h("template", {
                     datakey: "CTDK00001",
-                    tempVnode: new Date().getTime()
+                    tempVnode: new Date().getTime(),
+                    isTextElement: true
                 })
             )
         )

@@ -27,15 +27,18 @@ export default class MyContext extends Component {
                 },
                 h("template", {
                     datakey: "CTDK00001",
-                    tempVnode: this.context.color
+                    tempVnode: this.context.color,
+                    isTextElement: true
                 }),
                 h("template", {
                     datakey: "CTDK00002",
-                    tempVnode: this.props.name
+                    tempVnode: this.props.name,
+                    isTextElement: true
                 }),
                 h("template", {
                     datakey: "CTDK00003",
-                    tempVnode: this.props.age
+                    tempVnode: this.props.age,
+                    isTextElement: true
                 })
             )
         )
