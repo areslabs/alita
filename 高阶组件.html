@@ -639,8 +639,8 @@
             <span class="hljs-keyword">return</span> React.createElement(
                      WrappComponent, 
                      {
-                         ...this.props,  <span class="hljs-comment">// &#x6269;&#x5C55;&#x5176;&#x4ED6;&#x5C5E;&#x6027;</span>
-                         ...this.hocProps <span class="hljs-comment">// &#x6DFB;&#x52A0;hocProps&#xFF0C; &#x8FD9;&#x4E2A;&#x5BF9;&#x8C61;&#x7531; HocComponnet&#x5B9E;&#x73B0;&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x4E0D;&#x7528;&#x5173;&#x5FC3;&#x5177;&#x4F53;&#x5B9E;&#x73B0;</span>
+                         ...this.props, 
+                         ...this.otherProps <span class="hljs-comment">// &#x6269;&#x5C55;&#x5176;&#x4ED6;&#x5C5E;&#x6027;</span>
                      } 
                 )  
         }
@@ -653,88 +653,9 @@
 <ul>
 <li>&#x7C7B;&#x5FC5;&#x987B;&#x7EE7;&#x627F; <code>React.HocComponent</code> &#xFF0C;<code>HocComponent</code> &#x53EA;&#x5B58;&#x5728;&#x4E0E;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x5E73;&#x53F0;</li>
 <li>&#x4E0D;&#x5141;&#x8BB8;&#x4F7F;&#x7528;<code>JSX</code>&#x8BED;&#x6CD5;&#xFF0C; &#x521B;&#x5EFA;&#x5143;&#x7D20;&#x4F7F;&#x7528; <code>React.createElement</code></li>
-<li>&#x5C5E;&#x6027;&#x6700;&#x540E;&#x4E00;&#x5B9A;&#x8981;&#x6DFB;&#x52A0; <code>this.hocProps</code></li>
 </ul>
 <p>&#x7531;&#x4E8E;&#x4EE5;&#x4E0A;&#x7684;&#x9650;&#x5236;&#x5B58;&#x5728;&#xFF0C;&#x901A;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x5BF9;&#x4E8E; Hoc.js &#x8FD9;&#x4E2A;&#x9AD8;&#x9636;&#x7EC4;&#x4EF6;&#xFF0C; &#x9700;&#x8981;&#x5B58;&#x5728;&#x4E24;&#x4E2A;&#x6587;&#x4EF6; Hoc.js &#x7528;&#x4E8E; RN&#xFF0C; Hoc.wx.js &#x7528;&#x4E8E;&#x5C0F;&#x7A0B;&#x5E8F;</p>
-<p>&#x4EE5;&#x4E0B;&#x662F;&#x5C0F;&#x7A0B;&#x5E8F;&#x7248;&#x672C;react-redux&#x5BF9;connext&#x7684;&#x5B9E;&#x73B0;&#xFF08;&#x6E90;&#x4EE3;&#x7801;&#x5728;<code>packages/wx-react-redux</code>&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">connect</span>(<span class="hljs-params">mapStateToProps, mapDispatchToProps</span>) </span>{
-
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">WrappedComponent</span>) </span>{
-        <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Hoc</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HocComponent</span> </span>{
-            <span class="hljs-keyword">static</span> contextTypes = {
-                store: PropTypes.object
-            }
-
-            <span class="hljs-keyword">constructor</span>(props, context) {
-                <span class="hljs-keyword">super</span>(props, context)
-
-                <span class="hljs-keyword">this</span>.store = props.store || context.store
-
-                <span class="hljs-keyword">this</span>.unsubscribe = <span class="hljs-keyword">this</span>.store.subscribe(() =&gt; {
-                    <span class="hljs-keyword">this</span>.setState({})
-                })
-
-                <span class="hljs-keyword">this</span>.memorizeProps = <span class="hljs-keyword">this</span>.calculateProps()
-
-            }
-
-            calculateProps() {
-                <span class="hljs-keyword">let</span> o1 = <span class="hljs-literal">null</span>
-                <span class="hljs-keyword">if</span> (mapStateToProps) {
-                    o1 = mapStateToProps(<span class="hljs-keyword">this</span>.store.getState(), <span class="hljs-keyword">this</span>.props)
-                }
-
-
-                <span class="hljs-keyword">let</span> o2 = <span class="hljs-literal">null</span>
-                <span class="hljs-keyword">if</span> (mapDispatchToProps) {
-                    o2 = mapDispatchToProps(<span class="hljs-keyword">this</span>.store.dispatch, <span class="hljs-keyword">this</span>.props)
-                } <span class="hljs-keyword">else</span> {
-                    o2 = {
-                        dispatch: <span class="hljs-keyword">this</span>.store.dispatch
-                    }
-                }
-
-                <span class="hljs-keyword">return</span> {
-                    ...o1,
-                    ...o2
-                }
-            }
-
-            shouldComponentUpdate() {
-                <span class="hljs-keyword">const</span> nextProps = <span class="hljs-keyword">this</span>.calculateProps()
-
-                <span class="hljs-keyword">const</span> isEqual = shallowEqual(nextProps, <span class="hljs-keyword">this</span>.memorizeProps)
-                <span class="hljs-keyword">if</span> (isEqual) {
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
-                } <span class="hljs-keyword">else</span> {
-                    <span class="hljs-keyword">this</span>.memorizeProps = nextProps
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
-                }
-            }
-
-            componentWillUnmount() {
-                <span class="hljs-keyword">this</span>.unsubscribe()
-                <span class="hljs-keyword">this</span>.unsubscribe = <span class="hljs-literal">null</span>
-
-            }
-
-            render() {
-                <span class="hljs-keyword">return</span> (
-                    React.createElement(
-                        WrappedComponent,
-                        {
-                            ...this.props,
-                            ...this.memorizeProps,
-                            ...this.hocProps
-                        }
-                    )
-                )
-            }
-        }
-
-    }
-}
-</code></pre>
+<p>&#x53EF;&#x4EE5;&#x53C2;&#x8003;<a href="https://github.com/areslabs/alita/blob/master/examples/HelloWorldExpo/src/a/Hoc1.wx.js" target="_blank">&#x6837;&#x4F8B;HelloWorldExpo</a> &#x4E2D;Hoc &#x7684;&#x4F7F;&#x7528;</p>
 
                                 
                                 </section>
@@ -778,7 +699,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"高阶组件","level":"1.9","depth":1,"next":{"title":"配置文件","level":"1.10","depth":1,"path":"配置文件.md","ref":"./配置文件.md","articles":[]},"previous":{"title":"外部JSX片段","level":"1.8","depth":1,"path":"外部JSX片段.md","ref":"./外部JSX片段.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"高阶组件.md","mtime":"2019-10-30T08:00:42.245Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-11-08T10:58:13.782Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"高阶组件","level":"1.9","depth":1,"next":{"title":"配置文件","level":"1.10","depth":1,"path":"配置文件.md","ref":"./配置文件.md","articles":[]},"previous":{"title":"外部JSX片段","level":"1.8","depth":1,"path":"外部JSX片段.md","ref":"./外部JSX片段.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"高阶组件.md","mtime":"2019-11-11T12:33:11.385Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-11-11T13:24:11.937Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -2,6 +2,7 @@ node_modules
 miniprogram_npm
 
 examples
+packages
 
 /lib
 *.idea
