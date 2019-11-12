@@ -102,6 +102,11 @@ export default async function (srcpath, targetpath) {
             handleBF(ast, targetpath)
             return [targetpath]
         }
+    } else if (extname === '.json') {
+        const jsonStr = fse.readFileSync(srcpath).toString()
+        const jsonTargetpath = `${targetpath}.js`
+        fse.outputFileSync(jsonTargetpath, `export default ${jsonStr}`)
+        return [jsonTargetpath]
     } else { // 其他文件直接copy
         await fse.copy(srcpath, targetpath)
         return [targetpath]
