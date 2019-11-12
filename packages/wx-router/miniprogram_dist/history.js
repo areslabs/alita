@@ -105,5 +105,14 @@ export default history = {
 
             }
         }
-    }
+    },
+
+    switchTab(pkname, path,) {
+        const fpath = `${pkname}${path}`
+        const url = wx._historyConfig[fpath]
+
+        wx.switchTab({
+            url,
+        })
+    },
 }

@@ -14,7 +14,8 @@ const historyPrefixSet = new Set([
     'push',
     'popTo',
     'popToWithProps',
-    'replace'
+    'replace',
+    'switchTab'
 ])
 
 export default function (ast, {isFuncComp}) {
