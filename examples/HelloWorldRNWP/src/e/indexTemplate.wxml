@@ -22,7 +22,7 @@
    </block>
 </template>
         
- <template name="ITNP00007">
+ <template name="ITNP00008">
     <view class="view" style="{{t.s(DIUU00001style)}}">
             <WXButton title="POP" diuu="{{DIUU00002}}" style="{{t.s(DIUU00002style)}}" />
             <WXButton title="BACK" diuu="{{DIUU00003}}" style="{{t.s(DIUU00003style)}}" />
@@ -31,18 +31,20 @@
             <WXButton title="POP TO A" diuu="{{DIUU00005}}" style="{{t.s(DIUU00005style)}}" />
 
             <WXButton title="POP TO C WithProps" diuu="{{DIUU00006}}" style="{{t.s(DIUU00006style)}}" />
+
+            <WXButton title="switchTab to B" diuu="{{DIUU00007}}" style="{{t.s(DIUU00007style)}}" />
         </view>
   </template>
  
- <template name="ITNP00010">
-    <view class="view" style="{{t.s(DIUU00008style)}}">
-                <WXButton title="BACK" diuu="{{DIUU00009}}" style="{{t.s(DIUU00009style)}}" />
+ <template name="ITNP00011">
+    <view class="view" style="{{t.s(DIUU00009style)}}">
+                <WXButton title="BACK" diuu="{{DIUU00010}}" style="{{t.s(DIUU00010style)}}" />
             </view>
   </template>
  
- <template name="ITNP00013">
-    <view class="view" style="{{t.s(DIUU00011style)}}">
-                <view class="text" style="{{t.s(DIUU00012style)}}">type: {{CTDK00001}}</view>
+ <template name="ITNP00014">
+    <view class="view" style="{{t.s(DIUU00012style)}}">
+                <view class="text" style="{{t.s(DIUU00013style)}}">type: {{CTDK00001}}</view>
 
                 <template wx:if="{{CTDK00002}} !== undefined" is="CTNP00002" data="{{d: CTDK00002}}"></template>
 

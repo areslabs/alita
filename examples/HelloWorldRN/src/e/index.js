@@ -42,6 +42,13 @@ export default class C extends Component {
                     })
                 }}
             />
+
+            <Button
+                title="switchTab to B"
+                onPress={() => {
+                    history.switchTab("B")
+                }}
+            />
         </View>
     }
 

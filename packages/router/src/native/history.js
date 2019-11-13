@@ -109,6 +109,15 @@ class History {
             }
         }
     }
+
+    switchTab(routeName) {
+        this.popToTop()
+        const navigateAction = NavigationActions.navigate({
+            routeName: routeName,
+        });
+
+        this.dispatch(navigateAction)
+    }
 }
 
 export default new History()

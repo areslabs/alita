@@ -35,6 +35,9 @@ import {Hello} from '@areslabs/hello-rn/index'
 
 import {camelCase} from '@areslabs/stringutil-rn'
 
+// 测试导入json文件
+import info from './info'
+const info2 = require('./info')
 
 
 import {history} from '@areslabs/router'
@@ -71,6 +74,7 @@ export default class A extends Component {
     componentWillMount() {
         console.log('A componentWillMount:')
 
+        console.log('info: ', info, info2)
 
         this.f()
             .then(x => {

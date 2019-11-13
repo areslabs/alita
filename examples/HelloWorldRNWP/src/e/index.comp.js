@@ -9,7 +9,7 @@ export default class C extends Component {
             {
                 original: "View",
                 diuu: "DIUU00001",
-                tempName: "ITNP00007"
+                tempName: "ITNP00008"
             },
             h(WXButton, {
                 title: "POP",
@@ -47,6 +47,13 @@ export default class C extends Component {
                     })
                 },
                 diuu: "DIUU00006"
+            }),
+            h(WXButton, {
+                title: "switchTab to B",
+                onPress: () => {
+                    history.switchTab("HelloWorldRN", "B")
+                },
+                diuu: "DIUU00007"
             })
         )
     }
@@ -56,15 +63,15 @@ export default class C extends Component {
             "view",
             {
                 original: "View",
-                diuu: "DIUU00008",
-                tempName: "ITNP00010"
+                diuu: "DIUU00009",
+                tempName: "ITNP00011"
             },
             h(WXButton, {
                 title: "BACK",
                 onPress: () => {
                     history.back(1)
                 },
-                diuu: "DIUU00009"
+                diuu: "DIUU00010"
             })
         )
     }
@@ -78,14 +85,14 @@ export default class C extends Component {
                     flex: 1
                 },
                 original: "View",
-                diuu: "DIUU00011",
-                tempName: "ITNP00013"
+                diuu: "DIUU00012",
+                tempName: "ITNP00014"
             },
             h(
                 "view",
                 {
                     original: "OuterText",
-                    diuu: "DIUU00012"
+                    diuu: "DIUU00013"
                 },
                 "type: ",
                 h("template", {

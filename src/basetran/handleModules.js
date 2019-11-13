@@ -302,6 +302,9 @@ function getFinalSource(filepath, source) {
 
     const extname = npath.extname(filepath)
 
+    if (source.endsWith('.json')) {
+        return source
+    }
 
     let fileSufix = '.js'
     let backupSufix = '.ts'
@@ -311,8 +314,17 @@ function getFinalSource(filepath, source) {
     }
 
     let finalSource = getFinalSourceByExtname(fileSufix, originalPath, source)
+
+    // backupSufix 重新查找
     if (!finalSource) {
         finalSource = getFinalSourceByExtname(backupSufix, originalPath, source)
+    }
+
+    // json 查找一遍
+    if (!finalSource) {
+        if (fse.existsSync(`${originalPath}.json`)) {
+            finalSource = `${source}.json`
+        }
     }
 
     if (!finalSource) {

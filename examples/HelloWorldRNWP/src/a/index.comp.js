@@ -39,6 +39,10 @@ import styles from "./styles"
 import Hi from "@areslabs/hi-wx"
 import { Hello } from "@areslabs/hello-wx/index"
 import { camelCase } from "@areslabs/stringutil-wx"
+import info from "./info.json"
+
+const info2 = require("./info.json")
+
 import { history } from "@areslabs/wx-router"
 const item3 = h(
     "view",
@@ -108,6 +112,7 @@ export default class A extends Component {
 
     componentWillMount() {
         console.log("A componentWillMount:")
+        console.log("info: ", info, info2)
         this.f().then(x => {
             console.log("ASYNC OKOK")
         })
