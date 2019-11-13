@@ -1,3 +1,13 @@
+## [1.3.4](https://github.com/areslabs/alita/compare/1.3.3...1.3.4) (2019-11-13)
+
+
+### Features
+
+* **alita:** 支持导入json文件 ([844f815](https://github.com/areslabs/alita/commit/844f815))
+* **alita router wx-router:** 支持 类小程序switchTab ([94a1600](https://github.com/areslabs/alita/commit/94a1600))
+
+
+
 ## [1.3.3](https://github.com/areslabs/alita/compare/1.3.2...1.3.3) (2019-11-11)
 
 
