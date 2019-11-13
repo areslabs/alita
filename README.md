@@ -44,7 +44,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
     
 以上2点 Alita在转化的时候会对 **代码预检测，对不符合的代码将会给出友好提升**。 这里可以看到相关要求和限制的具体文档[要求与限制文档](https://areslabs.github.io/alita/%E8%A6%81%E6%B1%82%E4%B8%8E%E9%99%90%E5%88%B6.html)， 另外
    
-* 另外，**RN开发者请注意：微信小程序npm包和RN的npm使用方式不同[详见](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)**， 所以对于第三方npm包，可能需要手动去处理。 参考[npm包处理说明](https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html)，[第三方组件库扩展](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 
+* 另外，**RN开发者请注意：微信小程序npm包和RN的npm使用方式不同[详见](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)**， 所以对于第三方npm包，可能需要手动去处理，参考[npm包处理说明](https://areslabs.github.io/alita/npm%E5%8C%85%E8%AF%B4%E6%98%8E.html)。 暂时只有RN官方组件可以直接使用，如需要使用其他三方组件或者自己的组件库 请参考 [第三方组件库扩展](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html) 
 
 ## Alita 原理相关
 1. Alita使用运行时React语法处理方案，区别现有社区使用的编译时方案，对React语法的支持更加完备，具体请看：[一种让小程序支持JSX语法的新思路](https://areslabs.github.io/alita/%E4%B8%80%E7%A7%8D%E8%AE%A9%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%94%AF%E6%8C%81JSX%E8%AF%AD%E6%B3%95%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF.html)
