@@ -13,31 +13,24 @@ const path = require('path')
 
 
 export default function (info) {
-    const {filepath, outComp, entryFilePath} = info
+    const {filepath, outComp, entryFilePath, isPageComp} = info
     const finalJSPath = miscNameToJSName(filepath)
 
-    const outCompCode = `
-import {
-    WxNormalComp,
-} from "${RNWXLIBMaps.react}"
+    const outCompCode = `import { WxNormalComp } from "${RNWXLIBMaps.react}"
 Component(WxNormalComp())
     `
 
-    const compFilename = path.basename(finalJSPath, '.js')
+    const projectRelativePath = finalJSPath
+        .replace(global.execArgs.OUT_DIR + path.sep, '')
+        .replace('.js', '')
+        .replace(/\\/g, '/') // win 平台
 
-    let entryRelativePath = ''
-    if (entryFilePath) {
-        entryRelativePath = getRelativePath(finalJSPath, entryFilePath)
-    }
+    const pageCompPath = global.execArgs.configObj.subDir.endsWith('/') ? global.execArgs.configObj.subDir + projectRelativePath : global.execArgs.configObj.subDir  + '/' + projectRelativePath
 
-    const RNAppCode = (entryFilePath ? `import RNApp from "${entryRelativePath}"` : `const RNApp = {}`)
+    const renderCompCode = `import { WxNormalComp } from "${RNWXLIBMaps.react}"
+const pageCompPath = "${pageCompPath}"
 
-
-    const renderCompCode = `import CompMySelf from "./${compFilename}.comp"
-import { WxNormalComp } from "${RNWXLIBMaps.react}"
-${RNAppCode}
-
-Component(WxNormalComp(CompMySelf, RNApp))
+Component(WxNormalComp(pageCompPath))
     `
 
     for(let i = 0; i < outComp.length; i++) {

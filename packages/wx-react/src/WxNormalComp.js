@@ -11,7 +11,7 @@ import geneUUID from "./geneUUID"
 import {cleanPageComp} from './util'
 
 
-export default function (CompMySelf, RNApp) {
+export default function (compPath) {
 
     const o = {
         properties: {
@@ -48,7 +48,7 @@ export default function (CompMySelf, RNApp) {
     }
 
     // 可能是页面组件，需要加入相关生命周期
-    if (CompMySelf && RNApp) {
+    if (compPath) {
         o.methods.onLoad = function (query) {
             const paramStr = query.params
             let paramsObj = {}
@@ -58,6 +58,8 @@ export default function (CompMySelf, RNApp) {
 
             const uuid = geneUUID()
             this.data.diuu = uuid
+
+            const CompMySelf =  wx._pageCompMaps[compPath]
 
             renderPage(
                 createElement(

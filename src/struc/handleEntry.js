@@ -35,6 +35,7 @@ export default function (ast, filepath) {
     }
 
     const historyMap = {}
+    const pageCompPaths = []
 
     const moduleMap = {}
     const compImportMap = {}
@@ -134,8 +135,16 @@ export default function (ast, filepath) {
                 const projectRelativePath = moduleMap[name].replace('.comp', '') // 组件的.comp 后缀需要移除
                 compImportMap[name] = moduleMap[name]
 
+
+                const pageCompPath = global.execArgs.configObj.subDir.endsWith('/') ? global.execArgs.configObj.subDir + projectRelativePath : global.execArgs.configObj.subDir  + '/' + projectRelativePath
+
                 historyMap[global.execArgs.packageName + key]
-                    = global.execArgs.configObj.subDir.endsWith('/') ? global.execArgs.configObj.subDir + projectRelativePath : global.execArgs.configObj.subDir  + '/' + projectRelativePath
+                    = pageCompPath
+
+                pageCompPaths.push(t.objectProperty(
+                    t.stringLiteral(pageCompPath),
+                    t.identifier(name)
+                ))
 
                 appJSON.pages.push(projectRelativePath)
 
@@ -229,48 +238,6 @@ export default function (ast, filepath) {
     })
 
     traverse(ast, {
-        enter: path => {
-            if (path.type === 'ImportDeclaration') {
-                const specifiers = path.node.specifiers
-                for (let i = 0; i < specifiers.length; i++) {
-                    const ele = specifiers[i]
-                    const name = ele.local.name
-
-                    if (compImportMap[name]) {
-                        path.remove()
-                        break
-                    }
-                }
-                return
-            }
-
-            if (path.type === 'CallExpression'
-                && path.node.callee.name === 'require'
-                && path.key === 'init'
-            ) {
-                const id = path.parentPath.node.id
-                if (id.type === 'Identifier') {
-                    if (compImportMap[id.name]) {
-                        path.parentPath.parentPath.remove()
-                    }
-                } else if (id.type === 'ObjectPattern'){
-
-                    for(let i = 0 ; i < id.properties.length; i++) {
-                        const ele = id.properties[i]
-
-                        const name = ele.key.name
-                        if (compImportMap[name]) {
-                            path.parentPath.parentPath.remove()
-                            break
-                        }
-
-                    }
-                }
-
-                return
-            }
-        },
-
 
         exit: path => {
             if (path.type === 'ExportDefaultDeclaration') {
@@ -325,6 +292,23 @@ export default function (ast, filepath) {
                         t.identifier(`wx._historyConfig = {...(wx._historyConfig || {}), ...${JSON.stringify(historyMap, null)}}`)
                     )
                 )
+
+                // be lazy
+
+                path.node.body.push(t.variableDeclaration(
+                    'const',
+                    [
+                        t.variableDeclarator(
+                            t.identifier('__pageCompPath'),
+                            t.objectExpression(pageCompPaths)
+                        )
+                    ]
+                ))
+                path.node.body.push(
+                    t.expressionStatement(
+                        t.identifier(`wx._pageCompMaps = {...(wx._pageCompMaps || {}), ...__pageCompPath}`)
+                    )
+                )
             }
         }
     })
@@ -335,8 +319,12 @@ export default function (ast, filepath) {
         JSON.stringify(appJSON, null, '\t')
     )
 
+
+    const entryRequirePath = filepath.replace(global.execArgs.OUT_DIR + npath.sep, '')
+        .replace(/\\/g, '/')
+
     const appJSPATH = npath.resolve(global.execArgs.OUT_DIR, 'app.js')
-    const appJSCode = `
+    const appJSCode = `require('./${entryRequirePath}') 
 wx._beta = ${global.execArgs.beta ? 'true' : 'false'}
 App({})
     `
