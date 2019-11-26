@@ -5,34 +5,31 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import fse from 'fs-extra'
+
+import * as npath from 'path'
+import * as fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {isStaticRes, miscNameToJSName} from '../util/util'
 import { geneReactCode } from "../util/uast";
 
-import basetran from '../basetran'
 import {geneOrder} from '../util/util'
 
-const npath = require('path')
+import configure from '../configure'
 
 
-export default function (ast, filepath) {
-    const appJSON = {
-        pages: [
-        ],
+const appJSON: any = {
+    pages: [
+    ],
 
-        window: {
-            "backgroundTextStyle":"light",
-            'backgroundColor': '#E9E9E9',
-            'enablePullDownRefresh': false,
-        },
+    window: {
+        "backgroundTextStyle":"light",
+        'backgroundColor': '#E9E9E9',
+        'enablePullDownRefresh': false,
+    },
+}
 
-        /*tabBar: {
-            list: []
-        }*/
-    }
+export default function (ast, filepath, webpackContext) {
 
     const historyMap = {}
     const pageCompPaths = []
@@ -41,7 +38,6 @@ export default function (ast, filepath) {
     const compImportMap = {}
     const pngMap = {}
 
-    basetran(ast, filepath, true)
 
     const go = geneOrder()
     traverse(ast, {
@@ -59,25 +55,33 @@ export default function (ast, filepath) {
                 return
             }
 
+
             if (path.type === 'ImportDeclaration') {
                 const source = path.node.source.value
+                const rs = getRealSource(source, filepath)
+                path.node.source.value = rs
 
-                const originPath = getOriginPath(source, filepath)
-
+                const originPath = getOriginPath(rs, filepath)
                 const specifiers = path.node.specifiers
                 specifiers.forEach(spe => {
                     const name = spe.local.name
                     moduleMap[name] = originPath
                 })
+
                 return
             }
 
+            // require 目录 小程序不支持需要处理
             if (path.type === 'CallExpression'
+                && path.node.callee.type === 'Identifier'
                 && path.node.callee.name === 'require'
-                && path.key === 'init'
             ) {
                 const source = path.node.arguments[0].value
-                const originPath = getOriginPath(source, filepath)
+                const rs = getRealSource(source, filepath)
+                path.node.arguments[0].value = rs
+
+
+                const originPath = getOriginPath(rs, filepath)
 
                 const id = path.parentPath.node.id
                 if (id.type === 'Identifier') {
@@ -90,9 +94,8 @@ export default function (ast, filepath) {
                     })
                 }
 
+                return
             }
-
-
         },
 
         exit: path => {
@@ -136,9 +139,9 @@ export default function (ast, filepath) {
                 compImportMap[name] = moduleMap[name]
 
 
-                const pageCompPath = global.execArgs.configObj.subDir.endsWith('/') ? global.execArgs.configObj.subDir + projectRelativePath : global.execArgs.configObj.subDir  + '/' + projectRelativePath
+                const pageCompPath = configure.configObj.subDir.endsWith('/') ? configure.configObj.subDir + projectRelativePath : configure.configObj.subDir  + '/' + projectRelativePath
 
-                historyMap[global.execArgs.packageName + key]
+                historyMap[configure.configObj.subDir + key]
                     = pageCompPath
 
                 pageCompPaths.push(t.objectProperty(
@@ -174,7 +177,7 @@ export default function (ast, filepath) {
 
 
 
-                const tabBarElement = {
+                const tabBarElement: any = {
                     pagePath: initRoute,
                 }
                 path.node.attributes.forEach(attri => {
@@ -313,56 +316,117 @@ export default function (ast, filepath) {
         }
     })
 
-    const appJSONPATH = npath.resolve(global.execArgs.OUT_DIR, 'app.json')
-    fse.writeFileSync(
-        appJSONPATH,
+    webpackContext.emitFile(
+        'app.json',
         JSON.stringify(appJSON, null, '\t')
     )
 
 
-    const entryRequirePath = filepath.replace(global.execArgs.OUT_DIR + npath.sep, '')
-        .replace(/\\/g, '/')
 
-    const appJSPATH = npath.resolve(global.execArgs.OUT_DIR, 'app.js')
-    const appJSCode = `require('./${entryRequirePath}') 
-wx._beta = ${global.execArgs.beta ? 'true' : 'false'}
+    const appJSCode = `require('./_rn_.js')
 App({})
     `
-    fse.writeFileSync(
-        appJSPATH,
+    webpackContext.emitFile(
+        'app.js',
         appJSCode
     )
 
 
-
-
-    const entryCode = geneReactCode(ast, npath.extname(filepath))
-    const dirname = npath.dirname(filepath)
-    fse.mkdirsSync(dirname)
-
-    const realFilePath = miscNameToJSName(filepath)
-    fse.writeFileSync(
-        realFilePath,
-        entryCode
-    )
-    
     return {
-        realFilePath,
-        allCompSet: new Set(Object.values(compImportMap).map(compPath => compPath.replace('.comp', '')))
+        entryAst: ast,
+        allCompSet: new Set(Object.keys(compImportMap).map(key => compImportMap[key]))
     }
 }
 
 
 function getOriginPath(source, filepath) {
-    let originPath = null
-    // 外部库， 外部库做为页面， 需要补全miniprogram_npm 路径
-    if (!(source.startsWith('.') || source.startsWith('/'))) {
-        originPath = `miniprogram_npm/${source}`
-    } else {
-        originPath = npath
-            .resolve(npath.dirname(filepath), source)
-            .replace(global.execArgs.OUT_DIR + npath.sep, '')
-            .replace(/\\/g, '/') // 考虑win平台
-    }
+    const originPath = npath
+        .resolve(npath.dirname(filepath), source)
+        .replace(configure.inputFullpath  + npath.sep, '')
+        .replace(/\\/g, '/') // 考虑win平台
+
     return originPath
+}
+
+function getRealSource(source, filepath) {
+    if (npath.extname(source) !== '') {
+        return source
+    }
+
+
+    // 小程序不支持require/import 一个目录
+    if (source.startsWith('/')
+        || source.startsWith('./')
+        || source.startsWith('../')
+    ) {
+        return getFinalSource(filepath, source)
+    } else {
+        return source
+    }
+}
+
+/**
+ * 获取 最终的导入路径，如果导入的是目录，需要补全index
+ * 如果导入的是组件，需要添加.comp
+ * @param filepath
+ * @param source
+ */
+function getFinalSource(filepath, source) {
+    const originalPath = npath
+        .resolve(npath.dirname(filepath), source)
+        .replace(/\\/g, '/')
+
+    const extname = npath.extname(filepath)
+
+    let fileSufix = '.js'
+    let backupSufix = '.ts'
+    if (extname === '.ts' || extname === '.tsx') {
+        fileSufix = '.ts'
+        backupSufix = '.js'
+    }
+
+    let finalSource = getFinalSourceByExtname(fileSufix, originalPath, source)
+
+    // backupSufix 重新查找
+    if (!finalSource) {
+        finalSource = getFinalSourceByExtname(backupSufix, originalPath, source)
+    }
+
+    if (!finalSource) {
+        console.log(`${filepath.replace(configure.inputFullpath, '')}: 未找到${source}模块！`.error)
+    }
+    return finalSource
+}
+
+function getFinalSourceByExtname(fileSufix, originalPath, source) {
+    const allFiles = [
+        `${originalPath}.wx${fileSufix}`,
+        `${originalPath}${fileSufix}`,
+        `${originalPath}.wx${fileSufix}x`,
+        `${originalPath}${fileSufix}x`
+    ]
+
+    for(let i = 0; i < allFiles.length; i ++ ) {
+        const filePath = allFiles[i]
+
+        if (fse.existsSync(filePath)) {
+            return source
+        }
+    }
+
+    const indexFiles = npath.resolve(originalPath, 'index')
+    const allIndexFiles = [
+        `${indexFiles}.wx${fileSufix}`,
+        `${indexFiles}${fileSufix}`,
+        `${indexFiles}.wx${fileSufix}x`,
+        `${indexFiles}${fileSufix}x`
+    ]
+
+    for(let i = 0; i < allIndexFiles.length; i ++ ) {
+        const filePath = allIndexFiles[i]
+
+        if (fse.existsSync(filePath)) {
+            return `${source}/index`
+        }
+    }
 }
