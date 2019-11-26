@@ -6,12 +6,12 @@
  *
  */
  
-const OBJECT = {}
-const FUNC = function () {
+var OBJECT = {}
+var FUNC = function () {
     return OBJECT
 }
 
-export default {
+module.exports = {
     array: OBJECT,
     bool: OBJECT,
     func: OBJECT,
