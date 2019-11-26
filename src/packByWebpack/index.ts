@@ -43,13 +43,13 @@ const defaultRules = [
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
-            {
+            /*{
                 loader: 'babel-loader',
                 options: {
                     presets: ['@babel/preset-env'],
                     plugins: ['@babel/plugin-transform-runtime']
                 }
-            },
+            },*/
             {
                 loader: path.resolve(__dirname, 'jsx-loader.js'),
             },
@@ -114,7 +114,7 @@ export default function packByWebpack() {
             usedExports: true,
         },
 
-        devtool: 'none',
+        devtool: configure.dev ? 'source-map' : "none",
 
         plugins: [
             ...defaultPlugins,
@@ -128,21 +128,31 @@ export default function packByWebpack() {
 
     configure.alias = webpackConfigure.resolve.alias
     const compiler = webpack(webpackConfigure)
-    compiler.run((err, stats) => {
-        const info = stats.toJson();
 
-        if (stats.hasWarnings()) {
-            info.warnings.forEach(err => {
-                handleWarning(err)
-            })
-        }
 
-        if (stats.hasErrors()) {
-            info.errors.forEach(err => {
-                handleError(err)
-            })
-        }
-    })
+    if (configure.dev) {
+        compiler.watch({
+            aggregateTimeout: 300,
+        } ,compilerCb)
+    } else {
+        compiler.run(compilerCb)
+    }
+}
+
+function compilerCb(err, stats) {
+    const info = stats.toJson();
+
+    if (stats.hasWarnings()) {
+        info.warnings.forEach(err => {
+            handleWarning(err)
+        })
+    }
+
+    if (stats.hasErrors()) {
+        info.errors.forEach(err => {
+            handleError(err)
+        })
+    }
 }
 
 function handleError(message) {
