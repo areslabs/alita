@@ -5,28 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import path from 'path'
+
+import * as t from "@babel/types"
+import * as webpack from 'webpack'
+
 import handleModules from './handleModules'
 import handleGlobalApi from './handleGlobalApi'
 import handleMisc from './handleMisc'
-import geneJS from './geneJS'
-import {geneReactCode} from "../util/uast";
 
-export default function (ast, filepath, justTran, isFuncComp) {
+
+export default function (ast: t.Node, filepath: string, webpackContext: webpack.loader.LoaderContext): t.Node {
     const info = {
         filepath,
-        isFuncComp
+        webpackContext,
     }
 
     ast = handleMisc(ast, info)
     ast = handleModules(ast, info)
     ast = handleGlobalApi(ast, info)
 
-    if (justTran) {
-        return
-    } else {
-        const extname = path.extname(filepath)
-        geneJS(geneReactCode(ast, extname), info)
-    }
+    return ast
 }
