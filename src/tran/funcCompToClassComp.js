@@ -8,9 +8,6 @@
 
 import traverse from "@babel/traverse";
 import * as t from "@babel/types";
-import {miscNameToJSName} from '../util/util'
-
-const npath = require('path')
 
 
 /**
