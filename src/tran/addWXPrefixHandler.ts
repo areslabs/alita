@@ -17,7 +17,7 @@ import {textComp} from '../util/getAndStorecompInfos'
  * @param ast
  * @returns {*}
  */
-export default function addWXPrefixHandler (ast) {
+export default function addWXPrefixHandler (ast, info?: any) {
     let hasTextInner = false
     traverse(ast, {
         exit: path => {
