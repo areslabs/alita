@@ -133,13 +133,13 @@ export default function packByWebpack() {
     if (configure.dev) {
         compiler.watch({
             aggregateTimeout: 300,
-        } ,compilerCb)
+        } ,watchCb)
     } else {
-        compiler.run(compilerCb)
+        compiler.run(runCb)
     }
 }
 
-function compilerCb(err, stats) {
+function runCb(err, stats) {
     const info = stats.toJson();
 
     if (stats.hasWarnings()) {
@@ -152,7 +152,36 @@ function compilerCb(err, stats) {
         info.errors.forEach(err => {
             handleError(err)
         })
+    } else {
+        successLog()
     }
+}
+
+function watchCb(err, stats) {
+    const info = stats.toJson();
+
+    if (stats.hasWarnings()) {
+        info.warnings.forEach(err => {
+            handleWarning(err)
+        })
+    }
+
+    if (stats.hasErrors()) {
+        info.errors.forEach(err => {
+            handleError(err)
+        })
+    } else {
+        console.log(`\n编译完成, 监听文件...`.info)
+    }
+
+}
+
+function successLog() {
+    console.log('')
+    console.log('编译完成'.info)
+    console.log(`  • cd ${configure.configObj.output}`.black)
+    console.log(`  • 开发者工具从 ${configure.configObj.output} 导入项目`.black)
+    console.log('')
 }
 
 function handleError(message) {

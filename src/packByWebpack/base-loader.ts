@@ -11,6 +11,7 @@ import * as webpack from 'webpack';
 import basetran from '../basetran'
 import {getFileInfo, parseCode} from '../util/uast'
 import {getCompInfos} from '../util/getAndStorecompInfos'
+import configure from '../configure'
 
 import {LoaderTmpResult} from './interfaces'
 
@@ -30,6 +31,8 @@ export default function (this: webpack.loader.LoaderContext, context: string): L
         getCompInfos(ast, filepath)
     }
 
+
+    console.log(`开始处理：${filepath.replace(configure.inputFullpath, '')} ...`.info)
     const newAst = basetran(ast, filepath, this)
 
 
