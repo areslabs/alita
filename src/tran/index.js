@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import {geneCode} from '../util/uast'
+
+import path from 'path'
+import {geneCode, geneReactCode} from '../util/uast'
 import funcCompToClassComp from './funcCompToClassComp'
 import childrenToTemplate from './childrenToTemplate'
 import compPreHandle from './compPreHandle'
 import addTempName from './addTempName'
 import handleImportExpre from './handleImportExpre'
-import geneReactJS from './geneReactJS'
 import geneJS from './geneJS'
 import geneWxml from './geneWxml'
 import geneWxss from './geneWxss'
 import geneJSON from './geneJSON'
-import allFilepaths from './allFilepaths'
 import geneAllTemplate from "./geneAllTemplate";
 import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
@@ -26,7 +25,7 @@ import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
 
-export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
+export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) {
     const info = {
         filepath: filepath,
         templates: [],
@@ -41,9 +40,10 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
             disableScroll: true
         },
 
-        entryFilePath,
         isPageComp,
         isFuncComp,
+
+        webpackContext,
     }
 
     if (isFuncComp) {
@@ -64,7 +64,9 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
 
     ast = childrenToTemplate(ast, info)
 
-    geneReactJS(ast, info)
+    //geneReactJS(ast, info)
+
+    const reactCode = geneReactCode(ast, path.extname(filepath))
 
     ast = literalTemplate(ast, info)
 
@@ -79,5 +81,7 @@ export default function (ast, filepath, isFuncComp, entryFilePath, isPageComp) {
     geneJS(info)
     geneWxss(info)
 
-    return allFilepaths(info)
+
+    return reactCode
+    //return allFilepaths(info)
 }
