@@ -41,7 +41,6 @@ export default {
     getPropsMethod,
     unstable_batchedUpdates,
     renderApp,
-    reactCompHelper
 }
 
 export {
@@ -61,7 +60,12 @@ export {
     getPropsMethod,
     unstable_batchedUpdates,
     renderApp,
-    reactCompHelper
 }
 export const h = createElement
 export const render = deprecated
+
+
+wx.__bridge = {
+    reactCompHelper,
+    WxNormalComp
+}
