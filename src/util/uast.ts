@@ -12,6 +12,8 @@ import { parse } from '@babel/parser'
 import generator from '@babel/generator'
 import * as t from "@babel/types"
 
+import {allBaseComp, extChildComp} from './getAndStorecompInfos'
+
 
 export function parseCode(code, extname) {
     const plugins = [
@@ -131,6 +133,7 @@ export function getFileInfo(ast) {
     let isClassComp = false
     let isRNEntry = false
 
+
     traverse(ast, {
         ClassDeclaration: path => {
             const sc = path.node.superClass
@@ -138,7 +141,10 @@ export function getFileInfo(ast) {
         },
 
         JSXOpeningElement: path => {
-            if (path.node.name.name === 'Router') {
+
+            const name = path.node.name.name
+
+            if (name === 'Router') {
                 isEntry = true
             }
 
@@ -239,12 +245,12 @@ export function isChildComp(name) {
     if (name === 'image') return false
 
     // 基本组件children 需要转化为childrencpt的组件
-    if (global.execArgs.extChildComp.has(name)) {
+    if (extChildComp.has(name)) {
         return true
     }
 
     // 基本组件children 不需要转化为childrencpt的组件
-    if (global.execArgs.allBaseComp.has(name)) {
+    if (allBaseComp.has(name)) {
         return false
     }
 
@@ -284,7 +290,7 @@ export function isBindElementByName(name) {
         return true
     }
 
-    if (global.execArgs.allBaseComp.has(name)) {
+    if (allBaseComp.has(name)) {
         return true
     }
 
