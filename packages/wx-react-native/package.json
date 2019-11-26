@@ -1,11 +1,93 @@
 {
   "name": "@areslabs/wx-react-native",
-  "version": "1.0.29",
+  "version": "2.0.0-beta.7",
   "description": "微信版本的React Native",
-  "main": "index.js",
+  "files": [
+    "dist",
+    "package.json",
+    "wxComponents"
+  ],
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "pub-beta": "npm run build && npm publish --tag=beta",
+    "pub": "npm run build && npm publish",
+    "link": "npm run build && sudo npm link"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "rollup-plugin-babel": "^4.3.3"
+  },
+
+  "wxComponents": {
+    "path": "wxComponents",
+    "components": [
+      {
+        "name": "WXButton",
+        "path": "WXButton/index",
+        "base": true
+      },
+      {
+        "name": "WXFlatList",
+        "path": "WXFlatList/index",
+        "jsxProps": {
+          "ListHeaderComponent": "ListHeaderComponentCPT",
+          "ListFooterComponent": "ListFooterComponentCPT",
+          "ListEmptyComponent": "ListEmptyComponentCPT",
+          "renderItem": "renderItemCPT",
+          "ItemSeparatorComponent": "ItemSeparatorCompoCPT"
+        }
+      },
+      {
+        "name": "WXModal",
+        "path": "WXModal/index",
+        "base": true
+      },
+      {
+        "name": "WXPicker",
+        "path": "WXPicker/index",
+        "needOperateChildren": true
+      },
+      {
+        "name": "WXPickerItem",
+        "path": "WXPickerItem/index",
+        "base": true
+      },
+      {
+        "name": "WXScrollView",
+        "path": "WXScrollView/index",
+        "base": true
+      },
+      {
+        "name": "WXSlider",
+        "path": "WXSlider/index",
+        "base": true
+      },
+      {
+        "name": "WXSwitch",
+        "path": "WXSwitch/index",
+        "base": true
+      },
+      {
+        "name": "WXSectionList",
+        "path": "WXSectionList/index",
+        "jsxProps": {
+          "renderSectionHeader": "renderSectionHeaderCPT",
+          "renderSectionFooter": "renderSectionFooterCPT",
+          "renderItem": "renderItemCPT",
+          "ListHeaderComponent": "ListHeaderComponentCPT",
+          "ListFooterComponent": "ListFooterComponentCPT",
+          "ListEmptyComponent": "ListEmptyComponentCPT",
+          "SectionSeparatorComponent": "SectionSeparatorCoCPT"
+        }
+      },
+      {
+        "name": "WXTextInput",
+        "path": "WXTextInput/index",
+        "base": true
+      }
+    ]
+  }
 }
