@@ -30,8 +30,7 @@ Component(WxNormalComp())
         entryRelativePath = getRelativePath(finalJSPath, entryFilePath)
     }
 
-    const RNAppCode = `const RNApp = {}`
-
+    const RNAppCode = (entryFilePath ? `import RNApp from "${entryRelativePath}"` : `const RNApp = {}`)
 
     const renderCompCode = `import CompMySelf from "./${compFilename}.comp"
 import { WxNormalComp } from "${RNWXLIBMaps.react}"
