@@ -1,3 +1,16 @@
+## [1.3.5](https://github.com/areslabs/alita/compare/1.3.4...1.3.5) (2019-11-27)
+
+
+### Bug Fixes
+
+* **@areslabs/wx-animated:** 添加类型定义 ([268b370](https://github.com/areslabs/alita/commit/268b370))
+* **alita:** 修复入口文件.wx.js 结尾的bug ([54c1a08](https://github.com/areslabs/alita/commit/54c1a08))
+* **alita:** 移除init typescript 的项目 null 报错的问题 ([b531f1e](https://github.com/areslabs/alita/commit/b531f1e))
+* **router:** 添加类型定义 ([101c927](https://github.com/areslabs/alita/commit/101c927))
+* **stringutil-rn:** 添加类型定义 ([5920cbf](https://github.com/areslabs/alita/commit/5920cbf))
+
+
+
 ## [1.3.4](https://github.com/areslabs/alita/compare/1.3.3...1.3.4) (2019-11-13)
 
 
