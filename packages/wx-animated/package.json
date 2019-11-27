@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-animated",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "animated lib for react-native , web and mini-program",
   "main": "./src/index.js",
   "scripts": {
