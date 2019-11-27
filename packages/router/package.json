@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/router",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "router for react-native, web",
   "client": "./src/web/index.js",
   "main": "./src/native/index.js",
