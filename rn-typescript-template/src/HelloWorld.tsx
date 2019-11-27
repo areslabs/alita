@@ -21,14 +21,15 @@ import {AnimatedImage, createAnimation} from '@areslabs/wx-animated'
  */
 import {camelCase} from '@areslabs/stringutil-rn'
 
-import rnLogoPng from './rn_logo.png'
-
+const rnLogoPng = require('./rn_logo.png')
 
 interface IState {
-    logoAni: object,
+    logoAni: object | null
 }
 
-export default class HelloWorld extends Component<{}, IState> {
+interface IProps {}
+
+export default class HelloWorld extends Component<IProps, IState> {
 
     state = {
         logoAni: null,
