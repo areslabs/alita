@@ -39,17 +39,6 @@ export function parseCode(code, extname) {
     })
 }
 
-export function geneJSXCode(ast) {
-    let code = generator(ast, {
-        comments: false,
-        jsescOption: {
-            minimal: true,
-        },
-    }).code
-
-    return code
-}
-
 
 // 由于babel-loader 无法直接传递AST，所以需要先生成code
 export function geneReactCode(ast) {
