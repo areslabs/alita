@@ -44,6 +44,9 @@ export default function (ast, info) {
                     body.unshift(rnGlobalDec(info, usedApiList))
                 }
 
+                if(isAsync) {
+                    body.unshift(asyncRegeneratorRuntimeDec(info.filepath))
+                }
             }
         }
     })
@@ -56,4 +59,8 @@ function rnGlobalDec(info, usedApiList) {
     return t.importDeclaration(
         Array.from(usedApiList).map(v => t.importSpecifier(t.identifier(v), t.identifier(v))), t.stringLiteral('react-native')
     )
+}
+
+function asyncRegeneratorRuntimeDec(filepath) {
+    return t.expressionStatement(t.identifier(`const regeneratorRuntime = require('regenerator-runtime');`))
 }

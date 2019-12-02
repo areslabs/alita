@@ -137,6 +137,14 @@ const transformJSX = (api, options) => {
         }
     };
 
+    // 由于webpack的babel-loader 默认会使用 module:metro-react-native-babel-preset，导致regeneratorRuntime库引入异常，这里加入
+    // 手动处理
+    visitor.Identifier = function (path) {
+        if (path.node.name === 'regeneratorRuntime') {
+            path.node.name = '_ARR' // alita regeneratorRuntime
+        }
+    }
+
     return {
         inherits: jsx,
         visitor,
