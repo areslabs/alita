@@ -6,7 +6,6 @@
  *
  */
 
-import path from 'path'
 import {geneReactCode} from '../util/uast'
 import funcCompToClassComp from './funcCompToClassComp'
 import childrenToTemplate from './childrenToTemplate'

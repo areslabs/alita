@@ -1,3 +1,7 @@
+/**
+ * 缓存 jsx/tsx 生成文件数组，方便watch的时候清理工作
+ * @type {{}}
+ */
 
 const cacheGeneFiles: any = {}
 

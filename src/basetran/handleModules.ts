@@ -42,7 +42,7 @@ export default function (ast, info) {
         exit: path => {
             // import 定义 React
             if (path.type === 'ImportDeclaration'
-                && path.node.source.value === 'react'
+                && (path.node as t.ImportDeclaration).source.value === 'react'
                 && isImportDecReact(path)
             ) {
                 const hDec = t.identifier('const h = React.h')
@@ -56,14 +56,15 @@ export default function (ast, info) {
 
 
             if (path.type === 'ImportDeclaration'
-                && path.node.source.value === 'react-native'
+                && (path.node as t.ImportDeclaration).source.value === 'react-native'
             ) {
 
-                path.node.specifiers = path.node.specifiers.filter(spe => {
+                const pnode = path.node as t.ImportDeclaration
+
+                pnode.specifiers = pnode.specifiers.filter(spe => {
                     const name = spe.local.name
                     if (RNCOMPSET.has(name)) {
                         spe.local.name = `WX${name}`
-                        spe.imported.name = `WX${name}`
                     }
 
                     if (backToViewNode.has(name)) {
@@ -75,6 +76,7 @@ export default function (ast, info) {
             }
 
             if (isTopRequire(path, 'react-native')) {
+                // @ts-ignore
                 const id = path.parentPath.node.id
                 if (id.type === 'ObjectPattern') {
                     id.properties = id.properties.filter(pro => {
@@ -99,11 +101,14 @@ export default function (ast, info) {
 
             // import 静态资源
             if (path.type === 'ImportDeclaration'
-                && isStaticRes(path.node.source.value)
+                && isStaticRes((path.node as t.ImportDeclaration).source.value)
             )  {
-                const picName = path.node.specifiers[0].local.name
 
-                const imagePathWithSize = getImagePath(filepath, path.node.source.value)
+                const pnode = path.node as t.ImportDeclaration
+
+                const picName = pnode.specifiers[0].local.name
+
+                const imagePathWithSize = getImagePath(filepath, pnode.source.value)
 
                 path.replaceWith(
                     t.variableDeclaration('const', [
@@ -117,10 +122,10 @@ export default function (ast, info) {
             }
 
             // require 静态资源
-            if (path.type === 'CallExpression'
-                && path.node.callee.type === 'Identifier'
-                && path.node.callee.name === 'require'
+            // @ts-ignore
+            if (path.type === 'CallExpression' && path.node.callee.type === 'Identifier' && path.node.callee.name === 'require'
             ) {
+                // @ts-ignore
                 const source = path.node.arguments[0].value
 
                 if (isStaticRes(source)) {

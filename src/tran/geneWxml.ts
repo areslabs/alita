@@ -48,7 +48,7 @@ export default function(info) {
     traverse(past, {
         exit: path => {
             if (path.type === "JSXExpressionContainer"
-                && path.node.expression.type === "JSXEmptyExpression"
+                && (path.node as t.JSXExpressionContainer).expression.type === "JSXEmptyExpression"
             ) {
                 path.remove();
                 return;

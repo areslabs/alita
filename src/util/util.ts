@@ -6,11 +6,12 @@
  *
  */
 
-import path from 'path'
-import fse from 'fs-extra'
-import {RNCOMPSET, supportExtname} from '../constants'
+import * as path from 'path'
+import * as fse from 'fs-extra'
+import { supportExtname } from '../constants'
 
 import configure from '../configure'
+
 
 const constStr = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -58,6 +59,7 @@ export function getGenericName(name) {
         return name + 'CPT'
     }
 }
+
 
 export function isStaticRes(source) {
     //png、jpg、jpeg、bmp、gif、webp

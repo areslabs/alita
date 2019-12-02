@@ -8,16 +8,19 @@
 
 
 interface IConfigObj {
-    entry: string,
-    output: string,
+    entry: string
+    output: string
 
-    plugins?: any,
+    plugins?: any
 
-    resolve?: any,
+    resolve?: any
 
     module?: any
 
     subDir?: string
+
+    name?: string
+    appid?: string
 }
 
 interface IConfigure {
@@ -33,9 +36,6 @@ interface IConfigure {
     allCompSet?: any,
 }
 
-const configure: IConfigure = {
-
-
-}
+const configure = {} as IConfigure
 
 export default configure

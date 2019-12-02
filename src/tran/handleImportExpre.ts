@@ -7,6 +7,7 @@
  */
 
 import traverse from "@babel/traverse"
+import * as t from "@babel/types"
 import {RNNOTSUPPORTCOMP} from '../constants'
 import {compInfos, getBackUpPath} from '../util/getAndStorecompInfos'
 import {getLibPath, judgeLibPath} from '../util/util'
@@ -22,7 +23,7 @@ export default function (ast, info){
 
     traverse(ast, {
         JSXOpeningElement: path => {
-            const name = path.node.name.name
+            const name = (path.node.name as t.JSXIdentifier).name
             JSXElements.add(name)
         },
     })
@@ -34,9 +35,8 @@ export default function (ast, info){
                 return
             }
 
-            if (path.type === 'CallExpression'
-                && path.node.callee.name === 'require'
-                && path.key === 'init'
+            // @ts-ignore
+            if (path.type === 'CallExpression' && path.node.callee.name === 'require' && path.key === 'init'
             ) {
                 handleRequire(path, filepath, JSXElements, usedComponent)
                 return

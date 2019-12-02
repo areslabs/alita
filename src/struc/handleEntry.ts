@@ -10,7 +10,7 @@ import * as npath from 'path'
 import * as fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
-import {isStaticRes, miscNameToJSName} from '../util/util'
+import {isStaticRes} from '../util/util'
 
 import {geneOrder} from '../util/util'
 
@@ -42,10 +42,11 @@ export default function (ast, filepath, webpackContext) {
     traverse(ast, {
         enter: path => {
             if (path.type === 'StringLiteral'
-                && isStaticRes(path.node.value)
+                && isStaticRes((path.node as t.StringLiteral).value)
             ) {
                 const pp = path.parentPath
                 if (pp.type === 'VariableDeclarator') {
+                    // @ts-ignore
                     pngMap[pp.node.id.name] = path.node.value
 
                     pp.parentPath.remove()
@@ -56,12 +57,13 @@ export default function (ast, filepath, webpackContext) {
 
 
             if (path.type === 'ImportDeclaration') {
-                const source = path.node.source.value
+                const pnode = path.node as t.ImportDeclaration
+                const source = pnode.source.value
                 const rs = getRealSource(source, filepath)
-                path.node.source.value = rs
+                pnode.source.value = rs
 
                 const originPath = getOriginPath(rs, filepath)
-                const specifiers = path.node.specifiers
+                const specifiers = pnode.specifiers
                 specifiers.forEach(spe => {
                     const name = spe.local.name
                     moduleMap[name] = originPath
@@ -71,17 +73,19 @@ export default function (ast, filepath, webpackContext) {
             }
 
             // require 目录 小程序不支持需要处理
-            if (path.type === 'CallExpression'
-                && path.node.callee.type === 'Identifier'
-                && path.node.callee.name === 'require'
+            // @ts-ignore
+            if (path.type === 'CallExpression' && path.node.callee.type === 'Identifier' && path.node.callee.name === 'require'
             ) {
+                // @ts-ignore
                 const source = path.node.arguments[0].value
                 const rs = getRealSource(source, filepath)
+                // @ts-ignore
                 path.node.arguments[0].value = rs
 
 
                 const originPath = getOriginPath(rs, filepath)
 
+                // @ts-ignore
                 const id = path.parentPath.node.id
                 if (id.type === 'Identifier') {
                     moduleMap[id.name] = originPath
@@ -98,24 +102,33 @@ export default function (ast, filepath, webpackContext) {
         },
 
         exit: path => {
-            if (path.type === 'JSXAttribute'
+            if (
+                path.type === 'JSXAttribute'
+                // @ts-ignore
                 && (path.node.name.name === 'image' || path.node.name.name === 'selectedImage')
+                // @ts-ignore
                 && path.parentPath.node.name.name === 'TabRouter'
             ) {
-
+                // @ts-ignore
                 const v = path.node.value
                 if (v.type === 'JSXExpressionContainer') {
                     const picName = v.expression.name
+                    // @ts-ignore
                     path.node.value = t.stringLiteral(pngMap[picName])
                 }
 
                 return
             }
 
+            // @ts-ignore
             if (path.type === 'JSXOpeningElement' && path.node.name.name === 'Route') {
                 let compAttri = null
                 let key = null
-                path.node.attributes.forEach(ele => {
+
+                const pnode = path.node as t.JSXOpeningElement
+                pnode.attributes.forEach(ele => {
+                    ele = ele as t.JSXAttribute
+
                     if (ele.name.name === 'component') {
                         compAttri = ele
                     }
@@ -150,12 +163,14 @@ export default function (ast, filepath, webpackContext) {
 
                 appJSON.pages.push(projectRelativePath)
 
-                path.node.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
+                pnode.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
                 return
             }
 
+            // @ts-ignore
             if (path.type === 'JSXOpeningElement' && path.node.name.name === 'TabRouter') {
                 const pp = path.parentPath
+                // @ts-ignore
                 const children = pp.node.children
 
                 let initRoute = null
@@ -179,17 +194,23 @@ export default function (ast, filepath, webpackContext) {
                 const tabBarElement: any = {
                     pagePath: initRoute,
                 }
-                path.node.attributes.forEach(attri => {
+
+                const pnode = path.node as t.JSXOpeningElement
+
+                pnode.attributes.forEach(attri => {
+                    attri = attri as t.JSXAttribute
+                    const v = (attri.value as t.StringLiteral).value
+
                     if (attri.name.name === 'text') {
-                        tabBarElement.text = attri.value.value
+                        tabBarElement.text = v
                     }
 
                     if (attri.name.name === 'image') {
-                        tabBarElement.iconPath = attri.value.value
+                        tabBarElement.iconPath = v
                     }
 
                     if (attri.name.name === 'selectedImage') {
-                        tabBarElement.selectedIconPath = attri.value.value
+                        tabBarElement.selectedIconPath = v
                     }
                 })
 
@@ -198,13 +219,13 @@ export default function (ast, filepath, webpackContext) {
                 appJSON.tabBar.list = appJSON.tabBar.list || []
                 appJSON.tabBar.list.push(tabBarElement)
 
-                path.node.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
+                pnode.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
 
                 return
             }
 
             if (path.type === 'JSXOpeningElement') {
-                const jsxOp = path.node
+                const jsxOp = path.node as t.JSXOpeningElement
 
                 const key = `DIUU${go.next}`
 
@@ -215,9 +236,9 @@ export default function (ast, filepath, webpackContext) {
             }
 
             if (path.type === 'JSXAttribute'
-                && path.node.name.name === 'wxNavigationOptions'
+                && (path.node as t.JSXAttribute).name.name === 'wxNavigationOptions'
             ) {
-                const value = path.node.value
+                const value = (path.node as t.JSXAttribute).value
 
 
                 if (value.type === 'JSXExpressionContainer'
@@ -226,9 +247,9 @@ export default function (ast, filepath, webpackContext) {
                     const v = value.expression
                     const props = v.properties
                     for(let i = 0; i < props.length; i++) {
-                        const p = props[i]
+                        const p = props[i] as t.ObjectProperty
                         const k = p.key.name
-                        const v = p.value.value
+                        const v = (p.value as t.StringLiteral).value
                         appJSON.window[k] = v
                     }
                 }
@@ -243,13 +264,16 @@ export default function (ast, filepath, webpackContext) {
 
         exit: path => {
             if (path.type === 'ExportDefaultDeclaration') {
+                // @ts-ignore
                 if (path.node.declaration.type === 'ClassDeclaration') {
                     // TODO 可能存在其他情况吗
+                    // @ts-ignore
                     path.node.declaration.type = 'ClassExpression'
                 }
 
                 path.replaceWith(
                     t.variableDeclaration('const', [
+                        // @ts-ignore
                         t.variableDeclarator(t.identifier('RNAppClass'), path.node.declaration)
                     ])
                 )
@@ -257,13 +281,18 @@ export default function (ast, filepath, webpackContext) {
 
             // module.exports = A => const RNAppClass = A
             if (path.type === 'AssignmentExpression'
+                // @ts-ignore
                 && path.node.operator === '='
+                // @ts-ignore
                 && path.node.left.type === 'MemberExpression'
+                // @ts-ignore
                 && path.node.left.object.name === 'module'
+                // @ts-ignore
                 && path.node.left.property.name === 'exports'
             ) {
                 path.parentPath.replaceWith(
                     t.variableDeclaration('const', [
+                        // @ts-ignore
                         t.variableDeclarator(t.identifier('RNAppClass'), path.node.right)
                     ])
                 )
@@ -276,8 +305,10 @@ export default function (ast, filepath, webpackContext) {
                  * export default RNApp
                  */
 
+                const pnode = path.node as t.Program
+
                 // be lazy
-                path.node.body.push(
+                pnode.body.push(
                     t.expressionStatement(
                         t.identifier(`React.renderApp(RNAppClass)`)
                     )
@@ -289,7 +320,7 @@ export default function (ast, filepath, webpackContext) {
                  */
 
                 // be lazy
-                path.node.body.push(
+                pnode.body.push(
                     t.expressionStatement(
                         t.identifier(`wx._historyConfig = {...(wx._historyConfig || {}), ...${JSON.stringify(historyMap, null)}}`)
                     )
@@ -297,7 +328,7 @@ export default function (ast, filepath, webpackContext) {
 
                 // be lazy
 
-                path.node.body.push(t.variableDeclaration(
+                pnode.body.push(t.variableDeclaration(
                     'const',
                     [
                         t.variableDeclarator(
@@ -306,7 +337,7 @@ export default function (ast, filepath, webpackContext) {
                         )
                     ]
                 ))
-                path.node.body.push(
+                pnode.body.push(
                     t.expressionStatement(
                         t.identifier(`wx._pageCompMaps = {...(wx._pageCompMaps || {}), ...__pageCompPath}`)
                     )

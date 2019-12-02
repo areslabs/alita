@@ -52,7 +52,7 @@ export default function (this: webpack.loader.LoaderContext,
     return finalCode
 }
 
-function isPageComp(filepath:string, allCompSet: Set): boolean {
+function isPageComp(filepath:string, allCompSet: Set<any>): boolean {
     const originPath = miscNameToJSName(filepath)
         .replace(configure.inputFullpath + path.sep, '')
         .replace('.js', '')

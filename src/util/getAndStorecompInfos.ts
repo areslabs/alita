@@ -2,6 +2,7 @@ import * as fse from 'fs-extra'
 import * as path from 'path'
 import * as resolve from 'enhanced-resolve'
 import traverse from "@babel/traverse";
+import * as t from "@babel/types"
 import configure from "../configure";
 import {getLibPath, judgeLibPath} from './util'
 
@@ -42,7 +43,7 @@ export function getCompInfos(ast, filepath) {
 
     traverse(ast, {
         JSXOpeningElement: path => {
-            const name = path.node.name.name
+            const name = (path.node.name as t.JSXIdentifier).name
             JSXElements.add(name)
         },
     })
@@ -56,10 +57,8 @@ export function getCompInfos(ast, filepath) {
                 return
             }
 
-            if (path.type === 'CallExpression'
-                && path.node.callee.name === 'require'
-                && path.key === 'init'
-            ) {
+            // @ts-ignore
+            if (path.type === 'CallExpression' && path.node.callee.name === 'require' && path.key === 'init') {
 
                 handleRequire(path, filepath, JSXElements)
                 return

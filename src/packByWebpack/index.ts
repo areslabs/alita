@@ -131,7 +131,7 @@ export default function packByWebpack() {
         resolve,
 
         module,
-    }
+    } as webpack.Configuration
 
     configure.alias = webpackConfigure.resolve.alias
     const compiler = webpack(webpackConfigure)

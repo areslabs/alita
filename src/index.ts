@@ -12,12 +12,15 @@ import colors from 'colors'
 import * as fse from 'fs-extra'
 import program from 'commander'
 import { emptyDir } from './util/util'
-import packagz from '../package.json'
+
 import geneWXFileStruc from './util/geneWXFileStruc'
 import initProject from './util/initProject'
 
 import packByWebpack from './packByWebpack'
+
 import conf from './configure'
+
+const packagz = require('../package.json')
 
 colors.setTheme({
     silly: 'rainbow',
@@ -103,6 +106,8 @@ const DEFAULTCONFIG = {
 const inputFullpath = path.resolve('.')
 conf.inputFullpath = inputFullpath
 
+
+
 const CONFIGPATH = options.config ?
     path.resolve(options.config)
     : path.resolve(inputFullpath, 'alita.config.js')
@@ -115,7 +120,7 @@ if (fse.existsSync(CONFIGPATH)) {
         ...userConfig,
     }
 } else {
-    console.log('未发现配置文件，将使用默认配置'.info)
+    console.log("未发现配置文件，将使用默认配置".info)
 }
 conf.configObj = configObj
 
@@ -133,7 +138,6 @@ if (fse.existsSync(outputFullpath)) {
     ]))
     console.log('清理完成，构建小程序项目...'.info)
 }
-
 
 
 function main() {

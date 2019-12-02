@@ -7,7 +7,7 @@
  */
 
 import traverse from "@babel/traverse"
-import { parse } from '@babel/parser'
+import { parse, ParserPlugin } from '@babel/parser'
 import generator from '@babel/generator'
 import * as t from "@babel/types"
 
@@ -15,7 +15,7 @@ import {allBaseComp, extChildComp} from './getAndStorecompInfos'
 
 
 export function parseCode(code, extname) {
-    const plugins = [
+    const plugins: ParserPlugin[] = [
             'classProperties',
             'objectRestSpread',
             'optionalChaining',
@@ -44,9 +44,7 @@ export function parseCode(code, extname) {
 export function geneReactCode(ast) {
     let code = generator(ast, {
         comments: false,
-        jsescOption: {
-            minimal: true,
-        },
+        jsescOption: {},
     }).code
     return code
 }
@@ -87,8 +85,7 @@ export function getFileInfo(ast) {
         },
 
         JSXOpeningElement: path => {
-
-            const name = path.node.name.name
+            const name = (path.node.name as t.JSXIdentifier).name
 
             if (name === 'Router') {
                 isEntry = true
@@ -108,6 +105,7 @@ export function getFileInfo(ast) {
             const callee = path.node.callee
             if (callee.type === 'MemberExpression'
                 && callee.object
+                // @ts-ignore
                 && callee.object.name === 'AppRegistry'
                 && callee.property
                 && callee.property.name === 'registerComponent'

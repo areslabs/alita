@@ -38,10 +38,11 @@ export default function addWXPrefixHandler (ast, info?: any) {
             // Text.propTypes 类似这种
             if (path.type === 'Identifier'
                 && path.key !== 'property'
-                && RNCOMPSET.has(path.node.name)
+                && RNCOMPSET.has((path.node as t.Identifier).name)
 
             ) {
-                path.node.name = `WX${path.node.name}`
+                const pnode = path.node as t.Identifier
+                pnode.name = `WX${pnode.name}`
                 return
             }
         }
