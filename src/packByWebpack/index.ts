@@ -10,6 +10,7 @@ import webpack from 'webpack'
 import * as path from 'path'
 
 import configure from '../configure'
+import * as babel from "@babel/core";
 
 //TODO
 export const RNWXLIBMaps = {
@@ -38,13 +39,20 @@ const defaultAlias = {
 
 const defaultPlugins = []
 
+const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
 const defaultRules = [
     {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         exclude: /node_modules/,
         use: [
             {
                 loader: 'babel-loader',
+                options: {
+                    plugins: [
+                        "@babel/plugin-transform-regenerator",
+                        babelTransformJSX,
+                    ]
+                }
             },
             {
                 loader: path.resolve(__dirname, 'jsx-loader.js'),
@@ -59,6 +67,9 @@ const defaultRules = [
     },
 ]
 
+
+const mainFields = ['weixin', 'browser', 'module', 'main']
+const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
 export default function packByWebpack() {
 
     const cco = configure.configObj
@@ -70,15 +81,15 @@ export default function packByWebpack() {
                 defaultAlias,
                 ...(cco.resolve.alias || {})
             },
-            extensions: ['.wx.js', '.js', '.jsx', '.json'],
-            mainFields: ['weixin', 'browser', 'module', 'main'],
+            extensions,
+            mainFields,
             ...cco.resolve
         }
     } else {
         resolve = {
             alias: defaultAlias,
-            extensions: ['.wx.js', '.js', '.jsx', '.json'],
-            mainFields: ['weixin', 'browser', 'module', 'main']
+            extensions,
+            mainFields,
         }
     }
 

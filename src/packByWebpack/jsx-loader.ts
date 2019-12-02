@@ -30,7 +30,7 @@ export default function (this: webpack.loader.LoaderContext,
 
     if (filepath === entryFullpath) {
         // nothing
-        finalCode = geneReactCode(ast, path.extname(filepath))
+        finalCode = geneReactCode(ast)
 
         allGeneFiles = new Set<string>()
     } else if (isRF) {
@@ -38,7 +38,7 @@ export default function (this: webpack.loader.LoaderContext,
         finalCode = jsxResult.code
         allGeneFiles = jsxResult.allFiles
     } else {
-        finalCode = geneReactCode(ast, path.extname(filepath))
+        finalCode = geneReactCode(ast)
 
         allGeneFiles = new Set<string>()
     }

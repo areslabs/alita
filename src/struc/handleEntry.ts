@@ -11,7 +11,6 @@ import * as fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {isStaticRes, miscNameToJSName} from '../util/util'
-import { geneReactCode } from "../util/uast";
 
 import {geneOrder} from '../util/util'
 

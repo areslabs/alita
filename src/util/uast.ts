@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import * as babel from "@babel/core";
+
 import traverse from "@babel/traverse"
 import { parse } from '@babel/parser'
 import generator from '@babel/generator'
@@ -40,21 +39,6 @@ export function parseCode(code, extname) {
     })
 }
 
-
-const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
-
-
-const babelFlow = babel.createConfigItem(require("@babel/preset-flow"), {type: 'presets'})
-const babelTSX = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: true, allExtensions: true, allowNamespaces: true}], {type: 'plugin'})
-const babelTS = babel.createConfigItem([require("@babel/preset-typescript"), {isTSX: false, allExtensions: true, allowNamespaces: true}], {type: 'plugin'})
-
-const babelRestSpread = babel.createConfigItem([require("@babel/plugin-proposal-object-rest-spread"), { "loose": true, "useBuiltIns": true }])
-const babelClassProperties = babel.createConfigItem([require("@babel/plugin-proposal-class-properties"), {"loose": true}])
-const babelOptionalChaining = babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining"))
-const babelDecorators = babel.createConfigItem([require("@babel/plugin-proposal-decorators"), {"legacy": true }])
-const babelAsync = babel.createConfigItem(require("@babel/plugin-transform-regenerator"), {type: 'plugin'})
-
-
 export function geneJSXCode(ast) {
     let code = generator(ast, {
         comments: false,
@@ -66,39 +50,15 @@ export function geneJSXCode(ast) {
     return code
 }
 
-export function geneReactCode(ast, extname) {
+
+// 由于babel-loader 无法直接传递AST，所以需要先生成code
+export function geneReactCode(ast) {
     let code = generator(ast, {
         comments: false,
         jsescOption: {
             minimal: true,
         },
     }).code
-
-
-    const presets = []
-    const plugins = [
-        babelDecorators,
-        babelRestSpread,
-        babelClassProperties,
-        babelOptionalChaining,
-        babelAsync,
-        babelTransformJSX,
-    ]
-    if (extname === '.tsx') {
-        presets.push(babelTSX)
-    } else if (extname === '.ts') {
-        presets.push(babelTS)
-    } else {
-        presets.push(babelFlow)
-    }
-
-    code = babel.transformSync(code, {
-        babelrc: false,
-        configFile: false,
-        presets,
-        plugins,
-    }).code
-
     return code
 }
 
