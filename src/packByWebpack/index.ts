@@ -11,6 +11,9 @@ import * as path from 'path'
 
 import configure from '../configure'
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 const defaultAlias = {
     'react': '@areslabs/wx-react',
     'react-native': '@areslabs/wx-react-native',
@@ -20,9 +23,14 @@ const defaultAlias = {
     // 由于hoc的差异，hoc需要使用alita专用的
     'mobx-react': "@areslabs/wx-mobx-react",
     'react-redux': "@areslabs/wx-react-redux",
+
+    // 处于包大小的考虑，内置处理
+    'redux-promise': "@areslabs/wx-redux-promise",
 }
 
-const defaultPlugins = []
+const defaultPlugins = [
+    new BundleAnalyzerPlugin()
+]
 
 const defaultRules = [
     {
@@ -147,7 +155,7 @@ function runCb(err, stats) {
             handleError(err)
         })
     } else {
-        successLog()
+        console.log('\n编译完成'.info)
     }
 }
 
@@ -168,14 +176,6 @@ function watchCb(err, stats) {
         console.log(`\n编译完成, 监听文件...`.info)
     }
 
-}
-
-function successLog() {
-    console.log('')
-    console.log('编译完成'.info)
-    console.log(`  • cd ${configure.configObj.output}`.black)
-    console.log(`  • 开发者工具从 ${configure.configObj.output} 导入项目`.black)
-    console.log('')
 }
 
 function handleError(message) {

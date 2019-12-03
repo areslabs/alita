@@ -1,4 +1,4 @@
-import { isObservableArray, isObservableObject, isObservableMap, untracked } from "@areslabs/wx-mobx"
+import { isObservableArray, isObservableObject, isObservableMap, untracked } from "mobx"
 
 // Copied from React.PropTypes
 function createChainableTypeChecker(validate) {

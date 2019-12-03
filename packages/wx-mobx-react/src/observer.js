@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from "@areslabs/wx-react"
-import { createAtom, Reaction, _allowStateChanges, $mobx } from "@areslabs/wx-mobx"
+import { createAtom, Reaction, _allowStateChanges, $mobx } from "mobx"
 import hoistStatics from "./utils/hoistNonReactStatics"
 
 import EventEmitter from "./utils/EventEmitter"
