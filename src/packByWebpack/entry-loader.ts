@@ -7,7 +7,7 @@
  */
 
 import * as webpack from 'webpack'
-import handleEntry from '../struc/handleEntry'
+import handleEntry from '../entrytran/handleEntry'
 import configure from '../configure'
 
 import {LoaderTmpResult} from './interfaces'
