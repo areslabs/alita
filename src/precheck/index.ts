@@ -2,9 +2,11 @@ import checkJSX from './checkJSX'
 import checkBase from './checkBase'
 import checkEntry from './checkEntry'
 
+import configure from '../configure'
+
 export default function precheck(ast, isEntry, isR, filepath, rawCode) {
 
-    const relativePath = filepath.replace(global.execArgs.INPUT_DIR, '')
+    const relativePath = filepath.replace(configure.inputFullpath, '')
 
 
     if (isEntry) {

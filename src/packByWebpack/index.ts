@@ -60,6 +60,9 @@ const defaultRules = [
             },
             {
                 loader: path.resolve(__dirname, 'base-loader.js'),
+            },
+            {
+                loader: path.resolve(__dirname, 'precheck-loader.js')
             }
         ]
     },

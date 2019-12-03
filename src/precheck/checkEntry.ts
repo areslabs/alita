@@ -6,17 +6,9 @@
  *
  */
 
-
+import * as t from "@babel/types"
 import traverse from "@babel/traverse";
 import {printError} from './util'
-
-/**
- * Copyright (c) Areslabs.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 
 export default function checkEntry(ast, filepath, rawCode) {
 
@@ -28,17 +20,20 @@ export default function checkEntry(ast, filepath, rawCode) {
     traverse(ast, {
         enter: path => {
             if (path.type === 'ImportDeclaration') {
-                path.node.specifiers.forEach(item => {
+                ;(path.node as t.ImportDeclaration).specifiers.forEach(item => {
                     allModuleVarSet.add(item.local.name)
                 })
             }
 
             if (path.type === 'CallExpression'
+                // @ts-ignore
                 && path.node.callee.name === 'require'
+                // @ts-ignore
                 && path.node.arguments.length === 1
             ) {
 
                 const pp = path.parentPath
+                // @ts-ignore
                 const id = pp.node.id
 
 
@@ -58,10 +53,12 @@ export default function checkEntry(ast, filepath, rawCode) {
         },
 
         exit: path => {
+            // @ts-ignore
             if (path.type === 'JSXOpeningElement' && path.node.name.name === 'Route') {
                 const parentJSX = path.parentPath.parentPath
 
                 if (parentJSX.type === 'JSXElement'
+                    // @ts-ignore
                     && (parentJSX.node.openingElement.name.name === 'Router' || parentJSX.node.openingElement.name.name === 'TabRouter')) {
 
                 } else {
@@ -69,14 +66,17 @@ export default function checkEntry(ast, filepath, rawCode) {
                     checkPass = false
                 }
 
+                const pnode = path.node as t.JSXOpeningElement
 
-                const hasKey = path.node.attributes.some(attr => attr.name.name === 'key')
+                // @ts-ignore
+                const hasKey = pnode.attributes.some(attr => attr.name.name === 'key')
                 if (!hasKey) {
                     printError(filepath, path, rawCode, `Route标签 缺少key属性`)
                     checkPass = false
                 }
 
-                const hasComponent = path.node.attributes.some(attr => attr.name.name === 'component')
+                // @ts-ignore
+                const hasComponent = pnode.attributes.some(attr => attr.name.name === 'component')
                 if (!hasComponent) {
                     printError(filepath, path, rawCode, `Route标签 缺少component属性`)
                     checkPass = false
@@ -84,10 +84,12 @@ export default function checkEntry(ast, filepath, rawCode) {
 
             }
 
+            // @ts-ignore
             if (path.type === 'JSXOpeningElement' && path.node.name.name === 'TabRouter') {
                 const parentJSX = path.parentPath.parentPath
 
                 if (parentJSX.type === 'JSXElement'
+                    // @ts-ignore
                     && parentJSX.node.openingElement.name.name === 'Router') {
 
                 } else {
@@ -96,7 +98,9 @@ export default function checkEntry(ast, filepath, rawCode) {
                 }
             }
 
+            // @ts-ignore
             if (path.type === 'JSXAttribute' && path.node.name.name === 'key') {
+                // @ts-ignore
                 const v = path.node.value
 
                 if (v.type === 'StringLiteral') return
@@ -107,7 +111,9 @@ export default function checkEntry(ast, filepath, rawCode) {
                 checkPass = false
             }
 
+            // @ts-ignore
             if (path.type === 'JSXAttribute' && path.node.name.name === 'component') {
+                // @ts-ignore
                 const v = path.node.value
 
                 if (v.type !== 'JSXExpressionContainer') {
@@ -123,7 +129,9 @@ export default function checkEntry(ast, filepath, rawCode) {
                 }
             }
 
+            // @ts-ignore
             if (path.type === 'JSXAttribute' && path.node.name.name === 'wxNavigationOptions') {
+                // @ts-ignore
                 const v = path.node.value
 
                 if (v.type !== 'JSXExpressionContainer') {

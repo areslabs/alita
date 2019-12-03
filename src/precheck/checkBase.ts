@@ -1,6 +1,3 @@
-import traverse from "@babel/traverse";
-import {printError} from './util'
-
 /**
  * Copyright (c) Areslabs.
  *
@@ -8,6 +5,10 @@ import {printError} from './util'
  * LICENSE file in the root directory of this source tree.
  *
  */
+
+import traverse from "@babel/traverse";
+import {printError} from './util'
+
 
 export default function checkBase(ast, filepath, rawCode) {
 

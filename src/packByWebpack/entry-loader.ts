@@ -18,6 +18,11 @@ import {LoaderTmpResult} from './interfaces'
  * @returns {LoaderTmpResult}
  */
 export default function (this: webpack.loader.LoaderContext, context: LoaderTmpResult) : LoaderTmpResult{
+    if (!context.checkPass) {
+        return context
+    }
+
+
     const filepath = this.resourcePath
     const entryFullpath = configure.entryFullpath
 

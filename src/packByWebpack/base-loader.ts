@@ -6,12 +6,9 @@
  *
  */
 
-import * as npath from 'path'
-import * as webpack from 'webpack';
+import * as webpack from 'webpack'
 import basetran from '../basetran'
-import {getFileInfo, parseCode} from '../util/uast'
 import {getCompInfos} from '../util/getAndStorecompInfos'
-import configure from '../configure'
 
 import {LoaderTmpResult} from './interfaces'
 
@@ -20,26 +17,20 @@ import {LoaderTmpResult} from './interfaces'
  * @param context
  */
 
-export default function (this: webpack.loader.LoaderContext, context: string): LoaderTmpResult {
+export default function (this: webpack.loader.LoaderContext,  context : LoaderTmpResult): LoaderTmpResult {
+    if (!context.checkPass) {
+        return context
+    }
 
     const filepath = this.resourcePath
 
-    const ast = parseCode(context, npath.extname(filepath))
-    const {isEntry, isRF, isFuncComp} = getFileInfo(ast)
-
-    if (isRF && !isEntry) {
-        getCompInfos(ast, filepath)
+    if (context.isRF && !context.isEntry) {
+        // 处理小程序组件信息
+        getCompInfos(context.ast, filepath)
     }
 
+    const newAst = basetran(context.ast, filepath, this)
+    context.ast = newAst
 
-    console.log(`开始处理：${filepath.replace(configure.inputFullpath, '')} ...`.info)
-    const newAst = basetran(ast, filepath, this)
-
-
-    return {
-        ast: newAst,
-        isEntry,
-        isRF,
-        isFuncComp,
-    }
+    return context
 }

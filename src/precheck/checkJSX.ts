@@ -1,7 +1,3 @@
-import traverse from "@babel/traverse";
-import {RNCOMPSET} from '../constants'
-import {printError, printWarn} from './util'
-
 /**
  * Copyright (c) Areslabs.
  *
@@ -9,6 +5,14 @@ import {printError, printWarn} from './util'
  * LICENSE file in the root directory of this source tree.
  *
  */
+
+import traverse from "@babel/traverse"
+import * as t from '@babel/types'
+import {RNCOMPSET} from '../constants'
+import {printError, printWarn} from './util'
+
+import {jsxPropsMap, allBaseComp} from '../util/getAndStorecompInfos'
+
 
 const ignoreCompSet = new Set([
     'PureComponent',
@@ -144,23 +148,26 @@ export default function checkJSX(ast, filepath, rawCode) {
     let hasAttributeJSXTag = false
 
 
-    const ALLCPTCOMPMAP = global.execArgs.jsxPropsMap
+    const ALLCPTCOMPMAP = jsxPropsMap
 
     traverse(ast, {
 
         enter: path => {
             if (path.type === 'ImportDeclaration') {
-                path.node.specifiers.forEach(item => {
+                (path.node as t.ImportDeclaration).specifiers.forEach(item => {
                     allModuleVarSet.add(item.local.name)
                 })
             }
 
             if (path.type === 'CallExpression'
+                // @ts-ignore
                 && path.node.callee.name === 'require'
+                // @ts-ignore
                 && path.node.arguments.length === 1
             ) {
 
                 const pp = path.parentPath
+                // @ts-ignore
                 const id = pp.node.id
 
 
@@ -194,8 +201,9 @@ export default function checkJSX(ast, filepath, rawCode) {
 
         exit: path => {
             if (path.type === 'JSXOpeningElement') {
-
+                // @ts-ignore
                 if (path.node.name.type === 'JSXIdentifier') {
+                    // @ts-ignore
                     const name = path.node.name.name
                     if (!allModuleVarSet.has(name)) {
                         printError(filepath, path, rawCode, `组件${name}的导入，需要在import/require语句`)
@@ -207,8 +215,9 @@ export default function checkJSX(ast, filepath, rawCode) {
             }
 
 
-            if (path.type === 'ImportDeclaration' && path.node.source.value === 'react-native') {
-                path.node.specifiers.forEach(item => {
+            if (path.type === 'ImportDeclaration' && (path.node as t.ImportDeclaration).source.value === 'react-native') {
+                ;(path.node as t.ImportDeclaration).specifiers.forEach(item => {
+                    item = item as t.ImportSpecifier
                     const importedName = item.imported.name
                     const localName = item.local.name
 
@@ -219,7 +228,9 @@ export default function checkJSX(ast, filepath, rawCode) {
                 })
             }
 
+            // @ts-ignore
             if (path.type === 'ClassProperty' && path.node.key.name === 'wxNavigationOptions' && path.node.static === true) {
+                // @ts-ignore
                 const v = path.node.value
 
                 v.properties.forEach(op => {
@@ -231,11 +242,14 @@ export default function checkJSX(ast, filepath, rawCode) {
             }
 
             if ((path.type === 'ClassMethod' || path.type === 'ClassProperty') && hasJSXTag) {
+                // @ts-ignore
                 jsxFuncs.add(path.node.key.name)
             }
 
             if (path.type === 'JSXAttribute' && hasAttributeJSXTag) {
+                // @ts-ignore
                 const JSXName = path.parentPath.node.name.name
+                // @ts-ignore
                 const attrName = path.node.name.name
 
                 if (RNCOMPSET.has(JSXName)) {
@@ -292,8 +306,9 @@ export default function checkJSX(ast, filepath, rawCode) {
 
 
         JSXSpreadAttribute: (path) => {
+            // @ts-ignore
             const elementName = path.parentPath.node.name.name
-            if (global.execArgs.allBaseComp.has(elementName) ||  backToView.has(elementName)) {
+            if (allBaseComp.has(elementName) ||  backToView.has(elementName)) {
                 printError(filepath, path, rawCode, `基本组件不支持属性展开`)
                 checkPass = false
             }
@@ -329,11 +344,12 @@ export default function checkJSX(ast, filepath, rawCode) {
 
         JSXAttribute: (path) => {
             const node = path.node
-            const name = node.name.name
+            const name = node.name.name as string
             if (notSupportCommonAttris.has(name)) {
                 printWarn(filepath, path, rawCode, `不支持${name}属性`)
             } else {
                 const jop = path.parentPath
+                // @ts-ignore
                 const elementName = jop.node.name.name
 
                 const jsxEleAttr = notSupportJSXElementAttris[elementName]
@@ -362,9 +378,9 @@ export default function checkJSX(ast, filepath, rawCode) {
 
         // this.xx
         JSXAttribute(path) {
-            const jsxOp = path.parentPath.node
-            const JSXName = jsxOp.name.name
-            const attrName = path.node.name.name
+            const jsxOp = path.parentPath.node as t.JSXOpeningElement
+            const JSXName = (jsxOp.name as t.JSXIdentifier).name
+            const attrName = path.node.name.name as string
 
             if (RNCOMPSET.has(JSXName)) {
                 return
