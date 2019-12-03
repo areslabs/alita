@@ -24,16 +24,18 @@ interface IConfigObj {
 }
 
 interface IConfigure {
-    alias?: object,
-    configObj?: IConfigObj,
+    alias?: object
+    configObj?: IConfigObj
 
-    entryFullpath?: string,
-    outputFullpath?: string,
+    entryFullpath?: string
+    outputFullpath?: string
     inputFullpath?: string
 
-    dev?: boolean,
+    dev?: boolean
 
-    allCompSet?: any,
+    allCompSet?: any
+
+    analyzer?: boolean
 }
 
 const configure = {} as IConfigure

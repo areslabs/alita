@@ -27,15 +27,6 @@ const defaultAlias = {
     'redux-promise': "@areslabs/wx-redux-promise",
 }
 
-const defaultPlugins = [
-    new BundleAnalyzerPlugin(),
-    new CopyPlugin([
-        {
-            from: path.resolve(__dirname, "..", "..", 'mptemp'),
-            to: configure.outputFullpath
-        },
-    ]),
-]
 
 const defaultRules = [
     {
@@ -108,6 +99,32 @@ export default function packByWebpack() {
         }
     }
 
+    const plugins = [
+        new CopyPlugin([
+            {
+                from: path.resolve(__dirname, "..", "..", 'mptemp'),
+                to: configure.outputFullpath
+            },
+        ]),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': configure.dev ? '"development"' : '"production"',
+        }),
+
+        // react-native 全局可以使用的变量
+        new webpack.ProvidePlugin({
+            fetch: ['react-native', 'fetch'],
+            alert: ['react-native', 'alert'],
+            requestAnimationFrame: ['react-native', 'requestAnimationFrame'],
+            cancelAnimationFrame: ['react-native', 'cancelAnimationFrame'],
+            "_ARR": "@areslabs/regenerator-runtime"
+        }),
+        ...(cco.plugins || [])
+    ]
+    if (configure.analyzer ) {
+        plugins.push(new BundleAnalyzerPlugin())
+    }
+
+
     const webpackConfigure = {
         entry: cco.entry,
 
@@ -123,23 +140,7 @@ export default function packByWebpack() {
 
         devtool: configure.dev ? 'source-map' : "none",
 
-        plugins: [
-            ...defaultPlugins,
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': configure.dev ? '"development"' : '"production"',
-            }),
-
-            // react-native 全局可以使用的变量
-            new webpack.ProvidePlugin({
-                fetch: ['react-native', 'fetch'],
-                alert: ['react-native', 'alert'],
-                requestAnimationFrame: ['react-native', 'requestAnimationFrame'],
-                cancelAnimationFrame: ['react-native', 'cancelAnimationFrame'],
-                "_ARR": "@areslabs/regenerator-runtime"
-            }),
-
-            ...(cco.plugins || [])
-        ],
+        plugins,
 
         resolve,
 

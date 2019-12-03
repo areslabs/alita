@@ -69,6 +69,7 @@ program
     .option('--watch', 'watch files and recompile when they change')
     .option('--config', 'specify configuration file')
     .option('--dev', 'development mode')
+    .option('--analyzer', 'analyzer bundle size')
     .parse(process.argv)
 
 
@@ -82,7 +83,9 @@ const options = getopts(process.argv, {
         dev: 'dev',
 
         // use with init
-        typescript: 'typescript'
+        typescript: 'typescript',
+
+        analyzer: 'analyzer'
     },
 })
 
@@ -92,6 +95,7 @@ if (options._.includes('init')) {
 }
 
 conf.dev = !!options.dev
+conf.analyzer = !!options.analyzer
 
 const DEFAULTCONFIG = {
     name: '',
