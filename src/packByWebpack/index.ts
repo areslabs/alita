@@ -10,7 +10,6 @@ import webpack from 'webpack'
 import * as path from 'path'
 
 import configure from '../configure'
-import * as babel from "@babel/core";
 
 //TODO
 export const RNWXLIBMaps = {
@@ -39,7 +38,6 @@ const defaultAlias = {
 
 const defaultPlugins = []
 
-const babelTransformJSX = babel.createConfigItem(require("../misc/transformJSX"), {type: 'plugin'})
 const defaultRules = [
     {
         test: /\.[jt]sx?$/,
@@ -50,7 +48,7 @@ const defaultRules = [
                 options: {
                     plugins: [
                         "@babel/plugin-transform-regenerator",
-                        babelTransformJSX,
+                        "@areslabs/babel-plugin-alitamisc"
                     ]
                 }
             },

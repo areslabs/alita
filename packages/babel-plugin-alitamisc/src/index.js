@@ -23,7 +23,7 @@ const compatTagSet = new Set(
 )
 
 
-const transformJSX = (api, options) => {
+const alitamisc = (api, options) => {
     api.assertVersion(7);
 
     options = {
@@ -152,4 +152,4 @@ const transformJSX = (api, options) => {
 }
 
 
-export default declare(transformJSX);
+export default declare(alitamisc);
