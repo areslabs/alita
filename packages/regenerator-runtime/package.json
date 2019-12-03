@@ -1,0 +1,11 @@
+{
+  "name": "@areslabs/regenerator-runtime",
+  "version": "0.0.1",
+  "description": "alita regenerator-runtime copy from regenerator-runtime@0.11.1",
+  "main": "runtime-module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yankang (https://github.com/ykforerlang)",
+  "license": "MIT"
+}

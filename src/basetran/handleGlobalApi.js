@@ -62,5 +62,5 @@ function rnGlobalDec(info, usedApiList) {
 }
 
 function asyncRegeneratorRuntimeDec(filepath) {
-    return t.expressionStatement(t.identifier(`const regeneratorRuntime = require('regenerator-runtime');`))
+    return t.expressionStatement(t.identifier(`const regeneratorRuntime = require('@areslabs/regenerator-runtime');`))
 }
