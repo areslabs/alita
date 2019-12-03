@@ -10,7 +10,6 @@ import * as t from "@babel/types"
 import * as webpack from 'webpack'
 
 import handleModules from './handleModules'
-import handleGlobalApi from './handleGlobalApi'
 import handleMisc from './handleMisc'
 
 
@@ -22,7 +21,6 @@ export default function (ast: t.Node, filepath: string, webpackContext: webpack.
 
     ast = handleMisc(ast, info)
     ast = handleModules(ast, info)
-    ast = handleGlobalApi(ast, info)
 
     return ast
 }

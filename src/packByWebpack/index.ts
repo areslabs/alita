@@ -134,7 +134,8 @@ export default function packByWebpack() {
                 fetch: ['react-native', 'fetch'],
                 alert: ['react-native', 'alert'],
                 requestAnimationFrame: ['react-native', 'requestAnimationFrame'],
-                cancelAnimationFrame: ['react-native', 'cancelAnimationFrame']
+                cancelAnimationFrame: ['react-native', 'cancelAnimationFrame'],
+                "_ARR": "@areslabs/regenerator-runtime"
             }),
 
             ...(cco.plugins || [])
