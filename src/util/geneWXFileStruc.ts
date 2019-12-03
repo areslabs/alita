@@ -32,10 +32,20 @@ export default function geneWXFileStruc(targetpath) {
 	},
 	"setting": {
 		"urlCheck": false,
-		"postcss": true,
+		"es6": false,
+		"postcss": false,
 		"minified": true,
 		"newFeature": true,
-		"nodeModules": true
+		"coverView": true,
+		"autoAudits": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
 	"libVersion": "",
