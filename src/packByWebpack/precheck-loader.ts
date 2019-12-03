@@ -28,6 +28,10 @@ export default function (this: webpack.loader.LoaderContext, context: string): L
 
     const checkPass = precheck(ast, isEntry, isRF, filepath, context)
 
+    if (isEntry && !checkPass) {
+        console.log(`入口文件检测到错误，请修复之后重新执行 alita命令！`.error)
+    }
+
     return {
         ast,
         isEntry,
