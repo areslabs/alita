@@ -12,11 +12,7 @@ import * as fse from 'fs-extra'
 import configure from '../configure'
 
 
-export default function geneWXFileStruc(targetpath) {
-    const mptempDir = path.resolve(__dirname, '..', '..', 'mptemp')
-    fse.copySync(mptempDir, targetpath)
-
-
+export default function geneWXConfigFile(targetpath) {
     const pcjPath = path.resolve(targetpath, 'project.config.json')
     if (fse.existsSync(pcjPath)) {
         // 不要覆盖已有project.config.json， 因为开发者可能手动修改过这个文件

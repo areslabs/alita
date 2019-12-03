@@ -8,11 +8,10 @@
 
 import webpack from 'webpack'
 import * as path from 'path'
+import CopyPlugin from 'copy-webpack-plugin'
 
 import configure from '../configure'
-
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
 
 const defaultAlias = {
     'react': '@areslabs/wx-react',
@@ -29,7 +28,13 @@ const defaultAlias = {
 }
 
 const defaultPlugins = [
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
+    new CopyPlugin([
+        {
+            from: path.resolve(__dirname, "..", "..", 'mptemp'),
+            to: configure.outputFullpath
+        },
+    ]),
 ]
 
 const defaultRules = [

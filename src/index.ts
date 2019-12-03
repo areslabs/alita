@@ -13,7 +13,7 @@ import * as fse from 'fs-extra'
 import program from 'commander'
 import { emptyDir } from './util/util'
 
-import geneWXFileStruc from './util/geneWXFileStruc'
+import geneWXConfigFile from './util/geneWXConfigFile'
 import initProject from './util/initProject'
 
 import packByWebpack from './packByWebpack'
@@ -145,7 +145,7 @@ function main() {
     //TODO watch
 
     // 生成微信目录结构
-    geneWXFileStruc(conf.outputFullpath)
+    geneWXConfigFile(conf.outputFullpath)
 
     packByWebpack()
 
