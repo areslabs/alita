@@ -6,10 +6,9 @@
  *
  */
 
-import path from 'path'
+import * as path from 'path'
 import fse from 'fs-extra'
 import child_process from 'child_process'
-import {successInfo} from './util'
 
 
 export default function initProject(operands, typescript) {
@@ -33,40 +32,27 @@ export default function initProject(operands, typescript) {
         fse.unlinkSync(appJSPath)
     }
 
+
+    const initProPackages = ` @areslabs/router @areslabs/wx-animated `
+    const initProDevPackages = ` ${typescript ? '@types/react-native': ''} @areslabs/alita-weixin-runtime `
+
     if (fse.existsSync(path.resolve(targetpath, 'yarn.lock'))) {
-        child_process.execSync('yarn add @areslabs/router', {
+        child_process.execSync(`yarn add ${initProPackages}`, {
             cwd: targetpath,
         })
-        child_process.execSync('yarn add @areslabs/wx-animated', {
+        child_process.execSync(`yarn add ${initProDevPackages} --dev`, {
             cwd: targetpath,
         })
-        child_process.execSync('yarn add @areslabs/stringutil-rn', {
-            cwd: targetpath,
-        })
-
-        if (typescript) {
-            child_process.execSync('yarn add --dev  @types/react-native', {
-                cwd: targetpath,
-            })
-        }
     } else {
-        child_process.execSync('npm install --save @areslabs/router', {
+        child_process.execSync(`npm install --save ${initProPackages}`, {
             cwd: targetpath,
         })
-        child_process.execSync('npm install --save @areslabs/wx-animated', {
+        child_process.execSync(`npm install --save-dev ${initProDevPackages}`, {
             cwd: targetpath,
         })
-        child_process.execSync('npm install --save @areslabs/stringutil-rn', {
-            cwd: targetpath,
-        })
-
-        if (typescript) {
-            child_process.execSync('npm install --save-dev @types/react-native', {
-                cwd: targetpath,
-            })
-        }
     }
 
     console.log('  Run instructions for 小程序:'.blue)
-    console.log(`    • alita -i ${projectName} -o [目标小程序目录]   （若需要监听文件修改添加参数：--watch）`.black)
+    console.log(`    • cd ${projectName}`.black)
+    console.log(`    • alita --dev   （--dev 指定开发者模式）`.black)
 }
