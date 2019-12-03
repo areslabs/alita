@@ -125,6 +125,18 @@ export default function packByWebpack() {
 
         plugins: [
             ...defaultPlugins,
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': configure.dev ? '"development"' : '"production"',
+            }),
+
+            // react-native 全局可以使用的变量
+            new webpack.ProvidePlugin({
+                fetch: ['react-native', 'fetch'],
+                alert: ['react-native', 'alert'],
+                requestAnimationFrame: ['react-native', 'requestAnimationFrame'],
+                cancelAnimationFrame: ['react-native', 'cancelAnimationFrame']
+            }),
+
             ...(cco.plugins || [])
         ],
 

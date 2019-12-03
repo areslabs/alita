@@ -8,25 +8,17 @@
 
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
-import {globalApiList} from "../constants";
 
 /**
- * 1. 处理全局函数的导入， 在RN里 fetch， alert是不需要导入的
+ * 1. async 异步函数
  * @param ast
  * @param info
  * @returns {*}
  */
 export default function (ast, info) {
-    const usedApiList = new Set()
     let isAsync = false
     traverse(ast, {
         exit: path => {
-            if (path.type === 'Identifier'
-                && globalApiList.has(path.node.name)
-            ) {
-                usedApiList.add(path.node.name)
-            }
-
             if ((
                 path.type === 'FunctionDeclaration'
                 || path.type === 'ArrowFunctionExpression'
@@ -40,10 +32,6 @@ export default function (ast, info) {
             if (path.type === 'Program') {
                 const body = path.node.body
 
-                if (usedApiList.size > 0) {
-                    body.unshift(rnGlobalDec(info, usedApiList))
-                }
-
                 if(isAsync) {
                     body.unshift(asyncRegeneratorRuntimeDec(info.filepath))
                 }
@@ -54,12 +42,6 @@ export default function (ast, info) {
     return ast
 }
 
-
-function rnGlobalDec(info, usedApiList) {
-    return t.importDeclaration(
-        Array.from(usedApiList).map(v => t.importSpecifier(t.identifier(v), t.identifier(v))), t.stringLiteral('react-native')
-    )
-}
 
 function asyncRegeneratorRuntimeDec(filepath) {
     return t.expressionStatement(t.identifier(`const regeneratorRuntime = require('@areslabs/regenerator-runtime');`))

@@ -14,13 +14,6 @@ export const ChildTemplateDataKeyPrefix = "CTDK" // inner spread attribute prefi
 
 export const ChildTemplateNamePrefix = "CTNP"
 
-export const globalApiList = new Set([
-    'fetch',
-    'alert',
-    'requestAnimationFrame',
-    'cancelAnimationFrame'
-])
-
 export const RNCOMPSET = new Set([
     'Button',
     'FlatList',
