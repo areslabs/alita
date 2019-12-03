@@ -11,29 +11,15 @@ import * as path from 'path'
 
 import configure from '../configure'
 
-//TODO
-export const RNWXLIBMaps = {
-    "react": "@areslabs/wx-react",
-    "react-native": "@areslabs/wx-react-native",
-    "prop-types": "@areslabs/wx-prop-types",
-    "@areslabs/router": "@areslabs/wx-router",
-
-    /* 官方支持库*/
-    'moment': "@areslabs/wx-moment",
-    'redux': "@areslabs/wx-redux",
-    'react-redux': "@areslabs/wx-react-redux",
-    'redux-actions': "@areslabs/wx-redux-actions",
-    'redux-promise': "@areslabs/wx-redux-promise",
-    'redux-thunk': "@areslabs/wx-redux-thunk",
-    'mobx-react': "@areslabs/wx-mobx-react",
-    'mobx': "@areslabs/wx-mobx"
-}
-
 const defaultAlias = {
     'react': '@areslabs/wx-react',
     'react-native': '@areslabs/wx-react-native',
     'prop-types': '@areslabs/wx-prop-types',
     '@areslabs/router': '@areslabs/wx-router',
+
+    // 由于hoc的差异，hoc需要使用alita专用的
+    'mobx-react': "@areslabs/wx-mobx-react",
+    'react-redux': "@areslabs/wx-react-redux",
 }
 
 const defaultPlugins = []
