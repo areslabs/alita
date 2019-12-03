@@ -150,6 +150,15 @@ export default function checkEntry(ast, filepath, rawCode) {
 
             }
         },
+
+        JSXSpreadAttribute: path =>{
+            const pp = path.parentPath.node as t.JSXOpeningElement
+            const name = (pp.name as t.JSXIdentifier).name
+            if (name === 'Router' || name === 'TabRouter' || name === 'Route') {
+                printError(filepath, path, rawCode, `Router/TabRouter/Route 不允许使用属性展开操作！`)
+                checkPass = false
+            }
+        }
     })
 
     return checkPass
