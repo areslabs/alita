@@ -11,6 +11,7 @@ import * as fse from 'fs-extra'
 import { supportExtname } from '../constants'
 
 import configure from '../configure'
+import * as npath from "path";
 
 
 const constStr = 'abcdefghijklmnopqrstuvwxyz'
@@ -160,5 +161,22 @@ export function getLibPath(path) {
             return path.substring(0, index)
         }
     }
+}
+
+
+/**
+ * 获取 最终的导入路径，如果导入的是目录，需要补全index
+ * @param filepath
+ * @param source
+ */
+export function getFinalSource(filepath, source) {
+    const originalPath = path
+        .resolve(path.dirname(filepath), source)
+
+    if (fse.existsSync(originalPath)) {
+        return `${source}/index`
+    }
+
+    return source
 }
 

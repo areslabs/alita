@@ -12,7 +12,7 @@ import traverse from "@babel/traverse"
 import * as t from "@babel/types"
 import {RNNOTSUPPORTCOMP} from '../constants'
 import {compInfos, getBackUpPath} from '../util/getAndStorecompInfos'
-import {getLibPath, judgeLibPath} from '../util/util'
+import {getLibPath, judgeLibPath, getFinalSource} from '../util/util'
 
 import configure from '../configure'
 
@@ -76,18 +76,13 @@ function geneUsedComps(idens, relativePath, JSXElements, usedComponent, filepath
     const isLibPath = judgeLibPath(relativePath)
 
     if (!isLibPath) {
-        const absoluteRP = npath.resolve(npath.dirname(filepath), relativePath)
-
-        let compPath = relativePath
-        if (fse.existsSync(absoluteRP)) {
-            compPath = `${relativePath}/index`
-        }
+        const finalPath = getFinalSource(filepath, relativePath)
 
         for (let i = 0; i < idens.length; i ++ ) {
             const importElement = idens[i]
 
             if(JSXElements.has(importElement)){
-                usedComponent[importElement] = compPath
+                usedComponent[importElement] = finalPath
             }
         }
     } else {

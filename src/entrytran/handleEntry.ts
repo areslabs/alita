@@ -7,12 +7,11 @@
  */
 
 import * as npath from 'path'
-import * as fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
 
-import {geneOrder} from '../util/util'
+import {geneOrder, getFinalSource} from '../util/util'
 
 import configure from '../configure'
 
@@ -392,71 +391,5 @@ function getRealSource(source, filepath) {
         return getFinalSource(filepath, source)
     } else {
         return source
-    }
-}
-
-/**
- * 获取 最终的导入路径，如果导入的是目录，需要补全index
- * 如果导入的是组件，需要添加.comp
- * @param filepath
- * @param source
- */
-function getFinalSource(filepath, source) {
-    const originalPath = npath
-        .resolve(npath.dirname(filepath), source)
-        .replace(/\\/g, '/')
-
-    const extname = npath.extname(filepath)
-
-    let fileSufix = '.js'
-    let backupSufix = '.ts'
-    if (extname === '.ts' || extname === '.tsx') {
-        fileSufix = '.ts'
-        backupSufix = '.js'
-    }
-
-    let finalSource = getFinalSourceByExtname(fileSufix, originalPath, source)
-
-    // backupSufix 重新查找
-    if (!finalSource) {
-        finalSource = getFinalSourceByExtname(backupSufix, originalPath, source)
-    }
-
-    if (!finalSource) {
-        console.log(`${filepath.replace(configure.inputFullpath, '')}: 未找到${source}模块！`.error)
-    }
-    return finalSource
-}
-
-function getFinalSourceByExtname(fileSufix, originalPath, source) {
-    const allFiles = [
-        `${originalPath}.wx${fileSufix}`,
-        `${originalPath}${fileSufix}`,
-        `${originalPath}.wx${fileSufix}x`,
-        `${originalPath}${fileSufix}x`
-    ]
-
-    for(let i = 0; i < allFiles.length; i ++ ) {
-        const filePath = allFiles[i]
-
-        if (fse.existsSync(filePath)) {
-            return source
-        }
-    }
-
-    const indexFiles = npath.resolve(originalPath, 'index')
-    const allIndexFiles = [
-        `${indexFiles}.wx${fileSufix}`,
-        `${indexFiles}${fileSufix}`,
-        `${indexFiles}.wx${fileSufix}x`,
-        `${indexFiles}${fileSufix}x`
-    ]
-
-    for(let i = 0; i < allIndexFiles.length; i ++ ) {
-        const filePath = allIndexFiles[i]
-
-        if (fse.existsSync(filePath)) {
-            return `${source}/index`
-        }
     }
 }
