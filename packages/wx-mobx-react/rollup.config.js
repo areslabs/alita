@@ -11,7 +11,11 @@ export default {
         babel({
             exclude: 'node_modules/**',
             presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-proposal-class-properties']
+            runtimeHelpers: true,
+            plugins: [
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-transform-runtime'
+            ]
         })
     ],
 

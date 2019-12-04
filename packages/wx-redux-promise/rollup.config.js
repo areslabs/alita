@@ -14,7 +14,5 @@ export default {
             presets: ['@babel/preset-env'],
             plugins: ["@babel/plugin-transform-runtime"]
         })
-    ],
-
-    external: ['@areslabs/wx-react']
+    ]
 };

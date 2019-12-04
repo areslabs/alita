@@ -10,7 +10,9 @@ export default {
     plugins: [
         babel({
             exclude: 'node_modules/**',
+            runtimeHelpers: true,
             presets: ['@babel/preset-env'],
+            plugins: ["@babel/plugin-transform-runtime"]
         })
     ],
 
