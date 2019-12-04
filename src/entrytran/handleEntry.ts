@@ -17,18 +17,18 @@ import {geneOrder} from '../util/util'
 import configure from '../configure'
 
 
-const appJSON: any = {
-    pages: [
-    ],
-
-    window: {
-        "backgroundTextStyle":"light",
-        'backgroundColor': '#E9E9E9',
-        'enablePullDownRefresh': false,
-    },
-}
-
 export default function (ast, filepath, webpackContext) {
+
+    const appJSON: any = {
+        pages: [
+        ],
+
+        window: {
+            "backgroundTextStyle":"light",
+            'backgroundColor': '#E9E9E9',
+            'enablePullDownRefresh': false,
+        },
+    }
 
     const historyMap = {}
     const pageCompPaths = []
