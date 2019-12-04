@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/alita-weixin-runtime",
-  "version": "0.0.1",
+  "version": "0.0.6-4",
   "description": "alita weixin miniprogram runtime",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,16 @@
   },
   "dependencies": {
     "@areslabs/wx-react": "beta",
-    "@areslabs/wx-animated": "beta",
     "@areslabs/wx-react-native": "beta",
     "@areslabs/wx-prop-types": "beta",
-    "@areslabs/wx-router": "beta"
+    "@areslabs/wx-router": "beta",
+    "@areslabs/regenerator-runtime": "0.0.1",
+    "babel-loader": "^8.0.6",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@areslabs/babel-plugin-alitamisc": "^0.0.1",
+    "@areslabs/wx-mobx-react": "beta",
+    "@areslabs/wx-react-redux": "beta",
+    "@areslabs/wx-redux-promise": "beta"
   },
   "author": "yankang (https://github.com/ykforerlang)",
   "license": "MIT"
