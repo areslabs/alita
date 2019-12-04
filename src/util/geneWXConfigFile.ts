@@ -37,11 +37,6 @@ export default function geneWXConfigFile(targetpath) {
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
 	},
 	"compileType": "miniprogram",
 	"libVersion": "",
