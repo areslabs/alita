@@ -13,11 +13,7 @@ import A from './a'
 
 
 export default class App extends PureComponent {
-    static childContextTypes = {
-        txt: PropTypes.string,
-        test: PropTypes.string,
-        store: PropTypes.object
-    }
+
 
 
     getChildContext() {

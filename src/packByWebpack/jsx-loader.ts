@@ -47,7 +47,7 @@ export default function (this: webpack.loader.LoaderContext,
         allGeneFiles = new Set<string>()
     }
 
-    console.log(`处理完成：${filepath.replace(configure.inputFullpath, '')} !`.info)
+    console.log(`处理完成：${filepath.replace(configure.inputFullpath, '')}`.info)
 
     if (dev) {
         removeUselessFiles(filepath, allGeneFiles)
