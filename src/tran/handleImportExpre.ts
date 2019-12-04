@@ -6,6 +6,8 @@
  *
  */
 
+import * as npath from 'path'
+import * as fse from 'fs-extra'
 import traverse from "@babel/traverse"
 import * as t from "@babel/types"
 import {RNNOTSUPPORTCOMP} from '../constants'
@@ -65,15 +67,27 @@ export default function (ast, info){
 
 
 function geneUsedComps(idens, relativePath, JSXElements, usedComponent, filepath) {
+    const isCompModule = idens.some(iden => JSXElements.has(iden))
+    if (!isCompModule) {
+        return
+    }
+
     const relativeFilePath = filepath.replace(configure.inputFullpath, '')
     const isLibPath = judgeLibPath(relativePath)
 
     if (!isLibPath) {
+        const absoluteRP = npath.resolve(npath.dirname(filepath), relativePath)
+
+        let compPath = relativePath
+        if (fse.existsSync(absoluteRP)) {
+            compPath = `${relativePath}/index`
+        }
+
         for (let i = 0; i < idens.length; i ++ ) {
             const importElement = idens[i]
 
             if(JSXElements.has(importElement)){
-                usedComponent[importElement] = relativePath
+                usedComponent[importElement] = compPath
             }
         }
     } else {
