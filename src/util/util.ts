@@ -84,7 +84,7 @@ export function getRootPathPrefix(filepath) {
         .replace(configure.inputFullpath, '')
         .replace(/\\/g, '/')
 
-    rootpath = (rootpath === '' ? '.' : rootpath.substring(1).replace(/[\w-]+/g, '..'))
+    rootpath = (rootpath === '' ? '.' : rootpath.substring(1).replace(/[\w-@.]+/g, '..'))
     return rootpath
 }
 
@@ -178,5 +178,22 @@ export function getFinalSource(filepath, source) {
     }
 
     return source
+}
+
+
+export function wxCompoutPath(rawPath) {
+    if (!rawPath.startsWith(configure.inputFullpath)) {
+        //TODO
+        console.log('some wrong!'.error, rawPath)
+    }
+
+
+    const relativePath = rawPath.replace(configure.inputFullpath, '')
+
+    if (relativePath.startsWith('/node_modules')) {
+        return relativePath.replace('node_modules', 'npm')
+    }
+
+    return relativePath
 }
 

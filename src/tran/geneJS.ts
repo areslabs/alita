@@ -7,7 +7,7 @@
  */
  
 import * as path from 'path'
-import {miscNameToJSName} from '../util/util'
+import {miscNameToJSName, wxCompoutPath} from '../util/util'
 import configure from '../configure'
 
 export default function (info) {
@@ -29,8 +29,8 @@ export default function (info) {
         renderCode = outCompCode
     }
 
+    const relativeJSPath = wxCompoutPath(finalJSPath)
 
-    const relativeJSPath = finalJSPath.replace(configure.inputFullpath, '')
     for(let i = 0; i < outComp.length; i++) {
         const name = outComp[i]
 

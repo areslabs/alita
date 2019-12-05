@@ -7,7 +7,7 @@
  */
 
 import * as path from 'path'
-import {miscNameToJSName} from '../util/util'
+import {miscNameToJSName, wxCompoutPath} from '../util/util'
 
 import configure from '../configure'
 
@@ -16,7 +16,7 @@ import configure from '../configure'
 export default function(info) {
     const {json, filepath, outComp, webpackContext} = info
     const finalJSPath = miscNameToJSName(filepath)
-    const relativeJSPath = finalJSPath.replace(configure.inputFullpath, '')
+    const relativeJSPath = wxCompoutPath(finalJSPath)
 
 
     const renderUsingComponents = {

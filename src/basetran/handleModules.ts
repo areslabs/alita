@@ -10,7 +10,7 @@ import * as npath from 'path'
 import * as fse from 'fs-extra'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import {isStaticRes} from '../util/util'
+import {isStaticRes, wxCompoutPath} from '../util/util'
 import {RNCOMPSET} from "../constants";
 
 import configure from '../configure'
@@ -173,8 +173,7 @@ function getImagePath(filepath, source) {
 
 
 function copyIfNotExists(imagePath: string) {
-    const targetPath = imagePath.replace(configure.inputFullpath, configure.outputFullpath)
-
+    const targetPath = npath.resolve(configure.outputFullpath, `.${wxCompoutPath(imagePath)}`)
     // 已经copy过，不在处理
     if (fse.existsSync(targetPath)) {
         return
