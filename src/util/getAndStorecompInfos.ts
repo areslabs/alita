@@ -1,6 +1,6 @@
 import * as fse from 'fs-extra'
 import * as path from 'path'
-import * as resolve from 'enhanced-resolve'
+import {syncResolve} from './myResolve'
 import configure from "../configure";
 import {getLibPath, judgeLibPath} from './util'
 
@@ -42,9 +42,7 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
     if (packagePath === '@areslabs/wx-animated') return
 
     if (!compInfos[packagePath]) {
-        const aliasPP = configure.alias[packagePath] || packagePath
-
-        const pajPath =  resolve.sync(path.dirname(filepath), `${aliasPP}/package.json`)
+        const pajPath =  syncResolve(path.dirname(filepath), `${packagePath}/package.json`)
 
         const json = fse.readJSONSync(pajPath)
 
@@ -56,6 +54,7 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
 
         const components = json.wxComponents.components
 
+        const aliasPP = configure.resolve.alias[packagePath] || packagePath
         if (json.wxComponents.path) {
             const wxCompPath = json.wxComponents.path
             const wxCompTargetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP)

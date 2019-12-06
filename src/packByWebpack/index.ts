@@ -10,6 +10,8 @@ import webpack from 'webpack'
 import * as path from 'path'
 import CopyPlugin from 'copy-webpack-plugin'
 
+import {geneJSONFiles} from '../util/cacheModuleImExInfo'
+
 import configure from '../configure'
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -164,7 +166,9 @@ export default function packByWebpack() {
         module,
     } as webpack.Configuration
 
-    configure.alias = webpackConfigure.resolve.alias
+    configure.resolve = webpackConfigure.resolve
+
+
     const compiler = webpack(webpackConfigure)
 
 
@@ -209,6 +213,7 @@ function watchCb(err, stats) {
             handleError(err)
         })
     } else {
+        console.log('geneJSONFiles:', JSON.stringify(geneJSONFiles(), null, '\t'))
         console.log(`\n编译完成, 监听文件...`.info)
     }
 

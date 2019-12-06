@@ -27,7 +27,7 @@ interface IConfigObj {
 }
 
 interface IConfigure {
-    alias?: object
+    resolve?: any
     configObj?: IConfigObj
 
     entryFullpath?: string
