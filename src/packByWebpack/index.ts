@@ -53,6 +53,9 @@ const defaultRules = [
             },
             {
                 loader: path.resolve(__dirname, 'precheck-loader.js')
+            },
+            {
+                loader: path.resolve(__dirname, 'gatherInfo-loader.js')
             }
         ]
     },
