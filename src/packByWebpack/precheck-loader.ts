@@ -6,31 +6,20 @@
  *
  */
 import * as webpack from 'webpack'
-import * as npath from "path"
 import {LoaderTmpResult} from "./interfaces"
-import {getFileInfo, parseCode} from "../util/uast"
 
 import precheck from '../precheck/index'
-import configure from "../configure";
 
 /**
  * 由于alita 并不能对所有JSX写法兼容，所以这里需要预检测
  * @param {string} context
  * @returns {LoaderTmpResult}
  */
-export default function (this: webpack.loader.LoaderContext, context: string): LoaderTmpResult {
-
+export default function (this: webpack.loader.LoaderContext, context: LoaderTmpResult): LoaderTmpResult {
     const filepath = this.resourcePath
-
-    console.log(`开始处理：${filepath.replace(configure.inputFullpath, '')} ...`.info)
-    const ast = parseCode(context, npath.extname(filepath))
-    const {isEntry, isRF, isFuncComp} = getFileInfo(ast)
+    const {isEntry, isRF, isFuncComp, ast} = context
 
     const checkPass = precheck(ast, isEntry, isRF, filepath, context)
-
-    if (isEntry && !checkPass) {
-        console.log(`入口文件检测到错误，请修复之后重新执行 alita命令！`.error)
-    }
 
     return {
         ast,

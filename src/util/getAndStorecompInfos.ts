@@ -1,8 +1,6 @@
 import * as fse from 'fs-extra'
 import * as path from 'path'
 import * as resolve from 'enhanced-resolve'
-import traverse from "@babel/traverse";
-import * as t from "@babel/types"
 import configure from "../configure";
 import {getLibPath, judgeLibPath} from './util'
 
@@ -37,43 +35,7 @@ export function getBackUpPath(name) {
     }
 }
 
-export function getCompInfos(ast, filepath) {
-
-    const JSXElements = new Set([])
-
-    traverse(ast, {
-        JSXOpeningElement: path => {
-            const name = (path.node.name as t.JSXIdentifier).name
-            JSXElements.add(name)
-        },
-    })
-
-
-    // 收集 组件信息
-    traverse(ast, {
-        exit(path) {
-            if (path.type === 'ImportDeclaration') {
-                handleImport(path, filepath, JSXElements);
-                return
-            }
-
-            // @ts-ignore
-            if (path.type === 'CallExpression' && path.node.callee.name === 'require' && path.key === 'init') {
-
-                handleRequire(path, filepath, JSXElements)
-                return
-            }
-        },
-    })
-}
-
-
-function innerGetCompInfos(idens, JSXElements, filepath, relativePath) {
-    const isCompPack = idens.some(iden => JSXElements.has(iden))
-
-    if (!isCompPack) return
-
-    const relativeFile = filepath.replace(configure.inputFullpath, '')
+export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
     const packagePath = getLibPath(relativePath)
 
     // 动画组件 AnimatedView 会退化为view
@@ -87,7 +49,6 @@ function innerGetCompInfos(idens, JSXElements, filepath, relativePath) {
         const json = fse.readJSONSync(pajPath)
 
         if (!json.wxComponents) {
-            console.log(`${relativeFile}: 包${packagePath}是组件包，请按照alita规则处理组件包！`.error)
             compInfos[packagePath] = {}
             return
         }
@@ -95,12 +56,13 @@ function innerGetCompInfos(idens, JSXElements, filepath, relativePath) {
 
         const components = json.wxComponents.components
 
-        const wxCompPath = json.wxComponents.path
-        const wxCompTargetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP)
-        if (!fse.existsSync(wxCompTargetPath)) {
-            fse.copySync(pajPath.replace('package.json', wxCompPath), wxCompTargetPath)
+        if (json.wxComponents.path) {
+            const wxCompPath = json.wxComponents.path
+            const wxCompTargetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP)
+            if (!fse.existsSync(wxCompTargetPath)) {
+                fse.copySync(pajPath.replace('package.json', wxCompPath), wxCompTargetPath)
+            }
         }
-
 
         const pathMap = {}
         for(let i = 0; i < components.length; i ++ ) {
@@ -136,41 +98,4 @@ function innerGetCompInfos(idens, JSXElements, filepath, relativePath) {
         }
         compInfos[packagePath] = pathMap
     }
-}
-
-function handleRequire(path, filepath, JSXElements) {
-    const relativePath = path.node.arguments[0].value
-    const isLibPath = judgeLibPath(relativePath)
-    if (!isLibPath) return
-
-    const idens = []
-
-    const id = path.parentPath.node.id
-    if (id.type === 'Identifier') {
-        idens.push(id.name)
-    } else if (id.type === 'ObjectPattern') {
-        const opp = id.properties
-        for(let i = 0; i < opp.length; i++) {
-            const item = opp[i]
-            if (item.type === 'ObjectProperty') {
-                idens.push(item.key.name)
-            }
-        }
-    }
-
-
-    innerGetCompInfos(idens, JSXElements, filepath, relativePath)
-}
-
-function handleImport(path, filepath, JSXElements) {
-    const relativePath = path.node.source.value
-
-    const isLibPath = judgeLibPath(relativePath)
-
-    if (!isLibPath) return
-
-
-    const idens = path.node.specifiers.map(item => item.local.name)
-
-    innerGetCompInfos(idens, JSXElements, filepath, relativePath)
 }

@@ -23,14 +23,7 @@ export default function (this: webpack.loader.LoaderContext,  context : LoaderTm
     }
 
     const filepath = this.resourcePath
-
-    if (context.isRF && !context.isEntry) {
-        // 处理小程序组件信息
-        getCompInfos(context.ast, filepath)
-    }
-
-    const newAst = basetran(context.ast, filepath, this)
-    context.ast = newAst
+    context.ast = basetran(context.ast, filepath, this)
 
     return context
 }

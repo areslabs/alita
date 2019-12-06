@@ -70,65 +70,6 @@ export function isReactComponent(superClass) {
     return false
 }
 
-
-export function getFileInfo(ast) {
-    let isRF = false
-    let isEntry = false
-    let isClassComp = false
-    let isRNEntry = false
-
-
-    traverse(ast, {
-        ClassDeclaration: path => {
-            const sc = path.node.superClass
-            isClassComp = isReactComponent(sc)
-        },
-
-        JSXOpeningElement: path => {
-            const name = (path.node.name as t.JSXIdentifier).name
-
-            if (name === 'Router') {
-                isEntry = true
-            }
-
-            isRF = true
-        },
-
-        Identifier: path => {
-            // Expo root
-            if (path.node.name === 'registerRootComponent') {
-                isRNEntry = true
-            }
-        },
-
-        CallExpression: path => {
-            const callee = path.node.callee
-            if (callee.type === 'MemberExpression'
-                && callee.object
-                // @ts-ignore
-                && callee.object.name === 'AppRegistry'
-                && callee.property
-                && callee.property.name === 'registerComponent'
-            ) {
-                isRNEntry = true
-            }
-        }
-    })
-
-    if (isClassComp) {
-        isRF = true
-    }
-
-    const isFuncComp = isRF && !isClassComp
-
-    return {
-        isRF,
-        isRNEntry,
-        isEntry,
-        isFuncComp,
-    }
-}
-
 export function getPropsChain(memberExpression) {
     const chain = []
 
