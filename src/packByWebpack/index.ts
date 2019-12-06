@@ -28,10 +28,8 @@ const defaultAlias = {
 }
 
 
-const defaultRules = [
-    {
+const alitaHandleRule =  {
         test: /\.[jt]sx?$/,
-        exclude: /node_modules/,
         use: [
             {
                 loader: 'babel-loader',
@@ -58,7 +56,10 @@ const defaultRules = [
                 loader: path.resolve(__dirname, 'gatherInfo-loader.js')
             }
         ]
-    },
+} as any
+
+const defaultRules = [
+    alitaHandleRule
 ]
 
 
@@ -87,13 +88,26 @@ export default function packByWebpack() {
         }
     }
 
+    if (cco.exclude) {
+        alitaHandleRule.exclude = cco.exclude
+    }
+
+    if (cco.include) {
+        alitaHandleRule.include = cco.include
+    }
+
+    // default
+    if (!cco.include && ! cco.exclude) {
+        alitaHandleRule.exclude = /node_modules/
+    }
+
     let module = null
     if (cco.module) {
         module = {
-            rules: {
+            rules: [
                 ...defaultRules,
                 ...(cco.module.rules || [])
-            },
+            ],
             ...cco.module,
         }
     } else {

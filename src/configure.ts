@@ -21,6 +21,9 @@ interface IConfigObj {
 
     name?: string
     appid?: string
+
+    exclude?: any,
+    include?: any
 }
 
 interface IConfigure {
