@@ -7,6 +7,7 @@ import {handleChanged as wxssChanged} from './extractWxssFile'
 import {handleChanged as wxmlChanged} from './extractWxmlFile'
 import {handleChanged as jsChanged} from './extractJSFile'
 import {handleChanged as jsonChanged} from './extractJSONFile'
+import {handleChanged as entryChanged} from './extractEntryFile'
 import {miscNameToJSName} from "../util/util";
 
 import configure from '../configure'
@@ -14,17 +15,15 @@ import configure from '../configure'
 export const handleChanged = (module) => {
     const info = getModuleInfo(module)
 
-    if (info.isEntry) {
-        //TODO
-        return
-    }
-
-    const finalJSPath = miscNameToJSName(module).replace(configure.inputFullpath, configure.outputFullpath)
 
     let newFiles = null
-    if (!info.isRF) {
+    if (info.isEntry) {
+        newFiles = entryChanged(info)
+    } else if (!info.isRF) {
         newFiles = {}
     } else {
+        const finalJSPath = miscNameToJSName(module).replace(configure.inputFullpath, configure.outputFullpath)
+
         const newWxssFiles = wxssChanged(info, finalJSPath)
         const newWxmlFiles = wxmlChanged(info, finalJSPath)
         const newJSFiles = jsChanged(info, finalJSPath)

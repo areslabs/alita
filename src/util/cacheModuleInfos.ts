@@ -8,12 +8,14 @@ interface IModuleInfo {
     ex: any
 
     isRF: boolean
+    RFInfo?: any
+
 
     isEntry: boolean
+    entryInfo?: any,
 
     JSXElements?: Set<string>
 
-    RFInfo?: any
 
     outFiles?: any,
 
@@ -46,6 +48,14 @@ export function setRFModuleInfo(filepath, RFInfo) {
     }
 
     moduleInfos[filepath].RFInfo = RFInfo
+}
+
+export function setEntryModuleInfo(filepath, entryInfo) {
+    if (!moduleInfos[filepath]) {
+        moduleInfos[filepath] = {} as IModuleInfo
+    }
+
+    moduleInfos[filepath].entryInfo = entryInfo
 }
 
 export function setModuleDeps(filepath, deps) {

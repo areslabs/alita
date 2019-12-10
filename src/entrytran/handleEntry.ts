@@ -15,6 +15,8 @@ import {geneOrder, getFinalSource} from '../util/util'
 
 import configure from '../configure'
 
+import {setEntryModuleInfo} from '../util/cacheModuleInfos'
+
 
 export default function (ast, filepath, webpackContext) {
 
@@ -146,7 +148,7 @@ export default function (ast, filepath, webpackContext) {
 
 
                 const name = compAttri.value.expression.name
-                const projectRelativePath = moduleMap[name].replace('.comp', '') // 组件的.comp 后缀需要移除
+                const projectRelativePath = moduleMap[name]
                 compImportMap[name] = moduleMap[name]
 
 
@@ -345,10 +347,11 @@ export default function (ast, filepath, webpackContext) {
         }
     })
 
-    webpackContext.emitFile(
-        'app.json',
-        JSON.stringify(appJSON, null, '\t')
-    )
+
+    setEntryModuleInfo(filepath, {
+        appJSON,
+    })
+
 
 
 
