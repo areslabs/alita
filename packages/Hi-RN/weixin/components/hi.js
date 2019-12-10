@@ -6,9 +6,8 @@
  *
  */
  
-import {reactCompHelper} from '@areslabs/wx-react'
 
-Component(reactCompHelper({
+Component(wx.__bridge.reactCompHelper({
     properties: {
         name: null,
         textStyle: null,
