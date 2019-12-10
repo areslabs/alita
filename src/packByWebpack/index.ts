@@ -10,7 +10,7 @@ import webpack from 'webpack'
 import * as path from 'path'
 import CopyPlugin from 'copy-webpack-plugin'
 
-import {geneJSONFiles} from '../util/cacheModuleImExInfo'
+import WatchModuleUpdatedPlugin from './WatchModuleUpdatedPlugin'
 
 import configure from '../configure'
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -137,6 +137,9 @@ export default function packByWebpack() {
             cancelAnimationFrame: ['react-native', 'cancelAnimationFrame'],
             "_ARR": "@areslabs/regenerator-runtime"
         }),
+
+        new WatchModuleUpdatedPlugin(),
+
         ...(cco.plugins || [])
     ]
     if (configure.analyzer ) {
@@ -213,7 +216,6 @@ function watchCb(err, stats) {
             handleError(err)
         })
     } else {
-        console.log('geneJSONFiles:', JSON.stringify(geneJSONFiles(), null, '\t'))
         console.log(`\n编译完成, 监听文件...`.info)
     }
 
