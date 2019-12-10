@@ -81,7 +81,7 @@ export function isStaticRes(source) {
 export function getRootPathPrefix(filepath) {
     let rootpath = path
         .dirname(filepath)
-        .replace(configure.inputFullpath, '')
+        .replace(configure.outputFullpath, '')
         .replace(/\\/g, '/')
 
     rootpath = (rootpath === '' ? '.' : rootpath.substring(1).replace(/[\w-@.]+/g, '..'))
@@ -128,8 +128,9 @@ export function miscNameToJSName(filepath) {
     if (supportExtname.has(extname)) {
         return filepath.replace(extname, '.js')
             .replace('.wx.js', '.js')
+            .replace('node_modules', 'npm')
     } else {
-        return filepath
+        return filepath.replace('node_modules', 'npm')
     }
 }
 
