@@ -16,7 +16,7 @@ import {LoaderTmpResult} from './interfaces'
 import configure from "../configure";
 import {isReactComponent, parseCode} from "../util/uast"
 
-import {setImEx} from '../util/cacheModuleImExInfo'
+import {setModuleInfo} from '../util/cacheModuleInfos'
 import {getLibCompInfos} from "../util/getAndStorecompInfos";
 import {judgeLibPath} from "../util/util";
 
@@ -33,7 +33,7 @@ export default function (this: webpack.loader.LoaderContext,  context: string): 
     const ast = parseCode(context, npath.extname(filepath))
     const {isEntry, isRF, isFuncComp, imports, exports, JSXElements} = getFileInfo(ast, filepath)
 
-    setImEx(filepath, imports, exports, isRF, JSXElements)
+    setModuleInfo(filepath, imports, exports, isRF, isEntry, JSXElements)
 
     return {
         ast,
@@ -105,7 +105,7 @@ function getFileInfo(ast, filepath) {
     })
 
 
-    if (isRF && !isEntry) {
+    if (!isEntry) {
         // 处理小程序组件信息
         // 必须在JSXElement收集结束之后 处理
         traverse(ast, {
