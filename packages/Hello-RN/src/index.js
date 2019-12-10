@@ -9,8 +9,6 @@
 import React from 'react'
 import {View, Text} from 'react-native'
 
-import {camelCase} from '@areslabs/stringutil-rn'
-
 export default class Hello extends React.Component {
     render() {
         return (
@@ -21,7 +19,7 @@ export default class Hello extends React.Component {
                         console.log('Hello: ', this.props.name, ' !')
                         this.props.textPress && this.props.textPress()
                     }}
-                >Hello: {camelCase(this.props.name)}!</Text>
+                >Hello: {this.props.name}!</Text>
             </View>
         )
     }

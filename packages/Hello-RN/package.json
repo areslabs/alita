@@ -1,17 +1,17 @@
 {
   "name": "@areslabs/hello-rn",
-  "version": "1.0.5",
+  "version": "2.0.0-beta.1",
   "description": "rn hello",
-  "main": "./src/index.js",
+  "main": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pub-beta": "npm publish --tag=beta"
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "prop-types": "^15.7.2",
     "react": "16.8.3",
-    "react-native": "0.59.8",
-    "@areslabs/stringutil-rn": "^1.0.1"
+    "react-native": "0.59.8"
   }
 }
