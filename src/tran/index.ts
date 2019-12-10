@@ -11,11 +11,6 @@ import funcCompToClassComp from './funcCompToClassComp'
 import childrenToTemplate from './childrenToTemplate'
 import compPreHandle from './compPreHandle'
 import addTempName from './addTempName'
-import handleImportExpre from './handleImportExpre'
-import geneJS from './geneJS'
-import geneWxml from './geneWxml'
-import geneWxss from './geneWxss'
-import geneJSON from './geneJSON'
 import geneAllTemplate from "./geneAllTemplate";
 import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
@@ -62,8 +57,6 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
     ast = addTempName(ast, info)
 
-    //ast = handleImportExpre(ast, info)
-
     ast = childrenToTemplate(ast, info)
 
     const reactCode = geneReactCode(ast)
@@ -75,12 +68,6 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
     ast = classNameHandler(ast, info)
 
     ast = geneAllTemplate(ast, info)
-
-    //geneWxml(info)
-    //geneJSON(info)
-    //geneJS(info)
-    //geneWxss(info)
-
 
     // 设置React 组件信息
     setRFModuleInfo(filepath, info)
