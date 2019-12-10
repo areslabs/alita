@@ -13,6 +13,8 @@ import * as t from '@babel/types'
 import {isStaticRes, wxCompoutPath} from '../util/util'
 import {RNCOMPSET} from "../constants";
 
+import {addUsedImage} from '../util/cacheImageInfos'
+
 import configure from '../configure'
 
 const backToViewNode = new Set([
@@ -153,9 +155,10 @@ function getImagePath(filepath, source) {
     let finals = npath
         .resolve(npath.dirname(filepath), source)
 
-    copyIfNotExists(finals)
+    addUsedImage(finals)
 
     finals = finals.replace(configure.inputFullpath, '')
+        .replace('node_modules', 'npm')
         .replace(/\\/g, '/')
 
 
@@ -171,27 +174,6 @@ function getImagePath(filepath, source) {
     return finals
 }
 
-
-function copyIfNotExists(imagePath: string) {
-    const targetPath = npath.resolve(configure.outputFullpath, `.${wxCompoutPath(imagePath)}`)
-    // 已经copy过，不在处理
-    if (fse.existsSync(targetPath)) {
-        return
-    }
-
-    let sourcePath: string = null
-
-    const extname = npath.extname(imagePath)
-    if (fse.existsSync(imagePath.replace(extname, `@3x${extname}`))) {
-        sourcePath = imagePath.replace(extname, `@3x${extname}`)
-    } else if (fse.existsSync(imagePath.replace(extname, `@2x${extname}`))) {
-        sourcePath = imagePath.replace(extname, `@2x${extname}`)
-    } else {
-        sourcePath = imagePath
-    }
-
-    fse.copySync(sourcePath, targetPath)
-}
 
 
 function isTopRequire(nodepath, moduleName) {

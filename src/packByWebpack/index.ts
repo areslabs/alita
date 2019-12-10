@@ -11,6 +11,7 @@ import * as path from 'path'
 import CopyPlugin from 'copy-webpack-plugin'
 
 import WatchModuleUpdatedPlugin from './WatchModuleUpdatedPlugin'
+import ExtractImageFilesPlugin from './ExtractImageFilesPlugin'
 
 import configure from '../configure'
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -139,6 +140,8 @@ export default function packByWebpack() {
         }),
 
         new WatchModuleUpdatedPlugin(),
+
+        new ExtractImageFilesPlugin(),
 
         ...(cco.plugins || [])
     ]
