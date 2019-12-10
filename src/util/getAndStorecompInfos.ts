@@ -20,21 +20,6 @@ export const allBaseComp = new Set([])
 /*需要处理children 为childrencpt的集合*/
 export const extChildComp = new Set([])
 
-
-export function getBackUpPath(name) {
-
-    const allKeys = Object.keys(compInfos)
-
-    for(let i = 0; i < allKeys.length; i ++) {
-        const key = allKeys[i]
-        const itemMap = compInfos[key]
-
-        if (itemMap[name]) {
-            return itemMap[name]
-        }
-    }
-}
-
 export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
     const packagePath = getLibPath(relativePath)
 
@@ -55,11 +40,16 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
         const components = json.wxComponents.components
 
         const aliasPP = configure.resolve.alias[packagePath] || packagePath
+
+        let wxCompPathRelative = '.'
         if (json.wxComponents.path) {
             const wxCompPath = json.wxComponents.path
+            wxCompPathRelative = wxCompPath.startsWith('/') ? "." + wxCompPath : wxCompPath
             const wxCompTargetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP)
             if (!fse.existsSync(wxCompTargetPath)) {
-                fse.copySync(pajPath.replace('package.json', wxCompPath), wxCompTargetPath)
+                const sourcePath = path.resolve(path.dirname(pajPath), wxCompPathRelative)
+                const targetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP, wxCompPathRelative)
+                fse.copySync(sourcePath, targetPath)
             }
         }
 
@@ -69,15 +59,15 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
             const comp = components[i]
             const {
                 name,
-                path,
+                path: comPath,
                 base,
                 needOperateChildren,
                 jsxProps,
                 isText
             } = comp
 
-            const finalPath = path.startsWith('/') ? path : `/${path}`
-            pathMap[name] = `/npm/${aliasPP}${finalPath}`
+            const finalPath = comPath.startsWith('/') ? `.${comPath}` : comPath
+            pathMap[name] =  path.posix.resolve('/npm', aliasPP, wxCompPathRelative, finalPath)
 
             if (needOperateChildren === true) {
                 extChildComp.add(name)
