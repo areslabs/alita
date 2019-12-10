@@ -352,18 +352,6 @@ export default function (ast, filepath, webpackContext) {
         appJSON,
     })
 
-
-
-
-    const appJSCode = `require('./_rn_.js')
-App({})
-    `
-    webpackContext.emitFile(
-        'app.js',
-        appJSCode
-    )
-
-
     return {
         entryAst: ast,
         allCompSet: new Set(Object.keys(compImportMap).map(key => compImportMap[key]))
