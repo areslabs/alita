@@ -1,5 +1,4 @@
-import {getModuleInfo} from '../util/cacheModuleInfos'
-import {getRootPathPrefix, miscNameToJSName} from "../util/util"
+import {getRootPathPrefix} from "../util/util"
 
 
 export const handleChanged = (info, finalJSPath) => {
