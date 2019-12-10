@@ -8,7 +8,6 @@
 
 import * as path from 'path'
 import * as webpack from 'webpack'
-import * as fse from 'fs-extra'
 import {geneReactCode} from '../util/uast'
 import jsxTran from '../tran/index'
 import {miscNameToJSName} from "../util/util";
@@ -16,7 +15,6 @@ import {LoaderTmpResult} from './interfaces'
 
 import configure from '../configure'
 
-import {getFiles, setFiles} from '../util/cacheCompExtraFiles'
 
 
 export default function (this: webpack.loader.LoaderContext,
@@ -30,28 +28,18 @@ export default function (this: webpack.loader.LoaderContext,
     const {entryFullpath, allCompSet, dev} = configure
 
     let finalCode: string = null
-    let allGeneFiles: Set<string> = null
 
     if (filepath === entryFullpath) {
         // nothing
         finalCode = geneReactCode(ast)
-
-        allGeneFiles = new Set<string>()
     } else if (isRF) {
-        const jsxResult = jsxTran(ast, filepath, isFuncComp, isPageComp(filepath, allCompSet), this)
-        finalCode = jsxResult.code
-        allGeneFiles = jsxResult.allFiles
+        finalCode = jsxTran(ast, filepath, isFuncComp, isPageComp(filepath, allCompSet), this)
     } else {
         finalCode = geneReactCode(ast)
-
-        allGeneFiles = new Set<string>()
     }
 
     console.log(`处理完成：${filepath.replace(configure.inputFullpath, '')}`.info)
 
-    if (dev) {
-        removeUselessFiles(filepath, allGeneFiles)
-    }
 
     return finalCode
 }
@@ -64,22 +52,3 @@ function isPageComp(filepath:string, allCompSet: Set<any>): boolean {
     return allCompSet.has(originPath)
 }
 
-/**
- * dev watch 模式下，删除无用小程序文件
- * @param filepath
- * @param allGeneFiles
- */
-function removeUselessFiles(filepath, allGeneFiles) {
-    const oldFiles = getFiles(filepath)
-    setFiles(filepath, allGeneFiles)
-
-    if (!oldFiles || oldFiles.size === 0) {
-        return
-    }
-
-    oldFiles.forEach(item => {
-        if (!allGeneFiles.has(item)) {
-            fse.removeSync(item)
-        }
-    })
-}

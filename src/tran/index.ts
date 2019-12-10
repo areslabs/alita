@@ -24,7 +24,8 @@ import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
 
-import allFilepaths from './allFilepaths'
+
+import {setRFModuleInfo} from '../util/cacheModuleInfos'
 
 export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) {
     const info = {
@@ -44,7 +45,7 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
         isPageComp,
         isFuncComp,
 
-        webpackContext,
+        //webpackContext,
     }
 
     if (isFuncComp) {
@@ -61,7 +62,7 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
     ast = addTempName(ast, info)
 
-    ast = handleImportExpre(ast, info)
+    //ast = handleImportExpre(ast, info)
 
     ast = childrenToTemplate(ast, info)
 
@@ -75,14 +76,14 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
     ast = geneAllTemplate(ast, info)
 
-    geneWxml(info)
-    geneJSON(info)
-    geneJS(info)
-    geneWxss(info)
+    //geneWxml(info)
+    //geneJSON(info)
+    //geneJS(info)
+    //geneWxss(info)
 
 
-    return {
-        code: reactCode,
-        allFiles: allFilepaths(info)
-    }
+    // 设置React 组件信息
+    setRFModuleInfo(filepath, info)
+
+    return reactCode
 }
