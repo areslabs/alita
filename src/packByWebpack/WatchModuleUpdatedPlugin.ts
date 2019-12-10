@@ -5,7 +5,7 @@ import {handleChanged, handleDeleted} from '../extractWxCompFiles'
 /**
  * 生成小程序组件 json文件
  */
-export default class CompJSONPlugin {
+export default class WatchModuleUpdatedPlugin {
     apply(compiler) {
         compiler.hooks.compilation.tap('WatchModuleUpdatedPlugin', compilation => {
 
