@@ -92,16 +92,7 @@ function getFileInfo(ast, filepath) {
             ) {
                 isRNEntry = true
             }
-        },
-
-        ExportNamedDeclaration: path => {
-            path.node.specifiers.forEach(spe => {
-                const name = spe.exported.name
-                ex[name] = {
-
-                }
-            })
-        },
+        }
     })
 
 
@@ -112,6 +103,13 @@ function getFileInfo(ast, filepath) {
             exit(path) {
                 if (path.type === 'ImportDeclaration') {
                     handleImport(path, filepath, JSXElements, im);
+                    return
+                }
+
+                // export {A} from './A'
+                if (path.type === 'ExportNamedDeclaration' && (path.node as t.ExportNamedDeclaration).source) {
+                    // TODO
+                    handleExportSource(path, filepath, JSXElements, im)
                     return
                 }
 
@@ -203,4 +201,30 @@ function handleImport(path, filepath, JSXElements, im) {
     getLibCompInfos(idens, JSXElements, filepath, relativePath)
 }
 
+
+function handleExportSource(path, filepath, JSXElements, im) {
+    const relativePath = path.node.source.value
+
+    const idens = []
+    path.node.specifiers.forEach(spe => {
+        //spe = spe as t.ImportSpecifier
+        const name = spe.exported.name
+        im[name] = {
+            source: relativePath,
+            defaultSpecifier: spe.type === 'ImportDefaultSpecifier',
+            // @ts-ignore
+            imported: spe.type === 'ImportSpecifier' ? spe.imported.name : null,
+        }
+
+        idens.push(name)
+    })
+
+    const isLibPath = judgeLibPath(relativePath)
+    if (!isLibPath) return
+
+    const isCompPack = idens.some(iden => JSXElements.has(iden))
+    if (!isCompPack) return
+
+    getLibCompInfos(idens, JSXElements, filepath, relativePath)
+}
 
