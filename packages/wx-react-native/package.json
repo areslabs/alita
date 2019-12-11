@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react-native",
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0-beta.10",
   "description": "微信版本的React Native",
   "files": [
     "dist",
@@ -21,21 +21,17 @@
     "@babel/plugin-transform-runtime": "^7.7.4",
     "rollup-plugin-babel": "^4.3.3"
   },
-  "peerDependencies": {
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "rollup-plugin-babel": "^4.3.3"
-  },
   "wxComponents": {
     "path": "wxComponents",
     "components": [
       {
         "name": "WXButton",
-        "path": "WXButton/index",
-        "base": true
+        "path": "WXButton/index"
       },
       {
         "name": "WXFlatList",
         "path": "WXFlatList/index",
+        "base": false,
         "jsxProps": {
           "ListHeaderComponent": "ListHeaderComponentCPT",
           "ListFooterComponent": "ListFooterComponentCPT",
@@ -46,37 +42,34 @@
       },
       {
         "name": "WXModal",
-        "path": "WXModal/index",
-        "base": true
+        "path": "WXModal/index"
       },
       {
         "name": "WXPicker",
         "path": "WXPicker/index",
-        "needOperateChildren": true
+        "needOperateChildren": true,
+        "base": false
       },
       {
         "name": "WXPickerItem",
-        "path": "WXPickerItem/index",
-        "base": true
+        "path": "WXPickerItem/index"
       },
       {
         "name": "WXScrollView",
-        "path": "WXScrollView/index",
-        "base": true
+        "path": "WXScrollView/index"
       },
       {
         "name": "WXSlider",
-        "path": "WXSlider/index",
-        "base": true
+        "path": "WXSlider/index"
       },
       {
         "name": "WXSwitch",
-        "path": "WXSwitch/index",
-        "base": true
+        "path": "WXSwitch/index"
       },
       {
         "name": "WXSectionList",
         "path": "WXSectionList/index",
+        "base": false,
         "jsxProps": {
           "renderSectionHeader": "renderSectionHeaderCPT",
           "renderSectionFooter": "renderSectionFooterCPT",
@@ -89,8 +82,7 @@
       },
       {
         "name": "WXTextInput",
-        "path": "WXTextInput/index",
-        "base": true
+        "path": "WXTextInput/index"
       }
     ]
   }
