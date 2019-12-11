@@ -57,10 +57,11 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
         for(let i = 0; i < components.length; i ++ ) {
 
             const comp = components[i]
+
             const {
                 name,
                 path: comPath,
-                base,
+                base = true,
                 needOperateChildren,
                 jsxProps,
                 isText
