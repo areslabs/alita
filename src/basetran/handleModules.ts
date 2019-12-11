@@ -9,7 +9,7 @@
 import * as npath from 'path'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import {isStaticRes, wxCompoutPath} from '../util/util'
+import {isStaticRes} from '../util/util'
 import {RNCOMPSET} from "../constants";
 
 import {addUsedImage} from '../util/cacheImageInfos'

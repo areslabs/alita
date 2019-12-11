@@ -11,8 +11,6 @@ import * as fse from 'fs-extra'
 import { supportExtname } from '../constants'
 
 import configure from '../configure'
-import * as npath from "path";
-
 
 const constStr = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -165,36 +163,4 @@ export function getLibPath(path) {
 }
 
 
-/**
- * 获取 最终的导入路径，如果导入的是目录，需要补全index
- * @param filepath
- * @param source
- */
-export function getFinalSource(filepath, source) {
-    const originalPath = path
-        .resolve(path.dirname(filepath), source)
-
-    if (fse.existsSync(originalPath)) {
-        return `${source}/index`
-    }
-
-    return source
-}
-
-
-export function wxCompoutPath(rawPath) {
-    if (!rawPath.startsWith(configure.inputFullpath)) {
-        //TODO
-        console.log('some wrong!'.error, rawPath)
-    }
-
-
-    const relativePath = rawPath.replace(configure.inputFullpath, '')
-
-    if (relativePath.startsWith('/node_modules')) {
-        return relativePath.replace('node_modules', 'npm')
-    }
-
-    return relativePath
-}
 

@@ -6,7 +6,6 @@
  *
  */
 
-import traverse from "@babel/traverse"
 import { parse, ParserPlugin } from '@babel/parser'
 import generator from '@babel/generator'
 import * as t from "@babel/types"

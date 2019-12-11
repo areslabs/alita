@@ -11,11 +11,13 @@ import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
 
-import {geneOrder, getFinalSource} from '../util/util'
+import {geneOrder} from '../util/util'
 
 import configure from '../configure'
 
 import {setEntryModuleInfo} from '../util/cacheModuleInfos'
+import * as fse from "fs-extra";
+import * as path from "path";
 
 
 export default function (ast, filepath, webpackContext) {
@@ -381,4 +383,20 @@ function getRealSource(source, filepath) {
     } else {
         return source
     }
+}
+
+/**
+ * 获取 最终的导入路径，如果导入的是目录，需要补全index
+ * @param filepath
+ * @param source
+ */
+export function getFinalSource(filepath, source) {
+    const originalPath = path
+        .resolve(path.dirname(filepath), source)
+
+    if (fse.existsSync(originalPath)) {
+        return `${source}/index`
+    }
+
+    return source
 }

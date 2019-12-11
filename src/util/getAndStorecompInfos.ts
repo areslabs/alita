@@ -2,7 +2,7 @@ import * as fse from 'fs-extra'
 import * as path from 'path'
 import {syncResolve} from './myResolve'
 import configure from "../configure";
-import {getLibPath, judgeLibPath} from './util'
+import {getLibPath} from './util'
 
 
 /*组件名和路径映射，方便后续生成小程序json文件*/
