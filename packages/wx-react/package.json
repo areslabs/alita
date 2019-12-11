@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "description": "微信版本的React",
   "files": [
     "package.json",
@@ -17,11 +17,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.1",
-    "rollup-plugin-babel": "^4.3.3"
-  },
-  "peerDependencies": {
     "@babel/plugin-transform-runtime": "^7.7.4",
     "@babel/preset-env": "^7.7.1",
     "rollup-plugin-babel": "^4.3.3"
