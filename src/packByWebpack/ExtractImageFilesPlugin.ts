@@ -28,7 +28,7 @@ export default class ExtractImageFilesPlugin {
                     .replace('node_modules', 'npm')
                 fse.copySync(realPath, targetPath)
 
-                outFiles[imagePath] = realPath
+                outFiles[imagePath] = targetPath
             }
 
             const fileKeys = Object.keys(outFiles)
