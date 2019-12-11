@@ -17,9 +17,9 @@ import precheck from '../precheck/index'
  */
 export default function (this: webpack.loader.LoaderContext, context: LoaderTmpResult): LoaderTmpResult {
     const filepath = this.resourcePath
-    const {isEntry, isRF, isFuncComp, ast} = context
+    const {isEntry, isRF, isFuncComp, ast, rawCode} = context
 
-    const checkPass = precheck(ast, isEntry, isRF, filepath, context)
+    const checkPass = precheck(ast, isEntry, isRF, filepath, rawCode)
 
     return {
         ast,
