@@ -138,6 +138,8 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             updateRNBaseComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (typeof nodeName === 'function') {
             updateClassComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
+        } else  {
+            console.error(`${vnode.__source.fileName} 存在形式<XX/> 其中XX是${vnode.nodeName}！请排查`)
         }
     } catch (e) {
         console.error(e)
