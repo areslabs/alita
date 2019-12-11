@@ -63,7 +63,13 @@ function getUsedCompPaths(module) {
         }
 
         const elementKey = source === 'react-native' ? `WX${element}` : element
-        usedComps[elementKey] = getFinalPath(element, source, module, info)
+
+        try {
+            usedComps[elementKey] = getFinalPath(element, source, module, info)
+        } catch (e) {
+            console.log(`${module.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
+        }
+
     })
 
     return usedComps
