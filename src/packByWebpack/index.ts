@@ -74,13 +74,14 @@ export default function packByWebpack() {
     let resolve = null
     if (cco.resolve) {
         resolve = {
+            ...cco.resolve,
+
             alias: {
-                defaultAlias,
+                ...defaultAlias,
                 ...(cco.resolve.alias || {})
             },
-            extensions,
-            mainFields,
-            ...cco.resolve
+            extensions: [...extensions, ...(cco.resolve.extensions || [])],
+            mainFields: [...mainFields, ...(cco.resolve.mainFields || [])]
         }
     } else {
         resolve = {
@@ -106,11 +107,11 @@ export default function packByWebpack() {
     let module = null
     if (cco.module) {
         module = {
+            ...cco.module,
             rules: [
                 ...defaultRules,
                 ...(cco.module.rules || [])
             ],
-            ...cco.module,
         }
     } else {
         module = {
