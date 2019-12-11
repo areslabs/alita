@@ -164,7 +164,7 @@ export default function (ast, filepath, webpackContext) {
 
                 appJSON.pages.push(projectRelativePath)
 
-                pnode.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
+                pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`)))
                 return
             }
 
@@ -220,7 +220,7 @@ export default function (ast, filepath, webpackContext) {
                 appJSON.tabBar.list = appJSON.tabBar.list || []
                 appJSON.tabBar.list.push(tabBarElement)
 
-                pnode.attributes = [t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`))]
+                pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`)))
 
                 return
             }
@@ -254,8 +254,6 @@ export default function (ast, filepath, webpackContext) {
                         appJSON.window[k] = v
                     }
                 }
-
-                path.remove()
                 return
             }
         }
