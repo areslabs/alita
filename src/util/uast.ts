@@ -19,6 +19,11 @@ export function parseCode(code, extname) {
             'objectRestSpread',
             'optionalChaining',
             ['decorators', {decoratorsBeforeExport: true}],
+            'classPrivateProperties',
+            'doExpressions',
+            'exportDefaultFrom',
+            'exportNamespaceFrom',
+            'throwExpressions'
         ]
 
 
