@@ -1,10 +1,10 @@
 const babel = require('rollup-plugin-babel')
 
 export default {
-    input: './src/index.js',
+    input: './src/weixin/index.js',
 
     output: [
-        { file: "dist/index.js", format: "cjs" },
+        { file: "dist/weixin/index.js", format: "cjs" },
     ],
 
     plugins: [

@@ -20,7 +20,6 @@ const defaultAlias = {
     'react': '@areslabs/wx-react',
     'react-native': '@areslabs/wx-react-native',
     'prop-types': '@areslabs/wx-prop-types',
-    '@areslabs/router': '@areslabs/wx-router',
 
     // 由于hoc的差异，hoc需要使用alita专用的
     'mobx-react': "@areslabs/wx-mobx-react",
