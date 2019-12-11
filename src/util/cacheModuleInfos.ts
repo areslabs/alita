@@ -74,7 +74,4 @@ export function updateModuleOutFiles(filepath, outFiles) {
     moduleInfos[filepath].outFiles = outFiles
 }
 
-export function removeModuleInfo(filepath) {
-    delete moduleInfos[filepath]
-}
 

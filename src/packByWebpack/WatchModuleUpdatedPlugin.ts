@@ -40,8 +40,8 @@ export default class WatchModuleUpdatedPlugin {
             compilation.hooks.succeedModule.tap(
                 "WatchModuleUpdatedPlugin",
                 (module) => {
-                    compilation.records.changedModules = compilation.records.changedModules || []
-                    compilation.records.changedModules.push(module.resource)
+                    compilation.records.changedModules = compilation.records.changedModules || new Set()
+                    compilation.records.changedModules.add(module.resource)
                 }
             );
 
@@ -51,11 +51,7 @@ export default class WatchModuleUpdatedPlugin {
                     // 设置module deps的文件全路径，生成小程序json文件会使用到
                     setAllModuleDeps(compilation)
 
-                    compilation.records.changedModules.forEach(handleChanged)
-                    // 重置 changedModules 字段
-                    compilation.records.changedModules = []
-
-                    handleAllDeletedModule(compilation, handleDeleted)
+                    hanldeModuleChanged(compilation, handleChanged, handleDeleted)
                 }
             );
         })
@@ -84,35 +80,50 @@ function setAllModuleDeps(compilation) {
     })
 }
 
-function handleAllDeletedModule(compilation, handleDeleted) {
+function hanldeModuleChanged(compilation, handleChanged, handleDeleted) {
     const records = compilation.records;
     if (records.hash === compilation.hash) return;
+
+    const allModules = new Set()
+    compilation.chunks.forEach(chunk => {
+        for (const module of chunk.modulesIterable) {
+            allModules.add(module.resource)
+        }
+    })
+
+    let oldAllModules = new Set()
     if (
         !records.moduleHashs ||
         !records.chunkHashs ||
         !records.chunkModuleIds
     ) {
-        // 第一次运行直接返回
-        return;
-    }
 
-    for (const key of Object.keys(records.chunkHashs)) {
-        const chunkId = isNaN(+key) ? key : +key;
-        const currentChunk = compilation.chunks.find(
-            chunk => `${chunk.id}` === key
-        );
-        if (currentChunk) {
-            const allModules = new Set();
-            for (const module of currentChunk.modulesIterable) {
-                allModules.add(module.id)
-            }
+    } else {
+        for (const key of Object.keys(records.chunkHashs)) {
+            const chunkId = isNaN(+key) ? key : +key;
 
             records.chunkModuleIds[chunkId].forEach(({id, resource}) => {
-                if (!allModules.has(id)) {
-                    handleDeleted(resource)
-                }
+                oldAllModules.add(resource)
             })
-
         }
     }
+
+    compilation.records.changedModules.forEach(handleChanged)
+    allModules.forEach(m => {
+        if (!oldAllModules.has(m) && !compilation.records.changedModules.has(m)) {
+            // new Module
+            handleChanged(m)
+        }
+    })
+
+    oldAllModules.forEach(m => {
+        if (!allModules.has(m)) {
+            // removed Module
+            handleDeleted(m)
+        }
+    })
+
+    // 重置 changedModules 字段
+    compilation.records.changedModules = new Set()
+    
 }

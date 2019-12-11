@@ -1,7 +1,7 @@
 import * as path from 'path'
 import * as fse from 'fs-extra'
 
-import {getModuleInfo, updateModuleOutFiles, removeModuleInfo} from '../util/cacheModuleInfos'
+import {getModuleInfo, updateModuleOutFiles} from '../util/cacheModuleInfos'
 
 import {handleChanged as wxssChanged} from './extractWxssFile'
 import {handleChanged as wxmlChanged} from './extractWxmlFile'
@@ -76,5 +76,5 @@ export const handleDeleted = (module) => {
         fse.removeSync(outPath)
     }
 
-    removeModuleInfo(module)
+    info.outFiles = {}
 }
