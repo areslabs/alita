@@ -7,7 +7,6 @@
  */
 
 import * as npath from 'path'
-import * as fse from 'fs-extra'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import {isStaticRes, wxCompoutPath} from '../util/util'
