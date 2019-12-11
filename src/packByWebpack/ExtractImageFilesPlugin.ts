@@ -31,16 +31,19 @@ export default class ExtractImageFilesPlugin {
                 outFiles[imagePath] = targetPath
             }
 
-            const fileKeys = Object.keys(outFiles)
+            // TODO 图片的移除？？
+            /*const fileKeys = Object.keys(outFiles)
+            console.log('usedImages:', usedImages)
             for(let i = 0; i < fileKeys.length; i ++ ) {
                 const fk = fileKeys[i]
                 if (!usedImages.has(fk)) {
+                    console.log('fk:', fk)
                     fse.removeSync(outFiles[fk])
                     delete outFiles[fk]
                 }
             }
 
-            resetUsedImages()
+            resetUsedImages()*/
         })
     }
 }
