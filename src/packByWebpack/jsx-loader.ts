@@ -18,14 +18,9 @@ import configure from '../configure'
 
 
 export default function (this: webpack.loader.LoaderContext,
-                         {ast, isEntry, isRF, isFuncComp, checkPass} : LoaderTmpResult ): string {
+                         {ast, isEntry, isRF, isFuncComp} : LoaderTmpResult ): string {
     const filepath = this.resourcePath
-    if (!checkPass) {
-        console.log(`处理失败：${filepath.replace(configure.inputFullpath, '')} !`.warn)
-        return `throw new Error('alita 预处理报错！')`;
-    }
-
-    const {entryFullpath, allCompSet, dev} = configure
+    const {entryFullpath, allCompSet} = configure
 
     let finalCode: string = null
 

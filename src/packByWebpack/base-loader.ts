@@ -8,7 +8,6 @@
 
 import * as webpack from 'webpack'
 import basetran from '../basetran'
-import {getCompInfos} from '../util/getAndStorecompInfos'
 
 import {LoaderTmpResult} from './interfaces'
 
@@ -18,10 +17,6 @@ import {LoaderTmpResult} from './interfaces'
  */
 
 export default function (this: webpack.loader.LoaderContext,  context : LoaderTmpResult): LoaderTmpResult {
-    if (!context.checkPass) {
-        return context
-    }
-
     const filepath = this.resourcePath
     context.ast = basetran(context.ast, filepath, this)
 

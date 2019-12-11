@@ -19,13 +19,12 @@ export default function (this: webpack.loader.LoaderContext, context: LoaderTmpR
     const filepath = this.resourcePath
     const {isEntry, isRF, isFuncComp, ast, rawCode} = context
 
-    const checkPass = precheck(ast, isEntry, isRF, filepath, rawCode)
+    precheck(ast, isEntry, isRF, filepath, rawCode)
 
     return {
         ast,
         isEntry,
         isRF,
         isFuncComp,
-        checkPass,
     }
 }

@@ -12,7 +12,6 @@ import {printError} from './util'
 
 export default function checkEntry(ast, filepath, rawCode) {
 
-    let checkPass = true
 
     // 收集所有 import/require 组件
     const allModuleVarSet  = new Set([])
@@ -63,7 +62,7 @@ export default function checkEntry(ast, filepath, rawCode) {
 
                 } else {
                     printError(filepath, path, rawCode, `入口文件限制：Route标签需要直接放置在 Router/TabRouter 下`)
-                    checkPass = false
+
                 }
 
                 const pnode = path.node as t.JSXOpeningElement
@@ -72,14 +71,14 @@ export default function checkEntry(ast, filepath, rawCode) {
                 const hasKey = pnode.attributes.some(attr => attr.name.name === 'key')
                 if (!hasKey) {
                     printError(filepath, path, rawCode, `Route标签 缺少key属性`)
-                    checkPass = false
+
                 }
 
                 // @ts-ignore
                 const hasComponent = pnode.attributes.some(attr => attr.name.name === 'component')
                 if (!hasComponent) {
                     printError(filepath, path, rawCode, `Route标签 缺少component属性`)
-                    checkPass = false
+
                 }
 
             }
@@ -94,7 +93,7 @@ export default function checkEntry(ast, filepath, rawCode) {
 
                 } else {
                     printError(filepath, path, rawCode, `入口文件限制：TabRouter标签需要直接放置在 TabRouter 下`)
-                    checkPass = false
+
                 }
             }
 
@@ -108,7 +107,6 @@ export default function checkEntry(ast, filepath, rawCode) {
                 if (v.type === 'JSXExpressionContainer' && v.expression && v.expression.type === 'StringLiteral') return
 
                 printError(filepath, path, rawCode, `Route标签 key属性需要字符串常量`)
-                checkPass = false
             }
 
             // @ts-ignore
@@ -118,13 +116,13 @@ export default function checkEntry(ast, filepath, rawCode) {
 
                 if (v.type !== 'JSXExpressionContainer') {
                     printError(filepath, path, rawCode, `Route标签 component属性值需要为组件`)
-                    checkPass = false
+
                 } else {
                     const expre = v.expression
 
                     if (!allModuleVarSet.has(expre.name)) {
                         printError(filepath, path, rawCode, `Route标签 component属性值需要为直接导入的组件`)
-                        checkPass = false
+
                     }
                 }
             }
@@ -136,14 +134,14 @@ export default function checkEntry(ast, filepath, rawCode) {
 
                 if (v.type !== 'JSXExpressionContainer') {
                     printError(filepath, path, rawCode, `Router标签 wxNavigationOptions属性值需要为对象`)
-                    checkPass = false
+
                 } else {
                     const expre = v.expression
 
                     expre.properties.forEach(op => {
                         if (!op.value.type.endsWith('Literal')) {
                             printError(filepath, path, rawCode, `wxNavigationOptions 属性值，值需要是字面量`)
-                            checkPass = false
+
                         }
                     })
                 }
@@ -156,10 +154,10 @@ export default function checkEntry(ast, filepath, rawCode) {
             const name = (pp.name as t.JSXIdentifier).name
             if (name === 'Router' || name === 'TabRouter' || name === 'Route') {
                 printError(filepath, path, rawCode, `Router/TabRouter/Route 不允许使用属性展开操作！`)
-                checkPass = false
+
             }
         }
     })
 
-    return checkPass
+
 }

@@ -10,15 +10,13 @@ export default function precheck(ast, isEntry, isR, filepath, rawCode) {
 
 
     if (isEntry) {
-        const basePass = checkBase(ast, relativePath, rawCode)
-        const entryPass = checkEntry(ast, relativePath, rawCode)
-        return basePass && entryPass
+        checkBase(ast, relativePath, rawCode)
+        checkEntry(ast, relativePath, rawCode)
     } else if (isR) {
-        const basePass = checkBase(ast, relativePath, rawCode)
-        const jsxPass = checkJSX(ast, relativePath, rawCode)
-        return basePass && jsxPass
+        checkBase(ast, relativePath, rawCode)
+        checkJSX(ast, relativePath, rawCode)
     } else {
-        return checkBase(ast, relativePath, rawCode)
+        checkBase(ast, relativePath, rawCode)
     }
 }
 

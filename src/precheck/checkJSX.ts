@@ -124,15 +124,12 @@ const backToView = new Set([
 /**
  *  在转化之前，提前check一次代码，并对错误给出友好提示。
  *
- *  printError： 后续转化停止 checkPass设置为false
- *  printWarn：  由于平台判断等情况存在，后续转化继续
- *
  * @param ast
  * @param filepath
  * @param rawCode
  */
 export default function checkJSX(ast, filepath, rawCode) {
-    let checkPass = true
+
 
     // 收集所有 import/require 组件
     const allModuleVarSet  = new Set([])
@@ -207,7 +204,7 @@ export default function checkJSX(ast, filepath, rawCode) {
                     const name = path.node.name.name
                     if (!allModuleVarSet.has(name)) {
                         printError(filepath, path, rawCode, `组件${name}的导入，需要在import/require语句`)
-                        checkPass = false
+
                     }
 
                 }
@@ -223,7 +220,7 @@ export default function checkJSX(ast, filepath, rawCode) {
 
                     if ((RNCOMPSET.has(importedName) || backToView.has(importedName)) && importedName !== localName) {
                         printError(filepath, path, rawCode, `导入RN组件的时候，不能使用import {xx as yy} 写法`)
-                        checkPass = false
+
                     }
                 })
             }
@@ -236,7 +233,7 @@ export default function checkJSX(ast, filepath, rawCode) {
                 v.properties.forEach(op => {
                     if (!op.value.type.endsWith('Literal')) {
                         printError(filepath, path, rawCode, `wxNavigationOptions 属性值，值需要是字面量`)
-                        checkPass = false
+
                     }
                 })
             }
@@ -275,7 +272,7 @@ export default function checkJSX(ast, filepath, rawCode) {
                 const p = path.parentPath
                 if (p.type !== 'MemberExpression') {
                     printError(filepath, path, rawCode, `禁止直接使用children标识符，若是组件children属性this.props.children/props.children`)
-                    checkPass = false
+
                 }
             }
 
@@ -289,18 +286,18 @@ export default function checkJSX(ast, filepath, rawCode) {
                 const p = path.parentPath
                 if (p.type !== 'MemberExpression') {
                     printError(filepath, path, rawCode, `禁止使用xxComponent标识符，若是组件属性请使用this.props.xxComponent/props.xxComponent 替换`)
-                    checkPass = false
+
                 }
             }
 
             if (path.node.name === "h") {
                 printError(filepath, path, rawCode, `不允许声明/导入 名字为h的变量`)
-                checkPass = false
+
             }
 
             if (path.node.name === 'HocComponent') {
                 printError(filepath, path, rawCode, `HOC组件，需要使用React.createElement创建元素`)
-                checkPass = false
+
             }
         },
 
@@ -310,7 +307,7 @@ export default function checkJSX(ast, filepath, rawCode) {
             const elementName = path.parentPath.node.name.name
             if (allBaseComp.has(elementName) ||  backToView.has(elementName)) {
                 printError(filepath, path, rawCode, `基本组件不支持属性展开`)
-                checkPass = false
+
             }
         },
 
@@ -364,7 +361,7 @@ export default function checkJSX(ast, filepath, rawCode) {
             if (isReactComp(node.superClass)) {
                 if (alreadyHasComponent) {
                     printError(filepath, path, rawCode, `一个文件最多只允许存在一个组件`)
-                    checkPass = false
+
                 }
 
                 alreadyHasComponent = true
@@ -429,7 +426,7 @@ export default function checkJSX(ast, filepath, rawCode) {
         },
     })
 
-    return checkPass
+
 }
 
 function isReactComp(superClass) {

@@ -5,6 +5,5 @@ export interface LoaderTmpResult {
     isEntry: boolean
     isRF: boolean
     isFuncComp: boolean
-    checkPass?: boolean
     rawCode?: string
 }
