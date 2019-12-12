@@ -1,12 +1,14 @@
 {
   "name": "@areslabs/router",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "router for react-native, web",
   "client": "./dist/web/index.js",
   "main": "./dist/native/index.js",
   "weixin": "./dist/weixin/index.js",
+  "types": "./types/index.d.ts",
   "files": [
     "dist",
+    "types",
     "package.json"
   ],
   "scripts": {
@@ -23,6 +25,7 @@
     "react-navigation": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.5",
     "@babel/plugin-transform-runtime": "^7.7.4",
     "@babel/preset-env": "^7.7.1",
     "rollup-plugin-babel": "^4.3.3"
