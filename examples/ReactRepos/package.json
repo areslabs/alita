@@ -8,13 +8,13 @@
     "fix": "eslint ./src"
   },
   "dependencies": {
-    "@areslabs/router": "^1.0.1",
-    "@areslabs/wx-animated": "^1.0.3",
+    "@areslabs/router": "^2.0.0",
+    "@areslabs/wx-animated": "^2.0.0",
     "react": "16.8.3",
     "react-native": "0.59.5"
   },
   "devDependencies": {
-    "@areslabs/eslint-plugin-alita": "^1.0.0",
+    "@areslabs/alita-weixin-runtime": "^0.0.7",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
     "eslint": "^5.16.0",
