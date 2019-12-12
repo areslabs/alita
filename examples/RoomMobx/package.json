@@ -7,13 +7,14 @@
     "test": "jest"
   },
   "dependencies": {
-    "@areslabs/router": "^1.0.3",
+    "@areslabs/router": "^2.0.0",
     "mobx": "4.11.0",
     "mobx-react": "5.4.4",
     "react": "16.8.3",
     "react-native": "0.59.9"
   },
   "devDependencies": {
+    "@areslabs/alita-weixin-runtime": "^0.0.7",
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/runtime": "^7.4.5",
