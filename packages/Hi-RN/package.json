@@ -1,11 +1,30 @@
 {
   "name": "@areslabs/hi-rn",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "rn hi",
-  "main": "index.js",
+  "main": "./src/index.js",
+  "weixin": "./weixin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pub-beta": "npm publish --tag=beta",
+    "pub": "npm publish"
   },
+
+  "peerDependencies": {
+    "prop-types": "*",
+    "react": "*",
+    "react-native": "*"
+  },
+
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "wxComponents": {
+    "path": "./weixin/components",
+    "components": [
+      {
+        "name": "Hi",
+        "path": "hi"
+      }
+    ]
+  }
 }

@@ -9,3 +9,5 @@ npm-debug.*
 yarn.lock
 yarn-error.lock
 package-lock.json
+
+wx-dist

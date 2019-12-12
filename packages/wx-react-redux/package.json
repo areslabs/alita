@@ -1,11 +1,25 @@
 {
   "name": "@areslabs/wx-react-redux",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "description": "微信版本的react-redux",
-  "main": "index.js",
+  "files": [
+    "package.json",
+    "dist"
+  ],
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "pub-beta": "npm run build && npm publish --tag=beta",
+    "pub": "npm run build && npm publish",
+    "link": "npm run build && sudo npm link"
   },
-  "author": "",
+  "author": "yankang (https://github.com/ykforerlang)",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.1",
+    "rollup-plugin-babel": "^4.3.3"
+  },
   "license": "MIT"
 }

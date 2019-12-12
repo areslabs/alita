@@ -11,7 +11,7 @@ const TmpKey = "HOCKEY"
 
 export default function createElement(comp, props, ...args) {
     if (!comp) {
-        console.error(`组件为${comp}, 是否忘记导入？？`)
+        console.error(`${props.__source.fileName} 文件存在 <XX />, 其中XX为undefined！请排查`)
         return
     }
 
@@ -29,7 +29,7 @@ export default function createElement(comp, props, ...args) {
         }
     }
 
-    const {animation, ref, key, tempName, tempVnode, CPTVnode, datakey, diuu, ...rprops} = props || {}
+    const {animation, ref, key, tempName, tempVnode, CPTVnode, datakey, diuu, __source, ...rprops} = props || {}
 
     // 通用的不支持属性
     if (props.onLayout) {
@@ -81,5 +81,7 @@ export default function createElement(comp, props, ...args) {
         tempVnode,
         CPTVnode,
         datakey,
+
+        __source,  // add by RN babel presets
     }
 }

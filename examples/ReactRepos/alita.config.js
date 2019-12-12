@@ -1,7 +1,6 @@
 module.exports = {
-    isFileIgnore: path => {
-        if (path.startsWith('.')) return true
-    },
+    name: "ReactRepos",
 
-    dependenciesMap: {},
+    entry: "./RNApp.js",
+    output: "./wx-dist",
 }

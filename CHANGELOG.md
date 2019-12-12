@@ -1,3 +1,49 @@
+## [2.0.1](https://github.com/areslabs/alita/compare/1.3.6...2.0.1) (2019-12-12)
+
+V2.0 版本把打包方式改为了webpack，利用了webpack收集依赖的能力，简化了alita配置文件，简化了alita npm包使用方式，提升了更多对代码包体积
+的分析手段，减少了无效文件的写入次数等等。
+
+watch模式复用了webpack的复用。
+
+
+### Bug Fixes
+
+* **alita:** 修复 多次修改入口文件，生成重复page配置的bug ([4c8ad4d](https://github.com/areslabs/alita/commit/4c8ad4d))
+* **alita:** 修复copy组件路径错误的bug ([3e6b53e](https://github.com/areslabs/alita/commit/3e6b53e))
+* **alita:** 修复rawcode字段传递错误的bug ([b1f58d1](https://github.com/areslabs/alita/commit/b1f58d1))
+* **alita:** 修复watchmoduleupdate 判断有误的bug ([bb4b0df](https://github.com/areslabs/alita/commit/bb4b0df))
+* **alita:** 修复win平台下 控制台黑色背景 提示信息看不见的bug ([edbd2f5](https://github.com/areslabs/alita/commit/edbd2f5))
+* **alita:** 修复win平台下 路径错误的bug ([c3e9ed5](https://github.com/areslabs/alita/commit/c3e9ed5))
+* **alita:** 修复入口文件变化 小程序不刷新的bug ([7eea60c](https://github.com/areslabs/alita/commit/7eea60c))
+* **alita:** 修复导入目录，小程序json文件路径错误的bug ([8036b68](https://github.com/areslabs/alita/commit/8036b68))
+* **alita:** 修复每次compiler 丢失图片的bug， 需要重新实现移除的方式 ([c784a2e](https://github.com/areslabs/alita/commit/c784a2e))
+* **alita:** 修复移除源图片的bug ([2887cc6](https://github.com/areslabs/alita/commit/2887cc6))
+* **alita:** 修复配置会alita引擎默认配置的bug ([4847f36](https://github.com/areslabs/alita/commit/4847f36))
+* **alita:** 修改生成小程序配置错误 ([520b0cf](https://github.com/areslabs/alita/commit/520b0cf))
+
+
+### Features
+
+* **@areslabs/alita-weixin-runtime:** add new package @areslabs/alita-weixin-runtime ([665b0cb](https://github.com/areslabs/alita/commit/665b0cb))
+* **@areslabs/alita-weixin-runtime:** 聚合包，引用诸wx-rn适配包，不应该直接使用。 ([db560b8](https://github.com/areslabs/alita/commit/db560b8))
+* **alita:** add parse options ([065605c](https://github.com/areslabs/alita/commit/065605c))
+* **alita:** gatherInfo-laoder 配合cacheModuleInfos 收集信息 ([3e55be2](https://github.com/areslabs/alita/commit/3e55be2))
+* **alita:** json路径添加 错误提示 ([19dfb67](https://github.com/areslabs/alita/commit/19dfb67))
+* **alita:** support export from json组件路径查找 ([d017f21](https://github.com/areslabs/alita/commit/d017f21))
+* **alita:** 修改ts lib配置 ([fc86f04](https://github.com/areslabs/alita/commit/fc86f04))
+* **alita:** 提供cacheModuleInfo模块，记录模块信息 ([537b36c](https://github.com/areslabs/alita/commit/537b36c))
+* **alita:** 提供WatchModuleUpdatedPlugin 监听模块的修改 删除等变化 ([5c3ffdd](https://github.com/areslabs/alita/commit/5c3ffdd))
+* **alita:** 添加 include exclude配置，方便处理第三方库 ([920fb31](https://github.com/areslabs/alita/commit/920fb31))
+* **alita:** 配合WatchModuleUpdatedPlugin 监听到的模块更新，更新对应的小程序组件文件 ([2a6f24c](https://github.com/areslabs/alita/commit/2a6f24c))
+* **alita wx-react:** 解偶 小程序js ， reactjs ([37ae032](https://github.com/areslabs/alita/commit/37ae032))
+
+
+### Performance Improvements
+
+* **alita:** 移除 由于 RN bable 处理产生的多余属性 ([436d2a2](https://github.com/areslabs/alita/commit/436d2a2))
+
+
+
 ## [1.3.5](https://github.com/areslabs/alita/compare/1.3.4...1.3.5) (2019-11-27)
 
 

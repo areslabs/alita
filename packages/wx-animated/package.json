@@ -1,10 +1,27 @@
 {
   "name": "@areslabs/wx-animated",
-  "version": "1.0.15",
+  "version": "2.0.1",
   "description": "animated lib for react-native , web and mini-program",
-  "main": "./src/index.js",
+  "main": "./dist/native/index.js",
+  "weixin": "./dist/weixin/index.js",
+  "types": "./types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "package.json"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c && cp -R ./src/native/ ./dist/native",
+    "pub-beta": "npm run build && npm publish --tag=beta",
+    "pub": "npm run build && npm publish",
+    "link": "npm run build && sudo npm link"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.1",
+    "rollup-plugin-babel": "^4.3.3"
   },
   "author": "",
   "license": "MIT"

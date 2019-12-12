@@ -1,39 +1,13 @@
+const path = require('path')
+
 module.exports = {
-    dependencies: [
-        {
-            name: 'expo',
-            wxName: false
-        },
+    name: "HelloWorldExpo",
 
-        {
-            name: '@areslabs/hi-rn',
-            wxName: '@areslabs/hi-wx',
-            compLists: [
-                {
-                    name: 'Hi',
-                    path: '/hi',
-                    base: true
-                }
-            ]
-        },
+    entry: "./src/index.js",
+    output: "./wx-dist",
 
-        {
-            name: '@areslabs/hello-rn',
-            wxName: '@areslabs/hello-wx',
-            compLists: [
-                {
-                    name: 'Hello',
-                    path: '/src/index'
-                },
-                {
-                    name: 'HelloRN',
-                    path: '/src/HelloRN'
-                },
-                {
-                    name: 'HelloWX',
-                    path: '/src/HelloWX'
-                }
-            ]
-        }
+    include:[
+        path.resolve('src'),
+        path.resolve('node_modules', '@areslabs', 'hello-rn')
     ],
 }

@@ -9,6 +9,8 @@
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 
+import configure from '../configure'
+
 
 const historyPrefixSet = new Set([
     'push',
@@ -18,7 +20,7 @@ const historyPrefixSet = new Set([
     'switchTab'
 ])
 
-export default function (ast, {isFuncComp}) {
+export default function (ast) {
     let leftIden = null
     traverse(ast, {
         exit: path => {
@@ -72,8 +74,7 @@ export default function (ast, {isFuncComp}) {
                 && path.node.callee.object.name === 'history'
                 && historyPrefixSet.has(path.node.callee.property.name)
             ) {
-                path.node.arguments.unshift(t.stringLiteral(global.execArgs.packageName))
-
+                path.node.arguments.unshift(t.stringLiteral(configure.configObj.subDir))
                 return
             }
 

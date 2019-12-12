@@ -1,8 +1,18 @@
-// 不压缩，用小程序自己的压缩
+const babel = require('rollup-plugin-babel')
+
 export default {
     input: 'src/index.js',
-    output: {
-        file: 'miniprogram_dist/index.js',
-        format: 'es'
-    },
+
+    output: [
+        { file: "dist/index.js", format: "cjs" },
+    ],
+
+    plugins: [
+        babel({
+            exclude: 'node_modules/**',
+            runtimeHelpers: true,
+            presets: ['@babel/preset-env'],
+            plugins: ["@babel/plugin-transform-runtime"]
+        })
+    ]
 };

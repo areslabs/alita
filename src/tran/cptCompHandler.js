@@ -12,9 +12,10 @@ import * as t from "@babel/types"
 import {geneOrder, getGenericName} from "../util/util"
 import {getPropsChain, isChildComp} from "../util/uast"
 
+import {jsxPropsMap} from '../util/getAndStorecompInfos'
 
 export default function cptCompHandler (ast, info) {
-    const ALLCPTCOMPMAP = global.execArgs.jsxPropsMap
+    const ALLCPTCOMPMAP = jsxPropsMap
     const go = geneOrder()
     traverse(ast, {
         enter: path => {

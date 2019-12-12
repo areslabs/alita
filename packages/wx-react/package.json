@@ -1,18 +1,24 @@
 {
   "name": "@areslabs/wx-react",
-  "version": "1.0.35",
+  "version": "2.0.0",
   "description": "微信版本的React",
   "files": [
-    "miniprogram_dist",
-    "package.json"
+    "package.json",
+    "dist"
   ],
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "pub-beta": "npm run build && npm publish --tag=beta",
-    "pub": "npm run build && npm publish"
+    "pub": "npm run build && npm publish",
+    "link": "npm run build && sudo npm link"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.1",
+    "rollup-plugin-babel": "^4.3.3"
+  }
 }

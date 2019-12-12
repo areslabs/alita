@@ -9,8 +9,6 @@
 import traverse from "@babel/traverse";
 import * as t from "@babel/types"
 
-import {getPropsChain, isReactComponent} from '../util/uast'
-
 
 /**
  * 预处理

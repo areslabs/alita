@@ -8,19 +8,18 @@
     "fix": "eslint ./src"
   },
   "dependencies": {
-    "@areslabs/hello-rn": "^1.0.2",
-    "@areslabs/hi-rn": "^1.0.2",
-    "@areslabs/router": "^1.0.1",
-    "@areslabs/wx-animated": "^1.0.12",
+    "@areslabs/hello-rn": "^2.0.0",
+    "@areslabs/hi-rn": "^2.0.0",
+    "@areslabs/router": "^2.0.0",
+    "@areslabs/wx-animated": "^2.0.0",
     "expo": "^32.0.0",
     "prop-types": "^15.7.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
   },
   "devDependencies": {
-    "@areslabs/eslint-plugin-alita": "^1.0.0",
-    "babel-preset-expo": "^5.0.0",
-    "eslint": "^5.16.0"
+    "@areslabs/alita-weixin-runtime": "^0.0.7",
+    "babel-preset-expo": "^5.0.0"
   },
   "private": true
 }

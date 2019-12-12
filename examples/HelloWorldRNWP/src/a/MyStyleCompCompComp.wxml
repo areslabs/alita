@@ -1,2 +1,0 @@
-<import src="./MyStyleCompCompCompTemplate.wxml"/>
-  <template wx:if="{{(_r && _r.tempName)}}" is="{{_r.tempName}}" data="{{..._r}}"/>
