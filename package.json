@@ -19,7 +19,7 @@
     "weixin",
     "redux"
   ],
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "description": "首个ReactNative转微信小程序引擎",
   "main": "./lib/index.js",
   "scripts": {
@@ -28,8 +28,8 @@
     "fix": "eslint . --fix",
     "compiler": "babel src --out-dir lib --extensions \".js,.ts\"",
     "link": "npm run compiler && sudo npm link",
-    "pub-beta": "npm run compiler && npm publish --tag=beta",
-    "pub": "npm run compiler && npm publish",
+    "pub-beta": "rm -fr lib && npm run compiler && npm publish --tag=beta",
+    "pub": "rm -fr lib && npm run compiler && npm publish",
     "start": "npm run compiler && node ./lib/index",
     "doc": "gitbook build ./docs ../docsTmp && git checkout gh-pages && cp -r ../docsTmp/* ./ && rm -fr ../docsTmp",
     "doc:serve": "gitbook serve ./docs",
@@ -46,6 +46,7 @@
     "@babel/core": "^7.1.2",
     "@babel/traverse": "^7.1.6",
     "@babel/types": "^7.1.6",
+    "chalk": "^3.0.0",
     "colors": "^1.3.3",
     "commander": "^3.0.0",
     "copy-webpack-plugin": "^5.0.5",

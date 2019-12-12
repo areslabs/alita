@@ -1,12 +1,13 @@
 {
   "name": "@areslabs/hi-rn",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0",
   "description": "rn hi",
   "main": "./src/index.js",
   "weixin": "./weixin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pub-beta": "npm publish --tag=beta"
+    "pub-beta": "npm publish --tag=beta",
+    "pub": "npm publish"
   },
 
   "peerDependencies": {
