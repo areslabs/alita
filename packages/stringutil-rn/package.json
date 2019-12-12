@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/stringutil-rn",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "files": [
     "src",
     "package.json"
