@@ -10,14 +10,13 @@ import * as path from 'path'
 import fse from 'fs-extra'
 import child_process from 'child_process'
 
-import * as chalk from 'chalk'
+import chalk from 'chalk'
 
 import configure from '../configure'
 
 
 export default function initProject(operands, typescript) {
     console.log(`alita init ${typescript ? 'typescript': ''} ...`.info)
-    console.log('\n')
     const initIndex = operands.indexOf('init')
     const projectName = operands[initIndex + 1]
 
@@ -43,21 +42,26 @@ export default function initProject(operands, typescript) {
     if (fse.existsSync(path.resolve(targetpath, 'yarn.lock'))) {
         child_process.execSync(`yarn add ${initProPackages}`, {
             cwd: targetpath,
+            stdio: "ignore",
         })
         child_process.execSync(`yarn add ${initProDevPackages} --dev`, {
             cwd: targetpath,
+            stdio: "ignore",
         })
     } else {
         child_process.execSync(`npm install --save ${initProPackages}`, {
             cwd: targetpath,
+            stdio: "ignore",
         })
         child_process.execSync(`npm install --save-dev ${initProDevPackages}`, {
             cwd: targetpath,
+            stdio: "ignore",
         })
     }
 
     console.log(`${chalk.blue(`Run instructions for ${chalk.bold('小程序')}`)}:
-    • alita --dev [--dev 指定开发模式].
-    • 微信开发者工具从 ${configure.outputFullpath} 导入项目
+    • cd ${projectName}
+    • alita --dev [--dev 指定开发模式]
+    • 微信开发者工具从 wx-dist 导入项目
 `)
 }
