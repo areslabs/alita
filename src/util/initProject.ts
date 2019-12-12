@@ -10,6 +10,10 @@ import * as path from 'path'
 import fse from 'fs-extra'
 import child_process from 'child_process'
 
+import * as chalk from 'chalk'
+
+import configure from '../configure'
+
 
 export default function initProject(operands, typescript) {
     console.log(`alita init ${typescript ? 'typescript': ''} ...`.info)
@@ -52,7 +56,8 @@ export default function initProject(operands, typescript) {
         })
     }
 
-    console.log('  Run instructions for 小程序:'.blue)
-    console.log(`    • cd ${projectName}`.black)
-    console.log(`    • alita --dev   （--dev 指定开发者模式）`.black)
+    console.log(`${chalk.blue(`Run instructions for ${chalk.bold('小程序')}`)}:
+    • alita --dev [--dev 指定开发模式].
+    • 微信开发者工具从 ${configure.outputFullpath} 导入项目
+`)
 }
