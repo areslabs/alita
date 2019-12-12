@@ -147,6 +147,7 @@ function shortPath(ao, module) {
 
     const absolutePath = ao.replace(configure.inputFullpath, '')
         .replace('node_modules', 'npm')
+        .replace(/\\/g, '/') // 考虑win平台
 
     const shortPath = relativePath.length > absolutePath.length ? absolutePath : relativePath
 
