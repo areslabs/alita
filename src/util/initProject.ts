@@ -16,7 +16,7 @@ import configure from '../configure'
 
 
 export default function initProject(operands, typescript) {
-    console.log(`alita init ${typescript ? 'typescript': ''} ...`.info)
+    console.log(`  alita init ${typescript ? 'typescript': ''} ...`.info)
     const initIndex = operands.indexOf('init')
     const projectName = operands[initIndex + 1]
 
@@ -59,7 +59,7 @@ export default function initProject(operands, typescript) {
         })
     }
 
-    console.log(`${chalk.blue(`Run instructions for ${chalk.bold('小程序')}`)}:
+    console.log(`${chalk.blue(`  Run instructions for ${chalk.bold('小程序')}`)}:
     • cd ${projectName}
     • alita --dev [--dev 指定开发模式]
     • 微信开发者工具从 wx-dist 导入项目
