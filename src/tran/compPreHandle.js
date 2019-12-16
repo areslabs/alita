@@ -45,7 +45,8 @@ export default function compPreHandle(ast, info) {
 
                 if (pp.type === 'JSXAttribute') {
                     //  <A name={"yk"}/> 修改为 <A name="yk"/>
-                    path.replaceWith(t.stringLiteral(path.node.expression.value))
+                    path.replaceWith(path.node.expression)
+
                 } else {
                     //  <A>{"yk"}</A> 修改为 <A>yk</A>
                     path.replaceWith(t.jsxText(path.node.expression.value))
