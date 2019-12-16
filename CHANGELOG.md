@@ -1,3 +1,17 @@
+## [2.0.2](https://github.com/areslabs/alita/compare/2.0.1...2.0.2) (2019-12-16)
+
+
+### Bug Fixes
+
+* **alita:** 修复中文展示乱码的bug ([ef72810](https://github.com/areslabs/alita/commit/ef72810))
+
+
+### Features
+
+* **@areslabs/wx-react:** 减少对外暴露的接口，相应的增强RNBaseComponent reactCompHelper的能力 ([6024ce9](https://github.com/areslabs/alita/commit/6024ce9))
+
+
+
 ## [2.0.1](https://github.com/areslabs/alita/compare/1.3.6...2.0.1) (2019-12-12)
 
 V2.0 版本把打包方式改为了webpack，利用了webpack收集依赖的能力，简化了alita配置文件，简化了alita npm包使用方式，提升了更多对代码包体积
