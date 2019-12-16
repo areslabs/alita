@@ -12,7 +12,8 @@ import WxNormalComp from './WxNormalComp'
 import tackleWithStyleObj, {parseElement, flattenStyle} from './tackleWithStyleObj'
 import styleType from './styleType'
 import instanceManager from './InstanceManager'
-import {getPropsMethod, reactCompHelper} from './util'
+import {getPropsMethod} from './util'
+import reactCompHelper from './reactCompHelper'
 import {unstable_batchedUpdates, renderPage, renderApp} from './UpdateStrategy'
 
 

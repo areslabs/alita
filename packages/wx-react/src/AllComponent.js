@@ -7,6 +7,8 @@
  */
  
 import instanceManager from "./InstanceManager";
+import tackleWithStyleObj from './tackleWithStyleObj'
+import { VIEW, SCROLL, OUTERTEXT}from './styleType'
 
 import shallowEqual from './shallowEqual'
 
@@ -106,4 +108,24 @@ export class HocComponent extends Component {
 }
 
 export class RNBaseComponent {
+
+    getWxInst() {
+        return instanceManager.getWxInstByUUID(this.__diuu__)
+    }
+
+    transformViewStyle(style){
+        return tackleWithStyleObj(style, VIEW)
+    }
+
+    transformScrollViewStyle(style) {
+        return tackleWithStyleObj(style, SCROLL)
+    }
+
+    transformTextStyle(style) {
+        return tackleWithStyleObj(style, OUTERTEXT)
+    }
+
+    transformStyle(style) {
+        return tackleWithStyleObj(style)
+    }
 }
