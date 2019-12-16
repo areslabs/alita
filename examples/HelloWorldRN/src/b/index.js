@@ -112,7 +112,19 @@ export default class B extends Component {
                 </View>
 
 
-                
+                <View style={styles.button}>
+                    <Button
+                        title="点击 列表项 + 1"
+                        onPress={() => {
+                            this.setState({
+                                users: this.state.users.map(user => ({
+                                    ...user,
+                                    name: user.name + 1
+                                }))
+                            })
+                        }}
+                    />
+                </View>
                 <View style={styles.button}>
                     <Text style={styles.title}>FlatList 列表</Text>
                 </View>
@@ -166,7 +178,14 @@ export default class B extends Component {
                 <View style={styles.button}>
                     <Text style={styles.title}>输入框</Text>
                 </View>
+                <Button
+                    title={"点击-->Focus"}
+                    onPress={() =>{
+                        this._input.focus()
+                    }}
+                />
                 <TextInput
+                    ref={(input) => this._input = input}
                     style={{borderWidth: 1, height: 40, borderColor: '#bbb', paddingLeft: 10, }}
                     value={this.state.value}
                     onChangeText={value => {
