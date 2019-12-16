@@ -6,12 +6,8 @@
  *
  */
 
-import {
-    styleType,
-    tackleWithStyleObj,
-    RNBaseComponent
-} from "@areslabs/wx-react"
-const {VIEW} = styleType
+import { RNBaseComponent } from "@areslabs/wx-react"
+
 
 export const BaseView = ""
 
@@ -20,7 +16,7 @@ export function getWXBaseComponent() {
     return class WXBaseComponent extends RNBaseComponent {
         getStyle(props) {
             return {
-                style: tackleWithStyleObj(props.style, VIEW),
+                style: this.transformViewStyle(props.style)
             }
         }
     }

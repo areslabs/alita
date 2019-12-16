@@ -16,6 +16,8 @@ import {
 
 const {SCROLL} = styleType
 
+//TODO 移除phblock 使用
+
 export default class WXFlatList extends PureComponent {
     scrollToOffset(position) {
         const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)

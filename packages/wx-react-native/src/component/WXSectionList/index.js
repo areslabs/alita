@@ -15,7 +15,7 @@ import {
 } from "@areslabs/wx-react"
 const {SCROLL} = styleType
 
-
+//TODO 移除phblock 使用
 
 export default class WXSectionList extends PureComponent {
 

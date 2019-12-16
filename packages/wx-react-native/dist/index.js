@@ -15,7 +15,7 @@ var _inherits = _interopDefault(require('@babel/runtime/helpers/inherits'));
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-var SCROLL = wxReact.styleType.SCROLL;
+var SCROLL = wxReact.styleType.SCROLL; //TODO 移除phblock 使用
 
 var WXFlatList =
 /*#__PURE__*/
@@ -202,7 +202,7 @@ function (_PureComponent) {
 function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-var SCROLL$1 = wxReact.styleType.SCROLL;
+var SCROLL$1 = wxReact.styleType.SCROLL; //TODO 移除phblock 使用
 
 var WXSectionList =
 /*#__PURE__*/
@@ -357,8 +357,6 @@ function (_PureComponent) {
   return WXSectionList;
 }(wxReact.PureComponent);
 
-var SCROLL$2 = wxReact.styleType.SCROLL;
-
 var WXScrollView =
 /*#__PURE__*/
 function (_RNBaseComponent) {
@@ -373,13 +371,13 @@ function (_RNBaseComponent) {
   _createClass(WXScrollView, [{
     key: "scrollTo",
     value: function scrollTo(position) {
-      var wxInst = wxReact.instanceManager.getWxInstByUUID(this.__diuu__);
+      var wxInst = this.getWxInst();
       wxInst.scrollTo(position);
     }
   }, {
     key: "scrollToEnd",
     value: function scrollToEnd() {
-      var wxInst = wxReact.instanceManager.getWxInstByUUID(this.__diuu__);
+      var wxInst = this.getWxInst();
       wxInst.scrollTo({
         x: 9999999,
         y: 9999999
@@ -389,16 +387,14 @@ function (_RNBaseComponent) {
     key: "getStyle",
     value: function getStyle(props) {
       return {
-        style: wxReact.tackleWithStyleObj(props.style, SCROLL$2),
-        contentContainerStyle: wxReact.tackleWithStyleObj(props.contentContainerStyle)
+        style: this.transformScrollViewStyle(props.style),
+        contentContainerStyle: this.transformStyle(props.contentContainerStyle)
       };
     }
   }]);
 
   return WXScrollView;
 }(wxReact.RNBaseComponent);
-
-var VIEW = wxReact.styleType.VIEW;
 
 var WXPickerItem =
 /*#__PURE__*/
@@ -426,7 +422,7 @@ function (_RNBaseComponent) {
 function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$2(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-var VIEW$1 = wxReact.styleType.VIEW;
+var VIEW = wxReact.styleType.VIEW;
 
 var WXPicker =
 /*#__PURE__*/
@@ -445,7 +441,7 @@ function (_PureComponent) {
       var style = this.props.style;
       return {
         diuu: '',
-        style: wxReact.tackleWithStyleObj(style, VIEW$1)
+        style: wxReact.tackleWithStyleObj(style, VIEW)
       };
     }
   }, {
@@ -502,8 +498,6 @@ function (_PureComponent) {
 }(wxReact.PureComponent);
 WXPicker.Item = WXPickerItem;
 
-var VIEW$2 = wxReact.styleType.VIEW;
-
 var WXTextInput =
 /*#__PURE__*/
 function (_RNBaseComponent) {
@@ -519,27 +513,25 @@ function (_RNBaseComponent) {
     key: "getStyle",
     value: function getStyle(props) {
       return {
-        style: wxReact.tackleWithStyleObj(props.style, VIEW$2)
+        style: this.transformViewStyle(props.style)
       };
     }
   }, {
     key: "focus",
     value: function focus() {
-      var wxInst = wxReact.instanceManager.getWxInstByUUID(this.__diuu__);
+      var wxInst = this.getWxInst();
       wxInst.focus();
     }
   }, {
     key: "isFocused",
     value: function isFocused() {
-      var wxInst = wxReact.instanceManager.getWxInstByUUID(this.__diuu__);
+      var wxInst = this.getWxInst();
       wxInst.isFocused();
     }
   }]);
 
   return WXTextInput;
 }(wxReact.RNBaseComponent);
-
-var VIEW$3 = wxReact.styleType.VIEW;
 
 var WXButton =
 /*#__PURE__*/
@@ -557,15 +549,13 @@ function (_RNBaseComponent) {
     value: function getStyle(props) {
       return {
         // Button 不接受style属性
-        style: wxReact.tackleWithStyleObj('', VIEW$3)
+        style: this.transformViewStyle('')
       };
     }
   }]);
 
   return WXButton;
 }(wxReact.RNBaseComponent);
-
-var VIEW$4 = wxReact.styleType.VIEW;
 
 function getStyleStr(visible, transparent, animationType) {
   var ss = '';
@@ -957,7 +947,6 @@ var cancelAnimationFrame = function cancelAnimationFrame(handle) {
   }
 };
 
-var VIEW$5 = wxReact.styleType.VIEW;
 var BaseView = "";
 function getWXBaseComponent() {
   return (
@@ -975,7 +964,7 @@ function getWXBaseComponent() {
         key: "getStyle",
         value: function getStyle(props) {
           return {
-            style: wxReact.tackleWithStyleObj(props.style, VIEW$5)
+            style: this.transformViewStyle(props.style)
           };
         }
       }]);

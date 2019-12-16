@@ -6,22 +6,16 @@
  *
  */
  
-import {
-    RNBaseComponent,
-    tackleWithStyleObj,
-    instanceManager,
-    styleType
-} from '@areslabs/wx-react'
-const {SCROLL} = styleType
+import { RNBaseComponent} from '@areslabs/wx-react'
 
 export default class WXScrollView extends RNBaseComponent{
     scrollTo(position) {
-        const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)
+        const wxInst = this.getWxInst()
         wxInst.scrollTo(position)
     }
 
     scrollToEnd() {
-        const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)
+        const wxInst = this.getWxInst()
         wxInst.scrollTo({
             x: 9999999,
             y: 9999999
@@ -31,8 +25,8 @@ export default class WXScrollView extends RNBaseComponent{
 
     getStyle(props) {
         return {
-            style: tackleWithStyleObj(props.style, SCROLL),
-            contentContainerStyle: tackleWithStyleObj(props.contentContainerStyle)
+            style: this.transformScrollViewStyle(props.style),
+            contentContainerStyle: this.transformStyle(props.contentContainerStyle)
         }
     }
 }

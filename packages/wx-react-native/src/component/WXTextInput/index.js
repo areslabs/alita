@@ -1,27 +1,19 @@
-import {
-    instanceManager,
-    styleType,
-    tackleWithStyleObj,
-    RNBaseComponent
-} from "@areslabs/wx-react"
-
-const {VIEW} = styleType
-
+import { RNBaseComponent} from "@areslabs/wx-react"
 
 export default class WXTextInput extends RNBaseComponent {
     getStyle(props) {
         return {
-            style: tackleWithStyleObj(props.style, VIEW),
+            style: this.transformViewStyle(props.style)
         }
     }
 
     focus() {
-        const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)
+        const wxInst = this.getWxInst()
         wxInst.focus()
     }
 
     isFocused() {
-        const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)
+        const wxInst = this.getWxInst()
         wxInst.isFocused()
     }
 }

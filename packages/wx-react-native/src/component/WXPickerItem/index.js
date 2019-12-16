@@ -6,8 +6,7 @@
  *
  */
  
-import {RNBaseComponent, styleType} from '@areslabs/wx-react'
-const {VIEW} = styleType
+import {RNBaseComponent} from '@areslabs/wx-react'
 
 export default class WXPickerItem extends RNBaseComponent {
     getStyle(props) {
