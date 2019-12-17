@@ -10,7 +10,9 @@
 const TmpKey = "HOCKEY"
 
 export default function createElement(comp, props, ...args) {
-    if (!comp) {
+
+    //TODO waring重构
+    if (!comp && props.__source) {
         console.error(`${props.__source.fileName} 文件存在 <XX />, 其中XX为undefined！请排查`)
         return
     }

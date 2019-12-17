@@ -56,7 +56,6 @@ export {
     renderApp,
 }
 export const h = createElement
-export const render = deprecated
 
 
 wx.__bridge = {
