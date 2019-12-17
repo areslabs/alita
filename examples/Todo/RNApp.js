@@ -7,6 +7,7 @@ import {createStore, applyMiddleware} from 'redux'
 //Middleware
 import promiseMiddleware from 'redux-promise'
 import thunk from 'redux-thunk'
+import logger from 'redux-logger'
 
 
 import todoApp from './src/reducers'
@@ -20,7 +21,7 @@ import {
 } from '@areslabs/router'
 
 import Index from './src/components/index'
-const store = createStore(todoApp, applyMiddleware(thunk, promiseMiddleware))
+const store = createStore(todoApp, applyMiddleware(thunk, promiseMiddleware, logger))
 
 
 export default class RNApp extends PureComponent {

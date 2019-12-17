@@ -11,12 +11,13 @@
   "dependencies": {
     "@areslabs/router": "^2.0.0",
     "@areslabs/wx-animated": "^2.0.0",
+    "prop-types": "^15.6.2",
     "react": "16.8.3",
     "react-native": "0.59.4",
-    "prop-types": "^15.6.2",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
+    "redux-logger": "^3.0.6",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0"
   },
