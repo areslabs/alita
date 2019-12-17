@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "微信版本的React",
   "files": [
     "package.json",
@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "pub-beta": "npm run build && npm publish --tag=beta",
-    "pub": "npm run build && npm publish",
+    "pub": "npm run build && npm publish --registry http://registry.npmjs.org",
     "link": "npm run build && sudo npm link"
   },
   "author": "",
