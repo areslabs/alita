@@ -95,6 +95,13 @@ if (options._.includes('init')) {
 }
 
 conf.dev = !!options.dev
+
+if (conf.dev) {
+    process.env.NODE_ENV = "development"
+} else {
+    process.env.NODE_ENV = "production"
+}
+
 conf.analyzer = !!options.analyzer
 
 const DEFAULTCONFIG = {
