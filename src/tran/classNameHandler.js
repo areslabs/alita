@@ -6,7 +6,8 @@
  *
  */
 
-import traverse from "@babel/traverse";
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 import * as t from "@babel/types"
 
 /**
@@ -17,7 +18,7 @@ import * as t from "@babel/types"
  */
 export default function classNameHandler (ast,info) {
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view'

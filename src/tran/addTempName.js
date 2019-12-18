@@ -5,15 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from "@babel/traverse";
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from "@babel/types"
 import {InnerTemplateNamePrefix} from "../constants";
 import {isJSXChild, isChildCompChild} from "../util/uast";
 import {geneOrder} from '../util/util'
 export default function addTempName (ast) {
     const go = geneOrder()
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXElement'
                 && (!isJSXChild(path) || isChildCompChild(path))

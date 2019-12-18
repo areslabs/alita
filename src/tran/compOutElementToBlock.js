@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from "@babel/traverse";
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 
 export default function addTempName (ast, info) {
     if (info.isPageComp) return ast
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view'

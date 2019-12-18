@@ -5,12 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from "@babel/traverse";
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 import * as t from "@babel/types"
 
 export default function touchableToView (ast) {
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view'

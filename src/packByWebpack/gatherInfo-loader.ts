@@ -31,6 +31,13 @@ export default function (this: webpack.loader.LoaderContext,  context: string): 
 
     console.log(`开始处理：${filepath.replace(configure.inputFullpath, '')} ...`.info)
     const ast = parseCode(context, npath.extname(filepath))
+
+    //TODO 暂时通过此方式，让ast和sourceCode/filepath 建立联系
+    // @ts-ignore
+    ast.__sourceCode = context
+    // @ts-ignore
+    ast.__filepath = filepath
+
     const {isEntry, isRF, isFuncComp, imports, exports, JSXElements} = getFileInfo(ast, filepath)
 
     setModuleInfo(filepath, imports, exports, isRF, isEntry, JSXElements)

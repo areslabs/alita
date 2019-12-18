@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from "@babel/traverse";
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 import * as t from "@babel/types"
 
 
@@ -25,7 +26,7 @@ import * as t from "@babel/types"
  * @returns {*}
  */
 export default function compPreHandle(ast, info) {
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             // 移除注释
             if (path.node.leadingComments) {

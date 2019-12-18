@@ -6,10 +6,11 @@
  *
  */
 
-import traverse from "@babel/traverse";
+//import traverse from "@babel/traverse";
 import * as t from "@babel/types";
 import {isReactComponent} from "../util/uast";
 import configure from '../configure'
+import errorLogTraverse from '../util/ErrorLogTraverse'
 
 /**
  * 把函数声明的组件， 转化为FuncComponent 组件
@@ -41,7 +42,7 @@ export default function funcCompToClassComp(ast, info) {
 
     let comps = new Set([])
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
         enter: path => {
 
             // function x {}

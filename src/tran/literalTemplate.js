@@ -6,7 +6,8 @@
  *
  */
 
-import traverse from "@babel/traverse";
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 import * as t from "@babel/types"
 import {isTextElement} from '../util/uast'
 
@@ -18,7 +19,7 @@ import {isTextElement} from '../util/uast'
  */
 export default function literalTemplate (ast, info) {
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXElement'
                 && isTextElement(path.node.openingElement)

@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from "@babel/traverse";
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from "@babel/types"
 
 import {geneOrder} from '../util/util'
@@ -93,7 +93,7 @@ export default function childrenToTemplate(ast, info) {
     const goForCTNP = geneOrder()
     const goForCTDK = geneOrder()
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
 
         exit: path => {
 

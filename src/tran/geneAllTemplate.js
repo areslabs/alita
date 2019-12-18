@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from '@babel/traverse';
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 import * as t from '@babel/types'
 import {decTemlate, isBindElement, isJSXChild, isChildCompChild, isChildComp} from '../util/uast';
 import { isEventProp } from '../util/util';
@@ -19,7 +20,7 @@ import { isEventProp } from '../util/util';
  */
 export default function(ast, info) {
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view') {

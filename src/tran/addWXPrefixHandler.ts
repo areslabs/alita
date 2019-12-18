@@ -6,7 +6,8 @@
  *
  */
  
-import traverse from "@babel/traverse";
+//import traverse from "@babel/traverse";
+import errorLogTraverse from '../util/ErrorLogTraverse'
 import {RNCOMPSET} from "../constants";
 import * as t from "@babel/types";
 
@@ -19,7 +20,7 @@ import {textComp} from '../util/getAndStorecompInfos'
  */
 export default function addWXPrefixHandler (ast, info?: any) {
     let hasTextInner = false
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement') {
                 addWXPrefix(path)

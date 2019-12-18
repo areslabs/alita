@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
- 
-import traverse from "@babel/traverse"
+
+import errorLogTraverse from '../util/ErrorLogTraverse'
 import {InnerComponentNamePrefix, RNCOMPSET} from "../constants"
 import * as t from "@babel/types"
 import {geneOrder, getGenericName} from "../util/util"
@@ -17,7 +17,7 @@ import {jsxPropsMap} from '../util/getAndStorecompInfos'
 export default function cptCompHandler (ast, info) {
     const ALLCPTCOMPMAP = jsxPropsMap
     const go = geneOrder()
-    traverse(ast, {
+    errorLogTraverse(ast, {
         enter: path => {
             // 处理直接是<V>{this.props.children}</V> 这种情况
             if (path.type === 'JSXExpressionContainer'
