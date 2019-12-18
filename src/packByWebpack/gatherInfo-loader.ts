@@ -211,9 +211,9 @@ function handleExportSource(path, filepath, JSXElements, im) {
         const name = spe.exported.name
         im[name] = {
             source: relativePath,
-            defaultSpecifier: spe.type === 'ImportDefaultSpecifier',
+            defaultSpecifier: false,
             // @ts-ignore
-            imported: spe.type === 'ImportSpecifier' ? spe.imported.name : null,
+            imported:  spe.local.name
         }
 
         idens.push(name)
