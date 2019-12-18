@@ -1,3 +1,19 @@
+## [2.0.3](https://github.com/areslabs/alita/compare/2.0.2...2.0.3) (2019-12-18)
+
+
+### Bug Fixes
+
+* **alita:** 修复 export {} from './A' 搜集信息时候的语法错误 ([1fbcb5b](https://github.com/areslabs/alita/commit/1fbcb5b))
+
+
+### Features
+
+* **alita:** remove __source props in production ! ([aedef74](https://github.com/areslabs/alita/commit/aedef74))
+* **alita:** 一个文件支持多个组件 ([48052a8](https://github.com/areslabs/alita/commit/48052a8))
+* **alita:** 添加alita转化出错的 友好提示信息 ([4a7ff8b](https://github.com/areslabs/alita/commit/4a7ff8b))
+
+
+
 ## [2.0.2](https://github.com/areslabs/alita/compare/2.0.1...2.0.2) (2019-12-16)
 
 
