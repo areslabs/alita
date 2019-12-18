@@ -59,14 +59,14 @@ export function isReactComponent(superClass) {
 
     // Component, PureComponent
     if (superClass.type === 'Identifier'
-        && ( superClass.name === 'Component' || superClass.name === 'PureComponent')) {
+        && ( superClass.name === 'Component' || superClass.name === 'PureComponent' || superClass.name === 'FuncComponent')) {
         return true
     }
 
     // React.Component, React.PureComponent
     if (superClass.type === 'MemberExpression'
         && superClass.object.name === 'React'
-        && (superClass.property.name === 'Component' || superClass.property.name === 'PureComponent')
+        && (superClass.property.name === 'Component' || superClass.property.name === 'PureComponent' || superClass.property.name === 'FuncComponent')
     ) {
         return true
     }

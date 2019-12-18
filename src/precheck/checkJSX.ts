@@ -130,13 +130,6 @@ const backToView = new Set([
  */
 export default function checkJSX(ast, filepath, rawCode) {
 
-
-    // 收集所有 import/require 组件
-    const allModuleVarSet  = new Set([])
-
-    // 单文件单组件
-    let alreadyHasComponent = false
-
     // 收集所有JSX fun
 
     let jsxFuncs = new Set([])
@@ -150,36 +143,8 @@ export default function checkJSX(ast, filepath, rawCode) {
     traverse(ast, {
 
         enter: path => {
-            if (path.type === 'ImportDeclaration') {
-                (path.node as t.ImportDeclaration).specifiers.forEach(item => {
-                    allModuleVarSet.add(item.local.name)
-                })
-            }
-
-            if (path.type === 'CallExpression'
-                // @ts-ignore
-                && path.node.callee.name === 'require'
-                // @ts-ignore
-                && path.node.arguments.length === 1
-            ) {
-
-                const pp = path.parentPath
-                // @ts-ignore
-                const id = pp.node.id
 
 
-                if (id && id.type === 'Identifier') {
-                    allModuleVarSet.add(id.name)
-                }
-
-                if (id && id.type === 'ObjectPattern') {
-                    id.properties.forEach(pro => {
-                        if (pro.type === 'Property') {
-                            allModuleVarSet.add(pro.value.name)
-                        }
-                    })
-                }
-            }
 
             if (path.type === 'ClassMethod' || path.type === 'ClassProperty') {
                 hasJSXTag = false
@@ -197,21 +162,6 @@ export default function checkJSX(ast, filepath, rawCode) {
         },
 
         exit: path => {
-            if (path.type === 'JSXOpeningElement') {
-                // @ts-ignore
-                if (path.node.name.type === 'JSXIdentifier') {
-                    // @ts-ignore
-                    const name = path.node.name.name
-                    if (!allModuleVarSet.has(name)) {
-                        printError(filepath, path, rawCode, `组件${name}的导入，需要在import/require语句`)
-
-                    }
-
-                }
-
-            }
-
-
             if (path.type === 'ImportDeclaration' && (path.node as t.ImportDeclaration).source.value === 'react-native') {
                 ;(path.node as t.ImportDeclaration).specifiers.forEach(item => {
                     item = item as t.ImportSpecifier
@@ -353,18 +303,6 @@ export default function checkJSX(ast, filepath, rawCode) {
                 if (jsxEleAttr && jsxEleAttr.has(name)) {
                     printWarn(filepath, path, rawCode, `组件${elementName}不支持${name}属性`)
                 }
-            }
-        },
-
-        ClassDeclaration: (path) => {
-            const node = path.node
-            if (isReactComp(node.superClass)) {
-                if (alreadyHasComponent) {
-                    printError(filepath, path, rawCode, `一个文件最多只允许存在一个组件`)
-
-                }
-
-                alreadyHasComponent = true
             }
         },
     })

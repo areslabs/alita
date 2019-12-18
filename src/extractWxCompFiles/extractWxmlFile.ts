@@ -94,7 +94,7 @@ function geneAllOutComp(outComp, finalJSPath, newWxOutFiles) {
     for (let i = 0; i < outComp.length; i++) {
         const name = outComp[i];
 
-        const wxmlFilepath = (name === "render"
+        const wxmlFilepath = (name === "default"
                 ? finalJSPath.replace(".js", ".wxml")
                 : finalJSPath.replace(".js", `${name}.wxml`)
         );

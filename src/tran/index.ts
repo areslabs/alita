@@ -27,9 +27,7 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
         filepath: filepath,
         templates: [],
         childTemplates: [],
-        outComp: [
-            'render'
-        ],
+        outComp: [],
         json: {
             component: true,
             usingComponents: {},
@@ -43,9 +41,7 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
         //webpackContext,
     }
 
-    if (isFuncComp) {
-        ast = funcCompToClassComp(ast, info)
-    }
+    ast = funcCompToClassComp(ast, info)
 
     ast = compPreHandle(ast, info)
 

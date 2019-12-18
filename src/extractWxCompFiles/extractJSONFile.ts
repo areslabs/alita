@@ -16,7 +16,7 @@ export const handleChanged = (module, info, finalJSPath) => {
 
     for(let i = 0; i < outComp.length; i ++) {
         const name = outComp[i]
-        if (name === 'render') {
+        if (name === 'default') {
             continue
         } else {
             renderUsingComponents[name] = path.basename(finalJSPath).replace('.js', `${name}`)
@@ -34,7 +34,7 @@ export const handleChanged = (module, info, finalJSPath) => {
     for(let i = 0; i < outComp.length; i ++) {
         const name = outComp[i]
 
-        const comppath = (name === 'render' ? finalJSPath.replace('.js', `.json`) : finalJSPath.replace('.js', `${name}.json`))
+        const comppath = (name === 'default' ? finalJSPath.replace('.js', `.json`) : finalJSPath.replace('.js', `${name}.json`))
         newWxOutFiles[comppath] = renderJSONStr
     }
 
@@ -52,12 +52,11 @@ function getUsedCompPaths(module) {
     info.JSXElements.forEach(element => {
 
         if (!info.im[element]) {
-            //TODO 配合移除 "单文件单组件"
             usedComps[element] = `./${element}`
             return
         }
 
-        const source = info.im[element].source
+        const { source, defaultSpecifier} = info.im[element]
         if (isRnBaseSkipEle(element, source)) {
             return
         }
@@ -65,7 +64,7 @@ function getUsedCompPaths(module) {
         const elementKey = source === 'react-native' ? `WX${element}` : element
 
         try {
-            usedComps[elementKey] = getFinalPath(element, source, module, info)
+            usedComps[elementKey] = getFinalPath(element, source, module, info, defaultSpecifier )
         } catch (e) {
             console.log(`${module.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
         }
@@ -100,7 +99,7 @@ function isRnBaseSkipEle(element, source) {
 }
 
 
-function getFinalPath(element, source, module, info) {
+function getFinalPath(element, source, module, info, defaultSpecifier) {
     if (source === 'react-native') {
         return compInfos[source][`WX${element}`]
     }
@@ -112,23 +111,30 @@ function getFinalPath(element, source, module, info) {
 
     const absolutePath = info.deps[source]     //syncResolve(path.dirname(filepath), source)
 
-    return deepSeekPath(element, absolutePath, module)
+    return deepSeekPath(element, absolutePath, module, defaultSpecifier)
 }
 
 
-function deepSeekPath(element, absolutePath, module) {
+function deepSeekPath(element, absolutePath, module, defaultSpecifier) {
 
     let info = getModuleInfo(absolutePath)
     let im = info.im
 
     while (im[element]) {
         const source = im[element].source
+        defaultSpecifier = im[element].defaultSpecifier
+
         absolutePath = info.deps[source]
         info = getModuleInfo(absolutePath)
         im = info.im
     }
 
-    return shortPath(absolutePath, module)
+    let sp = shortPath(absolutePath, module)
+
+    if (!defaultSpecifier) {
+        sp += element
+    }
+    return sp
 }
 
 function shortPath(ao, module) {

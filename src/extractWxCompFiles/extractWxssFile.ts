@@ -9,7 +9,7 @@ export const handleChanged = (info, finalJSPath) => {
     for (let i = 0; i < outComp.length; i++) {
         const name = outComp[i];
 
-        const wxssFilepath = (name === "render"
+        const wxssFilepath = (name === "default"
                 ? finalJSPath.replace(".js", ".wxss")
                 : finalJSPath.replace(".js", `${name}.wxss`)
         );
@@ -18,7 +18,7 @@ export const handleChanged = (info, finalJSPath) => {
         const compCommonPath = getRootPathPrefix(finalJSPath) + "/compCommon.wxss"
 
         let wxssCode = null
-        if (name === 'render' && isPageComp) {
+        if (name === 'default' && isPageComp) {
             wxssCode = `@import '${pageCommonPath}';
 @import '${compCommonPath}';`
         } else {
