@@ -29,6 +29,9 @@ import MyChildComp from './MyChildComp'
 import MyStyleComp from './MyStyleComp'
 import PlatformComp from './PlatformComp'
 import MyHoc from './MyHoc'
+
+import {Dic1, Dic21, Dic22, Dic3, Dic31, Dic32, DicFunc, DF3, DF1, DF2} from './dic'
+
 import styles from './styles';
 import Hi from '@areslabs/hi-rn'
 import {Hello} from '@areslabs/hello-rn/index'
@@ -41,6 +44,11 @@ const info2 = require('./info')
 
 
 import {history} from '@areslabs/router'
+
+
+
+
+
 
 
 const item3 = <View style={[styles.item, {borderBottomWidth: 0}]}><Text style={styles.itemText}>item3</Text></View>
@@ -228,6 +236,22 @@ export default class A extends Component {
                 <MyHoc txt="HOC"/>
 
                 <MyStyleComp/>
+
+                {/*测试组件路径寻找*/}
+                <Dic1 style={styles.item}/>
+                <Dic21 style={styles.item}/>
+                <Dic22 style={styles.item}/>
+                <Dic3 style={styles.item}/>
+                <Dic31 style={styles.item}/>
+                <Dic32 style={styles.item}/>
+                <DicFunc style={styles.item}/>
+                <View
+                    style={styles.item}
+                >
+                    <DF1/>
+                    <DF2/>
+                    <DF3/>
+                </View>
 
                 <Hi name="Yvette"
                     style={styles.item}
