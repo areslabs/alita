@@ -366,25 +366,3 @@ export default function checkJSX(ast, filepath, rawCode) {
 
 
 }
-
-function isReactComp(superClass) {
-    if (!superClass) return false
-
-    let suName = ""
-    if (superClass.type === 'MemberExpression') {
-        suName = superClass.property.name
-    }
-
-    if (superClass.type === 'Identifier')  {
-        suName = superClass.name
-    }
-
-    if (suName === 'Component'
-        || suName === 'PureComponent'
-        || suName === 'StaticComponent'
-    ) {
-        return true
-    }
-
-    return false
-}
