@@ -1,11 +1,3 @@
-#!/usr/bin/env node
-/**
- * Copyright (c) Areslabs.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 import * as path from 'path'
 import getopts from 'getopts'
 import colors from 'colors'
@@ -14,7 +6,6 @@ import program from 'commander'
 import { emptyDir } from './util/util'
 
 import geneWXConfigFile from './util/geneWXConfigFile'
-import initProject from './util/initProject'
 
 import packByWebpack from './packByWebpack'
 
@@ -46,7 +37,7 @@ const actionMap = {
     i: {
         description: 'transfert ReactNativeProject to WXProject',
         usages: [
-            'alita [--dev] [--watch] [--config=]'
+            'alita [--dev] [--analyzer] [--config=]'
         ]
     }
 }
@@ -61,12 +52,11 @@ function help() {
     console.log('\r')
 }
 
-program.usage('alita [--dev] [--watch] [--config=]')
+program.usage('alita [--dev] [--analyzer] [--config=]')
 program.on('-h', help)
 program.on('--help', help)
 program
     .version(packagz.version, '-v --version')
-    .option('--watch', 'watch files and recompile when they change')
     .option('--config', 'specify configuration file')
     .option('--dev', 'development mode')
     .option('--analyzer', 'analyzer bundle size')
@@ -82,17 +72,10 @@ const options = getopts(process.argv, {
         config: 'config',
         dev: 'dev',
 
-        // use with init
-        typescript: 'typescript',
 
         analyzer: 'analyzer'
     },
 })
-
-if (options._.includes('init')) {
-    initProject(options._, options.typescript)
-    process.exit()
-}
 
 conf.dev = !!options.dev
 
@@ -153,8 +136,6 @@ if (fse.existsSync(outputFullpath)) {
 
 function main() {
 
-    //TODO watch
-
     // 生成微信目录结构
     geneWXConfigFile(conf.outputFullpath)
 
@@ -162,6 +143,5 @@ function main() {
 
     //filewatch()
 }
-
 
 main()

@@ -1,8 +1,5 @@
 {
-  "name": "@areslabs/alita",
-  "bin": {
-    "alita": "./lib/index.js"
-  },
+  "name": "@areslabs/alita-core",
   "files": [
     "lib",
     "mptemp",
@@ -19,8 +16,8 @@
     "weixin",
     "redux"
   ],
-  "version": "2.0.3",
-  "description": "首个ReactNative转微信小程序引擎",
+  "version": "2.1.0-beta.2",
+  "description": "alita-core",
   "main": "./lib/index.js",
   "scripts": {
     "test": "echo '正在补充测试用例。。。' && jest",
@@ -41,11 +38,13 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@areslabs/alita-weixin-runtime": "^0.0.6-4",
+    "@areslabs/babel-plugin-alitamisc": "^0.0.1",
     "@babel/code-frame": "^7.5.5",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
     "@babel/core": "^7.1.2",
     "@babel/traverse": "^7.1.6",
     "@babel/types": "^7.1.6",
+    "babel-loader": "^8.0.6",
     "chalk": "^3.0.0",
     "colors": "^1.3.3",
     "commander": "^3.0.0",
@@ -66,5 +65,8 @@
     "@types/webpack": "^4.41.0",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

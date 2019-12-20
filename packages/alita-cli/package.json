@@ -1,0 +1,48 @@
+{
+  "name": "@areslabs/alita",
+  "bin": {
+    "alita": "./lib/index.js"
+  },
+  "files": [
+    "lib",
+    "package.json"
+  ],
+  "keywords": [
+    "react",
+    "react-native",
+    "wechat-mini-program",
+    "wechat",
+    "weixin",
+    "redux"
+  ],
+  "version": "2.1.0-beta.3",
+  "description": "首个ReactNative转微信小程序引擎",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo '正在补充测试用例。。。' && jest",
+    "eslint": "eslint .",
+    "fix": "eslint . --fix",
+    "compiler": "babel src --out-dir lib --extensions \".js,.ts\"",
+    "link": "npm run compiler && sudo npm link",
+    "pub-beta": "rm -fr lib && npm run compiler && npm publish --tag=beta --registry http://registry.npmjs.org",
+    "pub": "rm -fr lib && npm run compiler && npm publish --registry http://registry.npmjs.org"
+  },
+  "authors": "yankang (https://github.com/ykforerlang)",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "fs-extra": "^7.0.0",
+    "getopts": "^2.2.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/cli": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-typescript": "^7.7.4",
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^12.12.11",
+    "@types/webpack": "^4.41.0",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0"
+  }
+}

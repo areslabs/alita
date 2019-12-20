@@ -152,6 +152,7 @@ export default function packByWebpack() {
 
     const webpackConfigure = {
         entry: cco.entry,
+        context: configure.inputFullpath,
 
         output: {
             path: path.resolve(cco.output),
