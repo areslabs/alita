@@ -39,6 +39,15 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)
 * [支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
 * 支持`typescript`
+* 不符合Alita语法限制的库，需要手动扩展，扩展方式请查看[https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html]
+
+## 注意事项
+由于不同平台的根本行差异，Alita对React Native应用有一些基本要求和限制。 除此以外，微信小程序本身就存在一些限制，比如包大小等。对这些限制，希望你有一个足够的了解。这样在使用Alita的过程中就不会出现莫名其妙的错误。
+
+* 详细的说明了Alita转化的限制以及这些限制产生的原因[限制&限制说明](https://areslabs.github.io/alita/%E9%99%90%E5%88%B6&%E9%99%90%E5%88%B6%E8%AF%B4%E6%98%8E.html)
+* 一些尚未实现的组件，主要是平台相关组件，[详见](https://areslabs.github.io/alita/%E6%9C%AA%E5%AE%9E%E7%8E%B0%E7%BB%84%E4%BB%B6%E5%92%8CAPI.html)， 最终我们会提供`alita-ui`3端UI库，来补充这方面的不足。
+* 当你的应用使用了第三方组件 且 此组件Alita不能直接转化，那么需要[手动处理](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
+  
 
 ## Install
 通过npm安装即可
@@ -94,14 +103,7 @@ alita命令有以下参数：
 2. --dev  开发者模式，将监听RN源码修改，生成的文件较大，生产版本请禁用此参数
 3. --config 指定配置文件
 4. --analyzer 输出小程序js大小分布 （以后将会添加完整小程序代码分布）
-
-## 注意事项
-Alita对React Native应用有一些基本要求和限制。 除此以外，微信小程序本身就存在一些限制，比如包大小等。对这些限制，希望你有一个足够的了解。这样在使用Alita的过程中就不会出现莫名其妙的错误。
-
-* 详细的说明了Alita转化的限制以及这些限制产生的原因[限制&限制说明](https://areslabs.github.io/alita/%E9%99%90%E5%88%B6&%E9%99%90%E5%88%B6%E8%AF%B4%E6%98%8E.html)
-* 一些尚未实现的组件，主要是平台相关组件，[详见](https://areslabs.github.io/alita/%E6%9C%AA%E5%AE%9E%E7%8E%B0%E7%BB%84%E4%BB%B6%E5%92%8CAPI.html)， 最终我们会提供`alita-ui`3端UI库，来补充这方面的不足。
-* 当你的应用使用了第三方组件 且 此组件Alita不能直接转化，那么需要[手动处理](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
-   
+ 
 
 ## Examples
 下面是官方提供的RN项目案例，查看小程序效果，请进入相应目录执行` alita --dev ` 
