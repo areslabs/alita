@@ -12,23 +12,41 @@ import child_process from 'child_process'
 
 import chalk from 'chalk'
 
-import configure from '../configure'
+
+const ALITA_CORE_INIT_TEMP_PATH = function(projectName) {
+    return path.resolve(
+        process.cwd(),
+        projectName,
+        'node_modules',
+        '@areslabs',
+        'alita-core',
+        'rn-template'
+    );
+};
+const ALITA_CORE_TS_INIT_TEMP_PATH = function(projectName) {
+    return path.resolve(
+        process.cwd(),
+        projectName,
+        'node_modules',
+        '@areslabs',
+        'alita-core',
+        'rn-typescript-template',
+    );
+};
 
 
 export default function initProject(operands, typescript) {
-    console.log(`  alita init ${typescript ? 'typescript': ''} ...`.info)
+    console.log(chalk.green(`  alita init ${typescript ? 'typescript': ''} ...`))
     const initIndex = operands.indexOf('init')
     const projectName = operands[initIndex + 1]
 
     if (!projectName) {
-        console.log('alita初始化 请指定项目名！'.error)
+        console.log(chalk.red('alita初始化 请指定项目名！'))
         return
     }
 
     const targetpath = path.resolve(projectName)
 
-    const tempDir = path.resolve(__dirname, '..', '..', typescript ? 'rn-typescript-template' : 'rn-template')
-    fse.copySync(tempDir, targetpath)
 
     const appJSPath = path.resolve(targetpath, 'App.js')
     if (fse.existsSync(appJSPath)) {
@@ -37,7 +55,7 @@ export default function initProject(operands, typescript) {
 
 
     const initProPackages = ` @areslabs/router @areslabs/wx-animated `
-    const initProDevPackages = ` ${typescript ? '@types/react-native': ''} @areslabs/alita-weixin-runtime `
+    const initProDevPackages = ` ${typescript ? '@types/react-native': ''} @areslabs/alita-weixin-runtime  @areslabs/alita-core `
 
     if (fse.existsSync(path.resolve(targetpath, 'yarn.lock'))) {
         child_process.execSync(`yarn add ${initProPackages}`, {
@@ -58,6 +76,11 @@ export default function initProject(operands, typescript) {
             stdio: "ignore",
         })
     }
+
+    const tempDir = typescript ? ALITA_CORE_TS_INIT_TEMP_PATH(projectName) : ALITA_CORE_INIT_TEMP_PATH(projectName)
+    fse.copySync(tempDir, targetpath)
+
+
 
     console.log(`${chalk.blue(`  Run instructions for ${chalk.bold('小程序')}`)}:
     • cd ${projectName}

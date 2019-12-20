@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@areslabs/alita-core": "^2.1.1",
     "@areslabs/hello-rn": "^2.0.0",
     "@areslabs/hi-rn": "^2.0.0",
     "@areslabs/router": "^2.0.0",

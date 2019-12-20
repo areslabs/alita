@@ -5,23 +5,34 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "fix": "eslint ./src"
+    "fix": "eslint ./src",
+    "web-start": "webpack-dev-server --config rnw.config.js",
+    "web-build": "webpack --config rnw.config.js",
+    "wx-start": "alita --dev",
+    "wx-build": "alita"
   },
   "dependencies": {
+    "@areslabs/alita-core": "^2.1.1",
     "@areslabs/router": "^2.0.0",
     "@areslabs/wx-animated": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
     "react": "16.8.3",
-    "react-native": "0.59.5"
+    "react-dom": "^16.12.0",
+    "react-native": "0.59.5",
+    "react-native-web": "^0.11.7",
+    "url-loader": "^3.0.0",
+    "webpack-dev-server": "^3.10.1"
   },
   "devDependencies": {
     "@areslabs/alita-weixin-runtime": "^0.0.7",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "eslint": "^5.16.0",
     "babel-jest": "^24.7.1",
+    "eslint": "^5.16.0",
     "jest": "^24.7.1",
     "metro-react-native-babel-preset": "^0.54.0",
-    "react-test-renderer": "16.8.3"
+    "react-test-renderer": "16.8.3",
+    "webpack-cli": "^3.3.10"
   },
   "jest": {
     "preset": "react-native"

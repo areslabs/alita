@@ -1,0 +1,17 @@
+node_modules
+miniprogram_npm
+/lib
+*.idea
+*.iml
+.DS_Store
+
+/docs/_book
+
+yarn.lock
+yarn-error.log
+
+package-lock.json
+sitemap.json
+
+
+wx-dist
