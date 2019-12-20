@@ -42,6 +42,8 @@ export default function funcCompToClassComp(ast, info) {
 
     let comps = new Set([])
 
+    let totalComps = 0
+
     errorLogTraverse(ast, {
         enter: path => {
 
@@ -151,6 +153,9 @@ export default function funcCompToClassComp(ast, info) {
 
                 // @ts-ignore
                 if (isReactComponent(path.node.superClass)) {
+
+                    totalComps ++
+
                     if (path.parentPath.type === 'ExportDefaultDeclaration') {
                         comps.add('default')
                         // @ts-ignore
@@ -203,8 +208,8 @@ export default function funcCompToClassComp(ast, info) {
             // 有默认导出的情况
             if (path.type === 'Program') {
 
-                if (comps.has('default') && comps.size === 2) {
-                    // 有一个组件且有默认导出，特殊处理
+                if (totalComps === 1 && comps.has('default')) {
+                    // 只有一个组件且有默认导出，特殊处理
                     info.outComp = ['default']
                 } else {
                     info.outComp = Array.from(comps)
