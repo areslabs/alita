@@ -15,7 +15,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 <table>
    <tr>
    	    <td>React Native</td>
-   	    <td>微信小程序</td>
+   	    <td>小程序(by Alita)</td>
    	    <td>Web(by react-native-web)</td>
    </tr>
 	<tr>
