@@ -3,12 +3,12 @@
 
 > Alita，战斗天使阿丽塔，原型是《铳梦》中一位不断战斗和自我超越的生化改造少女。
 
-[![npm Version](https://img.shields.io/npm/v/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
+[![npm Version](https://img.shields.io/npm/v/@areslabs/alita-core.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm Downloads](https://img.shields.io/npm/dt/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
-[![npm License](https://img.shields.io/npm/l/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
+[![npm License](https://img.shields.io/npm/l/@areslabs/alita-core.svg)](https://www.npmjs.com/package/@areslabs/alita)
 
 
-Alita是一套React Native代码转换引擎工具。与现有编译时方案不同，Alita对React语法有全新的处理方式，支持在运行时处理React语法，实现了React Native和微信小程序之间的主要组件对齐，可以用简洁、高效的方式把React Native代码转换成微信小程序代码。  
+Alita是一款把React Native运行在小程序平台的工具引擎。与现有编译时方案不同，Alita对React语法有全新的处理方式，支持在运行时处理React语法，实现了React Native和微信小程序之间的主要组件对齐，可以用简洁、高效的方式把React Native代码转换成微信小程序代码。  
 
 Alita不是新的框架，也没有提出新的语法规则，她只做一件事，就是把你的React Native代码运行在微信小程序端。所以Alita的侵入性很低，选用与否，并不会对你的原有React Native开发方式造成太大影响。 
 
@@ -16,10 +16,12 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
    <tr>
    	    <td>React Native</td>
    	    <td>微信小程序</td>
+   	    <td>Web(by react-native-web)</td>
    </tr>
 	<tr>
 		<td><img src="./docs/static/rnalita.gif"/></td>
 		<td><img src="./docs/static/wxalita.gif"/></td>
+		<td><img src="./docs/static/webalita.gif"/></td>
 	</tr>
 </table>
 

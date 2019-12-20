@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/areslabs/alita/compare/2.0.3...2.1.1) (2019-12-20)
+提取alita-core，提取alita-cli， 这样把webpack安装在项目目录下， 方便与react-native-web 集成
+
+### Bug Fixes
+
+* **alita:** 2个组件 + defaut导出 判断错误的bug ([f4635dc](https://github.com/areslabs/alita/commit/f4635dc))
+
+
+
 ## [2.0.3](https://github.com/areslabs/alita/compare/2.0.2...2.0.3) (2019-12-18)
 
 
