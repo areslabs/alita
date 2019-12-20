@@ -39,7 +39,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)
 * [支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
 * 支持`typescript`
-* 不符合Alita语法限制的库，需要手动扩展，扩展方式请[查看](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
+* 不符合Alita语法限制的第三方库，需要手动扩展，扩展方式请[查看](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
 
 ## 注意事项
 由于不同平台的根本行差异，Alita对React Native应用有一些基本要求和限制。 除此以外，微信小程序本身就存在一些限制，比如包大小等。对这些限制，希望你有一个足够的了解。这样在使用Alita的过程中就不会出现莫名其妙的错误。
