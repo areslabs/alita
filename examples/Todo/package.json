@@ -9,6 +9,7 @@
     "fix": "eslint ./src"
   },
   "dependencies": {
+    "@areslabs/alita-core": "^2.1.1",
     "@areslabs/router": "^2.0.0",
     "@areslabs/wx-animated": "^2.0.0",
     "prop-types": "^15.6.2",

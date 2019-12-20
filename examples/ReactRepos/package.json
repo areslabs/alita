@@ -8,6 +8,7 @@
     "fix": "eslint ./src"
   },
   "dependencies": {
+    "@areslabs/alita-core": "^2.1.1",
     "@areslabs/router": "^2.0.0",
     "@areslabs/wx-animated": "^2.0.0",
     "react": "16.8.3",
@@ -17,8 +18,8 @@
     "@areslabs/alita-weixin-runtime": "^0.0.7",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "eslint": "^5.16.0",
     "babel-jest": "^24.7.1",
+    "eslint": "^5.16.0",
     "jest": "^24.7.1",
     "metro-react-native-babel-preset": "^0.54.0",
     "react-test-renderer": "16.8.3"
