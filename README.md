@@ -21,7 +21,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 	<tr>
 		<td><img src="./docs/static/rnalita.gif"/></td>
 		<td><img src="./docs/static/wxalita.gif"/></td>
-		<td><img src="./docs/static/webalita.gif"/></td>
+		<td><img src="./docs/static/webalita.jpg"/></td>
 	</tr>
 </table>
 
