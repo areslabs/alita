@@ -108,15 +108,15 @@ alita命令有以下参数：
 ## Examples
 下面是官方提供的RN项目案例，查看小程序效果，请进入相应目录执行` alita --dev ` 
 
+[HelloWorldRN](https://github.com/areslabs/alita/tree/master/examples/HelloWorldRN), react-native 命令创建的项目
+
 [HelloWorldExpo](https://github.com/areslabs/alita/tree/master/examples/HelloWorldExpo), Expo命令创建的项目
 
-[HelloWorldRN](https://github.com/areslabs/alita/tree/master/examples/HelloWorldRN), react-native 命令创建的项目
+[ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)，集成`react-native-web`，支持RN， 小程序，H5
 
 [Todo(redux实现)](https://github.com/areslabs/alita/tree/master/examples/Todo)，Rudex Todo 项目
 
-[ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)，react-native 列表详情项目案例
-
-[RoomMobx](https://github.com/areslabs/alita/tree/master/examples/RoomMobx) Mobx项目案例
+[RoomMobx(mobx实现)](https://github.com/areslabs/alita/tree/master/examples/RoomMobx) Mobx项目案例
 
 
 ## 配置文件
