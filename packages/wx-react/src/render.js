@@ -162,8 +162,37 @@ function reactEnvWrapper(func) {
     }
 }
 
+/**
+ * 小程序的组件复用逻辑和React有差异
+ *
+ * 比如：小程序wxml
+ * <view>
+ *      <block wx:if="{{bool}}">
+ *          <user/>
+ *       </block>
+ *      <block wx:else>
+ *           <user/>
+ *       </block>
+ * </view>
+ *
+ * React等效代码：
+ *
+ * <view>
+ *     {bool ? <user> : <user>}
+ * <view>
+ *
+ * 当切换bool的值的时候， 小程序的user不会复用， React的user会复用。
+ *
+ * alita只能保证mini-react的复用逻辑和小程序保持一致（基于组件静态位置？？）
+ *
+ * //TODO 对触发不同复用逻辑的情况，给出友好提示
+ *
+ * @param vnode
+ * @param oldData
+ * @returns {*}
+ */
 function getDiuuAndShouldReuse(vnode, oldData) {
-    const { key, nodeName, isTempMap } = vnode
+    const { key, isTempMap } = vnode
 
     const diuuKey = vnode.diuu
     if (!oldData) {
@@ -177,33 +206,19 @@ function getDiuuAndShouldReuse(vnode, oldData) {
     let diuu = null
     let shouldReuse = false
 
-    // 如果是map 返回的最外层元素， 需要判断是否可以复用。
-    // 由于key的存在， 可能出现diuu获取的实例并非nodeName类型的情况
+    // 如果是map 返回的最外层元素， 需要判断是否可以复用。复用基于JSX结构的位置，即tempName的值
     if (key !== undefined && oldData && isTempMap) {
         const od = oldData.diuu
         diuu = oldData[od]
-
-        const inst = instanceManager.getCompInstByUUID(diuu)
-
-        if (!diuu) {
-            // TODO 考虑phblock的情况， 这种情况需要把FlatList等key，赋值给phblock
-            shouldReuse = false
-        } else if (!inst && (nodeName === 'view' || nodeName === 'block' || nodeName === 'image')) {
-            // 前后都是view/image/blcok
-            shouldReuse = true
-        } else if (inst && inst instanceof CPTComponent && typeof nodeName === 'string' && nodeName.endsWith('CPT')) {
-            // 前后都是cpt
-            shouldReuse = true
-        } else if (inst && typeof nodeName === 'function' && inst instanceof nodeName) {
-            shouldReuse = true
-        }
+        shouldReuse = oldData.tempName === vnode.tempName
     }
 
-    // TODO <A/> 是否考虑A是变量的情况， 如果考虑 这里也应该判断类型
     if (!isTempMap && oldData) {
+        // 复用基于位置，即diuuKey的值
         diuu = oldData[diuuKey]
         shouldReuse = !!diuu
     }
+
 
     return {
         diuu,
