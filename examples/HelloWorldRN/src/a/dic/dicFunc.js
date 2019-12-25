@@ -22,9 +22,16 @@ const Z = function () {
     return <Text>ZZ</Text>
 }
 
+class V extends React.Component {
+    render() {
+        return <Text>V</Text>
+    }
+}
+
 export const DF1 = () => {
     return <Text>DF1</Text>
 }
+
 
 export const DF2 = () => <Text>DF2</Text>
 
@@ -32,10 +39,18 @@ export function DF3() {
     return <Text>DF3</Text>
 }
 
+export class DF4 extends React.Component {
+    render() {
+        return <Text>DF4</Text>
+    }
+}
+
+
 
 export default (props) => {
     return <View style={props.style}>
         <X/>
+        <V/>
         <Y/>
         <Z/>
     </View>

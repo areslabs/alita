@@ -30,7 +30,7 @@ import MyStyleComp from './MyStyleComp'
 import PlatformComp from './PlatformComp'
 import MyHoc from './MyHoc'
 
-import {Dic1, Dic21, Dic22, Dic3, Dic31, Dic32, DicFunc, DF3, DF1, DF2} from './dic'
+import {Dic1, Dic21, Dic22, Dic3, Dic31, Dic32, DicFunc, DF3, DF1, DF2, DF4} from './dic'
 
 import styles from './styles';
 import Hi from '@areslabs/hi-rn'

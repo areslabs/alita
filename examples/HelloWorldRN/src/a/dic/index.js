@@ -8,7 +8,7 @@
 
 import Dic1 from './dic1'
 import Dic3 from './dic3'
-import DicFunc, {DF1, DF2,DF3} from './dicFunc'
+import DicFunc, {DF1, DF2,DF3, DF4} from './dicFunc'
 
 export {Dic31, Dic32} from './dic3'
 export {Dic21, Dic22} from './dic2'
@@ -19,5 +19,6 @@ export {
     DicFunc,
     DF2,
     DF3,
-    DF1
+    DF1,
+    DF4
 }
