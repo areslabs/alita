@@ -12,6 +12,7 @@ Alita是一款把React Native运行在小程序平台的工具引擎。与现有
 
 Alita不是新的框架，也没有提出新的语法规则，她只做一件事，就是把你的React Native代码运行在微信小程序端。所以Alita的侵入性很低，选用与否，并不会对你的原有React Native开发方式造成太大影响。 
 
+[ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)展示：
 <table>
    <tr>
    	    <td>React Native</td>
