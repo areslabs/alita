@@ -12,10 +12,11 @@ Alita是一款把React Native运行在小程序平台的工具引擎。与现有
 
 Alita不是新的框架，也没有提出新的语法规则，她只做一件事，就是把你的React Native代码运行在微信小程序端。所以Alita的侵入性很低，选用与否，并不会对你的原有React Native开发方式造成太大影响。 
 
+[ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)展示：
 <table>
    <tr>
    	    <td>React Native</td>
-   	    <td>微信小程序</td>
+   	    <td>小程序(by Alita)</td>
    	    <td>Web(by react-native-web)</td>
    </tr>
 	<tr>
@@ -39,7 +40,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)
 * [支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
 * 支持`typescript`
-* 不符合Alita语法限制的库，需要手动扩展，扩展方式请查看[https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html]
+* 不符合Alita语法限制的第三方库，需要手动扩展，扩展方式请[查看](https://areslabs.github.io/alita/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%BA%93%E6%89%A9%E5%B1%95.html)
 
 ## 注意事项
 由于不同平台的根本行差异，Alita对React Native应用有一些基本要求和限制。 除此以外，微信小程序本身就存在一些限制，比如包大小等。对这些限制，希望你有一个足够的了解。这样在使用Alita的过程中就不会出现莫名其妙的错误。
@@ -108,15 +109,15 @@ alita命令有以下参数：
 ## Examples
 下面是官方提供的RN项目案例，查看小程序效果，请进入相应目录执行` alita --dev ` 
 
+[HelloWorldRN](https://github.com/areslabs/alita/tree/master/examples/HelloWorldRN), react-native 命令创建的项目
+
 [HelloWorldExpo](https://github.com/areslabs/alita/tree/master/examples/HelloWorldExpo), Expo命令创建的项目
 
-[HelloWorldRN](https://github.com/areslabs/alita/tree/master/examples/HelloWorldRN), react-native 命令创建的项目
+[ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)，集成`react-native-web`，支持RN， 小程序，H5
 
 [Todo(redux实现)](https://github.com/areslabs/alita/tree/master/examples/Todo)，Rudex Todo 项目
 
-[ReactRepos](https://github.com/areslabs/alita/tree/master/examples/ReactRepos)，react-native 列表详情项目案例
-
-[RoomMobx](https://github.com/areslabs/alita/tree/master/examples/RoomMobx) Mobx项目案例
+[RoomMobx(mobx实现)](https://github.com/areslabs/alita/tree/master/examples/RoomMobx) Mobx项目案例
 
 
 ## 配置文件
