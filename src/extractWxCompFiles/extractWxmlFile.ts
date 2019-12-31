@@ -1,4 +1,4 @@
-import {getRootPathPrefix} from "../util/util"
+import {RootPrefixPlaceHolader} from "../util/util"
 import * as nodepath from "path";
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
@@ -70,7 +70,7 @@ export const handleChanged = (info, finalJSPath) => {
     }
 
 
-    const utilWxsPath = getRootPathPrefix(finalJSPath) + '/commonwxs.wxs'
+    const utilWxsPath = `${RootPrefixPlaceHolader}/commonwxs.wxs`
 
     templateWxml = `<wxs src="${utilWxsPath}" module="t" />
     ${templateWxml}

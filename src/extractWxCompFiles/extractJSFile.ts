@@ -1,3 +1,5 @@
+import {getRootPathPrefix} from '../util/util'
+
 import configure from "../configure";
 import * as path from "path";
 
@@ -17,8 +19,10 @@ export const handleChanged = (info, finalJSPath) => {
             .replace('.js', '')
             .replace(/\\/g, '/') // win 平台
 
-        const pageCompPath = configure.configObj.subDir.endsWith('/') ? configure.configObj.subDir + projectRelativePath : configure.configObj.subDir  + '/' + projectRelativePath
-        renderCode = `Component(wx.__bridge.WxNormalComp("${pageCompPath}"))`
+        const rootOrSubRootPrefix = getRootPathPrefix(finalJSPath)
+
+        //const pageCompPath = configure.configObj.subDir.endsWith('/') ? configure.configObj.subDir + projectRelativePath : configure.configObj.subDir  + '/' + projectRelativePath
+        renderCode = `require("${rootOrSubRootPrefix}/_rn_");Component(wx.__bridge.WxNormalComp("${projectRelativePath}"))`
     } else {
         renderCode = outCompCode
     }
