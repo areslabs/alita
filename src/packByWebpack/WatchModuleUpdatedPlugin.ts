@@ -1,6 +1,7 @@
 import {setModuleDepsAndChunks} from '../util/cacheModuleInfos'
 
 import {handleChanged, handleDeleted} from '../extractWxCompFiles'
+import copyPackageWxComponents from '../extractWxCompFiles/copyPackageWxComponents'
 
 /**
  * 生成小程序组件 json文件
@@ -50,6 +51,8 @@ export default class WatchModuleUpdatedPlugin {
                 () => {
                     // 设置module deps，chunks，生成小程序json文件会使用到
                     setAllModuleDepsAndChunks(compilation)
+
+                    copyPackageWxComponents()
 
                     hanldeModuleChanged(compilation, handleChanged, handleDeleted)
                 }

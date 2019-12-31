@@ -5,8 +5,7 @@ import configure from "../configure";
 import {getLibPath} from './util'
 
 
-/*组件名和路径映射，方便后续生成小程序json文件*/
-export const compInfos: any = {}
+export const packageInfos: any = {}
 
 /*Text节点，一般来说只要官方的Text组件*/
 export const textComp = new Set(['Text'])
@@ -26,49 +25,36 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
     // 动画组件 AnimatedView 会退化为view
     if (packagePath === '@areslabs/wx-animated') return
 
-    if (!compInfos[packagePath]) {
+    if (!packageInfos[packagePath]) {
         const pajPath =  syncResolve(path.dirname(filepath), `${packagePath}/package.json`)
 
         const json = fse.readJSONSync(pajPath)
 
         if (!json.wxComponents) {
-            compInfos[packagePath] = {}
+            packageInfos[packagePath] = {}
             return
         }
 
-
-        const components = json.wxComponents.components
-
-        const aliasPP = configure.resolve.alias[packagePath] || packagePath
-
-        let wxCompPathRelative = '.'
-        if (json.wxComponents.path) {
-            const wxCompPath = json.wxComponents.path
-            wxCompPathRelative = wxCompPath.startsWith('/') ? "." + wxCompPath : wxCompPath
-            const wxCompTargetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP)
-            if (!fse.existsSync(wxCompTargetPath)) {
-                const sourcePath = path.resolve(path.dirname(pajPath), wxCompPathRelative)
-                const targetPath = path.resolve(configure.outputFullpath, 'npm', aliasPP, wxCompPathRelative)
-                fse.copySync(sourcePath, targetPath)
-            }
+        packageInfos[packagePath] = {
+            dirname: path.dirname(pajPath),
+            aliasPackName: configure.resolve.alias[packagePath] || packagePath,
+            wxComponents: json.wxComponents
         }
 
-        const pathMap = {}
+        const components = json.wxComponents.components
         for(let i = 0; i < components.length; i ++ ) {
 
             const comp = components[i]
 
             const {
                 name,
-                path: comPath,
                 base = true,
                 needOperateChildren,
                 jsxProps,
                 isText
             } = comp
 
-            const finalPath = comPath.startsWith('/') ? `.${comPath}` : comPath
-            pathMap[name] =  path.posix.resolve('/npm', aliasPP, wxCompPathRelative, finalPath)
+
 
             if (needOperateChildren === true) {
                 extChildComp.add(name)
@@ -86,6 +72,5 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
                 textComp.add(name)
             }
         }
-        compInfos[packagePath] = pathMap
     }
 }
