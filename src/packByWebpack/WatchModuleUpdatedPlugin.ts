@@ -1,4 +1,4 @@
-import {setModuleDeps} from '../util/cacheModuleInfos'
+import {setModuleDepsAndChunks} from '../util/cacheModuleInfos'
 
 import {handleChanged, handleDeleted} from '../extractWxCompFiles'
 
@@ -48,8 +48,8 @@ export default class WatchModuleUpdatedPlugin {
             compilation.hooks.additionalChunkAssets.tap(
                 "WatchModuleUpdatedPlugin",
                 () => {
-                    // 设置module deps的文件全路径，生成小程序json文件会使用到
-                    setAllModuleDeps(compilation)
+                    // 设置module deps，chunks，生成小程序json文件会使用到
+                    setAllModuleDepsAndChunks(compilation)
 
                     hanldeModuleChanged(compilation, handleChanged, handleDeleted)
                 }
@@ -58,7 +58,7 @@ export default class WatchModuleUpdatedPlugin {
     }
 }
 
-function setAllModuleDeps(compilation) {
+function setAllModuleDepsAndChunks(compilation) {
     const allModules = {}
     compilation.modules.forEach(m => {
         m.__deps = {}
@@ -76,7 +76,7 @@ function setAllModuleDeps(compilation) {
     })
 
     compilation.modules.forEach(m => {
-        setModuleDeps(m.resource, m.__deps)
+        setModuleDepsAndChunks(m.resource, m.__deps, m.getChunks().map(c => c.name))
     })
 }
 

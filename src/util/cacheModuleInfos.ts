@@ -21,6 +21,8 @@ interface IModuleInfo {
 
     deps?: any,
 
+    chunks?: any,
+
 }
 
 interface IModuleInfos {
@@ -58,12 +60,13 @@ export function setEntryModuleInfo(filepath, entryInfo) {
     moduleInfos[filepath].entryInfo = entryInfo
 }
 
-export function setModuleDeps(filepath, deps) {
+export function setModuleDepsAndChunks(filepath, deps, chunks) {
     if (!moduleInfos[filepath]) {
         moduleInfos[filepath] = {} as IModuleInfo
     }
 
     moduleInfos[filepath].deps = deps
+    moduleInfos[filepath].chunks = chunks
 }
 
 export function getModuleInfo(filepath) {
