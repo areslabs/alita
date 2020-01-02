@@ -12,8 +12,7 @@ import {getRootPathPrefix, miscNameToJSName, RootPrefixPlaceHolader} from "../ut
 
 import configure from '../configure'
 
-export const handleChanged = (module) => {
-    const resource = module.resource
+export const handleChanged = (resource) => {
     const info = getModuleInfo(resource)
 
 
