@@ -93,8 +93,6 @@ const DEFAULTCONFIG = {
 
     entry: './src/index.js',
     output: './wx-dist',
-
-    subDir: '/',
 }
 
 const inputFullpath = path.resolve('.')

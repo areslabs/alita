@@ -17,8 +17,6 @@ interface IConfigObj {
 
     module?: any
 
-    subDir?: string
-
     name?: string
     appid?: string
 

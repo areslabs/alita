@@ -21,7 +21,6 @@ export const handleChanged = (info, finalJSPath) => {
 
         const rootOrSubRootPrefix = getRootPathPrefix(finalJSPath)
 
-        //const pageCompPath = configure.configObj.subDir.endsWith('/') ? configure.configObj.subDir + projectRelativePath : configure.configObj.subDir  + '/' + projectRelativePath
         renderCode = `require("${rootOrSubRootPrefix}/_rn_");Component(wx.__bridge.WxNormalComp("${projectRelativePath}"))`
     } else {
         renderCode = outCompCode
