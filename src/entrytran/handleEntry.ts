@@ -297,7 +297,10 @@ export default function (ast, filepath, webpackContext) {
         subpackages,
         removeModules,
         ensureStatements,
+        allChunks
     } = miscPageInfos(pageInfos, moduleMap)
+
+    configure.allChunks = allChunks
 
     appJSON.pages = pages
     if (subpackages.length > 0) {
@@ -509,6 +512,8 @@ function miscPageInfos(pageInfos, moduleMap) {
     const historyMap = {}
     const pageCompPaths = []
 
+    const allChunks = ['_rn_']
+
     const removeModules = new Set()
 
     for (let i = 0; i < pageInfos.length; i++) {
@@ -544,6 +549,9 @@ function miscPageInfos(pageInfos, moduleMap) {
     const allSubPages = Object.keys(subpages)
     for(let i = 0; i < allSubPages.length; i ++ ) {
         const subpage = allSubPages[i]
+
+        allChunks.push(`${subpage}/_rn_`)
+
         const allComps = subpages[subpage]
 
         const depsStr = allComps.map(comp => `"${moduleMap[comp].source}"`)
@@ -594,6 +602,7 @@ function miscPageInfos(pageInfos, moduleMap) {
         pagePaths,
         historyMap,
         pageCompPaths,
+        allChunks,
     }
 }
 

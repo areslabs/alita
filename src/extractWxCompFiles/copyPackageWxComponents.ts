@@ -38,6 +38,17 @@ export default function () {
                     fse.copySync(sourcePath, targetPath)
                 }
             })
+
+            configure.allChunks.forEach(chunk => {
+                if (!chunks.has(chunk)) {
+                    const chunkDic = chunk === '_rn_' ? '' : chunk.replace('/_rn_', '')
+                    const targetDic = path.resolve(configure.outputFullpath, chunkDic, 'npm', packageInfo.aliasPackName)
+
+                    if (fse.existsSync(targetDic)) {
+                        fse.removeSync(targetDic)
+                    }
+                }
+            })
         }
 
 
@@ -65,7 +76,7 @@ export function getCompPath(chunk, packageName, element) {
 
     if (pathMap[element]) {
 
-        if (chunks.length === 1 && chunks[0] === '_rn_') {
+        if (chunks.size === 1 && chunks.has('_rn_')) {
             return pathMap[element]
         } else {
             return `/${chunk.replace('/_rn_', '')}${pathMap[element]}`
@@ -88,5 +99,5 @@ function getRelativeChunks(moduleInfos, dirname) {
         }
     }
 
-    return Array.from(chunks)
+    return chunks
 }

@@ -42,6 +42,9 @@ interface IConfigure {
 
     // 小程序平台全局对象
     mpGlobalObject: string
+
+    // 由路由subpage属性生成
+    allChunks?: any
 }
 
 const configure = {
