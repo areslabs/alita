@@ -137,11 +137,7 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
         requireAbsolutePath = deepSeekResult.absolutePath
         requireDefault = deepSeekResult.defaultSpecifier
 
-        if (judgeLibPath(source)) {
-            jsonRelativeFiles.add(getLibPath(source))
-        } else {
-            jsonRelativeFiles.add(deepSeekResult.rawAbsolutePath)
-        }
+        jsonRelativeFiles.add(deepSeekResult.rawAbsolutePath)
     }
 
     if (chunk !== '_rn_') {

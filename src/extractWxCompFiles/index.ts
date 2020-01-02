@@ -120,3 +120,26 @@ function expandWithChunks(obj, allChunks) {
     }
     return expandFiles
 }
+
+
+export const handleJSONUpdate = (resource) => {
+
+    const info = getModuleInfo(resource)
+    const finalJSPath = miscNameToJSName(resource).replace(configure.inputFullpath, configure.outputFullpath)
+
+    const newJSONFiles = jsonChanged(resource, info, finalJSPath)
+
+    const newFileKeys = Object.keys(newJSONFiles)
+    // 对改变的文件内容 重新写入
+    for (let i = 0; i < newFileKeys.length; i ++) {
+        const outPath = newFileKeys[i]
+        const outCode = newJSONFiles[outPath]
+
+        const oldOutCode = info.outFiles[outPath]
+
+        if (outCode !== oldOutCode) {
+            fse.writeFileSync(outPath, outCode)
+            info.outFiles[outPath] = outCode
+        }
+    }
+}

@@ -66,6 +66,10 @@ export default function () {
     }
 }
 
+export function isWxComponentPackage(packageName) {
+    return compPathInfos[packageName]
+}
+
 
 export function getCompPath(chunk, packageName, element) {
     if (!compPathInfos[packageName]) {

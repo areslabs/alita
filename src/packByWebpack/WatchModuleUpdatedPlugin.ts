@@ -1,7 +1,12 @@
-import {setModuleDepsAndChunks} from '../util/cacheModuleInfos'
+import * as path from 'path'
+import {setModuleDepsAndChunks, getModuleInfo} from '../util/cacheModuleInfos'
 
-import {handleChanged, handleDeleted} from '../extractWxCompFiles'
-import copyPackageWxComponents from '../extractWxCompFiles/copyPackageWxComponents'
+import {handleChanged, handleDeleted, handleJSONUpdate} from '../extractWxCompFiles'
+import copyPackageWxComponents, {isWxComponentPackage} from '../extractWxCompFiles/copyPackageWxComponents'
+
+import configure from '../configure'
+
+import {getLibPath} from "../util/util";
 
 /**
  * 生成小程序组件 json文件
@@ -30,7 +35,7 @@ export default class WatchModuleUpdatedPlugin {
                         records.chunkModuleIds[chunk.id] = Array.from(
                             chunk.modulesIterable,
                             // @ts-ignore
-                            m => ({id: m.id, resource: m.resource})
+                            m => ({id: m.id, resource: m.resource, chunks: m.getChunks().map(c => c.name)})
                         );
                     }
                 }
@@ -87,14 +92,14 @@ function hanldeModuleChanged(compilation, handleChanged, handleDeleted) {
     const records = compilation.records;
     if (records.hash === compilation.hash) return;
 
-    const allModules = new Set()
+    const allModules = new Map()
     compilation.chunks.forEach(chunk => {
         for (const module of chunk.modulesIterable) {
-            allModules.add(module.resource)
+            allModules.set(module.resource, module.getChunks().map(c => c.name))
         }
     })
 
-    let oldAllModules = new Set()
+    let oldAllModules = new Map()
     if (
         !records.moduleHashs ||
         !records.chunkHashs ||
@@ -105,28 +110,110 @@ function hanldeModuleChanged(compilation, handleChanged, handleDeleted) {
         for (const key of Object.keys(records.chunkHashs)) {
             const chunkId = isNaN(+key) ? key : +key;
 
-            records.chunkModuleIds[chunkId].forEach(({id, resource}) => {
-                oldAllModules.add(resource)
+            records.chunkModuleIds[chunkId].forEach(m => {
+                oldAllModules.set(m.resource, m.chunks)
             })
         }
     }
 
-    compilation.records.changedModules.forEach(handleChanged)
-    allModules.forEach(m => {
-        if (!oldAllModules.has(m) && !compilation.records.changedModules.has(m)) {
+
+    const moduleHasChanged = new Set()
+    const enterOrLeaveMainChunkModules = new Set()
+
+    compilation.records.changedModules.forEach(m => {
+        moduleHasChanged.add(m)
+    })
+    allModules.forEach((newChunks, m)=> {
+        if (compilation.records.changedModules.has(m)) {
+            // 上面已经处理
+            return
+        }
+
+        if (!oldAllModules.has(m)) {
             // new Module
-            handleChanged(m)
+            moduleHasChanged.add(m)
+        } else {
+            const oldChunks = oldAllModules.get(m)
+
+            if (!arrayEqual(oldChunks, newChunks)) {
+                moduleHasChanged.add(m)
+
+                if (oldChunks.length === 1 && oldChunks[0] === '_rn_' || newChunks.length === 1 && newChunks[0] === '_rn_') {
+                    if (m.startsWith(path.resolve(configure.inputFullpath, 'node_modules'))) {
+
+                        const libPath = getLibPath(
+                            m.replace(path.resolve(configure.inputFullpath, 'node_modules') + path.sep, '')
+                                .replace(/\\/g, '/') // for win
+                        )
+
+                        const isWxCompP = isWxComponentPackage(libPath)
+                        if (isWxCompP) {
+                            enterOrLeaveMainChunkModules.add(libPath)
+                        } else {
+                            enterOrLeaveMainChunkModules.add(m)
+                        }
+                    } else {
+                        enterOrLeaveMainChunkModules.add(m)
+                    }
+                }
+            }
         }
     })
 
-    oldAllModules.forEach(m => {
+    moduleHasChanged.forEach(m => {
+        handleChanged(m)
+    })
+
+    oldAllModules.forEach((_, m) => {
         if (!allModules.has(m)) {
             // removed Module
             handleDeleted(m)
         }
     })
 
+
+    if (enterOrLeaveMainChunkModules.size > 0) {
+        const moduleJSONShouldUpdate = new Set()
+        allModules.forEach((_, m) => {
+            const moduleInfo = getModuleInfo(m)
+            if (moduleInfo.jsonRelativeFiles) {
+                moduleInfo.jsonRelativeFiles.forEach(relativeFile => {
+                    if (enterOrLeaveMainChunkModules.has(relativeFile)) {
+                        moduleJSONShouldUpdate.add(m)
+                        return
+                    }
+                })
+            }
+        })
+
+        moduleJSONShouldUpdate.forEach(m => {
+            if (!moduleHasChanged.has(m)) {
+                handleJSONUpdate(m)
+            }
+        })
+    }
+
     // 重置 changedModules 字段
     compilation.records.changedModules = new Set()
     
+}
+
+
+function arrayEqual(arr1, arr2) {
+
+    const arr1Set = new Set(arr1)
+    const arr2Set = new Set(arr2)
+
+    if (arr1Set.size !== arr2Set.size) {
+        return false
+    }
+
+    let result = true
+    arr1Set.forEach(item => {
+        if (!arr2Set.has(item)) {
+            result = false
+        }
+    })
+
+    return result
 }
