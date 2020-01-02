@@ -23,6 +23,8 @@ interface IModuleInfo {
 
     chunks?: any,
 
+    jsonRelativeFiles?: any,
+
 }
 
 interface IModuleInfos {
@@ -75,6 +77,11 @@ export function getModuleInfo(filepath) {
 
 export function updateModuleOutFiles(filepath, outFiles) {
     moduleInfos[filepath].outFiles = outFiles
+}
+
+
+export function setJsonRelativeFiles(filepath, jsonRelativeFiles) {
+    moduleInfos[filepath].jsonRelativeFiles = jsonRelativeFiles
 }
 
 export function getModuleInfos() {

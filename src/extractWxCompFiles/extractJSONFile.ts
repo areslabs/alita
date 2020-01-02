@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import {getModuleInfo} from '../util/cacheModuleInfos'
+import {getModuleInfo, setJsonRelativeFiles} from '../util/cacheModuleInfos'
 import {getLibPath, judgeLibPath} from "../util/util"
 import configure from "../configure";
 
@@ -15,10 +15,12 @@ export const handleChanged = (resouce, info, finalJSPath) => {
 
     const chunks = info.chunks
 
+    const jsonRelativeFiles = new Set()
+
     for(let i = 0; i < chunks.length; i ++ ) {
         const chunk = chunks[i]
 
-        const renderUsingComponents = getUsedCompPaths(resouce, chunk)
+        const renderUsingComponents = getUsedCompPaths(resouce, chunk, jsonRelativeFiles)
 
         for(let i = 0; i < outComp.length; i ++) {
             const name = outComp[i]
@@ -53,12 +55,15 @@ export const handleChanged = (resouce, info, finalJSPath) => {
             newWxOutFiles[filepathWithChunk] = renderJSONStr
         }
     }
+
+
+    setJsonRelativeFiles(resouce, jsonRelativeFiles)
     return newWxOutFiles
 }
 
 
 
-function getUsedCompPaths(resouce, chunk) {
+function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
     const info = getModuleInfo(resouce)
 
@@ -81,7 +86,7 @@ function getUsedCompPaths(resouce, chunk) {
 
         try {
             //TODO getFinalPath参数耦合太紧，切分为各独立函数模块。
-            usedComps[elementKey] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk)
+            usedComps[elementKey] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
         } catch (e) {
             console.log(`${resouce.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
             console.log(e)
@@ -117,18 +122,26 @@ function isRnBaseSkipEle(element, source) {
 }
 
 
-function getFinalPath(element, source, module, info, defaultSpecifier, chunk) {
+function getFinalPath(element, source, module, info, defaultSpecifier, chunk, jsonRelativeFiles) {
 
     let requireAbsolutePath = null
     let requireDefault = true
     if (source === 'react-native') {
         requireAbsolutePath = getCompPath(chunk, source, `WX${element}`)
+        jsonRelativeFiles.add(source)
     } else if (judgeLibPath(source) && source === getLibPath(source) && getCompPath(chunk, source, element)) {
         requireAbsolutePath = getCompPath(chunk, source, element)
+        jsonRelativeFiles.add(source)
     } else {
         const deepSeekResult = deepSeekPath(element, info.deps[source], defaultSpecifier, chunk)
         requireAbsolutePath = deepSeekResult.absolutePath
         requireDefault = deepSeekResult.defaultSpecifier
+
+        if (judgeLibPath(source)) {
+            jsonRelativeFiles.add(getLibPath(source))
+        } else {
+            jsonRelativeFiles.add(deepSeekResult.rawAbsolutePath)
+        }
     }
 
     if (chunk !== '_rn_') {
@@ -161,6 +174,8 @@ function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
     }
 
 
+    const rawAbsolutePath = absolutePath
+
     if (!(info.chunks.length === 1 && info.chunks[0] === '_rn_')) {
         const subpageDir = chunk === '_rn_' ? '': chunk.replace('/_rn_', '')
         absolutePath = absolutePath
@@ -170,6 +185,7 @@ function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
     return {
         absolutePath,
         defaultSpecifier,
+        rawAbsolutePath,
     }
 }
 
