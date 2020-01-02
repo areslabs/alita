@@ -59,39 +59,45 @@ export default function (compPath) {
             const uuid = geneUUID()
             this.data.diuu = uuid
 
-            const CompMySelf =  wx._pageCompMaps[compPath]
+            //const CompMySelf =  wx._pageCompMaps[compPath]
 
-            renderPage(
-                createElement(
-                    CompMySelf,
-                    {
-                        routerParams: paramsObj,
-                        diuu: uuid
-                    },
-                ),
-                this
-            )
+            wx._getCompByPath(compPath)
+                .then((CompMySelf) => {
 
-            const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-            //如果组件还未初始化 didFocus方法，保证执行顺序为： didMount --> didFocus
-            if (compInst.componentDidFocus) {
-                const focusFunc = compInst.componentDidFocus
-                const didMountFunc = compInst.componentDidMount
+                    renderPage(
+                        createElement(
+                            CompMySelf,
+                            {
+                                routerParams: paramsObj,
+                                diuu: uuid
+                            },
+                        ),
+                        this
+                    )
 
-                compInst.componentDidFocus = undefined
-                compInst.componentDidMount = function () {
-                    didMountFunc && didMountFunc.call(compInst)
-                    focusFunc.call(compInst)
-                    compInst.componentDidFocus = focusFunc
-                    compInst.componentDidMount = didMountFunc
-                }
+                    const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
+                    //如果组件还未初始化 didFocus方法，保证执行顺序为： didMount --> didFocus
+                    if (compInst.componentDidFocus) {
+                        const focusFunc = compInst.componentDidFocus
+                        const didMountFunc = compInst.componentDidMount
 
-            }
+                        compInst.componentDidFocus = undefined
+                        compInst.componentDidMount = function () {
+                            didMountFunc && didMountFunc.call(compInst)
+                            focusFunc.call(compInst)
+                            compInst.componentDidFocus = focusFunc
+                            compInst.componentDidMount = didMountFunc
+                        }
+
+                    }
+
+
+                })
         }
 
         o.methods.onShow = function () {
             const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-            compInst.componentDidFocus && unstable_batchedUpdates(() => {
+            compInst && compInst.componentDidFocus && unstable_batchedUpdates(() => {
                 compInst.componentDidFocus()
             })
         }
