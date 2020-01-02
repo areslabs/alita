@@ -9,16 +9,6 @@
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 
-import configure from '../configure'
-
-
-const historyPrefixSet = new Set([
-    'push',
-    'popTo',
-    'popToWithProps',
-    'replace',
-    'switchTab'
-])
 
 export default function (ast) {
     let leftIden = null
@@ -65,16 +55,6 @@ export default function (ast) {
             // 移除动画的注解， 小程序天然支持
             if (path.type === 'Decorator' && path.node.expression && path.node.expression.name === 'AnimationEnable') {
                 path.remove()
-                return
-            }
-
-            // 分包场景 区别同路径的情况
-            if (path.type === 'CallExpression'
-                && path.node.callee.type === 'MemberExpression'
-                && path.node.callee.object.name === 'history'
-                && historyPrefixSet.has(path.node.callee.property.name)
-            ) {
-                path.node.arguments.unshift(t.stringLiteral(configure.configObj.subDir))
                 return
             }
 
