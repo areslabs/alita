@@ -4,6 +4,10 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, TouchableWithoutFeedb
 import {history} from '@areslabs/router'
 import styles from '../a/styles';
 
+import _ from 'lodash'
+
+console.log('_:', _)
+
 export default class C extends Component {
 
     render() {
