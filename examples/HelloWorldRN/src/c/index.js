@@ -6,6 +6,7 @@ import styles from '../a/styles';
 
 import _ from 'lodash'
 
+// 测试分包
 console.log('_:', _)
 
 export default class C extends Component {
