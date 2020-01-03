@@ -161,15 +161,6 @@ function getImagePath(filepath, source) {
         .replace(/\\/g, '/')
 
 
-    const subDir = configure.configObj.subDir
-    if (subDir !== '/') {
-        if (subDir.endsWith('/')) {
-            finals = subDir.substring(0, subDir.length - 1) + finals
-        } else {
-            finals = subDir + finals
-        }
-    }
-
     return finals
 }
 

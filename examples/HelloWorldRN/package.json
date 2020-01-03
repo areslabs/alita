@@ -20,7 +20,7 @@
     "react-native": "0.59.8"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "^0.0.6-5",
+    "@areslabs/alita-weixin-runtime": "^0.0.8",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
     "babel-jest": "^24.8.0",

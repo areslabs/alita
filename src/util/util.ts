@@ -86,6 +86,8 @@ export function getRootPathPrefix(filepath) {
     return rootpath
 }
 
+export const RootPrefixPlaceHolader = "____RootPrefixPlaceHolader____"
+
 
 /**
  * onX

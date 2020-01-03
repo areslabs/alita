@@ -52,9 +52,9 @@ export default class App extends PureComponent {
                 }}
             >
                 <TabRouter text="常见写法" image={faxianPNG} selectedImage={require('../assets/faxianCurrent.png')}>
-                <Route key={"A"} component={A}/>
-                    <Route key={"C"} component={C}/>
-                    <Route key={"E"} component={E}/>
+                    <Route key={"A"} component={A}/>
+                    <Route subpage="sp1" key={"C"} component={C}/>
+                    <Route subpage="sp2" key={"E"} component={E}/>
                 </TabRouter>
 
                 <TabRouter text="RN组件" image={require('../assets/comp_desel.png')} selectedImage={require('../assets/comp_sel.png')}>

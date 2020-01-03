@@ -1,51 +1,71 @@
 import * as path from "path";
 
-import {getModuleInfo} from '../util/cacheModuleInfos'
+import {getModuleInfo, setJsonRelativeFiles} from '../util/cacheModuleInfos'
 import {getLibPath, judgeLibPath} from "../util/util"
 import configure from "../configure";
-import {compInfos} from "../util/getAndStorecompInfos";
+
+import {getCompPath} from './copyPackageWxComponents'
 
 
 
-export const handleChanged = (module, info, finalJSPath) => {
+export const handleChanged = (resouce, info, finalJSPath) => {
 
     const newWxOutFiles = {}
     const {json, outComp} = info.RFInfo
 
-    const renderUsingComponents = getUsedCompPaths(module)
+    const chunks = info.chunks
 
-    for(let i = 0; i < outComp.length; i ++) {
-        const name = outComp[i]
-        if (name === 'default') {
-            continue
-        } else {
-            renderUsingComponents[name] = path.basename(finalJSPath).replace('.js', `${name}`)
+    const jsonRelativeFiles = new Set()
+
+    for(let i = 0; i < chunks.length; i ++ ) {
+        const chunk = chunks[i]
+
+        const renderUsingComponents = getUsedCompPaths(resouce, chunk, jsonRelativeFiles)
+
+        for(let i = 0; i < outComp.length; i ++) {
+            const name = outComp[i]
+            if (name === 'default') {
+                continue
+            } else {
+                renderUsingComponents[name] = path.basename(finalJSPath).replace('.js', `${name}`)
+            }
+        }
+
+        const renderJSON = {
+            ...json,
+            usingComponents: renderUsingComponents
+        }
+
+        let renderJSONStr =  JSON.stringify(renderJSON, null, '\t')
+
+        for(let i = 0; i < outComp.length; i ++) {
+            const name = outComp[i]
+
+            const comppath = (name === 'default' ? finalJSPath.replace('.js', `.json`) : finalJSPath.replace('.js', `${name}.json`))
+            let filepathWithChunk = null
+
+            if (chunk === '_rn_') {
+                filepathWithChunk = comppath
+            } else {
+                const subpageDir = chunk.replace('/_rn_', '')
+                filepathWithChunk = comppath
+                    .replace(configure.outputFullpath, configure.outputFullpath + '/' + subpageDir)
+            }
+
+            newWxOutFiles[filepathWithChunk] = renderJSONStr
         }
     }
 
 
-    const renderJSON = {
-        ...json,
-        usingComponents: renderUsingComponents
-    }
-
-    let renderJSONStr =  JSON.stringify(renderJSON, null, '\t')
-
-    for(let i = 0; i < outComp.length; i ++) {
-        const name = outComp[i]
-
-        const comppath = (name === 'default' ? finalJSPath.replace('.js', `.json`) : finalJSPath.replace('.js', `${name}.json`))
-        newWxOutFiles[comppath] = renderJSONStr
-    }
-
+    setJsonRelativeFiles(resouce, jsonRelativeFiles)
     return newWxOutFiles
 }
 
 
 
-function getUsedCompPaths(module) {
+function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
-    const info = getModuleInfo(module)
+    const info = getModuleInfo(resouce)
 
     const usedComps = {}
 
@@ -58,15 +78,18 @@ function getUsedCompPaths(module) {
 
         const { source, defaultSpecifier} = info.im[element]
         if (isRnBaseSkipEle(element, source)) {
+            // 退化为view的节点，不需要在usingComponents 写明路径
             return
         }
 
         const elementKey = source === 'react-native' ? `WX${element}` : element
 
         try {
-            usedComps[elementKey] = getFinalPath(element, source, module, info, defaultSpecifier )
+            //TODO getFinalPath参数耦合太紧，切分为各独立函数模块。
+            usedComps[elementKey] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
         } catch (e) {
-            console.log(`${module.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
+            console.log(`${resouce.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
+            console.log(e)
         }
 
     })
@@ -99,23 +122,43 @@ function isRnBaseSkipEle(element, source) {
 }
 
 
-function getFinalPath(element, source, module, info, defaultSpecifier) {
+function getFinalPath(element, source, module, info, defaultSpecifier, chunk, jsonRelativeFiles) {
+
+    let requireAbsolutePath = null
+    let requireDefault = true
     if (source === 'react-native') {
-        return compInfos[source][`WX${element}`]
+        requireAbsolutePath = getCompPath(chunk, source, `WX${element}`)
+        requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)//configure.inputFullpath  + (requireAbsolutePath .replace(/\\/g, '/'))
+        jsonRelativeFiles.add(source)
+    } else if (judgeLibPath(source) && source === getLibPath(source) && getCompPath(chunk, source, element)) {
+        requireAbsolutePath = getCompPath(chunk, source, element)
+        requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)
+        jsonRelativeFiles.add(source)
+    } else {
+        const deepSeekResult = deepSeekPath(element, info.deps[source], defaultSpecifier, chunk)
+        requireAbsolutePath = deepSeekResult.absolutePath
+        requireDefault = deepSeekResult.defaultSpecifier
+
+        jsonRelativeFiles.add(deepSeekResult.rawAbsolutePath)
     }
 
-    // import {xx} from 'xx'
-    if (judgeLibPath(source) && source === getLibPath(source) && compInfos[source][element]) {
-        return compInfos[source][element]
+    if (chunk !== '_rn_') {
+        const subpageDir = chunk.replace('/_rn_', '')
+        module = module
+            .replace(configure.inputFullpath, configure.inputFullpath + path.sep + subpageDir)
+
     }
 
-    const absolutePath = info.deps[source]     //syncResolve(path.dirname(filepath), source)
+    let sp = shortPath(requireAbsolutePath, module)
 
-    return deepSeekPath(element, absolutePath, module, defaultSpecifier)
+    if (!requireDefault) {
+        sp += element
+    }
+    return sp
 }
 
 
-function deepSeekPath(element, absolutePath, module, defaultSpecifier) {
+function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
 
     let info = getModuleInfo(absolutePath)
     let im = info.im
@@ -129,12 +172,20 @@ function deepSeekPath(element, absolutePath, module, defaultSpecifier) {
         im = info.im
     }
 
-    let sp = shortPath(absolutePath, module)
 
-    if (!defaultSpecifier) {
-        sp += element
+    const rawAbsolutePath = absolutePath
+
+    if (!(info.chunks.length === 1 && info.chunks[0] === '_rn_')) {
+        const subpageDir = chunk === '_rn_' ? '': chunk.replace('/_rn_', '')
+        absolutePath = absolutePath
+            .replace(configure.inputFullpath, configure.inputFullpath + '/' + subpageDir)
     }
-    return sp
+
+    return {
+        absolutePath,
+        defaultSpecifier,
+        rawAbsolutePath,
+    }
 }
 
 function shortPath(ao, module) {
@@ -149,7 +200,7 @@ function shortPath(ao, module) {
     const backPath = filepathArr.slice(i).map(() => '..').join('/')
     const toPath = aoArr.slice(i).join('/')
 
-    const relativePath = `${backPath || '.'}/${toPath}`
+    const relativePath = `${backPath || '.'}/${toPath}`.replace('node_modules', 'npm')
 
     const absolutePath = ao.replace(configure.inputFullpath, '')
         .replace('node_modules', 'npm')

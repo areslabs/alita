@@ -14,6 +14,8 @@ import WatchModuleUpdatedPlugin from './WatchModuleUpdatedPlugin'
 import ExtractImageFilesPlugin from './ExtractImageFilesPlugin'
 
 import configure from '../configure'
+import miniprogramTarget from  './miniprogramTarget'
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const defaultAlias = {
@@ -67,6 +69,7 @@ const defaultRules = [
 
 const mainFields = ['weixin', 'browser', 'module', 'main']
 const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
+const MagicNumber = 1000000
 export default function packByWebpack() {
 
     const cco = configure.configObj
@@ -136,7 +139,7 @@ export default function packByWebpack() {
             alert: ['react-native', 'alert'],
             requestAnimationFrame: ['react-native', 'requestAnimationFrame'],
             cancelAnimationFrame: ['react-native', 'cancelAnimationFrame'],
-            "_ARR": "@areslabs/regenerator-runtime"
+            "_ARR": "@areslabs/regenerator-runtime",
         }),
 
         new WatchModuleUpdatedPlugin(),
@@ -151,19 +154,48 @@ export default function packByWebpack() {
 
 
     const webpackConfigure = {
-        entry: cco.entry,
+        entry: {
+            "_rn_": cco.entry
+        },
         context: configure.inputFullpath,
 
         output: {
             path: path.resolve(cco.output),
-            filename: '_rn_.js'
+            filename: '[name].js'
         },
 
         mode: configure.dev ? 'development' : 'production',
+
+        target: miniprogramTarget,
+
         optimization: {
             usedExports: true,
+
+            splitChunks: {
+                chunks: 'async',
+                minSize: 1,
+                maxSize: 0,
+                minChunks: MagicNumber,
+                maxAsyncRequests: MagicNumber,
+                maxInitialRequests: MagicNumber,
+                automaticNameDelimiter: '~',
+                name: true,
+                cacheGroups: {
+                    vendors: {
+                        minChunks: MagicNumber,
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10
+                    },
+                    default: {
+                        minChunks: MagicNumber,
+                        priority: -20,
+                        reuseExistingChunk: true
+                    },
+                }
+            }
         },
 
+        //TODO
         devtool: configure.dev ? 'source-map' : "none",
 
         plugins,

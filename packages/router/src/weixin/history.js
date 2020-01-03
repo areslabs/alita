@@ -11,9 +11,8 @@ import { instanceManager } from "@areslabs/wx-react";
 /* eslint-disable-next-line */
 export default history = {
 
-    push(pkname, path, params) {
-        const fpath = `${pkname}${path}`
-        const url = wx._historyConfig[fpath]
+    push(path, params) {
+        const url = wx._historyConfig[path]
 
         let paramStr = ''
         if (params) {
@@ -25,9 +24,8 @@ export default history = {
         })
     },
 
-    replace(pkname, path, params) {
-        const fpath = `${pkname}${path}`
-        const url = wx._historyConfig[fpath]
+    replace(path, params) {
+        const url = wx._historyConfig[path]
 
         let paramStr = ''
         if (params) {
@@ -58,9 +56,8 @@ export default history = {
         return getCurrentPages()
     },
 
-    popTo(pkname, routeName) {
-        const fpath = `${pkname}${routeName}`
-        const url =  wx._historyConfig[fpath].substring(1)
+    popTo(routeName) {
+        const url =  wx._historyConfig[routeName].substring(1)
 
         const routes = this.getCurrentRoutes()
         for(let i = 0; i < routes.length; i++) {
@@ -73,9 +70,8 @@ export default history = {
         }
     },
 
-    popToWithProps(pkname, routeName, newProps) {
-        const fpath = `${pkname}${routeName}`
-        const url =  wx._historyConfig[fpath].substring(1)
+    popToWithProps(routeName, newProps) {
+        const url =  wx._historyConfig[routeName].substring(1)
 
         const routes = this.getCurrentRoutes()
         for(let i = 0; i < routes.length; i++) {
@@ -107,9 +103,8 @@ export default history = {
         }
     },
 
-    switchTab(pkname, path,) {
-        const fpath = `${pkname}${path}`
-        const url = wx._historyConfig[fpath]
+    switchTab(path) {
+        const url = wx._historyConfig[path]
 
         wx.switchTab({
             url,

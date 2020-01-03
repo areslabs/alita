@@ -7,7 +7,7 @@
  */
 
 import * as npath from 'path'
-import traverse from "@babel/traverse"
+import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
 
@@ -33,16 +33,16 @@ export default function (ast, filepath, webpackContext) {
         },
     }
 
-    const historyMap = {}
-    const pageCompPaths = []
 
     const moduleMap = {}
-    const compImportMap = {}
     const pngMap = {}
+
+    const pageInfos = []
+    const tabInfos = []
 
 
     const go = geneOrder()
-    traverse(ast, {
+    errorLogTraverse(ast, {
         enter: path => {
             if (path.type === 'StringLiteral'
                 && isStaticRes((path.node as t.StringLiteral).value)
@@ -63,13 +63,17 @@ export default function (ast, filepath, webpackContext) {
                 const pnode = path.node as t.ImportDeclaration
                 const source = pnode.source.value
                 const rs = getRealSource(source, filepath)
-                pnode.source.value = rs
 
                 const originPath = getOriginPath(rs, filepath)
                 const specifiers = pnode.specifiers
                 specifiers.forEach(spe => {
                     const name = spe.local.name
-                    moduleMap[name] = originPath
+                    moduleMap[name] = {
+                        originPath,
+                        // @ts-ignore
+                        attri: spe.imported ? spe.imported.name:  'default',
+                        source: source,
+                    }//originPath
                 })
 
                 return
@@ -82,20 +86,25 @@ export default function (ast, filepath, webpackContext) {
                 // @ts-ignore
                 const source = path.node.arguments[0].value
                 const rs = getRealSource(source, filepath)
-                // @ts-ignore
-                path.node.arguments[0].value = rs
-
 
                 const originPath = getOriginPath(rs, filepath)
 
                 // @ts-ignore
                 const id = path.parentPath.node.id
                 if (id.type === 'Identifier') {
-                    moduleMap[id.name] = originPath
-                } else  if (id.type === 'ObjectPattern') {
+                    moduleMap[id.name] = {
+                        originPath,
+                        attri: '',
+                        source: source,
+                    }
+                } else if (id.type === 'ObjectPattern') {
                     id.properties.map(pro => {
                         if (pro.type === 'ObjectProperty') {
-                            moduleMap[pro.key.name] = originPath
+                            moduleMap[pro.value.name] = {
+                                originPath,
+                                attri: pro.key.name,
+                                source: source,
+                            }
                         }
                     })
                 }
@@ -127,6 +136,7 @@ export default function (ast, filepath, webpackContext) {
             if (path.type === 'JSXOpeningElement' && path.node.name.name === 'Route') {
                 let compAttri = null
                 let key = null
+                let subpage = null
 
                 const pnode = path.node as t.JSXOpeningElement
                 pnode.attributes.forEach(ele => {
@@ -146,27 +156,39 @@ export default function (ast, filepath, webpackContext) {
                             key = ele.value.value
                         }
                     }
+
+                    if (ele.name.name === 'subpage') {
+
+                        if (ele.value.type === 'JSXExpressionContainer' && ele.value.expression.type === 'StringLiteral') {
+                            subpage = ele.value.expression.value
+                        }
+
+                        if (ele.value.type === 'StringLiteral') {
+                            subpage = ele.value.value
+                        }
+                    }
                 })
 
 
                 const name = compAttri.value.expression.name
-                const projectRelativePath = moduleMap[name]
-                compImportMap[name] = moduleMap[name]
 
-
-                const pageCompPath = configure.configObj.subDir.endsWith('/') ? configure.configObj.subDir + projectRelativePath : configure.configObj.subDir  + '/' + projectRelativePath
-
-                historyMap[configure.configObj.subDir + key]
-                    = pageCompPath
-
-                pageCompPaths.push(t.objectProperty(
-                    t.stringLiteral(pageCompPath),
-                    t.identifier(name)
-                ))
-
-                appJSON.pages.push(projectRelativePath)
+                pageInfos.push({
+                    comp: name,
+                    subpage: subpage,
+                    key: key,
+                })
 
                 pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`)))
+
+                if (subpage) {
+                    // 分包的依赖将会被处理为异步加载，固这里需要处理其引用，以免报错
+                    path.node.name.name = 'view'
+                    path.parentPath.node.closingElement && (path.parentPath.node.closingElement.name.name = 'view')
+
+                    // @ts-ignore
+                    pnode.attributes = pnode.attributes.filter(attri => attri.name.name !== 'component')
+                }
+
                 return
             }
 
@@ -176,17 +198,20 @@ export default function (ast, filepath, webpackContext) {
                 // @ts-ignore
                 const children = pp.node.children
 
-                let initRoute = null
+                let initKey = null
                 for(let i = 0; i< children.length; i++) {
                     const child = children[i]
                     if (child.type === 'JSXElement' && child.openingElement.name.name === 'Route') {
                         const oe = child.openingElement
-                        const compAttri = oe.attributes.filter(ele => ele.name.name === 'component')[0]
-                        const name = compAttri.value.expression.name
-                        const projectRelativePath = moduleMap[name].replace('.comp', '') // 组件的.comp 后缀需要移除
-                        compImportMap[name] = moduleMap[name]
+                        const keyAttr = oe.attributes.filter(ele => ele.name.name === 'key')[0]
 
-                        initRoute = projectRelativePath
+                        if (keyAttr.value.type === 'JSXExpressionContainer' && keyAttr.value.expression.type === 'StringLiteral') {
+                            initKey = keyAttr.value.expression.value
+                        }
+
+                        if (keyAttr.value.type === 'StringLiteral') {
+                            initKey = keyAttr.value.value
+                        }
 
                         break
                     }
@@ -195,7 +220,7 @@ export default function (ast, filepath, webpackContext) {
 
 
                 const tabBarElement: any = {
-                    pagePath: initRoute,
+                    initKey: initKey,
                 }
 
                 const pnode = path.node as t.JSXOpeningElement
@@ -217,11 +242,7 @@ export default function (ast, filepath, webpackContext) {
                     }
                 })
 
-
-                appJSON.tabBar = appJSON.tabBar || {}
-                appJSON.tabBar.list = appJSON.tabBar.list || []
-                appJSON.tabBar.list.push(tabBarElement)
-
+                tabInfos.push(tabBarElement)
                 pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`)))
 
                 return
@@ -261,7 +282,33 @@ export default function (ast, filepath, webpackContext) {
         }
     })
 
-    traverse(ast, {
+    const tabBarList = getTabbarList(tabInfos, pageInfos, moduleMap)
+    if (tabBarList.length > 0) {
+        appJSON.tabBar = {
+            list: tabBarList,
+        }
+    }
+
+    const {
+        historyMap,
+        pageCompPaths,
+        pagePaths,
+        pages,
+        subpackages,
+        removeModules,
+        ensureStatements,
+        allChunks
+    } = miscPageInfos(pageInfos, moduleMap)
+
+    configure.allChunks = allChunks
+
+    appJSON.pages = pages
+    if (subpackages.length > 0) {
+        appJSON.subpackages = subpackages
+    }
+
+
+    errorLogTraverse(ast, {
 
         exit: path => {
             if (path.type === 'ExportDefaultDeclaration') {
@@ -279,6 +326,30 @@ export default function (ast, filepath, webpackContext) {
                     ])
                 )
             }
+
+            if (path.type === 'ImportDeclaration') {
+                const pnode = path.node as t.ImportDeclaration
+                const source = pnode.source.value
+
+                if (removeModules.has(source)) {
+                    path.remove()
+                }
+
+                return
+            }
+
+            if (path.type === 'CallExpression' && path.node.callee.type === 'Identifier' && path.node.callee.name === 'require'
+            ) {
+                // @ts-ignore
+                const source = path.node.arguments[0].value
+
+                if (removeModules.has(source)) {
+                    path.parentPath.parentPath.remove()
+                }
+
+                return
+            }
+
 
             // module.exports = A => const RNAppClass = A
             if (path.type === 'AssignmentExpression'
@@ -323,26 +394,35 @@ export default function (ast, filepath, webpackContext) {
                 // be lazy
                 pnode.body.push(
                     t.expressionStatement(
-                        t.identifier(`wx._historyConfig = {...(wx._historyConfig || {}), ...${JSON.stringify(historyMap, null)}}`)
+                        t.identifier(`wx._historyConfig = ${JSON.stringify(historyMap, null)}`)
                     )
                 )
 
                 // be lazy
+                pnode.body.push(t.expressionStatement(t.assignmentExpression(
+                    '=',
+                    t.identifier('wx._pageCompMaps'),
+                    t.objectExpression(pageCompPaths)
+                )))
 
-                pnode.body.push(t.variableDeclaration(
-                    'const',
-                    [
-                        t.variableDeclarator(
-                            t.identifier('__pageCompPath'),
-                            t.objectExpression(pageCompPaths)
-                        )
-                    ]
-                ))
+
                 pnode.body.push(
                     t.expressionStatement(
-                        t.identifier(`wx._pageCompMaps = {...(wx._pageCompMaps || {}), ...__pageCompPath}`)
+                        t.identifier(`wx._getCompByPath = function(path) {
+                        return new Promise((resolve) =>{
+        if (wx._pageCompMaps[path]) {
+            resolve(wx._pageCompMaps[path])
+        } else {
+            wx._pageCompMaps[path] = resolve
+        }
+    })
+                        }`)
                     )
                 )
+
+                ensureStatements.forEach(state => {
+                    pnode.body.push(state)
+                })
             }
         }
     })
@@ -354,10 +434,9 @@ export default function (ast, filepath, webpackContext) {
 
     return {
         entryAst: ast,
-        allCompSet: new Set(Object.keys(compImportMap).map(key => compImportMap[key]))
+        allCompSet: new Set(pagePaths)
     }
 }
-
 
 function getOriginPath(source, filepath) {
     const originPath = npath
@@ -400,3 +479,130 @@ export function getFinalSource(filepath, source) {
 
     return source
 }
+
+function getTabbarList(tabInfos, pageInfos, moduleMap) {
+    const tabBarList = []
+    for (let i = 0; i < tabInfos.length; i++) {
+        const tabInfo = tabInfos[i]
+
+        const initKey = tabInfo.initKey
+        const initCompInfo = pageInfos.filter(info => info.key === initKey)[0]
+
+        // tab页必需在主包
+        initCompInfo.subpage = null
+
+
+        const projectRelativePath = moduleMap[initCompInfo.comp].originPath
+
+        tabBarList.push({
+            pagePath: projectRelativePath,
+            text: tabInfo.text,
+            iconPath: tabInfo.iconPath,
+            selectedIconPath: tabInfo.selectedIconPath
+        })
+    }
+
+    return tabBarList
+}
+
+function miscPageInfos(pageInfos, moduleMap) {
+    const pages = []
+    const subpages = {}
+    const pagePaths = []
+    const historyMap = {}
+    const pageCompPaths = []
+
+    const allChunks = ['_rn_']
+
+    const removeModules = new Set()
+
+    for (let i = 0; i < pageInfos.length; i++) {
+        const info = pageInfos[i]
+        const {comp, subpage, key} = info
+
+        const projectRelativePath = moduleMap[comp].originPath
+        pagePaths.push(projectRelativePath)
+
+        if (!subpage) {
+            pages.push(projectRelativePath)
+            historyMap[key] = `/${projectRelativePath}`
+
+            pageCompPaths.push(t.objectProperty(
+                t.stringLiteral(projectRelativePath),
+                t.identifier(comp)
+            ))
+        } else {
+            if (!subpages[subpage]) {
+                subpages[subpage] = []
+            }
+
+            subpages[subpage].push(comp)
+            removeModules.add(moduleMap[comp].source)
+            historyMap[key] = `/${subpage}/${projectRelativePath}`
+        }
+    }
+
+
+    const ensureStatements = []
+    const subpackages = []
+
+    const allSubPages = Object.keys(subpages)
+    for(let i = 0; i < allSubPages.length; i ++ ) {
+        const subpage = allSubPages[i]
+
+        allChunks.push(`${subpage}/_rn_`)
+
+        const allComps = subpages[subpage]
+
+        const depsStr = allComps.map(comp => `"${moduleMap[comp].source}"`)
+            .join(',')
+
+        let requireStr = allComps.map(comp => {
+            const {source, attri} = moduleMap[comp]
+
+            return `var ${comp} = require("${source}")${attri ? `.${attri}`: ''}`
+        }).join(';')
+
+
+        const pageCompResolve = allComps.map(comp => {
+            return `
+            compOrResolve = wx._pageCompMaps["${moduleMap[comp].originPath}"];
+            if (typeof compOrResolve === "function") {
+                compOrResolve(${comp});
+            };
+            wx._pageCompMaps["${moduleMap[comp].originPath}"] = ${comp};
+            `
+        }).join(';')
+
+
+        let callbackStr = `(require) => {${requireStr}; 
+        var compOrResolve;
+        
+        ${pageCompResolve}}`
+
+        let chunkName = `"${subpage}/_rn_"`
+
+        const ensureStatement = t.expressionStatement(t.identifier(`require.ensure([${depsStr}], ${callbackStr}, ${chunkName});`))
+
+        ensureStatements.push(ensureStatement)
+
+        subpackages.push({
+            root: subpage,
+            name: subpage,
+            pages: allComps.map(comp => moduleMap[comp].originPath)
+        })
+    }
+
+
+    return {
+        pages,
+        subpackages,
+        ensureStatements,
+        removeModules,
+        pagePaths,
+        historyMap,
+        pageCompPaths,
+        allChunks,
+    }
+}
+

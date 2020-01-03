@@ -8,12 +8,12 @@ import {handleChanged as wxmlChanged} from './extractWxmlFile'
 import {handleChanged as jsChanged} from './extractJSFile'
 import {handleChanged as jsonChanged} from './extractJSONFile'
 import {handleChanged as entryChanged} from './extractEntryFile'
-import {miscNameToJSName} from "../util/util";
+import {getRootPathPrefix, miscNameToJSName, RootPrefixPlaceHolader} from "../util/util";
 
 import configure from '../configure'
 
-export const handleChanged = (module) => {
-    const info = getModuleInfo(module)
+export const handleChanged = (resource) => {
+    const info = getModuleInfo(resource)
 
 
     let newFiles = null
@@ -22,19 +22,28 @@ export const handleChanged = (module) => {
     } else if (!info.isRF) {
         newFiles = {}
     } else {
-        const finalJSPath = miscNameToJSName(module).replace(configure.inputFullpath, configure.outputFullpath)
+        const finalJSPath = miscNameToJSName(resource).replace(configure.inputFullpath, configure.outputFullpath)
+
+
 
         const newWxssFiles = wxssChanged(info, finalJSPath)
         const newWxmlFiles = wxmlChanged(info, finalJSPath)
         const newJSFiles = jsChanged(info, finalJSPath)
-        const newJSONFiles = jsonChanged(module, info, finalJSPath)
 
-        newFiles = {
+
+        newFiles = expandWithChunks({
             ...newWxssFiles,
             ...newWxmlFiles,
             ...newJSFiles,
+        }, info.chunks)
+
+        // JSON文件的产生规则特殊，不能统一用expandWithChunks处理
+        const newJSONFiles = jsonChanged(resource, info, finalJSPath)
+        newFiles = {
+            ...newFiles,
             ...newJSONFiles
         }
+
     }
 
     const oldFiles = info.outFiles || {}
@@ -63,11 +72,11 @@ export const handleChanged = (module) => {
         }
     }
 
-    updateModuleOutFiles(module, newFiles)
+    updateModuleOutFiles(resource, newFiles)
 }
 
-export const handleDeleted = (module) => {
-    const info = getModuleInfo(module)
+export const handleDeleted = (resource) => {
+    const info = getModuleInfo(resource)
     const outFiles = info.outFiles || {}
 
     const allKeys = Object.keys(outFiles)
@@ -77,4 +86,60 @@ export const handleDeleted = (module) => {
     }
 
     info.outFiles = {}
+}
+
+
+function expandWithChunks(obj, allChunks) {
+
+    const expandFiles = {}
+
+    for(let i = 0; i < allChunks.length; i ++ ) {
+        const chunk = allChunks[i]
+
+        const allpaths = Object.keys(obj)
+        for(let j = 0; j < allpaths.length; j ++ ) {
+            const filepath = allpaths[j]
+
+
+            let filepathWithChunk = null
+            if (chunk === '_rn_') {
+                filepathWithChunk = filepath
+            } else {
+                const subpageDir = chunk.replace('/_rn_', '')
+                filepathWithChunk = filepath
+                    .replace(configure.outputFullpath, configure.outputFullpath + '/' + subpageDir)
+            }
+
+
+            const rootPrefix = getRootPathPrefix(filepathWithChunk)
+            const fileStr = obj[filepath].replace( new RegExp(RootPrefixPlaceHolader, 'g'), rootPrefix)
+
+            expandFiles[filepathWithChunk] = fileStr
+
+        }
+    }
+    return expandFiles
+}
+
+
+export const handleJSONUpdate = (resource) => {
+
+    const info = getModuleInfo(resource)
+    const finalJSPath = miscNameToJSName(resource).replace(configure.inputFullpath, configure.outputFullpath)
+
+    const newJSONFiles = jsonChanged(resource, info, finalJSPath)
+
+    const newFileKeys = Object.keys(newJSONFiles)
+    // 对改变的文件内容 重新写入
+    for (let i = 0; i < newFileKeys.length; i ++) {
+        const outPath = newFileKeys[i]
+        const outCode = newJSONFiles[outPath]
+
+        const oldOutCode = info.outFiles[outPath]
+
+        if (outCode !== oldOutCode) {
+            fse.writeFileSync(outPath, outCode)
+            info.outFiles[outPath] = outCode
+        }
+    }
 }

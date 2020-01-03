@@ -17,8 +17,6 @@ interface IConfigObj {
 
     module?: any
 
-    subDir?: string
-
     name?: string
     appid?: string
 
@@ -39,8 +37,17 @@ interface IConfigure {
     allCompSet?: any
 
     analyzer?: boolean
+
+    // 小程序平台全局对象
+    mpGlobalObject: string
+
+    // 由路由subpage属性生成
+    allChunks?: any
 }
 
-const configure = {} as IConfigure
+const configure = {
+    // TODO 可配置,适配其他小程序
+    mpGlobalObject: "wx"
+} as IConfigure
 
 export default configure

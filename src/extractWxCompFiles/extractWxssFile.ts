@@ -1,4 +1,4 @@
-import {getRootPathPrefix} from "../util/util"
+import {RootPrefixPlaceHolader} from "../util/util"
 
 
 export const handleChanged = (info, finalJSPath) => {
@@ -14,8 +14,9 @@ export const handleChanged = (info, finalJSPath) => {
                 : finalJSPath.replace(".js", `${name}.wxss`)
         );
 
-        const pageCommonPath = getRootPathPrefix(finalJSPath) + "/pageCommon.wxss"
-        const compCommonPath = getRootPathPrefix(finalJSPath) + "/compCommon.wxss"
+
+        const pageCommonPath = `${RootPrefixPlaceHolader}/pageCommon.wxss`
+        const compCommonPath = `${RootPrefixPlaceHolader}/compCommon.wxss`;
 
         let wxssCode = null
         if (name === 'default' && isPageComp) {
