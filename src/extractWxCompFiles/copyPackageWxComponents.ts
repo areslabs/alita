@@ -96,7 +96,7 @@ function getRelativeChunks(moduleInfos, dirname) {
     for(let i = 0; i < allModuleRes.length; i ++) {
         const res = allModuleRes[i]
 
-        if (res.includes(`${dirname}/`)) {
+        if (res.includes(`${dirname}${path.sep}`)) {
             moduleInfos[res].chunks.forEach(c => {
                 chunks.add(c)
             })

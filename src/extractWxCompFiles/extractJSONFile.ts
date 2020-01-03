@@ -128,9 +128,11 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
     let requireDefault = true
     if (source === 'react-native') {
         requireAbsolutePath = getCompPath(chunk, source, `WX${element}`)
+        requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)//configure.inputFullpath  + (requireAbsolutePath .replace(/\\/g, '/'))
         jsonRelativeFiles.add(source)
     } else if (judgeLibPath(source) && source === getLibPath(source) && getCompPath(chunk, source, element)) {
         requireAbsolutePath = getCompPath(chunk, source, element)
+        requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)
         jsonRelativeFiles.add(source)
     } else {
         const deepSeekResult = deepSeekPath(element, info.deps[source], defaultSpecifier, chunk)
@@ -143,7 +145,8 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
     if (chunk !== '_rn_') {
         const subpageDir = chunk.replace('/_rn_', '')
         module = module
-            .replace(configure.inputFullpath, configure.inputFullpath + '/' + subpageDir)
+            .replace(configure.inputFullpath, configure.inputFullpath + path.sep + subpageDir)
+
     }
 
     let sp = shortPath(requireAbsolutePath, module)
