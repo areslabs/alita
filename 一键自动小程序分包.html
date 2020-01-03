@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Text · GitBook</title>
+        <title>一键自动小程序分包 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="组件差异-Image.html" />
+    <link rel="next" href="小程序体积优化.html" />
     
     
-    <link rel="prev" href="组件差异.html" />
+    <link rel="prev" href="已有项目集成.html" />
     
 
     </head>
@@ -265,7 +265,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.8.1" data-path="组件差异-Text.html">
+        <li class="chapter " data-level="1.8.1" data-path="组件差异-Text.html">
             
                 <a href="组件差异-Text.html">
             
@@ -426,7 +426,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.14" data-path="一键自动小程序分包.html">
+        <li class="chapter active" data-level="1.14" data-path="一键自动小程序分包.html">
             
                 <a href="一键自动小程序分包.html">
             
@@ -553,7 +553,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Text</a>
+        <a href="." >一键自动小程序分包</a>
     </h1>
 </div>
 
@@ -568,29 +568,29 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="text">Text</h2>
-<ul>
-<li><p>numberOfLines &#x6700;&#x597D;&#x548C; height &#x914D;&#x5408;&#x4F7F;&#x7528;&#xFF0C;&#x5426;&#x5219;&#x53EF;&#x80FD;&#x4F1A;&#x51FA;&#x73B0;&#x6587;&#x5B57;&#x663E;&#x793A;&#x4E0D;&#x5168;&#x3002;</p>
-</li>
-<li><p>Text &#x6807;&#x7B7E;&#x7684;&#x5B50;&#x5143;&#x7D20;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x53D8;&#x91CF;&#xFF0C;&#x90A3;&#x4E48;&#x8FD9;&#x4E2A;&#x53D8;&#x91CF;&#x9700;&#x8981;&#x4E3A; &#x7B80;&#x5355;&#x7C7B;&#x578B;</p>
-<p> &#x5408;&#x6CD5;</p>
+                                <h2 id="&#x4E00;&#x952E;&#x81EA;&#x52A8;&#x5206;&#x5305;">&#x4E00;&#x952E;&#x81EA;&#x52A8;&#x5206;&#x5305;</h2>
+<p>Alita&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x5206;&#x5305;&#x662F;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#x7684;&#xFF0C;&#x5047;&#x5B9A;&#x6709;&#x5982;&#x4E0B;&#x9875;&#x9762;&#xFF1A; </p>
 <pre><code class="lang-javascript">
- x = 1  
-
- &lt;Text&gt;
-     &lt;Text&gt;{x}&lt;/Text&gt;
- &lt;/Text&gt;
+&lt;Router&gt;
+    &lt;Route key={&quot;A&quot;} component={A}/&gt;
+    &lt;Route key={&quot;B&quot;} component={B}/&gt;
+    &lt;Route key={&quot;C&quot;} component={C}/&gt;
+    &lt;Route key={&quot;D&quot;} component={D}/&gt;
+    &lt;Route key={&quot;E&quot;} component={E}/&gt;
+&lt;/Router&gt;
 </code></pre>
-<p> &#x975E;&#x6CD5;</p>
+<p>&#x5982;&#x82E5;&#x60F3;&#x628A;B&#xFF0C;C&#x5206;&#x4E3A;&#x4E00;&#x4E2A;&#x5305;&#xFF0C; D&#xFF0C; E&#x5206;&#x4E3A;&#x4E00;&#x4E2A;&#x5305;&#x3002;</p>
+<p>&#x90A3;&#x4E48;&#x53EA;&#x9700;&#xFF1A; </p>
 <pre><code class="lang-javascript">
-  x = &lt;Text&gt;1&lt;/Text&gt;
-
-   &lt;Text&gt;
-     {1}
-   &lt;/Text&gt;
+&lt;Router&gt;
+    &lt;Route key={&quot;A&quot;} component={A}/&gt;
+    &lt;Route subpage=&quot;sp1&quot; key={&quot;B&quot;} component={B}/&gt;
+    &lt;Route subpage=&quot;sp1&quot; key={&quot;C&quot;} component={C}/&gt;
+    &lt;Route subpage=&quot;sp2&quot; key={&quot;D&quot;} component={D}/&gt;
+    &lt;Route subpage=&quot;sp2&quot; key={&quot;E&quot;} component={E}/&gt;
+&lt;/Router&gt;
 </code></pre>
-</li>
-</ul>
+<p>&#x6CE8;&#x610F;&#xFF1A; Tab&#x9875;&#x65E0;&#x8BBA;&#x600E;&#x4E48;&#x914D;&#x7F6E;<code>subpage</code> &#x90FD;&#x5C5E;&#x4E8E;&#x4E3B;&#x5305;</p>
 
                                 
                                 </section>
@@ -618,12 +618,12 @@
 
             
                 
-                <a href="组件差异.html" class="navigation navigation-prev " aria-label="Previous page: 组件差异">
+                <a href="已有项目集成.html" class="navigation navigation-prev " aria-label="Previous page: 已有项目集成">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="组件差异-Image.html" class="navigation navigation-next " aria-label="Next page: Image">
+                <a href="小程序体积优化.html" class="navigation navigation-next " aria-label="Next page: 小程序体积优化">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -634,7 +634,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Text","level":"1.8.1","depth":2,"next":{"title":"Image","level":"1.8.2","depth":2,"path":"组件差异-Image.md","ref":"./组件差异-Image.md","articles":[]},"previous":{"title":"组件差异","level":"1.8","depth":1,"path":"组件差异.md","ref":"./组件差异.md","articles":[{"title":"Text","level":"1.8.1","depth":2,"path":"组件差异-Text.md","ref":"./组件差异-Text.md","articles":[]},{"title":"Image","level":"1.8.2","depth":2,"path":"组件差异-Image.md","ref":"./组件差异-Image.md","articles":[]},{"title":"ScrollView","level":"1.8.3","depth":2,"path":"组件差异-ScrollView.md","ref":"./组件差异-ScrollView.md","articles":[]},{"title":"FlatList","level":"1.8.4","depth":2,"path":"组件差异-FlatList.md","ref":"./组件差异-FlatList.md","articles":[]},{"title":"TouchableXXX","level":"1.8.5","depth":2,"path":"组件差异-TouchableXXX.md","ref":"./组件差异-TouchableXXX.md","articles":[]},{"title":"TextInput","level":"1.8.6","depth":2,"path":"组件差异-TextInput.md","ref":"./组件差异-TextInput.md","articles":[]},{"title":"待续...","level":"1.8.7","depth":2,"ref":"","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"组件差异-Text.md","mtime":"2019-12-20T03:03:02.182Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-01-03T08:27:58.838Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"一键自动小程序分包","level":"1.14","depth":1,"next":{"title":"小程序体积优化","level":"1.15","depth":1,"path":"小程序体积优化.md","ref":"./小程序体积优化.md","articles":[]},"previous":{"title":"已有项目集成","level":"1.13","depth":1,"path":"已有项目集成.md","ref":"./已有项目集成.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"一键自动小程序分包.md","mtime":"2020-01-03T08:11:06.159Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-01-03T08:27:58.838Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
