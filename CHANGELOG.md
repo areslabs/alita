@@ -1,3 +1,30 @@
+## [2.2.1](https://github.com/areslabs/alita/compare/2.0.3...2.2.1) (2020-01-03)
+
+
+### Bug Fixes
+
+* **alita:** 2个组件 + defaut导出 判断错误的bug ([f4635dc](https://github.com/areslabs/alita/commit/f4635dc))
+* **alita:** 传递路径给extract** ，修改认为传递来的是对象的bug ([44b77ab](https://github.com/areslabs/alita/commit/44b77ab))
+* **alita:** 修复window平台下 usingComponents路径错误 ([efe12c1](https://github.com/areslabs/alita/commit/efe12c1))
+* **wx-react:** 修复复用逻辑的bug ([1e6d9c1](https://github.com/areslabs/alita/commit/1e6d9c1))
+
+
+### Features
+
+* **alita:** add webpack mini-program target ([9c7ea8b](https://github.com/areslabs/alita/commit/9c7ea8b))
+* **alita:** version 2.20 ([228620d](https://github.com/areslabs/alita/commit/228620d))
+* **alita:** watch模式下 保证chunk变化的时候，组件usingCOmponent关系正确 ([1f78b78](https://github.com/areslabs/alita/commit/1f78b78))
+* **alita:** watch模式下，wxComponent 目录的删除 ([707110e](https://github.com/areslabs/alita/commit/707110e))
+* **alita:** webpack入口 添加splitChunks用来分async包，添加miniprogramTarget ([f92a0f8](https://github.com/areslabs/alita/commit/f92a0f8))
+* **alita:** 入口文件添加 subpage 分包处理逻辑 ([4f0044f](https://github.com/areslabs/alita/commit/4f0044f))
+* **alita:** 分chunk生成小程序文件 ([b5d5ffb](https://github.com/areslabs/alita/commit/b5d5ffb))
+* **alita:** 根据chunk  copy wxComponents目录，并提供getCompPath 方法 ([44d735e](https://github.com/areslabs/alita/commit/44d735e))
+* **alita:** 添加module chunks字段 ([402f81e](https://github.com/areslabs/alita/commit/402f81e))
+* **alita:** 添加收集模块的jsonRelativeFiles信息 ([8b23d81](https://github.com/areslabs/alita/commit/8b23d81))
+* **wx-react:** 增加对异步分包模式的支持 ([bef4e72](https://github.com/areslabs/alita/commit/bef4e72))
+
+
+
 ## [2.1.1](https://github.com/areslabs/alita/compare/2.0.3...2.1.1) (2019-12-20)
 提取alita-core，提取alita-cli， 这样把webpack安装在项目目录下， 方便与react-native-web 集成
 
