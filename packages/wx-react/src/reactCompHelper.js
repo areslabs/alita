@@ -19,10 +19,17 @@ export default function reactCompHelper(obj) {
         const rawData = this.data
         Object.defineProperty(this, 'data', {
             get: function () {
-                const  compInst = instanceManager.getCompInstByUUID(rawData.diuu);
-                return {
-                    ...rawData,
-                    ...compInst.props
+
+                // 当FlatList SectionList等继承PureComponent/Component组件存在的时候，其销毁是在react过程就完成的
+                // 这里detached调用this.data.diuu 会导致这里的compInst为null
+                const compInst = instanceManager.getCompInstByUUID(rawData.diuu);
+                if (!compInst) {
+                    return rawData
+                } else {
+                    return {
+                        ...rawData,
+                        ...compInst.props
+                    }
                 }
             },
         })
