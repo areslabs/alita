@@ -120,6 +120,8 @@ function hanldeModuleChanged(compilation, handleChanged, handleDeleted) {
     const moduleHasChanged = new Set()
     const enterOrLeaveMainChunkModules = new Set()
 
+    // all module failed?
+    compilation.records.changedModules = compilation.records.changedModules || new Set()
     compilation.records.changedModules.forEach(m => {
         moduleHasChanged.add(m)
     })
