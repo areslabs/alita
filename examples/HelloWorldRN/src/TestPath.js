@@ -5,7 +5,7 @@ import { Button, ScrollView, StyleSheet, Text, View, TouchableWithoutFeedback, D
 
 class TestPath extends Component {
     render() {
-        return (<Text>Inner</Text>)
+        return (<Text>TestPath</Text>)
     }
 }
 

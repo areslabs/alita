@@ -15,5 +15,10 @@ module.exports = {
         alias: {
             "@areslabs/stringutil-rn": "@areslabs/stringutil-wx",
         }
+    },
+
+
+    componentPaths: {
+        "TestPath": "/src/TestPath.js"
     }
 }

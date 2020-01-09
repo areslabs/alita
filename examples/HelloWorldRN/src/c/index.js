@@ -6,6 +6,11 @@ import styles from '../a/styles';
 
 import _ from 'lodash'
 
+import tp from '../TestPath'
+
+const TestPath = tp.comp
+
+
 // 测试分包
 console.log('_:', _)
 
@@ -40,6 +45,8 @@ export default class C extends Component {
                         }}
                     />
                 </View>
+
+                <TestPath/>
                 
             </View>
 
