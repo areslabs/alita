@@ -21,7 +21,9 @@ interface IConfigObj {
     appid?: string
 
     exclude?: any,
-    include?: any
+    include?: any,
+
+    componentPaths?: any,
 }
 
 interface IConfigure {

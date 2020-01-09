@@ -4,7 +4,7 @@ import {getModuleInfo, setJsonRelativeFiles} from '../util/cacheModuleInfos'
 import {getLibPath, judgeLibPath} from "../util/util"
 import configure from "../configure";
 
-import {getCompPath} from './copyPackageWxComponents'
+import {getCompPath, getRealPackChunks} from './copyPackageWxComponents'
 
 
 
@@ -72,7 +72,14 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
     info.JSXElements.forEach(element => {
 
         if (!info.im[element]) {
-            usedComps[element] = `./${element}`
+            // 非import/required组件，有两种情况，1：本文件声明了此组件， 2：组件在其他文件，引入方式非法
+            if (configure.configObj.componentPaths && configure.configObj.componentPaths[element]) {
+                const globalPath = configure.configObj.componentPaths[element]
+                usedComps[element] = getGlobalChunkPath(globalPath, chunk, resouce, jsonRelativeFiles)
+            } else {
+                // 这里假定所有都是 本文件声明了组件
+                usedComps[element] = `./${element}`
+            }
             return
         }
 
@@ -213,6 +220,47 @@ function shortPath(ao, module) {
     // remove ext
     return shortPath.replace(`.wx${extname}`, '')
         .replace(extname, '')
+}
+
+function getGlobalChunkPath(globalPath, chunk, resouce, jsonRelativeFiles) {
+
+    let subpageDir = ''
+    if (chunk !== '_rn_') {
+        subpageDir = chunk.replace('/_rn_', '')
+        resouce = resouce
+            .replace(configure.inputFullpath, configure.inputFullpath + path.sep + subpageDir)
+    }
+
+    let absoluteGlobalPath = null
+    if (judgeLibPath(globalPath)) {
+        const libPath = getLibPath(globalPath)
+        jsonRelativeFiles.add(libPath)
+
+        const chunks = getRealPackChunks(libPath)
+
+        if (chunks.size === 1 && chunks.has('_rn_')) {
+            absoluteGlobalPath = path.resolve(configure.inputFullpath, 'npm', globalPath)
+        } else {
+            absoluteGlobalPath = path.resolve(configure.inputFullpath, subpageDir, 'npm', globalPath)
+        }
+    } else {
+
+        absoluteGlobalPath = path.resolve(configure.inputFullpath, '.' + globalPath)
+
+        jsonRelativeFiles.add(absoluteGlobalPath)
+
+        const chunks = getModuleInfo(absoluteGlobalPath).chunks
+
+        if (chunks.length === 1 && chunks[0] === '_rn_') {
+            // do nothing
+        } else {
+            absoluteGlobalPath = absoluteGlobalPath.replace(configure.inputFullpath, configure.inputFullpath + path.sep + subpageDir)
+        }
+    }
+
+
+    return shortPath(absoluteGlobalPath, resouce)
+
 }
 
 

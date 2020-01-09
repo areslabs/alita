@@ -7,6 +7,8 @@ import configure from '../configure'
 
 const compPathInfos = {}
 
+const realPackChunks = {}
+
 export default function () {
 
     const allKeys = Object.keys(packageInfos)
@@ -20,6 +22,8 @@ export default function () {
         }
 
         const chunks = getRelativeChunks(getModuleInfos(), packageInfo.dirname)
+        realPackChunks[packageInfo.aliasPackName] = chunks
+
 
         let wxCompPathRelative = ''
         if (packageInfo.wxComponents.path) {
@@ -86,6 +90,10 @@ export function getCompPath(chunk, packageName, element) {
             return `/${chunk.replace('/_rn_', '')}${pathMap[element]}`
         }
     }
+}
+
+export function getRealPackChunks(realPackName) {
+    return realPackChunks[realPackName]
 }
 
 
