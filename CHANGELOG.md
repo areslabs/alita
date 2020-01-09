@@ -1,3 +1,18 @@
+## [2.2.2](https://github.com/areslabs/alita/compare/2.2.1...2.2.2) (2020-01-09)
+
+
+### Bug Fixes
+
+* **alita:** 修复当webpack没有module successed成功的时候，报错行为 ([e5a8879](https://github.com/areslabs/alita/commit/e5a8879))
+* **wx-react:** 修复FlatList，SectionList组件销毁时报错 ([3b1d381](https://github.com/areslabs/alita/commit/3b1d381)), closes [#47](https://github.com/areslabs/alita/issues/47)
+
+
+### Features
+
+* **alita:** 添加 componentPaths 配置项， 兜底处理未找到路径的组件 ([676aabb](https://github.com/areslabs/alita/commit/676aabb))
+
+
+
 ## [2.2.1](https://github.com/areslabs/alita/compare/2.0.3...2.2.1) (2020-01-03)
 
 
