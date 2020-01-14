@@ -16,7 +16,7 @@ import {LoaderTmpResult} from './interfaces'
 import configure from "../configure";
 import {isReactComponent, parseCode} from "../util/uast"
 
-import {setModuleInfo} from '../util/cacheModuleInfos'
+import {getModuleInfo, setModuleInfo} from '../util/cacheModuleInfos'
 import {getLibCompInfos} from "../util/getAndStorecompInfos";
 import {judgeLibPath} from "../util/util";
 
@@ -40,6 +40,11 @@ export default function (this: webpack.loader.LoaderContext,  context: string): 
 
     const {isEntry, isRF, isFuncComp, imports, exports, JSXElements} = getFileInfo(ast, filepath)
 
+    const moduleInfo = getModuleInfo(filepath)
+    if (moduleInfo) {
+        checkImports(moduleInfo.im, imports, filepath)
+    }
+
     setModuleInfo(filepath, imports, exports, isRF, isEntry, JSXElements)
 
     return {
@@ -48,6 +53,19 @@ export default function (this: webpack.loader.LoaderContext,  context: string): 
         isRF,
         isFuncComp,
         rawCode: context
+    }
+}
+
+function checkImports(oldIm, newIm, filepath) {
+    const oldKeys = Object.keys(oldIm)
+
+    for(let i = 0; i < oldKeys.length; i ++ ) {
+        const k = oldKeys[i]
+        if (newIm[k]) {
+            if (oldIm[k].source !== newIm[k].source) {
+                console.log(`${filepath.replace(configure.inputFullpath, '')} 检测到 ${k} 导入路径改变 ${oldIm[k].source} --> ${newIm[k].source} ，\n若 ${k}是组件，可能出现usingComponents路径错误，需要重新执行 alita --dev`.warn)
+            }
+        }
     }
 }
 
