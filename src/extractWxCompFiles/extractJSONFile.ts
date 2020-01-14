@@ -73,12 +73,17 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
         if (!info.im[element]) {
             // 非import/required组件，有两种情况，1：本文件声明了此组件， 2：组件在其他文件，引入方式非法
-            if (configure.configObj.componentPaths && configure.configObj.componentPaths[element]) {
+
+            // 本文件声明了此组件
+            if (info.RFInfo.outComp.includes(element)) {
+                usedComps[element] = `./${element}`
+            } else if (configure.configObj.componentPaths && configure.configObj.componentPaths[element]) {
+                // 全局声明
+
                 const globalPath = configure.configObj.componentPaths[element]
                 usedComps[element] = getGlobalChunkPath(globalPath, chunk, resouce, jsonRelativeFiles)
             } else {
-                // 这里假定所有都是 本文件声明了组件
-                usedComps[element] = `./${element}`
+                console.log(`${resouce.replace(configure.inputFullpath, '')} : 组件${element} 搜索路径失败！`.error)
             }
             return
         }
