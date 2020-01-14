@@ -9,9 +9,7 @@
 import * as t from "@babel/types"
 import * as webpack from 'webpack'
 
-import handleModules from './handleModules'
-import handleMisc from './handleMisc'
-
+import baseMisc from './baseMisc'
 
 export default function (ast: t.Node, filepath: string, webpackContext: webpack.loader.LoaderContext): t.Node {
     const info = {
@@ -19,8 +17,7 @@ export default function (ast: t.Node, filepath: string, webpackContext: webpack.
         webpackContext,
     }
 
-    ast = handleMisc(ast, info)
-    ast = handleModules(ast, info)
+    ast = baseMisc(ast, info)
 
     return ast
 }

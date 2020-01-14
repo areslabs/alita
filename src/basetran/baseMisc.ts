@@ -7,7 +7,8 @@
  */
 
 import * as npath from 'path'
-import traverse from '@babel/traverse'
+import errorLogTraverse from '../util/ErrorLogTraverse'
+
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
 import {RNCOMPSET} from "../constants";
@@ -39,7 +40,7 @@ const backToViewNode = new Set([
 export default function (ast, info) {
     const {filepath} = info
 
-    traverse(ast, {
+    errorLogTraverse(ast, {
         exit: path => {
             // import 定义 React
             if (path.type === 'ImportDeclaration'
@@ -142,6 +143,14 @@ export default function (ast, info) {
 
                     return
                 }
+            }
+
+
+            // 移除动画的注解， 小程序天然支持
+            // @ts-ignore
+            if (path.type === 'Decorator' && path.node.expression && path.node.expression.name === 'AnimationEnable') {
+                path.remove()
+                return
             }
         }
     })
