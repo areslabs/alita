@@ -196,7 +196,7 @@ export default function packByWebpack() {
         },
 
         //TODO
-        devtool: configure.dev ? 'source-map' : "none",
+        devtool: configure.dev ? 'cheap-source-map' : "none",
 
         plugins,
 
