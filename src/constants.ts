@@ -40,33 +40,6 @@ export const RNCOMPSET = new Set([
     */
 ])
 
-/**
- * 分平台组件暂时不在小程序支持
- * @type {Set}
- */
-export const RNNOTSUPPORTCOMP = new Set([
-     'DatePickerIOS',
-     'DrawerLayoutAndroid',
-     'KeyboardAvoidingView',
-     'MaskedViewIOS',
-     'NavigatorIOS',
-     'PickerIOS',
-     'ProgressBarAndroid',
-     'ProgressViewIOS',
-     'SegmentedControlIOS',
-     'SnapshotViewIOS',
-     'StatusBar',
-     'TabBarIOS',
-     'TabBarIOS.Item',
-     'ToolbarAndroid',
-     'ViewPagerAndroid',
-     'VirtualizedList',
-     'DatePickerAndroid',
-     'DrawerAndroid',
-     'Animated',
-     'TimePickerAndroid',
-     'ToastAndroid',
-])
 
 export const supportExtname = new Set([
     '.js',
