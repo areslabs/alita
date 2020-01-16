@@ -39,11 +39,3 @@ export const RNCOMPSET = new Set([
     'TouchableWithoutFeedback',
     */
 ])
-
-
-export const supportExtname = new Set([
-    '.js',
-    '.jsx',
-    '.ts',
-    '.tsx'
-])

@@ -8,7 +8,6 @@
 
 import * as path from 'path'
 import * as fse from 'fs-extra'
-import { supportExtname } from '../constants'
 
 import configure from '../configure'
 
@@ -125,13 +124,9 @@ export function emptyDir(dir, ignoreArr) {
 export function miscNameToJSName(filepath) {
     const extname = path.extname(filepath)
 
-    if (supportExtname.has(extname)) {
-        return filepath.replace(extname, '.js')
-            .replace('.wx.js', '.js')
-            .replace('node_modules', 'npm')
-    } else {
-        return filepath.replace('node_modules', 'npm')
-    }
+    return filepath.replace(extname, '.js')
+        .replace('.wx.js', '.js')
+        .replace('node_modules', 'npm')
 }
 
 
