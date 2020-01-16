@@ -4,6 +4,8 @@ import {syncResolve} from './myResolve'
 import configure from "../configure";
 import {getLibPath} from './util'
 
+import {RNCOMPSET} from '../constants'
+
 
 export const packageInfos: any = {}
 
@@ -42,6 +44,14 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
         }
 
         const components = json.wxComponents.components
+
+        if (packagePath === 'react-native') {
+            components.forEach(comp => {
+                RNCOMPSET.add(comp.name.substring(2))
+            })
+        }
+
+
         for(let i = 0; i < components.length; i ++ ) {
 
             const comp = components[i]

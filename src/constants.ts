@@ -14,21 +14,8 @@ export const ChildTemplateDataKeyPrefix = "CTDK" // inner spread attribute prefi
 
 export const ChildTemplateNamePrefix = "CTNP"
 
-export const RNCOMPSET = new Set([
-    'Button',
-    'FlatList',
-    'Modal',
-    'Picker',
-    'PickerItem',
-    'RefreshControl',
-    'ScrollView',
-    'SectionList',
-    'Slider',
-    'Switch',
-    'TextInput',
-    'WebView',
-])
-
+// 由 ./util/getAndStorecompInfos 根据package.json相关配置构造
+export const RNCOMPSET = new Set([])
 
 //退化为小程序view的RN组件
 export const backToViewNode = new Set([
