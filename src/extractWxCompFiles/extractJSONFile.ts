@@ -6,6 +6,8 @@ import configure from "../configure";
 
 import {getCompPath, getRealPackChunks} from './copyPackageWxComponents'
 
+import {backToViewNode} from '../constants'
+
 
 
 export const handleChanged = (resouce, info, finalJSPath) => {
@@ -110,27 +112,7 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 }
 
 function isRnBaseSkipEle(element, source) {
-
-    if (source === 'react-native' && (
-        element === 'View'
-        || element === 'Text'
-        || element === 'TouchableWithoutFeedback'
-        || element === 'TouchableOpacity'
-        || element === 'TouchableHighlight'
-        || element === 'Image'
-    )) {
-        return true
-    }
-
-    if (source === '@areslabs/wx-animated' && (
-        element === 'AnimatedView'
-        || element === 'AnimatedImage'
-        || element === 'AnimatedText'
-    )) {
-        return true
-    }
-
-    return false
+    return (source === 'react-native' || source === '@areslabs/wx-animated') && backToViewNode.has(element)
 }
 
 

@@ -27,15 +27,18 @@ export const RNCOMPSET = new Set([
     'Switch',
     'TextInput',
     'WebView',
+])
 
 
-    /** 退化为view的基本组件
+//退化为小程序view的RN组件
+export const backToViewNode = new Set([
+    'View',
+    'TouchableWithoutFeedback',
+    'TouchableOpacity',
+    'TouchableHighlight',
     'Image',
     'Text',
-    'TextInner',
-    'View',
-    'TouchableHighlight',
-    'TouchableOpacity',
-    'TouchableWithoutFeedback',
-    */
+    'AnimatedView',
+    'AnimatedImage',
+    'AnimatedText'
 ])

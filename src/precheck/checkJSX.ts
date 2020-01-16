@@ -8,7 +8,7 @@
 
 import traverse from "@babel/traverse"
 import * as t from '@babel/types'
-import {RNCOMPSET} from '../constants'
+import {RNCOMPSET, backToViewNode} from '../constants'
 import {printError, printWarn} from './util'
 
 import {jsxPropsMap, allBaseComp} from '../util/getAndStorecompInfos'
@@ -111,16 +111,6 @@ const notSupportJSXElementAttris = {
     //TODO 补充。。。
 }
 
-const backToView = new Set([
-    'Image',
-    'Text',
-    'TextInner',
-    'View',
-    'TouchableHighlight',
-    'TouchableOpacity',
-    'TouchableWithoutFeedback',
-])
-
 /**
  *  在转化之前，提前check一次代码，并对错误给出友好提示。
  *
@@ -168,7 +158,7 @@ export default function checkJSX(ast, filepath, rawCode) {
                     const importedName = item.imported.name
                     const localName = item.local.name
 
-                    if ((RNCOMPSET.has(importedName) || backToView.has(importedName)) && importedName !== localName) {
+                    if ((RNCOMPSET.has(importedName) || backToViewNode.has(importedName)) && importedName !== localName) {
                         printError(filepath, path, rawCode, `导入RN组件的时候，不能使用import {xx as yy} 写法`)
 
                     }
@@ -255,7 +245,7 @@ export default function checkJSX(ast, filepath, rawCode) {
         JSXSpreadAttribute: (path) => {
             // @ts-ignore
             const elementName = path.parentPath.node.name.name
-            if (allBaseComp.has(elementName) ||  backToView.has(elementName)) {
+            if (allBaseComp.has(elementName) ||  backToViewNode.has(elementName)) {
                 printError(filepath, path, rawCode, `基本组件不支持属性展开`)
 
             }
