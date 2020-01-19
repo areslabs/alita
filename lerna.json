@@ -1,0 +1,18 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "message": "chore(release): publish",
+      "registry": "http://registry.npmjs.org"
+    },
+    "bootstrap": {
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
+    }
+  },
+  "version": "2.3.0"
+}
