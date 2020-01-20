@@ -4,9 +4,7 @@
   "description": "alita weixin miniprogram runtime",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "pub-beta": "npm publish --tag=beta --registry http://registry.npmjs.org",
-    "pub": "npm publish --registry http://registry.npmjs.org"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@areslabs/regenerator-runtime": "file:../regenerator-runtime",

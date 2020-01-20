@@ -9,10 +9,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
-    "pub-beta": "npm run build && npm publish --tag=beta --registry http://registry.npmjs.org",
-    "pub": "npm run build && npm publish --registry http://registry.npmjs.org",
-    "link": "npm run build && sudo npm link"
+    "build": "rollup -c"
   },
   "author": "",
   "license": "MIT"

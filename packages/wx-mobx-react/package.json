@@ -9,10 +9,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
-    "pub-beta": "npm run build && npm publish --tag=beta",
-    "pub": "npm run build && npm publish",
-    "link": "npm run build && sudo npm link"
+    "build": "rollup -c"
   },
   "author": "yankang (https://github.com/ykforerlang)",
   "license": "MIT"

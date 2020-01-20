@@ -13,10 +13,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c && cp -R ./src/native/ ./dist/native && cp -R ./src/web ./dist/web",
-    "pub-beta": "npm run build && npm publish --tag=beta --registry http://registry.npmjs.org",
-    "pub": "npm run build && npm publish --registry http://registry.npmjs.org",
-    "link": "npm run build && sudo npm link"
+    "build": "rollup -c && cp -R ./src/native/ ./dist/native && cp -R ./src/web ./dist/web"
   },
   "author": "",
   "license": "MIT",

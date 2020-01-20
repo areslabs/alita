@@ -1,11 +1,11 @@
 {
   "name": "root",
   "scripts": {
-    "eslint": "eslint .",
-    "fix": "eslint . --fix",
     "doc": "gitbook build ./docs ../docsTmp && git checkout gh-pages && cp -r ../docsTmp/* ./ && rm -fr ../docsTmp",
     "doc:serve": "gitbook serve ./docs",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "pub": "lerna publish --exact",
+    "pub-alpha": "lerna publish --exact --pre-dist-tag alpha"
   },
   "authors": [
     "yankang (https://github.com/ykforerlang)",
