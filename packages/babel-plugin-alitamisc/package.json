@@ -8,7 +8,7 @@
     "build": "rollup -c"
   },
   "files": [
-    "lib",
+    "dist",
     "package.json"
   ],
   "author": "yankang (https://github.com/ykforerlang)",
