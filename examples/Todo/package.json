@@ -9,7 +9,6 @@
     "fix": "eslint ./src"
   },
   "dependencies": {
-    "@areslabs/alita-core": "^2.1.1",
     "@areslabs/router": "^2.0.0",
     "@areslabs/wx-animated": "^2.0.0",
     "prop-types": "^15.6.2",
@@ -23,7 +22,7 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "^0.0.7",
+    "@areslabs/alita-weixin-runtime": "^2.3.2",
     "@babel/core": "^7.4.3",
     "@babel/runtime": "^7.4.3",
     "babel-jest": "^24.7.1",
