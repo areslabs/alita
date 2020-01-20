@@ -22,7 +22,7 @@
     "test": "echo '正在补充测试用例。。。' && jest",
     "eslint": "eslint .",
     "fix": "eslint . --fix",
-    "compiler": "babel src --out-dir lib --extensions \".js,.ts\"",
+    "build": "babel src --out-dir lib --extensions \".js,.ts\"",
     "link": "npm run compiler && sudo npm link",
     "pub-beta": "rm -fr lib && npm run compiler && npm publish --tag=beta --registry http://registry.npmjs.org",
     "pub": "rm -fr lib && npm run compiler && npm publish --registry http://registry.npmjs.org"

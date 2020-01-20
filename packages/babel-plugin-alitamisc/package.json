@@ -2,10 +2,10 @@
   "name": "@areslabs/babel-plugin-alitamisc",
   "version": "0.0.1",
   "description": "babel-plugin-alitamisc",
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compiler": "babel src --out-dir lib --extensions \".js,.ts\"",
+    "build": "rollup -c",
     "pub": "npm run compiler && npm publish"
   },
   "files": [
