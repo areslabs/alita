@@ -5,7 +5,8 @@
     "doc:serve": "gitbook serve ./docs",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "pub": "lerna publish --exact",
-    "pub-alpha": "lerna publish --exact --pre-dist-tag alpha"
+    "pub-alpha": "lerna publish --exact --pre-dist-tag alpha",
+    "build": "lerna run build"
   },
   "authors": [
     "yankang (https://github.com/ykforerlang)",
