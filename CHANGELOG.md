@@ -1,3 +1,7 @@
+# [](https://github.com/areslabs/alita/compare/v2.3.2...v) (2020-01-20)
+改用[lerna](https://github.com/lerna/lerna)统一管理
+
+
 ## [2.2.4](https://github.com/areslabs/alita/compare/2.2.3...2.2.4) (2020-01-16)
 
 
