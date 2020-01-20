@@ -1,21 +1,20 @@
 {
   "name": "@areslabs/alita-weixin-runtime",
-  "version": "0.0.8",
+  "version": "2.3.1-alpha.2",
   "description": "alita weixin miniprogram runtime",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "pub-beta": "npm publish --tag=beta --registry http://registry.npmjs.org",
-    "pub": "npm publish --registry http://registry.npmjs.org"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@areslabs/regenerator-runtime": "0.0.1",
-    "@areslabs/wx-react": "^2.0.0",
-    "@areslabs/wx-react-native": "^2.0.0",
-    "@areslabs/wx-prop-types": "^2.0.0",
-    "@areslabs/wx-mobx-react": "^2.0.0",
-    "@areslabs/wx-react-redux": "^2.0.0",
-    "@areslabs/wx-redux-promise": "^2.0.0"
+    "@areslabs/alita-core": "file:../alita-core",
+    "@areslabs/regenerator-runtime": "file:../regenerator-runtime",
+    "@areslabs/wx-mobx-react": "file:../wx-mobx-react",
+    "@areslabs/wx-prop-types": "file:../wx-prop-types",
+    "@areslabs/wx-react": "file:../wx-react",
+    "@areslabs/wx-react-native": "file:../wx-react-native",
+    "@areslabs/wx-react-redux": "file:../wx-react-redux",
+    "@areslabs/wx-redux-promise": "file:../wx-redux-promise"
   },
   "author": "yankang (https://github.com/ykforerlang)",
   "license": "MIT"

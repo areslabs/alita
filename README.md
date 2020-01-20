@@ -6,6 +6,7 @@
 [![npm Version](https://img.shields.io/npm/v/@areslabs/alita-core.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm Downloads](https://img.shields.io/npm/dt/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm License](https://img.shields.io/npm/l/@areslabs/alita-core.svg)](https://www.npmjs.com/package/@areslabs/alita)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 
 Alita是一款把React Native运行在小程序平台的工具引擎。与现有编译时方案不同，Alita对React语法有全新的处理方式，支持在运行时处理React语法，实现了React Native和微信小程序之间的主要组件对齐，可以用简洁、高效的方式把React Native代码转换成微信小程序代码。  

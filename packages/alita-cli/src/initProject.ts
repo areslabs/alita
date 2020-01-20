@@ -55,7 +55,7 @@ export default function initProject(operands, typescript) {
 
 
     const initProPackages = ` @areslabs/router @areslabs/wx-animated `
-    const initProDevPackages = ` ${typescript ? '@types/react-native': ''} @areslabs/alita-weixin-runtime  @areslabs/alita-core `
+    const initProDevPackages = ` ${typescript ? '@types/react-native': ''} @areslabs/alita-weixin-runtime `
 
     if (fse.existsSync(path.resolve(targetpath, 'yarn.lock'))) {
         child_process.execSync(`yarn add ${initProPackages}`, {

@@ -1,15 +1,14 @@
 {
   "name": "@areslabs/babel-plugin-alitamisc",
-  "version": "0.0.1",
+  "version": "2.3.1-alpha.1",
   "description": "babel-plugin-alitamisc",
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compiler": "babel src --out-dir lib --extensions \".js,.ts\"",
-    "pub": "npm run compiler && npm publish"
+    "build": "rollup -c"
   },
   "files": [
-    "lib",
+    "dist",
     "package.json"
   ],
   "author": "yankang (https://github.com/ykforerlang)",
@@ -17,18 +16,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/types": "^7.7.4",
     "@babel/helper-builder-react-jsx": "^7.7.4",
     "@babel/helper-plugin-utils": "^7.0.0",
-    "@babel/plugin-syntax-jsx": "^7.7.4"
+    "@babel/plugin-syntax-jsx": "^7.7.4",
+    "@babel/types": "^7.7.4"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0-0"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4"
-  }
+  "license": "MIT"
 }
