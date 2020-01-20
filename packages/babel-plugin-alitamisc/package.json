@@ -17,18 +17,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/types": "^7.7.4",
     "@babel/helper-builder-react-jsx": "^7.7.4",
     "@babel/helper-plugin-utils": "^7.0.0",
-    "@babel/plugin-syntax-jsx": "^7.7.4"
+    "@babel/plugin-syntax-jsx": "^7.7.4",
+    "@babel/types": "^7.7.4"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0-0"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4"
-  }
+  "license": "MIT"
 }

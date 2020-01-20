@@ -33,16 +33,5 @@
     "chalk": "^3.0.0",
     "fs-extra": "^7.0.0",
     "getopts": "^2.2.3"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/cli": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-typescript": "^7.7.4",
-    "@types/fs-extra": "^8.0.1",
-    "@types/node": "^12.12.11",
-    "@types/webpack": "^4.41.0",
-    "babel-jest": "^24.8.0",
-    "jest": "^24.8.0"
   }
 }

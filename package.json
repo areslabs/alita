@@ -11,5 +11,38 @@
     "yankang (https://github.com/ykforerlang)",
     "liuyan (https://github.com/YvetteLau)"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@areslabs/alita": "file:packages/alita-cli",
+    "@areslabs/alita-core": "file:packages/alita-core",
+    "@areslabs/alita-weixin-runtime": "file:packages/alita-weixin-runtime",
+    "@areslabs/babel-plugin-alitamisc": "file:packages/babel-plugin-alitamisc",
+    "@areslabs/eslint-plugin-alita": "file:packages/eslint-plugin-alita",
+    "@areslabs/regenerator-runtime": "file:packages/regenerator-runtime",
+    "@areslabs/router": "file:packages/router",
+    "@areslabs/wx-animated": "file:packages/wx-animated",
+    "@areslabs/wx-eventemitter": "file:packages/wx-eventemitter",
+    "@areslabs/wx-mobx-react": "file:packages/wx-mobx-react",
+    "@areslabs/wx-prop-types": "file:packages/wx-prop-types",
+    "@areslabs/wx-react": "file:packages/wx-react",
+    "@areslabs/wx-react-native": "file:packages/wx-react-native",
+    "@areslabs/wx-react-redux": "file:packages/wx-react-redux",
+    "@areslabs/wx-redux-promise": "file:packages/wx-redux-promise"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-typescript": "^7.7.4",
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^12.12.11",
+    "@types/webpack": "^4.41.0",
+    "babel-jest": "^24.8.0",
+    "eslint": "^5.14.1",
+    "jest": "^24.8.0",
+    "mocha": "^3.1.2",
+    "rollup-plugin-babel": "^4.3.3"
+  }
 }

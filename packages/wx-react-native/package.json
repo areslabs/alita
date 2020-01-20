@@ -17,10 +17,6 @@
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "rollup-plugin-babel": "^4.3.3"
-  },
   "wxComponents": {
     "path": "wxComponents",
     "components": [

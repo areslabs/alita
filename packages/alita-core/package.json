@@ -34,10 +34,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@areslabs/babel-plugin-alitamisc": "^0.0.1",
+    "@areslabs/babel-plugin-alitamisc": "file:../babel-plugin-alitamisc",
     "@babel/code-frame": "^7.5.5",
-    "@babel/plugin-transform-regenerator": "^7.0.0",
     "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
     "@babel/traverse": "^7.1.6",
     "@babel/types": "^7.1.6",
     "babel-loader": "^8.0.6",
@@ -51,16 +51,6 @@
     "loader-utils": "^1.2.3",
     "webpack": "^4.41.2",
     "webpack-bundle-analyzer": "^3.6.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-typescript": "^7.7.4",
-    "@types/fs-extra": "^8.0.1",
-    "@types/node": "^12.12.11",
-    "@types/webpack": "^4.41.0",
-    "babel-jest": "^24.8.0",
-    "jest": "^24.8.0"
   },
   "publishConfig": {
     "access": "public"

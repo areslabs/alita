@@ -17,10 +17,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.1",
-    "rollup-plugin-babel": "^4.3.3"
-  }
+  "license": "MIT"
 }

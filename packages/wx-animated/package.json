@@ -17,12 +17,6 @@
     "pub": "npm run build && npm publish",
     "link": "npm run build && sudo npm link"
   },
-  "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.1",
-    "rollup-plugin-babel": "^4.3.3"
-  },
   "author": "",
   "license": "MIT"
 }

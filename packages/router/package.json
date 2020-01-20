@@ -23,11 +23,5 @@
   "dependencies": {
     "hoist-non-react-statics": "^3.2.0",
     "react-navigation": "^2.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.1",
-    "rollup-plugin-babel": "^4.3.3"
   }
 }
