@@ -14,7 +14,8 @@ module.exports = {
     resolve: {
         alias: {
             "@areslabs/stringutil-rn": "@areslabs/stringutil-wx",
-        }
+        },
+        symlinks: false
     },
 
 
