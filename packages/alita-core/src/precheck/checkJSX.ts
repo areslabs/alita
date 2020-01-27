@@ -69,9 +69,7 @@ const unsupportRNComponents = new Set([
     'ToastAndroid',
     'ToolbarAndroid',
     'ViewPager',
-    'ImageBackground',
 
-    'ActivityIndicator',
     'KeyboardAvoidingView',
     'MaskedViewIOS',
     'SafeAreaView',
