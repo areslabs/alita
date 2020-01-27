@@ -1,4 +1,8 @@
-# [](https://github.com/areslabs/alita/compare/v2.3.2...v) (2020-01-20)
+# [2.3.3](https://github.com/areslabs/alita/compare/v2.3.3...v) (2020-01-27)
+添加 ActivityIndicator ImageBackground支持
+
+
+# [2.3.0](https://github.com/areslabs/alita/compare/v2.3.2...v) (2020-01-20)
 改用[lerna](https://github.com/lerna/lerna)统一管理
 
 
