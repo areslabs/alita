@@ -13,6 +13,9 @@ import WXScrollView from './component/WXScrollView/index'
 import WXPicker from './component/WXPicker/index'
 import WXTextInput from './component/WXTextInput/index'
 import WXButton from './component/WXButton/index'
+import WXActivityIndicator from './component/WXActivityIndicator/index'
+import WXImageBackground from './component/WXImageBackground/index'
+
 
 import WXModal from './component/WXModal/index'
 
@@ -86,6 +89,8 @@ const DeviceEventEmitter = {
 }
 
 export {
+    WXActivityIndicator,
+    WXImageBackground,
     WXButton,
     WXView,
     WXText,
@@ -137,6 +142,8 @@ export {
 }
 
 export default  {
+    WXActivityIndicator,
+    WXImageBackground,
     WXButton,
     WXView,
     WXText,

@@ -12,7 +12,10 @@ import {
     ScrollView,
     TextInput,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+
+    ActivityIndicator,
+    ImageBackground
 } from 'react-native'
 import styles from '../a/styles'
 
@@ -194,6 +197,34 @@ export default class B extends Component {
                         })
                     }}
                 />
+
+
+                <View style={styles.button}>
+                    <Text style={styles.title}>ActivityIndicator</Text>
+                </View>
+                <View style={styles.activityIndicatorContainer}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                    <ActivityIndicator size="small" color="#00ff00" />
+                    <ActivityIndicator size="large" color="#0000ff" animating={false}  hidesWhenStopped={false} />
+                    <ActivityIndicator size="small" color="#00ff00" />
+                </View>
+
+
+                <View style={styles.button}>
+                    <Text style={styles.title}>ImageBackground</Text>
+                </View>
+                <ImageBackground
+                    source={require('./local.png')}
+                    resizeMode="cover"
+                    style={{
+                        width: 200,
+                        height: 200
+                    }}>
+                    <Text style={styles.title}>ImageBackground</Text>
+                </ImageBackground>
+
+
+
                 <View style={styles.button}>
                     <Text style={styles.title}>其它</Text>
                 </View>

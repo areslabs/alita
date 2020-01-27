@@ -24,6 +24,14 @@ const styles = StyleSheet.create({
     title: {
         color: '#FFF',
         fontSize: 18
+    },
+
+    activityIndicatorContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+        alignItems: 'center'
     }
 });
 

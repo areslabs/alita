@@ -36,12 +36,9 @@
                     wx:if="{{onRefreshPassed}}"
                     style="height:80px;align-items:center;justify-content:center;"
             >
-                <image
-                        src="../assets/loading.gif"
-                        mode="aspectFit"
-                        style="height: 30px"
-                />
+                <view class="loading"/>
             </view>
+
 
 
             <ListHeaderComponentCPT

@@ -76,6 +76,15 @@
       {
         "name": "WXTextInput",
         "path": "WXTextInput/index"
+      },
+
+      {
+        "name": "WXActivityIndicator",
+        "path": "WXActivityIndicator/index"
+      },
+      {
+        "name": "WXImageBackground",
+        "path": "WXImageBackground/index"
       }
     ]
   }

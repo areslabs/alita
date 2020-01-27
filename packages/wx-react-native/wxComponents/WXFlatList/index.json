@@ -1,7 +1,6 @@
 {
   "component": true,
   "usingComponents": {
-    "WXScrollView": "../WXScrollView/index"
   },
   "componentGenerics": {
     "renderItemCPT": true,
