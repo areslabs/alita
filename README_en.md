@@ -6,6 +6,7 @@
 [![npm Version](https://img.shields.io/npm/v/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm Downloads](https://img.shields.io/npm/dt/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
 [![npm License](https://img.shields.io/npm/l/@areslabs/alita.svg)](https://www.npmjs.com/package/@areslabs/alita)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 
 WeChat is the most used application in China, It has a built-in runtime environment called **mini-program** ,  you can find some information about **mini-program** [here](https://walkthechat.com/wechat-mini-programs-simple-introduction/).  [alita](https://github.com/areslabs/alita) provide a way to run RN code in  **mini-program**.

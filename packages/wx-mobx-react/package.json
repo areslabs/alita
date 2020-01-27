@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-mobx-react",
-  "version": "2.0.0",
+  "version": "2.3.2",
   "description": "",
   "files": [
     "package.json",
@@ -9,17 +9,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
-    "pub-beta": "npm run build && npm publish --tag=beta",
-    "pub": "npm run build && npm publish",
-    "link": "npm run build && sudo npm link"
+    "build": "rollup -c"
   },
   "author": "yankang (https://github.com/ykforerlang)",
-  "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.1",
-    "rollup-plugin-babel": "^4.3.3"
-  },
   "license": "MIT"
 }

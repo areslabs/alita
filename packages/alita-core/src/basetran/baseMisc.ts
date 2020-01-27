@@ -11,24 +11,11 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
-import {RNCOMPSET} from "../constants";
+import {RNCOMPSET, backToViewNode} from "../constants";
 
 import {addUsedImage} from '../util/cacheImageInfos'
 
 import configure from '../configure'
-
-const backToViewNode = new Set([
-    'View',
-    'TouchableWithoutFeedback',
-    'TouchableOpacity',
-    'TouchableHighlight',
-    'Image',
-    'Text',
-    'AnimatedView',
-    'AnimatedImage',
-    'AnimatedText'
-])
-
 
 /**
  * 1. 移除unused的import/require

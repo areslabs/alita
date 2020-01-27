@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react-native",
-  "version": "2.3.0-beta.4",
+  "version": "2.3.2",
   "description": "微信版本的React Native",
   "files": [
     "dist",
@@ -10,17 +10,10 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
-    "pub-beta": "npm run build && npm publish --tag=beta --registry http://registry.npmjs.org",
-    "pub": "npm run build && npm publish --registry http://registry.npmjs.org",
-    "link": "npm run build && sudo npm link"
+    "build": "rollup -c"
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "rollup-plugin-babel": "^4.3.3"
-  },
   "wxComponents": {
     "path": "wxComponents",
     "components": [

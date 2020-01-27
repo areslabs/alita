@@ -8,7 +8,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@areslabs/alita-core": "^2.1.1",
     "@areslabs/hello-rn": "^2.0.0",
     "@areslabs/hi-rn": "^2.0.0",
     "@areslabs/router": "^2.0.0",
@@ -20,7 +19,7 @@
     "react-native": "0.59.8"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "^0.0.8",
+    "@areslabs/alita-weixin-runtime": "2.3.2",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
     "babel-jest": "^24.8.0",

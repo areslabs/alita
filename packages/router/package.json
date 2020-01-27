@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/router",
-  "version": "2.2.1",
+  "version": "2.3.2",
   "description": "router for react-native, web",
   "client": "./dist/web/index.js",
   "main": "./dist/native/index.js",
@@ -13,21 +13,12 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c && cp -R ./src/native/ ./dist/native && cp -R ./src/web ./dist/web",
-    "pub-beta": "npm run build && npm publish --tag=beta --registry http://registry.npmjs.org",
-    "pub": "npm run build && npm publish --registry http://registry.npmjs.org",
-    "link": "npm run build && sudo npm link"
+    "build": "rollup -c && cp -R ./src/native/ ./dist/native && cp -R ./src/web ./dist/web"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "hoist-non-react-statics": "^3.2.0",
     "react-navigation": "^2.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.1",
-    "rollup-plugin-babel": "^4.3.3"
   }
 }
