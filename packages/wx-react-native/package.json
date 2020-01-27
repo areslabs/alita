@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react-native",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "微信版本的React Native",
   "files": [
     "dist",
@@ -77,7 +77,6 @@
         "name": "WXTextInput",
         "path": "WXTextInput/index"
       },
-
       {
         "name": "WXActivityIndicator",
         "path": "WXActivityIndicator/index"
