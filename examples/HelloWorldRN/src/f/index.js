@@ -99,6 +99,12 @@ export default class C extends Component {
                         }
                     }}>Hello Alita</Text>
                 </View>
+
+                <View style={styles.button}><Text style={styles.title}>marginHorizontal</Text></View>
+                <View style={{flexDirection: 'row', height: 60}}>
+                    <View style={{marginHorizontal: 10, width: 60, backgroundColor: 'grey'}}/>
+                    <View style={{marginHorizontal: 10, width: 60, backgroundColor: 'grey'}}/>
+                </View>
                 
             </View>
 
