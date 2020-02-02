@@ -15,6 +15,7 @@ module.exports = {
         alias: {
             "@areslabs/stringutil-rn": "@areslabs/stringutil-wx",
         },
+        // for npm link /yarn link
         symlinks: false
     },
 
