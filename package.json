@@ -4,8 +4,8 @@
     "doc": "gitbook build ./docs ../docsTmp && git checkout gh-pages && cp -r ../docsTmp/* ./ && rm -fr ../docsTmp",
     "doc:serve": "gitbook serve ./docs",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "pub": "lerna publish --exact --force-publish",
-    "pub-alpha": "lerna publish --exact --pre-dist-tag alpha --force-publish",
+    "pub": "npm run build && lerna publish --exact --force-publish",
+    "pub-alpha": "npm run build && lerna publish --exact --pre-dist-tag alpha --force-publish",
     "build": "lerna run build"
   },
   "authors": [
