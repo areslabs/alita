@@ -184,6 +184,30 @@ function parseObj(flattenStyle) {
             continue
         }
 
+        if (k === "marginHorizontal") {
+            const fv = Number(v) ? `${v}px` : v
+            out += `margin-left: ${fv}; margin-right: ${fv};`
+            continue
+        }
+
+        if (k === "marginVertical") {
+            const fv = Number(v) ? `${v}px` : v
+            out += `margin-top: ${fv}; margin-bottom: ${fv};`
+            continue
+        }
+
+        if (k === "paddingHorizontal") {
+            const fv = Number(v) ? `${v}px` : v
+            out += `padding-left: ${fv} ; padding-right: ${fv};`
+            continue
+        }
+
+        if (k === "paddingVertical") {
+            const fv = Number(v) ? `${v}px` : v
+            out += `padding-top: ${fv} ; padding-bottom: ${fv};`
+            continue
+        }
+
         if (styleKeyMaps[k] === undefined) {
             console.warn('style对象: ', flattenStyle, ' 存在不支持属性：', k)
             continue
@@ -232,17 +256,7 @@ function flatten(style) {
         const computedStyle = flatten(style[i]);
         if (computedStyle) {
             for (const key in computedStyle) {
-                if (key === 'marginHorizontal') {
-                    result['margin-left'] = result['margin-right'] = computedStyle[key]
-                } else if (key === 'marginVertical') {
-                    result['margin-top'] = result['margin-bottom'] = computedStyle[key]
-                } else if (key === 'paddingHorizontal') {
-                    result['padding-left'] = result['padding-right'] = computedStyle[key]
-                } else if (key === 'paddingVertical') {
-                    result['padding-top'] = result['padding-bottom'] = computedStyle[key]
-                } else {
-                    result[key] = computedStyle[key]
-                }
+                result[key] = computedStyle[key]
             }
         }
     }
