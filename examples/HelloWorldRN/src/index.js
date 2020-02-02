@@ -13,6 +13,7 @@ import B from './b'
 import C from './c'
 import D from './d'
 import E from './e'
+import F from './f'
 
 import faxianPNG from '../assets/faxian.png'
 import myCurrentPNG from '../assets/myCurrent.png'
@@ -63,6 +64,10 @@ export default class App extends PureComponent {
 
                 <TabRouter text="常见动画" image={myPNG} selectedImage={myCurrentPNG}>
                     <Route key={"D"} component={D}/>
+                </TabRouter>
+
+                <TabRouter text="样式属性" image={myPNG} selectedImage={myCurrentPNG}>
+                    <Route key={"F"} component={F}/>
                 </TabRouter>
             </Router>
         )
