@@ -6,27 +6,34 @@
  *
  */
  
-import {parseElement, flattenStyle} from '@areslabs/wx-react'
+function flatten(style) {
+    if (style === null || typeof style !== 'object') {
+        return undefined;
+    }
+
+    if (!Array.isArray(style)) {
+        return style;
+    }
+
+    const result = {};
+    for (let i = 0, styleLength = style.length; i < styleLength; ++i) {
+        const computedStyle = flatten(style[i]);
+        if (computedStyle) {
+            for (const key in computedStyle) {
+                result[key] = computedStyle[key];
+            }
+        }
+    }
+    return result;
+}
 
 export default {
     create(obj) {
-        const allKeys = Object.keys(obj)
-
-        const r = {}
-
-        for(let i = 0; i< allKeys.length; i++) {
-            const k = allKeys[i]
-            const v = obj[k]
-
-            r[k] = parseElement(v)
-        }
-
-        return r
+        // 保持和RN StyleSheet.create方法一致
+        return obj
     },
 
-    flatten(creStyle) {
-        return flattenStyle(creStyle)
-    },
+    flatten,
 
     absoluteFill: {
         position: 'absolute',

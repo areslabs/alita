@@ -12,15 +12,13 @@
  */
 
 
-import {SCROLL, VIEW, INNERTEXT, OUTERTEXT} from './styleType'
+import {SCROLL, INNERTEXT, OUTERTEXT} from './styleType'
 
-const AddPx = "ADDPX";
-const AddPxORPercent = "ADDPXORPERCENT";
-const RawValue = "RAWVALUE";
-const ValObject = "VALOBJECT";
-const FuncRawValue = "FUNCRAWVALUE";
-const FuncAddPx = "FUNCADDPX";
-const realBigThing = {
+const AddPx = 1;
+const AddPxORPercent = 2;
+const RawValue = 3;
+
+const styleKeyMaps = {
     alignItems: { name: "align-items", type: RawValue },
     alignSelf: { name: "align-self", type: RawValue },
     backfaceVisibility: { name: "backface-visibility", type: RawValue },
@@ -44,9 +42,6 @@ const realBigThing = {
     bottom: { name: "bottom", type: AddPxORPercent },
     color: { name: "color", type: RawValue },
     display: { name: "display", type: RawValue },
-    decomposedMatrix: { name: "decomposedMatrix" },
-    elevation: { name: "elevation", type: AddPx },
-    flex: { name: "flex", type: RawValue },
     flexDirection: { name: "flex-direction", type: RawValue },
     flexShrink: { name: "flex-shrink", type: RawValue },
     flexWrap: { name: "flex-wrap", type: RawValue },
@@ -62,54 +57,29 @@ const realBigThing = {
     lineHeight: { name: "line-height", type: AddPx },
     margin: { name: "margin", type: AddPxORPercent },
     marginBottom: { name: "margin-bottom", type: AddPxORPercent },
-    marginHorizontal: { name: "margin-horizontal", type: AddPxORPercent },
     marginLeft: { name: "margin-left", type: AddPxORPercent },
     marginRight: { name: "margin-right", type: AddPxORPercent },
     marginTop: { name: "margin-top", type: AddPxORPercent },
-    marginVertical: { name: "margin-vertical", type: AddPxORPercent },
     maxHeight: { name: "max-height", type: AddPxORPercent },
     maxWidth: { name: "max-width", type: AddPxORPercent },
     minHeight: { name: "min-height", type: AddPxORPercent },
     minWidth: { name: "min-width", type: AddPxORPercent },
     opacity: { name: "opacity", type: RawValue },
     overflow: { name: "overflow", type: RawValue },
-    overlayColor: { name: "overlay-color", type: RawValue },
     padding: { name: "padding", type: AddPxORPercent },
     paddingBottom: { name: "padding-bottom", type: AddPxORPercent },
-    paddingHorizontal: { name: "padding-horizontal", type: AddPxORPercent },
     paddingLeft: { name: "padding-left", type: AddPxORPercent },
     paddingRight: { name: "padding-right", type: AddPxORPercent },
     paddingTop: { name: "padding-top", type: AddPxORPercent },
-    paddingVertical: { name: "padding-vertical", type: AddPxORPercent },
     position: { name: "position", type: RawValue },
-    resizeMode: { name: "resize-mode", type: RawValue },
     right: { name: "right", type: AddPxORPercent },
-    shadowColor: { name: "shadow-color", type: RawValue },
-    shadowOffset: { name: "shadow-offset", type: ValObject },
-    shadowOpacity: { name: "shadow-opacity", type: RawValue },
-    shadowRadius: { name: "shadow-radius", type: AddPx },
     textAlign: { name: "text-align", type: RawValue },
     textAlignVertical: { name: "text-align-vertical", type: RawValue },
     textDecorationColor: { name: "text-decoration-color", type: RawValue },
     textDecorationLine: { name: "text-decoration-line", type: RawValue },
     textDecorationStyle: { name: "text-decoration-style", type: RawValue },
-    textShadowColor: { name: "text-decoration-style", type: RawValue },
-    textShadowOffset: { name: "text-shadow-offset", type: ValObject },
-    textShadowRadius: { name: "text-shadow-radius", type: AddPx },
     textTransform: { name: "text-transform", type: RawValue },
-    tintColor: { name: "tint-color", type: RawValue },
     top: { name: "top", type: AddPxORPercent },
-    //no support for matix
-    // transform: {name:"transform",type:""},
-    perspective: { name: "perspective", type: FuncRawValue },
-    translateX: { name: "translateX", type: FuncAddPx },
-    translateY: { name: "translateY", type: FuncAddPx },
-    rotate: { name: "rotate", type: FuncRawValue },
-    rotateX: { name: "rotateX", type: FuncRawValue },
-    rotateY: { name: "rotateY", type: FuncRawValue },
-    rotateZ: { name: "rotateZ", type: FuncRawValue },
-    scaleX: { name: "scaleX", type: FuncRawValue },
-    scaleY: { name: "scaleY", type: FuncRawValue },
     width: { name: "width", type: AddPxORPercent },
     writingDirection: { name: "writing-direction", type: RawValue },
     zIndex: { name: "z-index", type: RawValue }
@@ -122,10 +92,15 @@ const DEFAULTINNERTEXTWSTYLE = "_3_"
 const DEFAULTSCROLLVIEWSTYLE = "_4_"
 
 
-//mkup the string
-export default function tackleWithStyleObj(obj, styleType) {
-    const airport = flattenArray(obj)
-    const styleStr = parseElement(airport)
+/**
+ * 把RN的style对象，转化为css的style字符串
+ * @param rawStyle
+ * @param styleType
+ * @returns {string}
+ */
+export default function tackleWithStyleObj(rawStyle, styleType) {
+    const flattenStyle = flatten(rawStyle)
+    const styleStr = parseObj(flattenStyle)
     if (!styleType) {
         return styleStr
     }
@@ -136,11 +111,11 @@ export default function tackleWithStyleObj(obj, styleType) {
     } else if (styleType === OUTERTEXT) {
         prefixStyle = DEFAULTTEXTWSTYLE;
 
-        if (obj && !obj.height) { // 根据RN的Text的行为推测
+        if (flattenStyle && !flattenStyle.height) { // 根据RN的Text的行为推测
             prefixStyle = prefixStyle + "max-height: 100%;"
         }
 
-        if (obj && !obj.width) { // 根据RN的Text的行为推测
+        if (flattenStyle && !flattenStyle.width) { // 根据RN的Text的行为推测
             prefixStyle = prefixStyle + "max-width: 100%;"
         }
     } else if (styleType === SCROLL) {
@@ -151,207 +126,125 @@ export default function tackleWithStyleObj(obj, styleType) {
     return `${prefixStyle}${styleStr}`
 }
 
-export function parseElement(element) {
-    if (Array.isArray(element)) {
-        let out = "";
-        for (let index in element) {
-            out += parseElement(element[index]);
+function parseTransform(transform) {
+    let result = ''
+    transform.forEach((item) => {
+        // item 应当仅包含一个元素
+        for (let key in item) {
+            const v = item[key]
+            if (key === 'translateX' || key === 'translateY') {
+                result += (`${key}(${v}px) `)
+            } else {
+                result += (`${key}(${v}) `)
+            }
         }
-        return out;
-    }
-    if (typeof element === "string") {
-        return element;
-    }
-    if (typeof element === "object") {
-        return parseObj(element);
-    }
-    //unmatch
-    return "";
+    })
+    return result
 }
 
-
-function parseObj(obj) {
+function parseObj(flattenStyle) {
+    if (!flattenStyle) {
+        return ''
+    }
 
     let out = "";
+    if (flattenStyle.shadowOffset) {
+        const {width = 0 , height = 0} = flattenStyle.shadowOffset
+        out += `box-shadow: ${width}px ${height}px ${flattenStyle.shadowColor || ''}; `
+    }
 
-    for (let k in obj) {
+    if (flattenStyle.textShadowOffset) {
+        const {width = 0 , height = 0} = flattenStyle.textShadowOffset
+        out += `text-shadow: ${width}px ${height}px ${flattenStyle.textShadowColor || ''}; `
+    }
+
+    for (let k in flattenStyle) {
+        const v = flattenStyle[k]
+
+        if (k === 'shadowOffset'
+            || k === 'shadowColor'
+            || k === 'textShadowOffset'
+            || k === 'textShadowColor'
+        ) {
+            // 提前处理
+            continue
+        }
+
         //单独处理
         if (k === "transform") {
-            let tmp = "";
-            let arr = obj[k];
-            for (let ind in arr) {
-                let transObj = arr[ind];
-                //transObj应当仅包含一个元素
-                for (let ojbk in transObj) {
-                    switch (realBigThing[ojbk].type) {
-                        case FuncRawValue:
-                            tmp += ojbk + "(" + transObj[ojbk] + ") ";
-                            break;
-                        case FuncAddPx:
-                            tmp += ojbk + "(" + transObj[ojbk] + "px) ";
-                            break;
-                    }
-                }
-            }
-            if (tmp.length > 0) {
-                tmp = "transform: " + tmp.trim() + ";";
-            }
-            out += tmp;
-            continue;
-        }
-
-        if (k === "marginHorizontal") {
-            const v = obj[k];
-            const fv = typeof v === "string" ? v : `${v}px`;
-            let tmp = ` margin-left: ${fv}; margin-right: ${fv};`;
-            out += tmp;
-            continue;
-        }
-
-        if (k === "marginVertical") {
-            const v = obj[k];
-            const fv = typeof v === "string" ? v : `${v}px`;
-            let tmp = ` margin-top: ${fv}; margin-bottom: ${fv};`;
-            out += tmp;
-            continue;
-        }
-
-        if (k === "paddingHorizontal") {
-            const v = obj[k];
-            const fv = typeof v === "string" ? v : `${v}px`;
-            let tmp = ` padding-left: ${fv}; padding-right: ${fv};`;
-            out += tmp;
-            continue;
-        }
-
-        if (k === "paddingVertical") {
-            const v = obj[k];
-            const fv = typeof v === "string" ? v : `${v}px`;
-            let tmp = ` padding-top: ${fv}; padding-bottom: ${fv};`;
-            out += tmp;
+            const tranStr = parseTransform(v)
+            out += `transform: ${tranStr};`;
             continue;
         }
 
         if (k === "flex") {
-            if (obj[k] >= 1) {
-                out += "flex:" + obj[k] + ";" + "flex-basis: 0%;";
-                continue;
-            } else if (obj[k] === 0) {
-                continue;
-            }
-        }
-
-        if (realBigThing[k] === undefined) {
-            if(k === 'resizeMode') {
-                console.warn('resizeMode属性请写在props上，而不是style')
-            } else {
-                console.warn(`style对象不支持${k}属性`)
+            if (v >= 1) {
+                out += `flex: ${v} 1 0%;`
             }
             continue
         }
 
-        out += realBigThing[k].name + ":";
-        switch (realBigThing[k].type) {
+        if (styleKeyMaps[k] === undefined) {
+            console.warn('style对象: ', flattenStyle, ' 存在不支持属性：', k)
+            continue
+        }
+
+        let lastV = ''
+        switch (styleKeyMaps[k].type) {
             case RawValue: {
-                out += obj[k] + ";";
+                lastV = v
                 break;
             }
             case AddPx: {
-                out += obj[k] + "px;";
+                lastV = `${v}px`
                 break;
             }
             case AddPxORPercent: {
-                if (Number(obj[k])) {
-                    out += obj[k] + "px;";
-                } else out += obj[k] + ";";
-                break;
-            }
-            case ValObject: {
-                //暂时只发现textShadowOffset，shadowOffset
-                out += obj[k].width + "px " + obj[k].height + "px;";
+                if (Number(v)) {
+                    lastV = `${v}px`
+                } else {
+                    lastV = v
+                }
                 break;
             }
             default: {
                 // do nothing
             }
         }
+
+        out += `${styleKeyMaps[k].name}: ${lastV};`
     }
 
     return out;
 }
 
-function flattenArray(arr, ans = []) {
-    if (!Array.isArray(arr)) return arr;
-    for (let m in arr) {
-        if (!Array.isArray(arr[m])) {
-            ans.push(arr[m]);
-        } else {
-            flattenArray(arr[m], ans);
-        }
-    }
-    return ans;
-}
-
-
-/**
- * the inverse process of tackleWithStyleObj
- * @param str
- */
-export function flattenStyle(fstyle) {
-    let str = fstyle
-    if (typeof fstyle !== 'string') {
-        // 可能是数组，可能是字符串，可能是其组合
-        str = tackleWithStyleObj(fstyle)
+function flatten(style) {
+    if (style === null || typeof style !== 'object') {
+        return undefined;
     }
 
-
-    const array = str.split(';').filter(i => i)
-    const obj = {}
-    for (let k = 0; k < array.length; k++) {
-        const str = array[k]
-        const arr = str.split(':')
-        if (arr.length < 2) {
-            continue
-        }
-        const key = arr[0]
-        const value = arr[1]
-        if (!realBigThing[key]) continue
-        let ans = handleValue(realBigThing[key].type, value)
-        if (ans) {
-            obj[realBigThing[key].name] = ans
-        }
+    if (!Array.isArray(style)) {
+        return style;
     }
-    return obj
-}
 
-function handleValue(type, value) {
-    switch (type) {
-        case RawValue: {
-            return value
-        }
-        case AddPx: {
-            return +value.substring(0, -2)
-        }
-        case AddPxORPercent: {
-            if (value.endsWith("%")) {
-                return +value.substring(0, value.length - 1)
-            }
-            return +value.substring(0, value.length - 2)
-        }
-        case ValObject: {
-            const arr = value.split(' ').filter(i => i)
-            if (arr.length === 2) {
-                return {
-                    width: +arr[0].substring(0, arr[0].length - 2),
-                    height: +arr[1].substring(0, arr[1].length - 2)
+    const result = {};
+    for (let i = 0, styleLength = style.length; i < styleLength; ++i) {
+        const computedStyle = flatten(style[i]);
+        if (computedStyle) {
+            for (const key in computedStyle) {
+                if (key === 'marginHorizontal') {
+                    result['margin-left'] = result['margin-right'] = computedStyle[key]
+                } else if (key === 'marginVertical') {
+                    result['margin-top'] = result['margin-bottom'] = computedStyle[key]
+                } else if (key === 'paddingHorizontal') {
+                    result['padding-left'] = result['padding-right'] = computedStyle[key]
+                } else if (key === 'paddingVertical') {
+                    result['padding-top'] = result['padding-bottom'] = computedStyle[key]
+                } else {
+                    result[key] = computedStyle[key]
                 }
             }
-            break
         }
-        default: {
-            //不支持
-            return null
-        }
-
     }
+    return result;
 }
