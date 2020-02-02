@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/babel-plugin-alitamisc",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "babel-plugin-alitamisc",
   "main": "./dist/index.js",
   "scripts": {
