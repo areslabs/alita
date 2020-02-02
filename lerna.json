@@ -12,6 +12,9 @@
       "npmClientArgs": [
         "--no-package-lock"
       ]
+    },
+    "version": {
+      "conventionalCommits": true
     }
   },
   "version": "2.3.3"
