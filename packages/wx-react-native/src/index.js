@@ -50,18 +50,24 @@ const WXWebView = getWXBaseComponent()
 
 // not support yet
 const DatePickerIOS = getNotSupport('DatePickerIOS')
-const ViewPagerAndroid = getNotSupport('ViewPagerAndroid')
-const StatusBar = getNotSupport('StatusBar')
-const DatePickerAndroid = getNotSupport('DatePickerAndroid')
-const DrawerAndroid = getNotSupport('DrawerAndroid')
-const Animated = getNotSupport('Animated')
+const DrawerLayoutAndroid = getNotSupport('DrawerLayoutAndroid')
+const InputAccessoryView = getNotSupport('InputAccessoryView')
+const KeyboardAvoidingView = getNotSupport('KeyboardAvoidingView')
+const MaskedViewIOS = getNotSupport('MaskedViewIOS')
 const ProgressBarAndroid = getNotSupport('ProgressBarAndroid')
 const ProgressViewIOS = getNotSupport('ProgressViewIOS')
 const SegmentedControlIOS = getNotSupport('SegmentedControlIOS')
 const TabBarIOS = getNotSupport('TabBarIOS')
+const ToolbarAndroid = getNotSupport('ToolbarAndroid')
+const ViewPagerAndroid = getNotSupport('ViewPagerAndroid')
+const VirtualizedList = getNotSupport('VirtualizedList')
+
+
+const Animated = getNotSupport('Animated')
+const DatePickerAndroid = getNotSupport('DatePickerAndroid')
 const TimePickerAndroid = getNotSupport('TimePickerAndroid')
 const ToastAndroid = getNotSupport('ToastAndroid')
-const ToolbarAndroid = getNotSupport('ToolbarAndroid')
+
 
 const AppState = {
     removeEventListener: () => {
@@ -112,18 +118,22 @@ export {
 
 
     DatePickerIOS,
-    ViewPagerAndroid,
-    StatusBar,
-    DatePickerAndroid,
-    DrawerAndroid,
-    Animated,
+    DrawerLayoutAndroid,
+    InputAccessoryView,
+    KeyboardAvoidingView,
+    MaskedViewIOS,
     ProgressBarAndroid,
     ProgressViewIOS,
     SegmentedControlIOS,
     TabBarIOS,
+    ToolbarAndroid,
+    ViewPagerAndroid,
+    VirtualizedList,
+
+    Animated,
+    DatePickerAndroid,
     TimePickerAndroid,
     ToastAndroid,
-    ToolbarAndroid,
 
     StyleSheet,
     Platform,
@@ -163,20 +173,23 @@ export default  {
     WXRefreshControl,
     WXWebView,
 
+    DatePickerIOS,
+    DrawerLayoutAndroid,
+    InputAccessoryView,
+    KeyboardAvoidingView,
+    MaskedViewIOS,
+    ProgressBarAndroid,
+    ProgressViewIOS,
+    SegmentedControlIOS,
+    TabBarIOS,
+    ToolbarAndroid,
+    ViewPagerAndroid,
+    VirtualizedList,
 
-    ViewPagerAndroid: ViewPagerAndroid,
-    DatePickerIOS: DatePickerIOS,
-    StatusBar: StatusBar,
-    DatePickerAndroid: DatePickerAndroid,
-    DrawerAndroid: DrawerAndroid,
-    Animated: Animated,
-    ProgressBarAndroid: ProgressBarAndroid,
-    ProgressViewIOS: ProgressViewIOS,
-    SegmentedControlIOS: SegmentedControlIOS,
-    TabBarIOS: TabBarIOS,
-    TimePickerAndroid: TimePickerAndroid,
-    ToastAndroid: ToastAndroid,
-    ToolbarAndroid: ToolbarAndroid,
+    Animated,
+    DatePickerAndroid,
+    TimePickerAndroid,
+    ToastAndroid,
 
 
     StyleSheet,
