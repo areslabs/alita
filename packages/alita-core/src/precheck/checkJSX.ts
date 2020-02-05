@@ -72,7 +72,6 @@ const unsupportRNComponents = new Set([
 
     'KeyboardAvoidingView',
     'MaskedViewIOS',
-    'SafeAreaView',
     'ToolbarAndroid',
     'VirtualizedList'
 ])

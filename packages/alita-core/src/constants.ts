@@ -27,5 +27,6 @@ export const backToViewNode = new Set([
     'Text',
     'AnimatedView',
     'AnimatedImage',
-    'AnimatedText'
+    'AnimatedText',
+    'SafeAreaView'
 ])

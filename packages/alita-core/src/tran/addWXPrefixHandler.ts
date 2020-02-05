@@ -79,6 +79,12 @@ function addWXPrefix(path) {
         return
     }
 
+    if (name === 'SafeAreaView') {
+        path.node.name.name = `view`
+        addViewOriginalAttri(path, 'View')
+        return
+    }
+
     if (name === 'Image' || name === 'AnimatedImage') {
         path.node.name.name = 'image'
         renameImageSourceAttri(path)
