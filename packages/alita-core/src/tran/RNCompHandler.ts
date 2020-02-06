@@ -53,8 +53,10 @@ export default function RNCompHandler (ast, info?: any) {
                     }
 
                     if (RNCOMPSET.has(name)) {
-                        spe.local.name = `WX${name}`
-                        fileIms[`WX${name}`] = fileIms[name]
+                        const wxName = `WX${name}`
+                        spe.local.name = wxName
+                        fileIms[wxName] = fileIms[name]
+                        fileIms[wxName].imported = wxName
                         delete fileIms[name]
 
                         return true
@@ -76,10 +78,13 @@ export default function RNCompHandler (ast, info?: any) {
 
                         if (RNCOMPSET.has(key)) {
                             const rawName = key.name
-                            key.name = `WX${rawName}`
+                            const wxName = `WX${rawName}`
+
+                            key.name = wxName
                             value.name = `WX${value.name}`
 
-                            fileIms[`WX${rawName}`] = fileIms[rawName]
+                            fileIms[wxName] = fileIms[rawName]
+                            fileIms[wxName].imported = wxName
                             delete fileIms[rawName]
                         }
 
