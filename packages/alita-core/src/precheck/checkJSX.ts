@@ -21,59 +21,14 @@ const ignoreCompSet = new Set([
     'Component'
 ])
 
-const unsupportRNAPI = new Set([
-    'NativeModules',
-    'Keyboard',
-    'PanResponder',
-    'Linking',
-    'LayoutAnimation',
-
-    'AccessibilityInfo',
-    'ActionSheetIOS',
-    'AlertIOS',
-    'AppRegistry',
-    'AppState',
-    'BackHandler',
-    'CameraRoll',
-    'Clipboard',
-    'DatePickerAndroid',
-    'Easing',
-    'Geolocation',
-    'ImageEditor',
-    'ImagePickerIOS',
-    'InteractionManager',
-    'Keyboard',
-    'LayoutAnimation',
-    'Linking',
-    'PanResponder',
-    'PermissionsAndroid',
-    'PushNotificationIOS',
-    'Systrace',
-    'TimePickerAndroid',
-    'ToastAndroid',
-    'Vibration',
-])
-
-const unsupportRNComponents = new Set([
-    'DatePickerIOS',
-    'ViewPagerAndroid',
-    'StatusBar',
-    'DatePickerAndroid',
-    'DrawerAndroid',
-    'MaskedView',
-    'ProgressBarAndroid',
-    'ProgressViewIOS',
-    'SegmentedControlIOS',
-    'TabBarIOS',
-    'TimePickerAndroid',
-    'ToastAndroid',
-    'ToolbarAndroid',
-    'ViewPager',
-
-    'KeyboardAvoidingView',
-    'MaskedViewIOS',
-    'ToolbarAndroid',
-    'VirtualizedList'
+const supportRNAPI = new Set([
+    'StyleSheet',
+    'Platform',
+    'Dimensions',
+    'Alert',
+    'PixelRatio',
+    'AsyncStorage',
+    'unstable_batchedUpdates',
 ])
 
 const notSupportCommonAttris = new Set([
@@ -87,7 +42,6 @@ const notSupportCommonAttris = new Set([
     'onResponderTerminationRequest',
     'onResponderTerminate'
 ])
-
 
 const notSupportJSXElementAttris = {
     FlatList: new Set([
@@ -258,6 +212,14 @@ export default function checkJSX(ast, filepath, rawCode) {
             if (node.source.value !== 'react-native') return
 
             node.specifiers.forEach(item => {
+                if (backToViewNode.has(item.local.name)
+                    || RNCOMPSET.has(item.local.name)
+                    || supportRNAPI.has(item.local.name)
+                    || item.local.name ===  'RefreshControl'
+                ) {
+                    return
+                }
+
                 if (item.local.name === 'Animated')  {
                     printWarn(filepath, path, rawCode, `不支持Animated组件， 需要使用@areslabs/wx-animated库替换`)
                 }
@@ -266,13 +228,7 @@ export default function checkJSX(ast, filepath, rawCode) {
                     printWarn(filepath, path, rawCode, `小程序webview占满全屏，和RN不同, 避免使用`)
                 }
 
-                if (unsupportRNAPI.has(item.local.name)) {
-                    printWarn(filepath, path, rawCode, `React Native API ${item.local.name}尚未支持，可以提个issue`)
-                }
-
-                if (unsupportRNComponents.has(item.local.name)) {
-                    printWarn(filepath, path, rawCode, `React Native 组件 ${item.local.name}尚未支持，可以提个issue`)
-                }
+                printWarn(filepath, path, rawCode, `React Native ${item.local.name}尚未支持`)
             })
         },
 
