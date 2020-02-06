@@ -8,22 +8,93 @@
  
 //import traverse from "@babel/traverse";
 import errorLogTraverse from '../util/ErrorLogTraverse'
-import {RNCOMPSET} from "../constants";
+import {backToViewNode, RNCOMPSET} from "../constants";
 import * as t from "@babel/types";
 
 import {textComp} from '../util/getAndStorecompInfos'
+import configure from "../configure";
+import {getModuleInfo} from '../util/cacheModuleInfos'
 
 /**
- * RN基本组件 添加前缀WX，以免RN button和小程序原生button 混淆
+ * 处理 RN官方组件
+ * 1. View, Text等退化为小程序view节点
+ * 2. Button，FlatList等添加前缀WX，以免RN button和小程序原生button 混淆
+ * 3. 不支持组件 替换为 <view style="color: red">不支持组件：[name]</view>
+ *
  * @param ast
  * @returns {*}
  */
-export default function addWXPrefixHandler (ast, info?: any) {
+export default function RNCompHandler (ast, info?: any) {
     let hasTextInner = false
+
+    // TODO 从@areslabs/wx-animated获取？
+    let rnApis = new Set([
+        'AnimatedView',
+        'AnimatedText',
+        'AnimatedImage',
+    ])
+
+
+    const {JSXElements : fileJSXElements, im: fileIms} = getModuleInfo(info.filepath)
+
     errorLogTraverse(ast, {
+        enter: path => {
+            if (path.type === 'ImportDeclaration'
+                && (path.node as t.ImportDeclaration).source.value === 'react-native'
+            ) {
+
+                const pnode = path.node as t.ImportDeclaration
+
+                pnode.specifiers = pnode.specifiers.filter(spe => {
+                    const name = spe.local.name
+                    rnApis.add(name)
+                    if (backToViewNode.has(name)) {
+                        return false
+                    }
+
+                    if (RNCOMPSET.has(name)) {
+                        spe.local.name = `WX${name}`
+                        fileIms[`WX${name}`] = fileIms[name]
+                        delete fileIms[name]
+
+                        return true
+                    }
+                    return true
+                })
+            }
+
+            if (isTopRequire(path, 'react-native')) {
+                // @ts-ignore
+                const id = path.parentPath.node.id
+                if (id.type === 'ObjectPattern') {
+                    id.properties = id.properties.filter(pro => {
+                        const {key, value} = pro
+                        if (backToViewNode.has(key)) {
+                            return false
+                        }
+                        rnApis.add(key)
+
+                        if (RNCOMPSET.has(key)) {
+                            const rawName = key.name
+                            key.name = `WX${rawName}`
+                            value.name = `WX${value.name}`
+
+                            fileIms[`WX${rawName}`] = fileIms[rawName]
+                            delete fileIms[rawName]
+                        }
+
+                        return true
+                    })
+                } else {
+                    console.log(`${info.filepath.replace(configure.inputFullpath, '')}： 需要使用解构的方式引入react-native组件!`.error)
+                }
+            }
+        },
+
+
         exit: path => {
             if (path.type === 'JSXOpeningElement') {
-                addWXPrefix(path)
+                handleComp(path, rnApis, fileJSXElements)
 
                 if (isInText(path)) {
                     hasTextInner = true
@@ -32,13 +103,14 @@ export default function addWXPrefixHandler (ast, info?: any) {
             }
 
             if (path.type === 'JSXClosingElement') {
-                addWXPrefix(path)
+                handleComp(path, rnApis, fileJSXElements)
                 return
             }
 
             // Text.propTypes 类似这种
             if (path.type === 'Identifier'
                 && path.key !== 'property'
+                && rnApis.has((path.node as t.Identifier).name)
                 && RNCOMPSET.has((path.node as t.Identifier).name)
 
             ) {
@@ -53,19 +125,14 @@ export default function addWXPrefixHandler (ast, info?: any) {
 
 }
 
-function addWXPrefix(path) {
-    // Picker.Item
-    if (path.node.name.type === 'JSXMemberExpression') {
-        const name = path.node.name.object.name
-        if (RNCOMPSET.has(name)) {
-            path.node.name.object.name = `WX${name}`
-        }
+function handleComp(path, rnApis, fileJSXElements) {
+    const name = path.node.name.name
 
+    if (!rnApis.has(name)) {
         return
     }
 
-
-    const name = path.node.name.name
+    fileJSXElements.delete(name)
 
     if (name === 'View'
         || name === 'AnimatedView'
@@ -104,8 +171,29 @@ function addWXPrefix(path) {
         return
     }
 
+
     if (RNCOMPSET.has(name)) {
         path.node.name.name = `WX${name}`
+        fileJSXElements.add(`WX${name}`)
+    } else {
+        path.node.name.name = `view`
+
+        if (path.type === 'JSXOpeningElement') {
+            path.node.attributes = [
+                t.jsxAttribute(
+                    t.jsxIdentifier('original'),
+                    t.stringLiteral('ErrorView')
+                )
+            ]
+            path.parentPath.node.children = [
+                t.jsxText(`不支持组件：${name}`)
+            ]
+
+            if (!path.parentPath.node.closingElement) {
+                path.parentPath.node.closingElement = t.jsxClosingElement(t.jsxIdentifier('view'))
+                path.node.selfClosing = false
+            }
+        }
     }
 }
 
@@ -182,4 +270,15 @@ function resizeMode(newVal){
     } else{
         return 'aspectFill';
     }
+}
+
+
+function isTopRequire(nodepath, moduleName) {
+    const node = nodepath.node
+    return (node.type === 'CallExpression'
+        && node.callee.name === 'require'
+        && node.arguments.length === 1
+        && node.arguments[0].type === 'StringLiteral'
+        && node.arguments[0].value === moduleName
+    )
 }

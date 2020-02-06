@@ -43,51 +43,6 @@ export default function (ast, info) {
                 path.parentPath.parentPath.insertAfter(hDec)
             }
 
-
-            if (path.type === 'ImportDeclaration'
-                && (path.node as t.ImportDeclaration).source.value === 'react-native'
-            ) {
-
-                const pnode = path.node as t.ImportDeclaration
-
-                pnode.specifiers = pnode.specifiers.filter(spe => {
-                    const name = spe.local.name
-                    if (RNCOMPSET.has(name)) {
-                        spe.local.name = `WX${name}`
-                    }
-
-                    if (backToViewNode.has(name)) {
-                        return false
-                    }
-
-                    return true
-                })
-            }
-
-            if (isTopRequire(path, 'react-native')) {
-                // @ts-ignore
-                const id = path.parentPath.node.id
-                if (id.type === 'ObjectPattern') {
-                    id.properties = id.properties.filter(pro => {
-                        const {key, value} = pro
-
-                        if (RNCOMPSET.has(key)) {
-                            key.name = `WX${key.name}`
-                            value.name = `WX${value.name}`
-                        }
-
-                        if (backToViewNode.has(key)) {
-                            return false
-                        }
-
-                        return true
-                    })
-                } else {
-                    console.log(`${filepath.replace(configure.inputFullpath, '')}： 需要使用解构的方式引入react-native组件!`.error)
-                }
-            }
-
-
             // import 静态资源
             if (path.type === 'ImportDeclaration'
                 && isStaticRes((path.node as t.ImportDeclaration).source.value)

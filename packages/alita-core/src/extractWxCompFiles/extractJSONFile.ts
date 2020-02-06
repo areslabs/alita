@@ -6,10 +6,6 @@ import configure from "../configure";
 
 import {getCompPath, getRealPackChunks} from './copyPackageWxComponents'
 
-import {backToViewNode} from '../constants'
-
-
-
 export const handleChanged = (resouce, info, finalJSPath) => {
 
     const newWxOutFiles = {}
@@ -91,16 +87,10 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
         }
 
         const { source, defaultSpecifier} = info.im[element]
-        if (isRnBaseSkipEle(element, source)) {
-            // 退化为view的节点，不需要在usingComponents 写明路径
-            return
-        }
-
-        const elementKey = source === 'react-native' ? `WX${element}` : element
 
         try {
             //TODO getFinalPath参数耦合太紧，切分为各独立函数模块。
-            usedComps[elementKey] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
+            usedComps[element] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
         } catch (e) {
             console.log(`${resouce.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
             console.log(e)
@@ -111,20 +101,12 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
     return usedComps
 }
 
-function isRnBaseSkipEle(element, source) {
-    return (source === 'react-native' || source === '@areslabs/wx-animated') && backToViewNode.has(element)
-}
-
 
 function getFinalPath(element, source, module, info, defaultSpecifier, chunk, jsonRelativeFiles) {
 
     let requireAbsolutePath = null
     let requireDefault = true
-    if (source === 'react-native') {
-        requireAbsolutePath = getCompPath(chunk, source, `WX${element}`)
-        requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)//configure.inputFullpath  + (requireAbsolutePath .replace(/\\/g, '/'))
-        jsonRelativeFiles.add(source)
-    } else if (judgeLibPath(source) && source === getLibPath(source) && getCompPath(chunk, source, element)) {
+    if (judgeLibPath(source) && source === getLibPath(source) && getCompPath(chunk, source, element)) {
         requireAbsolutePath = getCompPath(chunk, source, element)
         requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)
         jsonRelativeFiles.add(source)

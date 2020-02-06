@@ -14,7 +14,7 @@ import addTempName from './addTempName'
 import geneAllTemplate from "./geneAllTemplate";
 import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
-import addWXPrefixHandler from './addWXPrefixHandler'
+import RNCompHandler from './RNCompHandler'
 import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
@@ -45,7 +45,7 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
     ast = compPreHandle(ast, info)
 
-    ast = addWXPrefixHandler(ast, info)
+    ast = RNCompHandler(ast, info)
 
     ast = cptCompHandler(ast, info)
 
