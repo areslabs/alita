@@ -25,6 +25,22 @@ export default function(ast, info) {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view') {
                 const diuuKey = getDiuuKey(path)
+
+                const originAttr = getAttr(path.node, 'original')
+
+                if (originAttr
+                    && originAttr.value.value === 'ErrorView'
+                ) {
+                    path.node.attributes = [
+                        t.jsxAttribute(
+                            t.jsxIdentifier('style'),
+                            t.stringLiteral('color: red; text-align: center;')
+                        )
+                    ]
+                    return
+                }
+
+
                 addStyleAttr(path, diuuKey)
 
                 const jsxOp = path.node

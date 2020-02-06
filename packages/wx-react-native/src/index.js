@@ -10,13 +10,12 @@ import {unstable_batchedUpdates} from '@areslabs/wx-react'
 import WXFlatList from './component/WXFlatList/index'
 import WXSectionList from './component/WXSectionList/index'
 import WXScrollView from './component/WXScrollView/index'
+//TODO Picker, Picker.Item
 import WXPicker from './component/WXPicker/index'
 import WXTextInput from './component/WXTextInput/index'
 import WXButton from './component/WXButton/index'
 import WXActivityIndicator from './component/WXActivityIndicator/index'
 import WXImageBackground from './component/WXImageBackground/index'
-
-
 import WXModal from './component/WXModal/index'
 
 import StyleSheet from './api/StyleSheet'
@@ -31,59 +30,34 @@ import alert from './api/galert'
 import {requestAnimationFrame, cancelAnimationFrame} from './api/raf'
 
 
-import {getNotSupport, getWXBaseComponent, BaseView} from './component/WXComponent'
-
-// WXBaseComponent
-const WXView = BaseView
-const WXImage = BaseView
-const WXText = BaseView
-const WXTextInner = BaseView
-const WXTouchableHighlight = BaseView
-const WXTouchableOpacity = BaseView
-const WXTouchableWithoutFeedback = BaseView
-
+import {getWXBaseComponent} from './component/WXComponent'
 
 const WXSlider = getWXBaseComponent()
 const WXSwitch = getWXBaseComponent()
 const WXRefreshControl = getWXBaseComponent()
 const WXWebView = getWXBaseComponent()
 
-// not support yet
-const DatePickerIOS = getNotSupport('DatePickerIOS')
-const ViewPagerAndroid = getNotSupport('ViewPagerAndroid')
-const StatusBar = getNotSupport('StatusBar')
-const DatePickerAndroid = getNotSupport('DatePickerAndroid')
-const DrawerAndroid = getNotSupport('DrawerAndroid')
-const Animated = getNotSupport('Animated')
-const ProgressBarAndroid = getNotSupport('ProgressBarAndroid')
-const ProgressViewIOS = getNotSupport('ProgressViewIOS')
-const SegmentedControlIOS = getNotSupport('SegmentedControlIOS')
-const TabBarIOS = getNotSupport('TabBarIOS')
-const TimePickerAndroid = getNotSupport('TimePickerAndroid')
-const ToastAndroid = getNotSupport('ToastAndroid')
-const ToolbarAndroid = getNotSupport('ToolbarAndroid')
-
 const AppState = {
     removeEventListener: () => {
-        console.warn('not support AppState now!')
+        console.error('尚不支持 AppState!')
     },
     addEventListener: () => {
-        console.warn('not support AppState now!')
+        console.error('尚不支持 AppState!')
     }
 }
 const NativeAppEventEmitter = {
     addListener: () => {
-        console.warn('not support NativeAppEventEmitter now! use @areslabs/wx-eventemitter instead')
+        console.error('尚不支持 NativeAppEventEmitter! use @areslabs/wx-eventemitter instead')
         return () => {
-            console.warn('not support NativeAppEventEmitter now! use @areslabs/wx-eventemitter instead')
+            console.error('尚不支持 NativeAppEventEmitter! use @areslabs/wx-eventemitter instead')
         }
     },
 }
 const DeviceEventEmitter = {
     addListener: () => {
-        console.warn('use @areslabs/wx-eventemitter instead')
+        console.error('use @areslabs/wx-eventemitter instead')
         return () => {
-            console.warn('use @areslabs/wx-eventemitter instead')
+            console.error('use @areslabs/wx-eventemitter instead')
         }
     },
 }
@@ -92,38 +66,16 @@ export {
     WXActivityIndicator,
     WXImageBackground,
     WXButton,
-    WXView,
-    WXText,
-    WXTextInner,
     WXFlatList,
     WXSectionList,
-    WXImage,
     WXModal,
     WXPicker,
     WXSlider,
     WXSwitch,
     WXTextInput,
-    WXTouchableHighlight,
-    WXTouchableOpacity,
-    WXTouchableWithoutFeedback,
     WXScrollView,
     WXRefreshControl,
     WXWebView,
-
-
-    DatePickerIOS,
-    ViewPagerAndroid,
-    StatusBar,
-    DatePickerAndroid,
-    DrawerAndroid,
-    Animated,
-    ProgressBarAndroid,
-    ProgressViewIOS,
-    SegmentedControlIOS,
-    TabBarIOS,
-    TimePickerAndroid,
-    ToastAndroid,
-    ToolbarAndroid,
 
     StyleSheet,
     Platform,
@@ -136,6 +88,7 @@ export {
     requestAnimationFrame,
     cancelAnimationFrame,
     unstable_batchedUpdates,
+
     AppState,
     NativeAppEventEmitter,
     DeviceEventEmitter
@@ -145,39 +98,16 @@ export default  {
     WXActivityIndicator,
     WXImageBackground,
     WXButton,
-    WXView,
-    WXText,
-    WXTextInner,
     WXFlatList,
     WXSectionList,
-    WXImage,
     WXModal,
     WXPicker,
     WXSlider,
     WXSwitch,
     WXTextInput,
-    WXTouchableHighlight,
-    WXTouchableOpacity,
-    WXTouchableWithoutFeedback,
     WXScrollView,
     WXRefreshControl,
     WXWebView,
-
-
-    ViewPagerAndroid: ViewPagerAndroid,
-    DatePickerIOS: DatePickerIOS,
-    StatusBar: StatusBar,
-    DatePickerAndroid: DatePickerAndroid,
-    DrawerAndroid: DrawerAndroid,
-    Animated: Animated,
-    ProgressBarAndroid: ProgressBarAndroid,
-    ProgressViewIOS: ProgressViewIOS,
-    SegmentedControlIOS: SegmentedControlIOS,
-    TabBarIOS: TabBarIOS,
-    TimePickerAndroid: TimePickerAndroid,
-    ToastAndroid: ToastAndroid,
-    ToolbarAndroid: ToolbarAndroid,
-
 
     StyleSheet,
     Platform,
@@ -190,6 +120,7 @@ export default  {
     requestAnimationFrame,
     cancelAnimationFrame,
     unstable_batchedUpdates,
+
     AppState,
     NativeAppEventEmitter,
     DeviceEventEmitter

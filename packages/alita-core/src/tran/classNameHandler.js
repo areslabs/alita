@@ -52,6 +52,10 @@ export default function classNameHandler (ast,info) {
                     original === 'TouchableWithoutFeedback'
                 ) {
                     // do nothing
+                } else if (
+                    original === 'ErrorView'
+                ) {
+                    // do nothing
                 } else {
                     attris.push(
                         t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral('view'))

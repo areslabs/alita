@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {
+    AppState,
     View,
     Text,
     Button,
@@ -9,6 +10,7 @@ import {
     SectionList,
     Image,
     Modal,
+    MaskedViewIOS,
     Picker,
     Slider,
     Switch,
@@ -17,6 +19,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     ScrollView,
+    StatusBar,
     RefreshControl,
     Platform,
 } from 'react-native'
@@ -89,6 +92,7 @@ export default class A extends Component {
                 console.log('ASYNC OKOK')
             })
 
+        AppState.addEventListener('change', () => {});
     }
 
 
@@ -150,6 +154,9 @@ export default class A extends Component {
         const item1 = <View style={styles.item}><Text style={styles.itemText}>item1</Text></View>
         return (
             <ScrollView style={{flex: 1}} contentContainerStyle={{backgroundColor: '#fff'}}>
+
+                <StatusBar backgroundColor="blue" barStyle="light-content" />
+
                 <View style={styles.button}>
                     <Button
                         color="#fff"
@@ -263,6 +270,33 @@ export default class A extends Component {
 
                 <Hello name="y5g" style={[styles.item, {borderBottomWidth: 0}]} textStyle={styles.itemText}/>
 
+
+                <MaskedViewIOS
+                    style={{flex: 1, flexDirection: 'row', height: '100%'}}
+                    maskElement={
+                        <View
+                            style={{
+                                // Transparent background because mask is based off alpha channel.
+                                backgroundColor: 'transparent',
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                            <Text
+                                style={{
+                                    fontSize: 60,
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                }}>
+                                Basic Mask
+                            </Text>
+                        </View>
+                    }>
+                    {/* Shows behind the mask, you can put anything here, such as an image */}
+                    <View style={{flex: 1, height: '100%', backgroundColor: '#324376'}} />
+                    <View style={{flex: 1, height: '100%', backgroundColor: '#F5DD90'}} />
+                    <View style={{flex: 1, height: '100%', backgroundColor: '#F76C5E'}} />
+                </MaskedViewIOS>
 
             </ScrollView>
         )

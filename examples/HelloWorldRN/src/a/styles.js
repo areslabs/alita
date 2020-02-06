@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View, ImageBackground} from 'react-native';
 
 const styles = StyleSheet.create({
     itemText: {

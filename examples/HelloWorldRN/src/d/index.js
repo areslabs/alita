@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ScrollView, StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, View, TouchableWithoutFeedback, SafeAreaView, Dimensions } from "react-native";
 import {AnimatedText, createAnimation, AnimatedImage, AnimatedView} from '@areslabs/wx-animated'
 
 const {width } = Dimensions.get('window')
@@ -194,7 +194,7 @@ export default class C extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
 
                 <View style={styles.section}>
                     <AnimatedText style={styles.txt} animation={this.state.ani1}>文字渐隐</AnimatedText>
@@ -262,7 +262,7 @@ export default class C extends Component {
                     <MyAni animation={this.state.ani7}/>
                 </View>
 
-            </View>
+            </SafeAreaView>
 
         );
     }
