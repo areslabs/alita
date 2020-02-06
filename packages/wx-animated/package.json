@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-animated",
-  "version": "2.3.5",
+  "version": "2.3.6",
   "description": "animated lib for react-native , web and mini-program",
   "main": "./dist/native/index.js",
   "weixin": "./dist/weixin/index.js",
