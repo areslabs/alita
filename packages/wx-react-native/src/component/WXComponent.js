@@ -8,25 +8,12 @@
 
 import { RNBaseComponent } from "@areslabs/wx-react"
 
-
-export const BaseView = ""
-
-
 export function getWXBaseComponent() {
     return class WXBaseComponent extends RNBaseComponent {
         getStyle(props) {
             return {
                 style: this.transformViewStyle(props.style)
             }
-        }
-    }
-}
-
-
-export function getNotSupport(name) {
-    return {
-        notSupport() {
-            console.error(`小程序不支持${name}`);
         }
     }
 }
