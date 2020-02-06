@@ -55,6 +55,9 @@ export default function RNCompHandler (ast, info?: any) {
                     if (RNCOMPSET.has(name)) {
                         const wxName = `WX${name}`
                         spe.local.name = wxName
+                        // @ts-ignore
+                        spe.imported.name = wxName
+
                         fileIms[wxName] = fileIms[name]
                         fileIms[wxName].imported = wxName
                         delete fileIms[name]
