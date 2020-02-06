@@ -215,7 +215,8 @@ export default function checkJSX(ast, filepath, rawCode) {
                 if (backToViewNode.has(item.local.name)
                     || RNCOMPSET.has(item.local.name)
                     || supportRNAPI.has(item.local.name)
-                    || item.local.name ===  'RefreshControl'
+                    || item.local.name === 'RefreshControl'
+                    || item.local.name === 'StatusBar'
                 ) {
                     return
                 }

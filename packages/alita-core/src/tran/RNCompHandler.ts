@@ -134,6 +134,13 @@ function handleComp(path, rnApis, fileJSXElements) {
 
     fileJSXElements.delete(name)
 
+    if (name === 'StatusBar') {
+        if (path.type === 'JSXOpeningElement') {
+            path.parentPath.remove()
+            return
+        }
+    }
+
     if (name === 'View'
         || name === 'AnimatedView'
         || name === 'AnimatedText'
