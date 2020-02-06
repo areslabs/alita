@@ -11,7 +11,6 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 
 import * as t from '@babel/types'
 import {isStaticRes} from '../util/util'
-import {RNCOMPSET, backToViewNode} from "../constants";
 
 import {addUsedImage} from '../util/cacheImageInfos'
 
