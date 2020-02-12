@@ -41,6 +41,13 @@ function wrapperCatch(ast, func) {
             const code = ast.__sourceCode
 
             const loc = args[0].node.loc
+
+            if (!loc) {
+                console.log(`异常信息:\n`.error, e)
+                throw e
+            }
+
+
             const result = codeFrameColumns(code, loc, {
                 highlightCode: true,
                 linesAbove: 2,
