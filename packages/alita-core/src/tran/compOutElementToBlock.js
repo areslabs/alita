@@ -8,8 +8,13 @@
 
 import errorLogTraverse from '../util/ErrorLogTraverse'
 
-
-export default function addTempName (ast, info) {
+/**
+ * 微信小程序自定义节点会退化为 view， 故把render 直接下的view 替换为block，减少组件层级
+ * @param ast
+ * @param info
+ * @returns {*}
+ */
+export default function compOutElementToBlock (ast, info) {
     if (info.isPageComp) return ast
 
     errorLogTraverse(ast, {
