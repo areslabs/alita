@@ -9,8 +9,11 @@
 import errorLogTraverse from '../util/ErrorLogTraverse'
 
 import * as t from "@babel/types"
+import {wxBaseComp} from '../constants'
 
-export default function touchableToView (ast) {
+import {getOriginal} from '../util/uast'
+
+export default function addEventHandler (ast) {
     errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
@@ -136,6 +139,20 @@ export default function touchableToView (ast) {
 
                 return
             }
+
+            if (path.type === 'JSXAttribute'
+                && (path.node.name.name.startsWith('bind') || path.node.name.name.startsWith('catch'))
+                && wxBaseComp.has(path.parentPath.node.name.name)
+            ) {
+                path.node.value = t.stringLiteral('eventHandler')
+
+                if (!path.parentPath.node.attributes.some(attr => attr.type === 'JSXAttribute' && attr.name.name === 'data-diuu')) {
+                    const diuu = getDiuu(path.parentPath.node.attributes)
+                    path.parentPath.node.attributes.push(
+                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`))
+                    )
+                }
+            }
         }
     })
 
@@ -152,14 +169,3 @@ function getDiuu(attris) {
     }
 }
 
-
-function getOriginal(path) {
-    const attris = path.node.attributes
-    for (let i = 0; i< attris.length; i ++) {
-        const item = attris[i]
-        if (item.type === 'JSXAttribute' && item.name.name === 'original') {
-            return item.value.value
-        }
-    }
-    return ''
-}

@@ -76,12 +76,29 @@ export function setDeepData(inst, v, path) {
     tmpObj[endk] = v
 }
 
-export const ReactWxEventMap = {
-    'onPress': 'tap',
-    'onLongPress': 'longpress',
-    'onLoad': 'load',
-    'onError': 'error'
+
+export function getWxEventType(event) {
+    switch (event) {
+        case 'onPress':
+            return 'tap'
+        case 'onLongPress':
+            return 'longpress'
+        case 'onLoad':
+            return 'load'
+        case 'onError':
+            return 'error'
+        default:
+            if (event.startsWith('bind')) {
+                return event.substring(4)
+            } else if (event.startsWith('catch')) {
+                return event.substring(5)
+            } else {
+                return event
+            }
+    }
+
 }
+
 
 export function getRealOc(oc, nc, r) {
     if (!oc || oc.length === 0 ) {

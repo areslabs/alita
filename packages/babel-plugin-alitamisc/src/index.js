@@ -18,7 +18,54 @@ const compatTagSet = new Set(
         "block",
         "slot",
         "view",
-        "image"
+        "image",
+
+        // 视图容器
+        'cover-image',
+        'cover-view',
+        'movable-area',
+        'movable-view',
+        'scroll-view',
+        'swiper',
+        'swiper-item',
+        'view',
+
+        //基础内容
+        'icon',
+        'progress',
+        'rich-text',
+        'text',
+
+        // 表单组件
+        'button',
+        'checkbox',
+        'checkbox-group',
+        'editor',
+        'form',
+        'input',
+        'label',
+        'picker',
+        'picker-view',
+        'picker-view-column',
+        'radio',
+        'radio-group',
+        'slider',
+        'switch',
+        'textarea',
+
+        //媒体组件
+        'audio',
+        'camera',
+        'image',
+        'live-player',
+        'live-pusher',
+        'video',
+
+        // 地图
+        'map',
+
+        // 画布
+        'canvas'
     ]
 )
 

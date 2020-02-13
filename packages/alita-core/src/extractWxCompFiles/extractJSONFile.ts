@@ -2,7 +2,8 @@ import * as path from "path";
 
 import {getModuleInfo, setJsonRelativeFiles} from '../util/cacheModuleInfos'
 import {getLibPath, judgeLibPath} from "../util/util"
-import configure from "../configure";
+import configure from "../configure"
+import {wxBaseComp} from '../constants'
 
 import {getCompPath, getRealPackChunks} from './copyPackageWxComponents'
 
@@ -68,6 +69,10 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
     const usedComps = {}
 
     info.JSXElements.forEach(element => {
+
+        if (wxBaseComp.has(element)) {
+            return
+        }
 
         if (!info.im[element]) {
             // 非import/required组件，有两种情况，1：本文件声明了此组件， 2：组件在其他文件，引入方式非法

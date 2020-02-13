@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+import {isRenderReturn, getOriginal} from '../util/uast'
 import errorLogTraverse from '../util/ErrorLogTraverse'
 
 /**
@@ -21,6 +21,7 @@ export default function compOutElementToBlock (ast, info) {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view'
+                && getOriginal(path)
                 && isRenderReturn(path)
             ) {
                 path.node.name.name = 'block'
@@ -35,22 +36,4 @@ export default function compOutElementToBlock (ast, info) {
 
     return ast
 
-}
-
-
-function isRenderReturn(path) {
-
-    const  pp = path.parentPath.parentPath
-    if (pp.type !== 'ReturnStatement') return false
-
-
-    if (pp.parentPath.parentPath) {
-        const pppp = pp.parentPath.parentPath
-
-        if (pppp.type === 'ClassMethod'
-            && pppp.node.key.name === 'render'
-        ) {
-            return true
-        }
-    }
 }

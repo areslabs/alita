@@ -9,7 +9,7 @@
 import instanceManager from './InstanceManager'
 import geneUUID from './geneUUID'
 import tackleWithStyleObj from './tackleWithStyleObj'
-import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, ReactWxEventMap, getRealOc} from './util'
+import { DEFAULTCONTAINERSTYLE, filterContext, getCurrentContext, getWxEventType, getRealOc} from './util'
 import { CPTComponent, FuncComponent, RNBaseComponent, HocComponent } from './AllComponent'
 
 import {UPDATE_EFFECT, INIT_EFFECT, UpdateState, ForceUpdate, mpRoot} from './constants'
@@ -124,14 +124,14 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             data.tempName = tempName
         }
 
-        if (nodeName === 'view' || nodeName === 'block' || nodeName === 'image') {
-            updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPath)
-        } else if (nodeName === 'template') {
+        if (nodeName === 'template') {
             updateTemplate(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (nodeName === 'phblock') {
             updatePhblock(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (typeof nodeName === 'string' && nodeName.endsWith('CPT')) {
             updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
+        } else if (typeof nodeName === 'string') {
+            updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === FuncComponent) {
             updateFuncComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === RNBaseComponent) {
@@ -814,8 +814,9 @@ function updateTemplate(vnode, parentInst, parentContext, data, oldData, dataPat
 
 
 /**
- * 由于小程序slot的性能问题， 把View/Touchablexxx/Image 等退化为view来避免使用slot。
- * 对于自定义组件，如果render的最外层是View， 这个View会退化成block。
+ * 1. 由于小程序slot的性能问题， 把View/Touchablexxx/Image 等退化为view来避免使用slot。
+ * 2. 直接使用微信原生组件
+ * 3. 自定义组件，如果render的最外层是View， 这个View会退化成block
  * 运行过程收集数据到data对象， 不产生effect
  */
 function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPath) {
@@ -823,29 +824,50 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
     // TODO TWFBStylePath 作用同 isFirstEle， 考虑将其 移除到自定义实现， 它不应该侵犯render函数
     const {animation, props, diuu: vnodeDiuu, isFirstEle, children} = vnode
     const allKeys = Object.keys(props)
+
+    // RN退化的节点 存在original属性
     let finalNodeType = props.original
 
     let eventProps = []
-    for (let i = 0; i < allKeys.length; i++) {
-        const k = allKeys[i]
-        const v = props[k]
 
-        if (k === 'children' || k === 'original') continue
+    if (!finalNodeType) {
+        for (let i = 0; i < allKeys.length; i++) {
+            const k = allKeys[i]
+            const v = props[k]
 
-        if (k === 'src') {
-            data[`${vnodeDiuu}${k}`] = v.uri || v
-        } else if (typeof v === 'function') {
-            eventProps.push(k)
-        } else if (k === 'mode') {
-            data[`${vnodeDiuu}${k}`] = resizeMode(v)
-        } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
-            data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, (isFirstEle || vnode.TWFBStylePath) ? finalNodeType : null)
-        } else if (k === 'activeOpacity') {
-            data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(v)
-        } else {
-            data[`${vnodeDiuu}${k}`] = v
+            if (k === 'children') continue
+
+            if (typeof v === 'function') {
+                eventProps.push(k)
+            } else if (k === 'style') {
+                data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v)
+            } else {
+                data[`${vnodeDiuu}${k}`] = v
+            }
+        }
+    } else {
+        for (let i = 0; i < allKeys.length; i++) {
+            const k = allKeys[i]
+            const v = props[k]
+
+            if (k === 'children' || k === 'original') continue
+
+            if (k === 'src') {
+                data[`${vnodeDiuu}${k}`] = v.uri || v
+            } else if (typeof v === 'function') {
+                eventProps.push(k)
+            } else if (k === 'mode') {
+                data[`${vnodeDiuu}${k}`] = resizeMode(v)
+            } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
+                data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, (isFirstEle || vnode.TWFBStylePath) ? finalNodeType : null)
+            } else if (k === 'activeOpacity') {
+                data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(v)
+            } else {
+                data[`${vnodeDiuu}${k}`] = v
+            }
         }
     }
+
 
     // 如果基本组件有事件函数，需要产生唯一uuid
     if (eventProps.length > 0) {
@@ -857,10 +879,11 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
 
         eventProps.forEach(k => {
             const v = props[k]
-            parentInst.__eventHanderMap[`${diuu}${ReactWxEventMap[k]}`] = reactEnvWrapper(v)
+            parentInst.__eventHanderMap[`${diuu}${getWxEventType(k)}`] = reactEnvWrapper(v)
         })
     }
 
+    // 如果props没有style属性，但是元素是外层需要上报属性的元素，那么同样需要计算出默认属性，用来上报
     if (!props.style && finalNodeType !== 'TouchableWithoutFeedback' && (isFirstEle || vnode.TWFBStylePath)) {
         data[`${vnodeDiuu}style`] = tackleWithStyleObj('', finalNodeType)
     }

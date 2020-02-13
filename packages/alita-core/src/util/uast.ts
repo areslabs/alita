@@ -11,6 +11,7 @@ import generator from '@babel/generator'
 import * as t from "@babel/types"
 
 import {allBaseComp, extChildComp} from './getAndStorecompInfos'
+import {wxBaseComp} from '../constants'
 
 
 export function parseCode(code, extname) {
@@ -44,7 +45,7 @@ export function parseCode(code, extname) {
 }
 
 
-// 由于babel-loader 无法直接传递AST，所以需要先生成code
+//TODO 由于babel-loader 无法直接传递AST，所以需要先生成code
 export function geneReactCode(ast) {
     let code = generator(ast, {
         comments: false,
@@ -74,6 +75,11 @@ export function isReactComponent(superClass) {
     return false
 }
 
+/**
+ * 调用链处理为数组： a.b.c --> ['a', 'b', 'c']
+ * @param memberExpression
+ * @returns {any[]}
+ */
 export function getPropsChain(memberExpression) {
     const chain = []
 
@@ -97,7 +103,12 @@ export function getPropsChain(memberExpression) {
     return chain.reverse()
 }
 
-
+/**
+ * 生成独立JSX片段的对应template片段
+ * @param name
+ * @param rs
+ * @returns {JSXElement}
+ */
 export function decTemlate(name, rs) {
     let arr = null
     if (rs.type === 'ArrayExpression') {
@@ -119,6 +130,15 @@ export function decTemlate(name, rs) {
     )
 }
 
+/**
+ * 判断是否是JSX的子元素
+ *
+ * var x = <A><B/><C/></A>
+ *
+ * 其中 A不是， B，C都是JSX子元素。
+ * @param path
+ * @returns {boolean}
+ */
 export function isJSXChild(path) {
     return (
         path.inList
@@ -127,11 +147,13 @@ export function isJSXChild(path) {
     )
 }
 
-
+/**
+ * 子元素是否需要被处理为 generic：抽象节点，一般来说，所有自定义组件都需要
+ * @param name
+ * @returns {boolean}
+ */
 export function isChildComp(name) {
-    if (name === 'block') return false
-    if (name === 'view') return false
-    if (name === 'image') return false
+    if (wxBaseComp.has(name)) return false
 
     // 基本组件children 需要转化为childrencpt的组件
     if (extChildComp.has(name)) {
@@ -147,6 +169,11 @@ export function isChildComp(name) {
     return true
 }
 
+/**
+ * 判断 子元素是否是需要被处理为 generic： 抽象节点的情况
+ * @param path
+ * @returns {any}
+ */
 export function isChildCompChild(path) {
     const jc = isJSXChild(path)
     if (!jc) return false
@@ -158,35 +185,11 @@ export function isChildCompChild(path) {
     return isChildComp(name)
 }
 
-
-
-export function isBindElement(jsxOp) {
-
-    let name = null
-    if (jsxOp.name.type === 'JSXMemberExpression') {
-        name = jsxOp.name.object.name
-    } else {
-        name = jsxOp.name.name
-    }
-
-
-    return isBindElementByName(name)
-}
-
-export function isBindElementByName(name) {
-
-    if (name === 'view' || name === 'block' || name === 'image') {
-        return true
-    }
-
-    if (allBaseComp.has(name)) {
-        return true
-    }
-
-    return false
-}
-
-
+/**
+ * 是否是文本节点
+ * @param openingElement
+ * @returns {any}
+ */
 export function isTextElement(openingElement) {
     if (openingElement.name.name !== 'view') return false
 
@@ -196,6 +199,67 @@ export function isTextElement(openingElement) {
         && (item.value.value === 'OuterText' || item.value.value === 'InnerText'))
 }
 
+
+
+/**
+ * render方法直接返回JSX
+ *
+ * class A extends Component {
+ *    render() {
+ *        return <XX/>
+ *    }
+ *
+ * }
+ *
+ * class B extends Component {
+ *    render() {
+ *        if (c1) {
+ *            return <X/>
+ *        } else {
+ *            return <Y/>
+ *        }
+ *    }
+ * }
+ *
+ * 以上： A的返回值 是true， B的返回值是false
+ *
+ * 微信小程序的自定义组件会退化为一个节点，需要有render的节点上报样式，对于A可以简化处理，
+ * 对于B 理论上来说 任何一个独立JSX片段 都可能是上报的源
+ *
+ * @type {boolean}
+ */
+export function isRenderReturn(path) {
+
+    const  pp = path.parentPath.parentPath
+    if (pp.type !== 'ReturnStatement') return false
+
+
+    if (pp.parentPath.parentPath) {
+        const pppp = pp.parentPath.parentPath
+
+        if (pppp.type === 'ClassMethod'
+            && pppp.node.key.name === 'render'
+        ) {
+            return true
+        }
+    }
+}
+
+/**
+ *
+ * @param path
+ * @returns {any}
+ */
+export function getOriginal(path) {
+    const attris = path.node.attributes
+    for (let i = 0; i< attris.length; i ++) {
+        const item = attris[i]
+        if (item.type === 'JSXAttribute' && item.name.name === 'original') {
+            return item.value.value
+        }
+    }
+    return ''
+}
 
 
 

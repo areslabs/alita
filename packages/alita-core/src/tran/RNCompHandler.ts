@@ -169,6 +169,7 @@ function handleComp(path, rnApis, fileJSXElements) {
 
     if (name === 'Image' || name === 'AnimatedImage') {
         path.node.name.name = 'image'
+        addViewOriginalAttri(path, "image")
         renameImageSourceAttri(path)
         return
     }
