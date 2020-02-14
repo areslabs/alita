@@ -270,7 +270,8 @@ export default function checkJSX(ast, filepath, rawCode) {
                 return
             }
 
-            if (path.node.value.type === 'JSXExpressionContainer'
+            if (path.node.value
+                && path.node.value.type === 'JSXExpressionContainer'
                 && path.node.value.expression
                 && path.node.value.expression.type === 'MemberExpression'
                 && path.node.value.expression.object.type === 'ThisExpression'
@@ -284,7 +285,8 @@ export default function checkJSX(ast, filepath, rawCode) {
 
 
             // this.xx.bind(this)
-            if (path.node.value.type === 'JSXExpressionContainer'
+            if (path.node.value
+                && path.node.value.type === 'JSXExpressionContainer'
                 && path.node.value.expression
                 && path.node.value.expression.type === 'CallExpression'
                 && path.node.value.expression.callee.type === 'MemberExpression'
