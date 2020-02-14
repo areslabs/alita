@@ -37,11 +37,16 @@ export default function (compPath) {
                 while (compInst && compInst instanceof HocComponent) {
                     compInst = compInst._c[0]
                 }
-                const eh = compInst.__eventHanderMap[eventKey]
+                let eh = compInst.__eventHanderMap[eventKey]
+
+                // map地图组件的regionchange事件 type为begin/end
+                if (!eh && (e.type === 'begin' || e.type === 'end')) {
+                    eh = compInst.__eventHanderMap[e.currentTarget.dataset.diuu + 'regionchange']
+                }
 
                 if (eh) {
                     //TODO event参数
-                    eh()
+                    eh(e)
                 }
             }
         }
