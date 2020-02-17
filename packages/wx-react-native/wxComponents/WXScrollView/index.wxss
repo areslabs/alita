@@ -1,0 +1,9 @@
+view, scroll-view {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    border: 0 solid;
+    min-width: 0;
+    min-height: 0;
+}

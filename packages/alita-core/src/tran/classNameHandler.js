@@ -71,7 +71,16 @@ export default function classNameHandler (ast,info) {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'image'
             ) {
-                // image 不支持包裹元素了，so, do nothing!
+                const attris = path.node.attributes
+                const origs = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === 'original'))
+
+                if (origs.length === 0) {
+                    return
+                }
+
+                attris.push(
+                    t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral('image'))
+                )
             }
 
         }
