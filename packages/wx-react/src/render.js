@@ -813,6 +813,9 @@ function updateTemplate(vnode, parentInst, parentContext, data, oldData, dataPat
 }
 
 
+const middleLineReg = new RegExp('-', 'g')
+const replaceChar = 'Y' // surname of author
+
 /**
  * 1. 由于小程序slot的性能问题， 把View/Touchablexxx/Image 等退化为view来避免使用slot。
  * 2. 直接使用微信原生组件
@@ -832,8 +835,13 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
 
     if (!finalNodeType) {
         for (let i = 0; i < allKeys.length; i++) {
-            const k = allKeys[i]
+            let k = allKeys[i]
             const v = props[k]
+
+            if (k.indexOf('-') !== - 1) {
+                // 当小程序出现类似 <view class="{{x-y-z}}"/> 指绑定的时候会，会无效，需要处理
+                k = k.replace(middleLineReg, replaceChar)
+            }
 
             if (k === 'children') continue
 

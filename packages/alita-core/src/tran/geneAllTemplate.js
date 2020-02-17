@@ -241,7 +241,9 @@ export default function(ast, info) {
                     }
 
                     if (attr.value.type === 'JSXExpressionContainer') {
-                        attr.value = t.stringLiteral(`{{${diuuKey}${name}}}`)
+                        // 当小程序出现类似 <view class="{{x-y-z}}"/> 指绑定的时候会，会无效，需要处理
+                        const yName = name.replace(/-/g, 'Y')
+                        attr.value = t.stringLiteral(`{{${diuuKey}${yName}}}`)
                     }
                     return
                 } else if (allBaseComp.has(jsxOp.name.name)) {
