@@ -32,7 +32,14 @@ const defaultAlias = {
 }
 
 
-const alitaHandleRule =  {
+
+
+
+const mainFields = ['weixin', 'browser', 'module', 'main']
+const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
+const MagicNumber = 1000000
+export default function packByWebpack() {
+    const alitaHandleRule =  {
         test: /\.[jt]sx?$/,
         use: [
             {
@@ -40,7 +47,11 @@ const alitaHandleRule =  {
                 options: {
                     plugins: [
                         "@babel/plugin-transform-regenerator",
-                        "@areslabs/babel-plugin-alitamisc"
+                        ["@areslabs/babel-plugin-alitamisc",
+                            {
+                                miniprogramComponents: configure.configObj.miniprogramComponents
+                            }
+                        ]
                     ]
                 }
             },
@@ -60,17 +71,11 @@ const alitaHandleRule =  {
                 loader: path.resolve(__dirname, 'gatherInfo-loader.js')
             }
         ]
-} as any
+    } as any
 
-const defaultRules = [
-    alitaHandleRule
-]
-
-
-const mainFields = ['weixin', 'browser', 'module', 'main']
-const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
-const MagicNumber = 1000000
-export default function packByWebpack() {
+    const defaultRules = [
+        alitaHandleRule
+    ]
 
     const cco = configure.configObj
 

@@ -107,6 +107,8 @@ const alitamisc = (api, options) => {
                 args.push(t.stringLiteral(tagName));
             } else if (tagName && tagName.endsWith('CPT')) {
                 args.push(t.stringLiteral(tagName));
+            } else if (options.miniprogramComponents[tagName]) {
+                args.push(t.stringLiteral(tagName));
             } else {
                 args.push(state.tagExpr);
             }

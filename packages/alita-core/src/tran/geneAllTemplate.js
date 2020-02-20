@@ -14,6 +14,8 @@ import { isEventProp } from '../util/util';
 import {wxBaseComp} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
 
+import configure from '../configure'
+
 /**
  * 生成template集合
  * @param ast
@@ -116,7 +118,10 @@ export default function(ast, info) {
             }
 
             if (path.type === 'JSXOpeningElement'
-                && !(allBaseComp.has(path.node.name.name) || wxBaseComp.has(path.node.name.name))
+                && !(allBaseComp.has(path.node.name.name)
+                    || wxBaseComp.has(path.node.name.name)
+                    || configure.configObj.miniprogramComponents[path.node.name.name]
+                )
             ) {
                 const diuuKey = path.node.diuu
 
@@ -222,7 +227,7 @@ export default function(ast, info) {
                 const attr = path.node
 
 
-                if (wxBaseComp.has(jsxOp.name.name)) {
+                if (wxBaseComp.has(jsxOp.name.name) || configure.configObj.miniprogramComponents[jsxOp.name.name]) {
                     // 小程序基本组件 view/button/input等
 
                     if (name === 'style') {

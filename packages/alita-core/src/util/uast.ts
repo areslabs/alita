@@ -13,6 +13,8 @@ import * as t from "@babel/types"
 import {allBaseComp, extChildComp} from './getAndStorecompInfos'
 import {wxBaseComp} from '../constants'
 
+import configure from '../configure'
+
 
 export function parseCode(code, extname) {
     const plugins: ParserPlugin[] = [
@@ -153,7 +155,7 @@ export function isJSXChild(path) {
  * @returns {boolean}
  */
 export function isChildComp(name) {
-    if (wxBaseComp.has(name)) return false
+    if (wxBaseComp.has(name) || configure.configObj.miniprogramComponents[name]) return false
 
     // 基本组件children 需要转化为childrencpt的组件
     if (extChildComp.has(name)) {

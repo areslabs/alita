@@ -12,6 +12,7 @@ import * as t from "@babel/types"
 import {wxBaseComp} from '../constants'
 
 import {getOriginal} from '../util/uast'
+import configure from "../configure";
 
 export default function addEventHandler (ast) {
     errorLogTraverse(ast, {
@@ -142,7 +143,9 @@ export default function addEventHandler (ast) {
 
             if (path.type === 'JSXAttribute'
                 && (path.node.name.name.startsWith('bind') || path.node.name.name.startsWith('catch'))
-                && wxBaseComp.has(path.parentPath.node.name.name)
+                && (wxBaseComp.has(path.parentPath.node.name.name)
+                    || configure.configObj.miniprogramComponents[path.parentPath.node.name.name]
+                )
             ) {
                 path.node.value = t.stringLiteral('eventHandler')
 
