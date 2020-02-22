@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/areslabs/alita/compare/v2.3.6...v2.4.0) (2020-02-22)
+
+**Note:** Version bump only for package @areslabs/wx-redux-promise
+
+
+
+
+
 ## [2.3.6](https://github.com/areslabs/alita/compare/v2.3.5...v2.3.6) (2020-02-06)
 
 **Note:** Version bump only for package @areslabs/wx-redux-promise

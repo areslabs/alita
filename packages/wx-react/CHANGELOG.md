@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/areslabs/alita/compare/v2.3.6...v2.4.0) (2020-02-22)
+
+
+### Bug Fixes
+
+* **alita-core wx-react:** 修复类似 a-b-c 属性指的绑定无效的bug ([443dea5](https://github.com/areslabs/alita/commit/443dea53eb1474fe1208e588ff84acbcfa1c08b0))
+
+
+
+
+
 ## [2.3.6](https://github.com/areslabs/alita/compare/v2.3.5...v2.3.6) (2020-02-06)
 
 **Note:** Version bump only for package @areslabs/wx-react

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/areslabs/alita/compare/v2.3.6...v2.4.0) (2020-02-22)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复 新建AST标签，没有loc信息，引起的报错 ([696087a](https://github.com/areslabs/alita/commit/696087a053e5b16aa7547413098f030228037579))
+* **alita-core wx-react:** 修复类似 a-b-c 属性指的绑定无效的bug ([443dea5](https://github.com/areslabs/alita/commit/443dea53eb1474fe1208e588ff84acbcfa1c08b0))
+* **babel-plugin-alitamisc:** 修复 已link模式运行babel-plugin-alitamisc 报babel/runtime库不存在的bug ([a87db49](https://github.com/areslabs/alita/commit/a87db4953a8232b23e367dbd35c11c146a27847a))
+
+
+### Features
+
+* **alita-core:** 支持形如 <A x /> x这类无指的属性 ([ffbe802](https://github.com/areslabs/alita/commit/ffbe8025414b112b022b3cd4f54e5f35cf207c3b))
+* **alita-core babel-plugin-alitamisc:** 添加小程序自定义组件的支持 ([76edb4b](https://github.com/areslabs/alita/commit/76edb4b7f6cbd34069a972eef3acbc4b96632002))
+* **alita-core wx-react-native:** 微信基础样式移除在page.wxss定义，防止对直接使用微信组件的影响 ([5ce1f7b](https://github.com/areslabs/alita/commit/5ce1f7ba5b3906015499a6fa1038ce4d40c32231))
+
+
+
+
+
 ## [2.3.6](https://github.com/areslabs/alita/compare/v2.3.5...v2.3.6) (2020-02-06)
 
 
