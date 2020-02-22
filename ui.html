@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>外部JSX片段说明 · GitBook</title>
+        <title>UI · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="高阶组件.html" />
+    <link rel="next" href="小程序内置组件&自定义组件的使用.html" />
     
-    
-    <link rel="prev" href="属性传递JSX&组件.html" />
     
 
     </head>
@@ -207,7 +205,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.6.4" data-path="外部JSX片段.html">
+        <li class="chapter " data-level="1.6.4" data-path="外部JSX片段.html">
             
                 <a href="外部JSX片段.html">
             
@@ -361,7 +359,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9" data-path="ui.html">
+        <li class="chapter active" data-level="1.9" data-path="ui.html">
             
                 <a href="ui.html">
             
@@ -585,7 +583,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >外部JSX片段说明</a>
+        <a href="." >UI</a>
     </h1>
 </div>
 
@@ -600,32 +598,13 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="&#x5916;&#x90E8;jsx&#x7247;&#x6BB5;">&#x5916;&#x90E8;JSX&#x7247;&#x6BB5;</h2>
-<p>&#x975E;&#x7EC4;&#x4EF6;&#x6587;&#x4EF6;&#x4E2D;&#x5B9A;&#x4E49;&#x7684; <code>JSX</code> &#x7247;&#x6BB5;&#xFF0C; &#x6211;&#x4EEC;&#x79F0;&#x4E4B;&#x4E3A; <code>&#x5916;&#x90E8;JSX&#x7247;&#x6BB5;</code>&#xFF0C;&#x5C0F;&#x7A0B;&#x5E8F;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x4E0D;&#x652F;&#x6301;&#x5916;&#x90E8; <code>JSX</code> &#x7247;&#x6BB5;&#x3002; </p>
-<p>&#x5177;&#x4F53;&#x5982;&#x4E0B;&#xFF1A; </p>
-<p>a.js</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> xx = <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>
-</code></pre>
-<p>b.js</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {xx} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./a.js&apos;</span>
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-    render(){
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>{xx}<span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
-    }
-}
-</code></pre>
-<p>b.js &#x91CC;&#x9762;&#x7684; xx&#xFF0C;&#x5B9A;&#x4E49;&#x5728; a.js &#x4E2D;&#xFF0C; &#x5BF9;&#x4E8E; b.js &#x6765;&#x8BF4;&#xFF0C;&#x5C31;&#x662F;&quot;&#x5916;&#x90E8;JSX&#x7247;&#x6BB5;&quot;&#xFF0C;&#x4E0D;&#x652F;&#x6301;&#x3002; </p>
-<p>&#x7EC4;&#x4EF6;&#x5185;&#x90E8;&#x7684; <code>JSX</code> &#x662F;&#x652F;&#x6301;&#x7684;&#xFF0C;&#x5982;&#x4E0B;&#xFF1A;</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> xx = <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-    render(){
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span>&gt;</span>{xx}<span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>
-    }
-}
-</code></pre>
-<p>&#x8FD9;&#x6837;&#x662F;&#x652F;&#x6301;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;&#x8FD9;&#x4E2A; <code>JSX</code> &#x7247;&#x6BB5;&#x51FA;&#x73B0;&#x5728;&#x7EC4;&#x4EF6;&#x6587;&#x4EF6;&#x5185;&#xFF0C;&#x5C31;&#x4E0D;&#x662F;<code>&#x5916;&#x90E8;JSX&#x7247;&#x6BB5;</code>&#x4E86;&#xFF0C;&#x6240;&#x4EE5;&#x80FD;&#x591F;&#x88AB;&#x6B63;&#x786E;&#x5904;&#x7406;&#x3002;</p>
-<p><strong>&#x4E00;&#x5B9A;&#x8981;&#x8BB0;&#x4F4F;&#xFF0C;&#x53EA;&#x6709;&#x7EC4;&#x4EF6;&#x6587;&#x4EF6;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;JSX&#x7247;&#x6BB5;&#x624D;&#x4F1A;&#x88AB;&#x6B63;&#x786E;&#x5904;&#x7406;</strong>&#xFF0C; &#x5176;&#x4ED6;&#x5730;&#x65B9;&#x7684; <code>JSX</code> &#x7247;&#x6BB5;&#x8F6C;&#x5316;&#x5F15;&#x64CE;&#x4E0D;&#x4F1A;&#x5904;&#x7406;&#xFF01;</p>
+                                <h2 id="ui">UI</h2>
+<p>Alita &#x81F4;&#x529B;&#x4E8E;&#x628A;<code>ReactNative</code>&#x8FD0;&#x884C;&#x5728;&#x5C0F;&#x7A0B;&#x5E8F;&#x5E73;&#x53F0;&#xFF0C;&#x6240;&#x4EE5;&#x5929;&#x7136;&#x7684;&#x652F;&#x6301;<code>ReactNative</code>&#x5B98;&#x65B9;&#x7EC4;&#x4EF6;&#xFF0C;&#x9664;&#x6B64;&#x4E4B;&#x5916;&#xFF0C;&#x5728;&#x7528;Alita
+&#x6784;&#x5EFA;UI&#x7684;&#x8FD8;&#x53EF;&#x4EE5;&#xFF1A;</p>
+<ol>
+<li><a href="&#x5C0F;&#x7A0B;&#x5E8F;&#x5185;&#x7F6E;&#x7EC4;&#x4EF6;&amp;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;&#x7684;&#x4F7F;&#x7528;.html">&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x5C0F;&#x7A0B;&#x5E8F;&#x5185;&#x7F6E;&#x7EC4;&#x4EF6;&amp;&#x81EA;&#x5B9A;&#x4E49;&#x7EC4;&#x4EF6;</a>&#xFF0C; &#x590D;&#x7528;&#x5C0F;&#x7A0B;&#x5E8F;&#x73B0;&#x6709;&#x80FD;&#x529B;</li>
+<li><a href="Alita&#x7EC4;&#x4EF6;&#x5E93;.html">alita-ui</a>&#xFF0C;&#x4E00;&#x5957;&#x652F;&#x6301;Android&#xFF0C;IOS&#xFF0C;&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x7684;&#x4E09;&#x7AEF;UI&#x7EC4;&#x4EF6;&#x5E93;</li>
+</ol>
 
                                 
                                 </section>
@@ -653,12 +632,8 @@
 
             
                 
-                <a href="属性传递JSX&组件.html" class="navigation navigation-prev " aria-label="Previous page: 属性传递JSX&组件">
-                    <i class="fa fa-angle-left"></i>
-                </a>
                 
-                
-                <a href="高阶组件.html" class="navigation navigation-next " aria-label="Next page: 高阶组件说明">
+                <a href="小程序内置组件&自定义组件的使用.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 小程序内置组件&自定义组件的使用">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -669,7 +644,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"外部JSX片段说明","level":"1.6.4","depth":2,"next":{"title":"高阶组件说明","level":"1.6.5","depth":2,"path":"高阶组件.md","ref":"./高阶组件.md","articles":[]},"previous":{"title":"属性传递JSX&组件","level":"1.6.3","depth":2,"path":"属性传递JSX&组件.md","ref":"./属性传递JSX&组件.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"外部JSX片段.md","mtime":"2020-02-22T02:54:07.455Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-22T03:06:27.950Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"UI","level":"1.9","depth":1,"next":{"title":"小程序内置组件&自定义组件的使用","level":"1.9.1","depth":2,"path":"小程序内置组件&自定义组件的使用.md","ref":"./小程序内置组件&自定义组件的使用.md","articles":[]},"previous":{"title":"待续...","level":"1.8.7","depth":2,"ref":"","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ui.md","mtime":"2020-02-22T03:05:10.229Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-22T03:06:27.950Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
