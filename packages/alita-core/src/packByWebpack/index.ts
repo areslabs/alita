@@ -16,6 +16,8 @@ import ExtractImageFilesPlugin from './ExtractImageFilesPlugin'
 import configure from '../configure'
 import miniprogramTarget from  './miniprogramTarget'
 
+import {wxBaseComp} from '../constants'
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const defaultAlias = {
@@ -39,6 +41,11 @@ const mainFields = ['weixin', 'browser', 'module', 'main']
 const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
 const MagicNumber = 1000000
 export default function packByWebpack() {
+
+    const mpComps = new Set(wxBaseComp)
+    const mpKeys = Object.keys(configure.configObj.miniprogramComponents)
+    mpKeys.forEach(key => mpComps.add(key))
+
     const alitaHandleRule =  {
         test: /\.[jt]sx?$/,
         use: [
@@ -49,7 +56,7 @@ export default function packByWebpack() {
                         "@babel/plugin-transform-regenerator",
                         ["@areslabs/babel-plugin-alitamisc",
                             {
-                                miniprogramComponents: configure.configObj.miniprogramComponents
+                                stringComps: mpComps
                             }
                         ]
                     ]
