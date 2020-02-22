@@ -21,7 +21,7 @@ export default function compOutElementToBlock (ast, info) {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view'
-                && getOriginal(path)
+                && getOriginal(path)  // 没有origial属性的view，可能是直接使用的小程序内置组件，这个时候view可能有其他属性，故无法转化为block
                 && isRenderReturn(path)
             ) {
                 path.node.name.name = 'block'
