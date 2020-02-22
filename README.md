@@ -37,6 +37,7 @@ Alita不是新的框架，也没有提出新的语法规则，她只做一件事
 * 完备的React语法支持。runtime阶段处理JSX语法，对JSX支持更加完善，可以在组件内任何地方出现JSX片段，包括属性传递JSX片段，render方法之外的JSX片段等等， 
 * [基于webpack打包构建](https://areslabs.github.io/alita/基于webpack构建.html)，完善小程序npm能力，支持对小程序包体积分析，[一键自动小程序分包](https://areslabs.github.io/alita/一键自动小程序分包.html)等
 * `React`生命周期，`React Native`组件/API 
+* 支持[小程序内置组件/自定义组件直接使用](./https://areslabs.github.io/alita/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%86%85%E7%BD%AE%E7%BB%84%E4%BB%B6&%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8.html)
 * [动画](https://areslabs.github.io/alita/%E5%8A%A8%E7%94%BB.html)
 * [支持Redux](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81Redux.html)，[支持Mobx](https://areslabs.github.io/alita/%E6%94%AF%E6%8C%81mobx.html)
 * 支持`typescript`
