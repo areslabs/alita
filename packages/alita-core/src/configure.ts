@@ -24,6 +24,8 @@ interface IConfigObj {
     include?: any,
 
     componentPaths?: any,
+
+    miniprogramComponents?: any,
 }
 
 interface IConfigure {

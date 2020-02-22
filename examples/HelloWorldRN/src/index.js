@@ -14,6 +14,12 @@ import C from './c'
 import D from './d'
 import E from './e'
 import F from './f'
+import G from './g'
+import Video from './g/Video'
+import Map from './g/Map'
+import Form from './g/Form'
+import Canvas from './g/Canvas'
+import Custom from './g/Custom'
 
 import faxianPNG from '../assets/faxian.png'
 import myCurrentPNG from '../assets/myCurrent.png'
@@ -68,6 +74,15 @@ export default class App extends PureComponent {
 
                 <TabRouter text="样式属性" image={myPNG} selectedImage={myCurrentPNG}>
                     <Route key={"F"} component={F}/>
+                </TabRouter>
+
+                <TabRouter text="小程序组件" image={myPNG} selectedImage={myCurrentPNG}>
+                    <Route key={"G"} component={G}/>
+                    <Route key={"Map"} component={Map}/>
+                    <Route key={"Video"} component={Video}/>
+                    <Route key={"Canvas"} component={Canvas}/>
+                    <Route key={"Form"} component={Form}/>
+                    <Route key={"Custom"} component={Custom}/>
                 </TabRouter>
             </Router>
         )

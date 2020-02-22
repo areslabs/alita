@@ -22,5 +22,20 @@ module.exports = {
 
     componentPaths: {
         "TestPath": "/src/TestPath.js"
+    },
+
+
+    miniprogramComponents: {
+        "badge": "/weixin/weui-miniprogram/badge/badge",
+        "cell": "/weixin/weui-miniprogram/cell/cell",
+        "cells": "/weixin/weui-miniprogram/cells/cells",
+
+        // 防止和小程序内置icon重复
+        "mp-icon": "/weixin/weui-miniprogram/icon/icon",
+
+        "loading": "/weixin/weui-miniprogram/loading/loading",
+        "searchbar": "/weixin/weui-miniprogram/searchbar/searchbar",
+        "slideview": "/weixin/weui-miniprogram/slideview/slideview",
+        "mp-tabbar": "/weixin/weui-miniprogram/tabbar/tabbar"
     }
 }

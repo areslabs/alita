@@ -93,6 +93,8 @@ const DEFAULTCONFIG = {
 
     entry: './src/index.js',
     output: './wx-dist',
+
+    miniprogramComponents: {}
 }
 
 const inputFullpath = path.resolve('.')
@@ -132,7 +134,19 @@ if (fse.existsSync(outputFullpath)) {
 }
 
 
+// 如果项目根目录有winxin目录，则copy到小程序目录
+function copyWeixinDic() {
+    if (fse.existsSync(path.resolve(conf.inputFullpath, 'weixin'))) {
+        fse.copySync(
+            path.resolve(conf.inputFullpath, 'weixin'),
+            path.resolve(conf.outputFullpath, 'weixin')
+        )
+    }
+}
+
 function main() {
+
+    copyWeixinDic()
 
     // 生成微信目录结构
     geneWXConfigFile(conf.outputFullpath)

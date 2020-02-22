@@ -19,6 +19,8 @@ import * as t from "@babel/types"
  *
  * 3. 移除JSX里面的注释
  *
+ * 4. <A x/> ==>  <A x="true"/>
+ *
  * ...
  *
  * @param ast
@@ -77,6 +79,12 @@ export default function compPreHandle(ast, info) {
             if (path.type === 'JSXEmptyExpression') {
                 path.parentPath.remove()
                 return
+            }
+
+            if (path.type === 'JSXAttribute'
+                && !path.node.value
+            ) {
+                path.node.value = t.stringLiteral('true')
             }
         }
     })

@@ -99,8 +99,15 @@ const DEFAULTSCROLLVIEWSTYLE = "_4_"
  * @returns {string}
  */
 export default function tackleWithStyleObj(rawStyle, styleType) {
-    const flattenStyle = flatten(rawStyle)
-    const styleStr = parseObj(flattenStyle)
+    let styleStr = null
+    let flattenStyle = null
+    if (typeof rawStyle === 'string') {
+        styleStr = rawStyle
+    } else {
+        flattenStyle = flatten(rawStyle)
+        styleStr = parseObj(flattenStyle)
+    }
+
     if (!styleType) {
         return styleStr
     }

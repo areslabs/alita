@@ -16,6 +16,8 @@ import ExtractImageFilesPlugin from './ExtractImageFilesPlugin'
 import configure from '../configure'
 import miniprogramTarget from  './miniprogramTarget'
 
+import {wxBaseComp} from '../constants'
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const defaultAlias = {
@@ -32,7 +34,19 @@ const defaultAlias = {
 }
 
 
-const alitaHandleRule =  {
+
+
+
+const mainFields = ['weixin', 'browser', 'module', 'main']
+const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
+const MagicNumber = 1000000
+export default function packByWebpack() {
+
+    const mpComps = new Set(wxBaseComp)
+    const mpKeys = Object.keys(configure.configObj.miniprogramComponents)
+    mpKeys.forEach(key => mpComps.add(key))
+
+    const alitaHandleRule =  {
         test: /\.[jt]sx?$/,
         use: [
             {
@@ -40,7 +54,11 @@ const alitaHandleRule =  {
                 options: {
                     plugins: [
                         "@babel/plugin-transform-regenerator",
-                        "@areslabs/babel-plugin-alitamisc"
+                        ["@areslabs/babel-plugin-alitamisc",
+                            {
+                                stringComps: mpComps
+                            }
+                        ]
                     ]
                 }
             },
@@ -60,17 +78,11 @@ const alitaHandleRule =  {
                 loader: path.resolve(__dirname, 'gatherInfo-loader.js')
             }
         ]
-} as any
+    } as any
 
-const defaultRules = [
-    alitaHandleRule
-]
-
-
-const mainFields = ['weixin', 'browser', 'module', 'main']
-const extensions = ['.wx.js', '.wx.jsx', '.js', '.jsx', '.wx.ts', '.wx.tsx', '.ts', '.tsx', '.json']
-const MagicNumber = 1000000
-export default function packByWebpack() {
+    const defaultRules = [
+        alitaHandleRule
+    ]
 
     const cco = configure.configObj
 
