@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/areslabs/alita/compare/v2.4.0...v2.4.1) (2020-02-23)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复decodeURIComponent/encodeURIComponent 触发检查错误的bug ([93c5ac6](https://github.com/areslabs/alita/commit/93c5ac6d625c683de00f6d39009c986581ee6899))
+
+
+
+
+
 # [2.4.0](https://github.com/areslabs/alita/compare/v2.3.6...v2.4.0) (2020-02-22)
 
 
