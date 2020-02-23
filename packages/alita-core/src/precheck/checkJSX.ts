@@ -18,7 +18,9 @@ const ignoreCompSet = new Set([
     'PureComponent',
     'HocComponent',
     'WrappedComponent',
-    'Component'
+    'Component',
+    'encodeURIComponent',
+    'decodeURIComponent'
 ])
 
 const supportRNAPI = new Set([
