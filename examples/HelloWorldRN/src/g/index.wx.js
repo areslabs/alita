@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity, TouchableWithoutFeedback, Image } from "react-native"
+import { StyleSheet } from "react-native"
 
 
 import {history} from '@areslabs/router'
