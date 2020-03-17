@@ -18,7 +18,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "2.3.4",
+    "@areslabs/alita-weixin-runtime": "2.4.1",
     "babel-preset-expo": "^5.0.0"
   },
   "private": true
