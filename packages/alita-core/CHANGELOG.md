@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.2](https://github.com/areslabs/alita/compare/v2.4.1...v2.4.2) (2020-03-19)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复 tree-shake的模块 在执行handleChange等方法的时候报错的bug ([5de491c](https://github.com/areslabs/alita/commit/5de491c91a0e0675484e565695f4bef984a21658))
+
+
+
+
+
 ## [2.4.1](https://github.com/areslabs/alita/compare/v2.4.0...v2.4.1) (2020-02-23)
 
 
