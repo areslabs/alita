@@ -23,7 +23,7 @@
     "webpack-dev-server": "^3.10.1"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "2.4.1",
+    "@areslabs/alita-weixin-runtime": "2.4.2",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
     "babel-jest": "^24.7.1",
