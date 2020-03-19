@@ -147,6 +147,12 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
 function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
 
     let info = getModuleInfo(absolutePath)
+
+    if (!info) {
+        console.error('你可能需要把', absolutePath.replace(configure.inputFullpath, '') , '加入include配置。')
+        return ''
+    }
+
     let im = info.im
 
     while (im[element]) {
@@ -155,6 +161,11 @@ function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
 
         absolutePath = info.deps[source]
         info = getModuleInfo(absolutePath)
+
+        if (!info) {
+            console.error('你可能需要把', absolutePath.replace(configure.inputFullpath, '') , '加入include配置。')
+            return ''
+        }
         im = info.im
     }
 

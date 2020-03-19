@@ -15,6 +15,10 @@ import configure from '../configure'
 export const handleChanged = (resource) => {
     const info = getModuleInfo(resource)
 
+    if (!info) {
+        return
+    }
+
 
     let newFiles = null
     if (info.isEntry) {
@@ -77,6 +81,11 @@ export const handleChanged = (resource) => {
 
 export const handleDeleted = (resource) => {
     const info = getModuleInfo(resource)
+
+    if (!info) {
+        return
+    }
+
     const outFiles = info.outFiles || {}
 
     const allKeys = Object.keys(outFiles)
@@ -125,6 +134,10 @@ function expandWithChunks(obj, allChunks) {
 export const handleJSONUpdate = (resource) => {
 
     const info = getModuleInfo(resource)
+    if (!info) {
+        return
+    }
+
     const finalJSPath = miscNameToJSName(resource).replace(configure.inputFullpath, configure.outputFullpath)
 
     const newJSONFiles = jsonChanged(resource, info, finalJSPath)
