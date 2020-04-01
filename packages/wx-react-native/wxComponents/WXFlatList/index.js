@@ -102,6 +102,11 @@ Component(wx.__bridge.reactCompHelper({
             this.lastVal = 0;
         },
         leaveTouch(e) {
+            // RN 横向滚动不会触发 onRefresh
+            if (this.data._r.horizontal) {
+                return
+            }
+
             this.underTouch = false
             if (this._scrollEvent && this.onScrollEndDragFunc) {
                 // 通过this._scrollEvent是否存在来判断触摸是不是滚动触摸
@@ -148,6 +153,12 @@ Component(wx.__bridge.reactCompHelper({
         },
 
         onEndReached() {
+            // #container元素宽度固定不变，所以横向滚动直接触发onEndReached方法
+            if (this.data._r.horizontal) {
+                this.data.onEndReached && this.data.onEndReached()
+                return
+            }
+
             // 当有刷新头的时候（默认向上滚80），也会触发onEndReached， 但是这一次不应该调用
             if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall) {
                 this.hasRefreshFirstCall = true

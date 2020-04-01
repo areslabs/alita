@@ -18,8 +18,9 @@
 <template name="flatList">
     <scroll-view
             bindscrolltoupper="onScrollToupper"
-            scroll-y
-            scroll-top="{{onRefreshPassed ? (sr ? 0: 80) : 0}}"
+            scroll-y="{{horizontal ? false : true}}"
+            scroll-x="{{horizontal ? true : false}}"
+            scroll-top="{{(onRefreshPassed && !horizontal) ? (sr ? 0: 80) : 0}}"
             upper-threshold="3"
             scroll-with-animation="{{withAni}}"
             bindscroll="outScroll"
@@ -31,9 +32,15 @@
             lower-threshold="{{100}}"
             scroll-into-view="{{index_id}}"
     >
-        <view id="container" style="{{contentContainerStyle}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
+        <view
+            wx:if="{{refreshing && horizontal}}"
+            style="height:80px;align-items:center;justify-content:center;"
+        >
+            <view class="loading"/>
+        </view>
+        <view id="container" style="{{contentContainerStyle}}{{horizontal ? 'flex-direction: row;' : ''}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
             <view
-                    wx:if="{{onRefreshPassed}}"
+                    wx:if="{{onRefreshPassed && !horizontal}}"
                     style="height:80px;align-items:center;justify-content:center;"
             >
                 <view class="loading"/>
