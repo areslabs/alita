@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/areslabs/alita/compare/v2.4.2...v2.4.3) (2020-04-02)
+
+
+### Bug Fixes
+
+* **wx-react  example:** 紧急修复 metro-react-native-babel-preset升级造成的小程序运行bug ([67b635c](https://github.com/areslabs/alita/commit/67b635cebebd03e2e4745d1f0f4aeabf09ecaf0f))
+
+
+
+
+
 ## [2.4.2](https://github.com/areslabs/alita/compare/v2.4.1...v2.4.2) (2020-03-19)
 
 
