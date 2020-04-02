@@ -153,27 +153,17 @@ Component(wx.__bridge.reactCompHelper({
         },
 
         onEndReached() {
-            // #container元素宽度固定不变，所以横向滚动直接触发onEndReached方法
-            if (this.data._r.horizontal) {
-                this.data.onEndReached && this.data.onEndReached()
-                return
-            }
-
-            // 当有刷新头的时候（默认向上滚80），也会触发onEndReached， 但是这一次不应该调用
-            if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall) {
+            // 竖向滚动时，当有刷新头的时候（默认向上滚80），也会触发onEndReached，但是这一次不应该调用
+            if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall && !this.data._r.horizontal) {
                 this.hasRefreshFirstCall = true
                 return
             }
 
-            const query = wx.createSelectorQuery().in(this)
-            query.select('#container').boundingClientRect((res) => {
-                const height = res.height
-                if (this.lastHeight === height) return
-
-
-                this.lastHeight = height
-                this.data.onEndReached && this.data.onEndReached()
-            }).exec()
+            // 通过renderItemData长度来判断是否还需要触发onEndReached
+            const length = this.data._r.renderItemData.length
+            if (this.lastLength === length) return
+            this.lastLength = length
+            this.data.onEndReached && this.data.onEndReached()
         }
     },
     data: {
