@@ -166,8 +166,10 @@ export function isChildComp(name, filepath) {
 
     const {im} = getModuleInfo(filepath)
     // 基本组件children 不需要转化为childrencpt的组件
-    // 通过组件名称判断还不够，还需要判断来源是否是组件库里
-    if (allBaseComp.has(name) && judgeLibPath(im[name].source)) {
+    if (allBaseComp.has(name)) {
+        if (im[name] && !judgeLibPath(im[name].source)) {
+            console.log(`${filepath.replace(configure.inputFullpath, '')} 组件名为${name} 与 ${name}基础组件名称重复，可能会导致渲染不成功，建议将${name}重新命名！`.warn)
+        }
         return false
     }
 
