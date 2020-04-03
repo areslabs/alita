@@ -38,31 +38,29 @@
         >
             <view class="loading"/>
         </view>
-        <view id="container" style="{{contentContainerStyle}}{{horizontal ? 'flex-direction: row;' : ''}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
+        <view id="container" style="{{contentContainerStyle}}{{horizontal ? 'display: inline-block;white-space: nowrap;vertical-align: middle;' : ''}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
             <view
                     wx:if="{{onRefreshPassed && !horizontal}}"
                     style="height:80px;align-items:center;justify-content:center;"
             >
                 <view class="loading"/>
             </view>
-
-
-
+            
             <ListHeaderComponentCPT
                     wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
                     diuu="{{ListHeaderComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
+                    style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
             />
 
             <ListEmptyComponentCPT
                     wx:if="{{ListEmptyComponentDIUU && ListEmptyComponentDIUUstyle !== false}}"
                     diuu="{{ListEmptyComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListEmptyComponentDIUUstyle)}}"
+                    style="{{tools.getFinalStyle(ListEmptyComponentDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
             />
 
 
             <block wx:if="{{numColumns >= 2}}">
-                <view style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap">
+                <view style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap;{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}">
                     <view wx:for="{{renderItemData}}" wx:key="key" style="width: {{100 / numColumns}}%">
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
@@ -73,7 +71,7 @@
             </block>
             <block wx:else>
                 <block wx:for="{{renderItemData}}" wx:key="key">
-                    <view wx:if="{{methods.ArrayContains(stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}">
+                    <view wx:if="{{methods.ArrayContains(stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}">
                         <renderItemCPT id="id_{{index}}"
                                        diuu="{{item.renderItemDIUU}}"
                                        wx:if="{{item.renderItemDIUUstyle !== false}}"
@@ -84,7 +82,7 @@
                                 id="id_{{index}}"
                                 diuu="{{item.renderItemDIUU}}"
                                 wx:if="{{item.renderItemDIUUstyle !== false}}"
-                                style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+                                style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
                         />
                     </block>
                 </block>
@@ -93,7 +91,7 @@
             <ListFooterComponentCPT
                     wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
                     diuu="{{ListFooterComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"
+                    style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
             />
         </view>
     </scroll-view>

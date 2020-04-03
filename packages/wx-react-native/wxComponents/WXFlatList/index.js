@@ -159,11 +159,21 @@ Component(wx.__bridge.reactCompHelper({
                 return
             }
 
-            // 通过renderItemData长度来判断是否还需要触发onEndReached
-            const length = this.data._r.renderItemData.length
-            if (this.lastLength === length) return
-            this.lastLength = length
-            this.data.onEndReached && this.data.onEndReached()
+            const query = wx.createSelectorQuery().in(this)
+            query.select('#container').boundingClientRect((res) => {
+                const height = res.height
+                const width = res.width
+                
+                if ((this.data._r.horizontal && this.lastWidth === width)
+                    || (!this.data._r.horizontal && this.lastHeight === height)
+                ) {
+                    return
+                }
+  
+                this.lastWidth = width
+                this.lastHeight = height
+                this.data.onEndReached && this.data.onEndReached()
+            }).exec()
         }
     },
     data: {
