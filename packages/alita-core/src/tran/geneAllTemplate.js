@@ -140,7 +140,7 @@ export default function(ast, info) {
 
 
             if (path.type === 'JSXElement'
-                && isChildComp(path.node.openingElement.name.name)
+                && isChildComp(path.node.openingElement.name.name, info.filepath)
             ) {
                 path.node.children = []
             }
@@ -156,7 +156,7 @@ export default function(ast, info) {
              *    若A是自定义组件，需要将其children转化为 generic：抽象节点的形式，传递出去，也需要提取为  tempName
              */
             if (path.type === 'JSXElement'
-                && (!isJSXChild(path) || isChildCompChild(path))
+                && (!isJSXChild(path) || isChildCompChild(path, info.filepath))
             ) {
                 const jsxOp = path.node.openingElement
                 let tempName = ''
