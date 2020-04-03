@@ -12,6 +12,8 @@ import * as t from "@babel/types"
 
 import {allBaseComp, extChildComp} from './getAndStorecompInfos'
 import {wxBaseComp} from '../constants'
+import {getModuleInfo} from './cacheModuleInfos'
+import {judgeLibPath} from './util'
 
 import configure from '../configure'
 
@@ -154,7 +156,7 @@ export function isJSXChild(path) {
  * @param name
  * @returns {boolean}
  */
-export function isChildComp(name) {
+export function isChildComp(name, filepath) {
     if (wxBaseComp.has(name) || configure.configObj.miniprogramComponents[name]) return false
 
     // 基本组件children 需要转化为childrencpt的组件
@@ -162,8 +164,10 @@ export function isChildComp(name) {
         return true
     }
 
+    const {im} = getModuleInfo(filepath)
     // 基本组件children 不需要转化为childrencpt的组件
-    if (allBaseComp.has(name)) {
+    // 通过组件名称判断还不够，还需要判断来源是否是组件库里
+    if (allBaseComp.has(name) && judgeLibPath(im[name].source)) {
         return false
     }
 
@@ -176,7 +180,7 @@ export function isChildComp(name) {
  * @param path
  * @returns {any}
  */
-export function isChildCompChild(path) {
+export function isChildCompChild(path, filepath) {
     const jc = isJSXChild(path)
     if (!jc) return false
 
@@ -184,7 +188,7 @@ export function isChildCompChild(path) {
     const name = parentElement.node.openingElement.name.name
 
 
-    return isChildComp(name)
+    return isChildComp(name, filepath)
 }
 
 /**

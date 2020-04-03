@@ -98,7 +98,7 @@ export default function childrenToTemplate(ast, info) {
         exit: path => {
 
             if (path.type === 'JSXElement'
-                && !isChildComp(path.node.openingElement.name.name)
+                && !isChildComp(path.node.openingElement.name.name, info.filepath)
             ) {
                 const children = path.node.children
                 let tempName = null//`${ChildTemplateNamePrefix}${goForCTNP.next}`

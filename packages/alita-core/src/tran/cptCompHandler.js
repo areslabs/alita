@@ -257,7 +257,7 @@ export default function cptCompHandler (ast, info) {
             }
 
             if (path.type === 'JSXElement'
-                && isChildComp(path.node.openingElement.name.name)
+                && isChildComp(path.node.openingElement.name.name, info.filepath)
                 && path.node.children.length > 0
             ) {
                 const pe = path.node.openingElement
