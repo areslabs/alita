@@ -32,12 +32,6 @@
             lower-threshold="{{100}}"
             scroll-into-view="{{index_id}}"
     >
-        <view
-            wx:if="{{refreshing && horizontal}}"
-            style="height:80px;align-items:center;justify-content:center;"
-        >
-            <view class="loading"/>
-        </view>
         <view id="container" style="{{contentContainerStyle}}{{horizontal ? 'display: inline-block;white-space: nowrap;vertical-align: middle;' : ''}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
             <view
                     wx:if="{{onRefreshPassed && !horizontal}}"
