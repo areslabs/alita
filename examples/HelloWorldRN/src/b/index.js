@@ -134,6 +134,7 @@ export default class B extends Component {
                 <FlatList
                     style={{ width: '100%', height: 200}}
                     refreshing={this.state.refreshing}
+                    horizontal={false}
                     onRefresh={() => {
                         this.setState({
                             refreshing: true,
