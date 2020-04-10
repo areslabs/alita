@@ -65,6 +65,7 @@ export default class WXFlatList extends PureComponent {
             numColumns = 1,
             onEndReachedThreshold = 0.1,
             refreshing = false,
+            horizontal = false,
             onRefresh,
             getItemLayout,
             stickyHeaderIndices = []
@@ -152,6 +153,7 @@ export default class WXFlatList extends PureComponent {
             stickyHeaderIndices: bakStickyHeaderIndices,
             numColumns,
             onEndReachedThreshold: onEndReachedThreshold * 600,
+            horizontal,
             refreshing,
             onRefreshPassed: !!onRefresh,
 

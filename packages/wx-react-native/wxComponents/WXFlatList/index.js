@@ -102,6 +102,11 @@ Component(wx.__bridge.reactCompHelper({
             this.lastVal = 0;
         },
         leaveTouch(e) {
+            // RN 横向滚动不会触发 onRefresh
+            if (this.data._r.horizontal) {
+                return
+            }
+
             this.underTouch = false
             if (this._scrollEvent && this.onScrollEndDragFunc) {
                 // 通过this._scrollEvent是否存在来判断触摸是不是滚动触摸
@@ -148,8 +153,8 @@ Component(wx.__bridge.reactCompHelper({
         },
 
         onEndReached() {
-            // 当有刷新头的时候（默认向上滚80），也会触发onEndReached， 但是这一次不应该调用
-            if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall) {
+            // 竖向滚动时，当有刷新头的时候（默认向上滚80），也会触发onEndReached，但是这一次不应该调用
+            if (this.data._r.onRefreshPassed && !this.hasRefreshFirstCall && !this.data._r.horizontal) {
                 this.hasRefreshFirstCall = true
                 return
             }
@@ -157,9 +162,15 @@ Component(wx.__bridge.reactCompHelper({
             const query = wx.createSelectorQuery().in(this)
             query.select('#container').boundingClientRect((res) => {
                 const height = res.height
-                if (this.lastHeight === height) return
-
-
+                const width = res.width
+                
+                if ((this.data._r.horizontal && this.lastWidth === width)
+                    || (!this.data._r.horizontal && this.lastHeight === height)
+                ) {
+                    return
+                }
+  
+                this.lastWidth = width
                 this.lastHeight = height
                 this.data.onEndReached && this.data.onEndReached()
             }).exec()
