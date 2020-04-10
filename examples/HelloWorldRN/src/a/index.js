@@ -51,7 +51,15 @@ import {history} from '@areslabs/router'
 
 
 
+global.store = {
+    name: 'yk'
+}
 
+function f(global) {
+    console.log('HelloHello')
+
+}
+f(global)
 
 
 const item3 = <View style={[styles.item, {borderBottomWidth: 0}]}><Text style={styles.itemText}>item3</Text></View>
