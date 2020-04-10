@@ -143,6 +143,7 @@ export default function packByWebpack() {
         ]),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': configure.dev ? '"development"' : '"production"',
+            'global': 'wx'
         }),
 
         // react-native 全局可以使用的变量
