@@ -16,7 +16,7 @@
     "weixin",
     "redux"
   ],
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "alita-core",
   "main": "./lib/index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-redux-promise",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "微信版本的redux-promise",
   "main": "./dist/index.js",
   "files": [

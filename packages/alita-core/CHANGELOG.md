@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.5](https://github.com/areslabs/alita/compare/v2.4.4...v2.4.5) (2020-04-10)
+
+
+### Bug Fixes
+
+* **alita-core:** 当存在babel-loader版本冲突的时候，修复loader加载错误的bug ([91aa6dd](https://github.com/areslabs/alita/commit/91aa6dd4a9d06a372c2805029469dfe5f59a4f24))
+
+
+
+
+
 ## [2.4.4](https://github.com/areslabs/alita/compare/v2.4.3...v2.4.4) (2020-04-10)
 
 
