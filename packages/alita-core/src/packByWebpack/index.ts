@@ -216,6 +216,12 @@ export default function packByWebpack() {
         resolve,
 
         module,
+
+
+        // 当alita使用的loader和项目中依赖冲突时，比如项目中有多个babel-loader， alita需要取到自己的那一个
+        resolveLoader: {
+            modules: [path.resolve('node_modules', '@areslabs',  'alita-core', 'node_modules'), 'node_modules'],
+        }
     } as webpack.Configuration
 
     configure.resolve = webpackConfigure.resolve
