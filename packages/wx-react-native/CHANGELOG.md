@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.4](https://github.com/areslabs/alita/compare/v2.4.3...v2.4.4) (2020-04-10)
+
+
+### Features
+
+* **wx-react-native:** WXFlatList 支持横向滚动 ([2a3a89d](https://github.com/areslabs/alita/commit/2a3a89dbbb26a443835bc8a6e112a46d90e54ca5))
+
+
+
+
+
 ## [2.4.3](https://github.com/areslabs/alita/compare/v2.4.2...v2.4.3) (2020-04-02)
 
 **Note:** Version bump only for package @areslabs/wx-react-native

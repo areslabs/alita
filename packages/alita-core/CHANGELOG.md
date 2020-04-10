@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.4](https://github.com/areslabs/alita/compare/v2.4.3...v2.4.4) (2020-04-10)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复 isChildComp 方法只通过基本组件名称来判断是否需要处理成抽象节点导致的bug ([c6748b8](https://github.com/areslabs/alita/commit/c6748b8960354bee3a44d276d30349ac235fc918))
+
+
+### Features
+
+* **alita-core:** 支持全局变量global，把显示的对全局变量的使用转化为wx ([c3f2589](https://github.com/areslabs/alita/commit/c3f25896c324ef26b7ac14a59a9ae27d104f92ae))
+
+
+
+
+
 ## [2.4.3](https://github.com/areslabs/alita/compare/v2.4.2...v2.4.3) (2020-04-02)
 
 **Note:** Version bump only for package @areslabs/alita-core
