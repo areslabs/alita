@@ -11,12 +11,12 @@ import * as t from "@babel/types"
 import {InnerTemplateNamePrefix} from "../constants";
 import {isJSXChild, isChildCompChild} from "../util/uast";
 import {geneOrder} from '../util/util'
-export default function addTempName (ast) {
+export default function addTempName (ast, info) {
     const go = geneOrder()
     errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXElement'
-                && (!isJSXChild(path) || isChildCompChild(path))
+                && (!isJSXChild(path) || isChildCompChild(path, info.filepath))
             ) {
                 const jsxOp = path.node.openingElement
 
