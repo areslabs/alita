@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.6](https://github.com/areslabs/alita/compare/v2.4.5...v2.4.6) (2020-04-16)
+
+**Note:** Version bump only for package @areslabs/alita-weixin-runtime
+
+
+
+
+
 ## [2.4.5](https://github.com/areslabs/alita/compare/v2.4.4...v2.4.5) (2020-04-10)
 
 **Note:** Version bump only for package @areslabs/alita-weixin-runtime
