@@ -177,7 +177,7 @@ export default class A extends Component {
                 {this.item2}
                 {item3}
 
-                <View style={styles.button}>
+                <View style={styles.button} onLayout={(event) => console.log('event', event.nativeEvent.layout)}>
                     <Button
                         title="CLICK ME"
                         color="#fff"
