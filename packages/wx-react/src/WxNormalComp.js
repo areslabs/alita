@@ -9,7 +9,7 @@
 import {renderPage, createElement, HocComponent, unstable_batchedUpdates, instanceManager} from "./index"
 import geneUUID from "./geneUUID"
 import {cleanPageComp} from './util'
-
+import {LayoutConstsMap} from './constants'
 
 export default function (compPath) {
 
@@ -21,6 +21,14 @@ export default function (compPath) {
         attached() {
             // 页面组件 这个时候diuu 还未准备好
             this.data.diuu && instanceManager.setWxCompInst(this.data.diuu, this)
+        },
+
+        ready() {
+            const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
+            // 处理onLayout事件
+            if (compInst && compInst[LayoutConstsMap.UpdateLayoutEvents]) {
+                compInst[LayoutConstsMap.UpdateLayoutEvents].call(compInst)
+            }
         },
 
 
@@ -81,6 +89,10 @@ export default function (compPath) {
                     )
 
                     const compInst = instanceManager.getCompInstByUUID(this.data.diuu)
+                    // 处理onLayout事件
+                    if (compInst[LayoutConstsMap.UpdateLayoutEvents]) {
+                        compInst[LayoutConstsMap.UpdateLayoutEvents].call(compInst)
+                    }
                     //如果组件还未初始化 didFocus方法，保证执行顺序为： didMount --> didFocus
                     if (compInst.componentDidFocus) {
                         const focusFunc = compInst.componentDidFocus

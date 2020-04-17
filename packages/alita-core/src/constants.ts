@@ -14,6 +14,15 @@ export const ChildTemplateDataKeyPrefix = "CTDK" // inner spread attribute prefi
 
 export const ChildTemplateNamePrefix = "CTNP"
 
+export const LayoutConstsMap = {
+    LayoutEventPrefix: 'LEP',  // onLayout事件处理标识前缀
+    LayoutEventKey: 'LEP_Key', // 标识Key
+    OnLayoutEvents: 'LEP_onLayoutEvents',  // 收集所有onLayout事件的集合
+    OnLayoutIdMap: 'LEP_onLayoutIdMap',  // 记录onLayout的事件标识
+    UpdateLayoutEvents: 'LEP_updateLayoutEvents',  // 触发onLayout事件方法
+    CollectOnLayoutEvent: 'LEP_collectOnLayoutEvent',  // 收集onLayout事件方法
+}
+
 // 由 ./util/getAndStorecompInfos 根据package.json相关配置构造
 export const RNCOMPSET = new Set([])
 

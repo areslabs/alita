@@ -25,3 +25,12 @@ export const mpRoot = {
     _c: []
 }
 
+export const LayoutConstsMap = {
+    LayoutEventPrefix: 'LEP',  // onLayout 事件处理标识前缀
+    LayoutEventKey: 'LEP_Key', // 标识Key
+    OnLayoutEvents: 'LEP_onLayoutEvents',  // 收集所有onLayout事件的集合
+    OnLayoutIdMap: 'LEP_onLayoutIdMap',  // 记录onLayout的事件标识
+    UpdateLayoutEvents: 'LEP_updateLayoutEvents',  // 触发onLayout事件方法
+    CollectOnLayoutEvent: 'LEP_collectOnLayoutEvent',  // 收集onLayout事件方法
+}
+

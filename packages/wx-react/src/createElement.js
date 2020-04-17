@@ -7,6 +7,7 @@
  */
 
 // 一般情况下 uuid都应该是存在的， 但是HOC的包裹的组件，uuid需要手动设置
+import {LayoutConstsMap} from './constants'
 const TmpKey = "HOCKEY"
 
 export default function createElement(comp, props, ...args) {
@@ -33,9 +34,12 @@ export default function createElement(comp, props, ...args) {
 
     const {animation, ref, key, tempName, tempVnode, CPTVnode, datakey, diuu, __source, ...rprops} = props || {}
 
-    // 通用的不支持属性
     if (props.onLayout) {
-        console.warn('小程序不支持onLayout属性')
+        props[LayoutConstsMap.CollectOnLayoutEvent]({
+            id: props[LayoutConstsMap.LayoutEventKey],
+            onLayout: props.onLayout,
+            isRender: false
+        })
     }
     if (typeof props.ref === 'string') {
         console.warn('ref只支持函数形式，不支持字符串')

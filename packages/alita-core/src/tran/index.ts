@@ -7,6 +7,7 @@
  */
 
 import {geneReactCode} from '../util/uast'
+import onLayoutHandler from './onLayoutHandler'
 import funcCompToClassComp from './funcCompToClassComp'
 import childrenToTemplate from './childrenToTemplate'
 import compPreHandle from './compPreHandle'
@@ -40,6 +41,8 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
         //webpackContext,
     }
+
+    ast = onLayoutHandler(ast, info)
 
     ast = funcCompToClassComp(ast, info)
 

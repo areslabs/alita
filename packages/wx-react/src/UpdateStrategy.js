@@ -14,6 +14,7 @@ import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
 import getChangePath from './getChangePath'
 import {HocComponent} from './AllComponent'
+import {LayoutConstsMap} from './constants'
 
 let inRenderPhase = false
 let shouldMerge = false
@@ -21,6 +22,16 @@ let shouldMerge = false
 export let oldChildren = []
 
 export function performUpdater(inst, updater) {
+    // 如果有onLayout事件的话，则在setState回掉后执行一下
+    if (inst[LayoutConstsMap.UpdateLayoutEvents]) {
+        const callback = updater.callback
+        updater.callback = function() {
+            inst[LayoutConstsMap.UpdateLayoutEvents].call(inst)
+            if (callback) {
+                callback.call(inst)
+            }
+        }
+    }
     inst.updateQueue.push(updater)
 
     setUpdateTagToRoot(inst)

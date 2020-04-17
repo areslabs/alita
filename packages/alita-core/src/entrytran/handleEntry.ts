@@ -14,6 +14,7 @@ import {isStaticRes} from '../util/util'
 import {geneOrder} from '../util/util'
 
 import configure from '../configure'
+import {LayoutConstsMap} from '../constants'
 
 import {setEntryModuleInfo} from '../util/cacheModuleInfos'
 import * as fse from "fs-extra";
@@ -416,6 +417,62 @@ export default function (ast, filepath, webpackContext) {
             wx._pageCompMaps[path] = resolve
         }
     })
+                        }`)
+                    )
+                )
+
+                // 定义收集onLayout事件方法
+                pnode.body.push(
+                    t.expressionStatement(
+                        t.identifier(`wx["${LayoutConstsMap.CollectOnLayoutEvent}"] = function(event, inst) {
+                            if (!inst["${LayoutConstsMap.OnLayoutEvents}"]) {
+                                inst["${LayoutConstsMap.OnLayoutEvents}"] = []
+                            }
+                            if (!inst["${LayoutConstsMap.OnLayoutIdMap}"]) {
+                                inst["${LayoutConstsMap.OnLayoutIdMap}"] = {}
+                            }
+                            if (inst["${LayoutConstsMap.OnLayoutIdMap}"][event.id]) {
+                                inst["${LayoutConstsMap.OnLayoutIdMap}"][event.id]++
+                                event.id = event.id + '_' + inst["${LayoutConstsMap.OnLayoutIdMap}"][event.id]
+                            } else {
+                                inst["${LayoutConstsMap.OnLayoutIdMap}"][event.id] = 1
+                            }
+                            inst["${LayoutConstsMap.OnLayoutEvents}"].push(event)
+                        }`)
+                    )
+                )
+
+                // 定义触发onLayout事件方法
+                pnode.body.push(
+                    t.expressionStatement(
+                        t.identifier(`wx["${LayoutConstsMap.UpdateLayoutEvents}"] = function(inst) {
+                            if (inst["${LayoutConstsMap.OnLayoutEvents}"].length) {
+                                inst["${LayoutConstsMap.OnLayoutEvents}"].forEach(event => {
+                                    if (!event.selectorQuery) {
+                                        event.selectorQuery = wx.createSelectorQuery().in(inst.getWxInst())
+                                    }
+                                    event.selectorQuery.select('#' + event.id).boundingClientRect().exec(function(res){
+                                        if (res && res[0]) {
+                                            if (!event.isRender) {
+                                                event.isRender = true
+                                                
+                                                event.onLayout.call(inst, {
+                                                    nativeEvent: {
+                                                        layout: {
+                                                            height: res[0].height,
+                                                            width: res[0].width,
+                                                            x: res[0].left,
+                                                            y: res[0].top
+                                                        }
+                                                    }
+                                                })
+                                            }
+                                        } else {
+                                            event.isRender = false
+                                        }
+                                    })
+                                })
+                            }
                         }`)
                     )
                 )

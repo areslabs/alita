@@ -13,7 +13,7 @@ import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn} f
 import { isEventProp } from '../util/util';
 import {wxBaseComp} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
-
+import { LayoutConstsMap } from '../constants'
 import configure from '../configure'
 
 /**
@@ -47,6 +47,20 @@ export default function(ast, info) {
                 const diuuAttr = getAttr(path.node, 'diuu')
                 path.node.diuu = diuuAttr.value.value
             }
+
+            if (path.type === 'JSXOpeningElement') {
+                const attris = path.node.attributes
+                const layoutIdAttr = attris.filter(item => item.type === 'JSXAttribute' 
+                                                && item.name.type === 'JSXIdentifier' 
+                                                && item.name.name === LayoutConstsMap.LayoutEventKey)
+                if (layoutIdAttr && layoutIdAttr.length) {
+                    const id = layoutIdAttr[0].value.value
+                    // 通过 key 是否存在，来判断是否是不是由数组渲染出来的，如果是的话，则调整下id生成规则
+                    attris.push(
+                        t.jsxAttribute(t.jsxIdentifier('id'), t.stringLiteral(`{{(key && key > 1) ? "${id}_" + key : "${id}"}}`))
+                    )
+                }
+            }
         },
 
 
@@ -77,6 +91,7 @@ export default function(ast, info) {
                     if (attri.type === 'JSXAttribute'
                         && ( attri.name.name === 'style'
                             || attri.name.name === 'class'
+                            || attri.name.name === 'id'
                             || attri.name.name === 'tempName'
                             || attri.name.name.startsWith('hover-')
                             || attri.name.name.startsWith('catch')
