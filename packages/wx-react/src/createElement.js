@@ -6,8 +6,8 @@
  *
  */
 
-// 一般情况下 uuid都应该是存在的， 但是HOC的包裹的组件，uuid需要手动设置
 import {LayoutConstsMap} from './constants'
+// 一般情况下 uuid都应该是存在的， 但是HOC的包裹的组件，uuid需要手动设置
 const TmpKey = "HOCKEY"
 
 export default function createElement(comp, props, ...args) {
