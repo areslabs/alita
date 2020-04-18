@@ -34,10 +34,6 @@ export default function createElement(comp, props, ...args) {
     // __source, __self 由metro-react-native-babel-preset在编译阶段添加，需要移除
     const {animation, ref, key, tempName, tempVnode, CPTVnode, datakey, diuu, __source, __self, ...rprops} = props || {}
 
-    // 通用的不支持属性
-    if (props.onLayout) {
-        console.warn('小程序不支持onLayout属性')
-    }
     if (typeof props.ref === 'string') {
         console.warn('ref只支持函数形式，不支持字符串')
     }

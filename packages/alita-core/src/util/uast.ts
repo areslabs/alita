@@ -269,5 +269,30 @@ export function getOriginal(path) {
     return ''
 }
 
+/**
+ * 给JSXOpeningElement 添加class类名，
+ *
+ * 1. <view/>  ---> <view class="xx"/>
+ * 2. <View class="aa"/> ---> <view class="aa xx"/>
+ *
+ * @param jsxOp
+ * @param className
+ */
+export function elementAddClass(jsxOp, className) {
+    let hasClassAttr = false
+    jsxOp.attributes.forEach(attr => {
+        if (attr.type === 'JSXAttribute' && attr.name.name === 'class') {
+            hasClassAttr = true
+            attr.value.value = `${attr.value.value} ${className}`
+        }
+    })
+
+    if (!hasClassAttr) {
+        jsxOp.attributes.push(
+            t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral(className))
+        )
+    }
+}
+
 
 

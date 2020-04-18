@@ -9,7 +9,7 @@
 import errorLogTraverse from '../util/ErrorLogTraverse'
 
 import * as t from '@babel/types'
-import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn} from '../util/uast';
+import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn, elementAddClass} from '../util/uast';
 import { isEventProp } from '../util/util';
 import {wxBaseComp} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
@@ -190,6 +190,11 @@ export default function(ast, info) {
                     jsxOp.attributes.push(
                         t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{t.s(${diuuKey}style)}}`))
                     )
+
+					if (info.isPageComp) {
+                    	// 页面组件的外层节点，添加 统一类名："page-container"， onLayout和以后会使用
+						elementAddClass(jsxOp, 'page-container')
+					}
                 }
             }
 
