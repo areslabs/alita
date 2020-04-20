@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {StyleSheet, Text, View, Platform, Button} from "react-native"
-
 import {history} from '@areslabs/router'
+
+import B1 from './B1'
 
 class A extends Component {
 	state = {
@@ -25,7 +26,6 @@ class A extends Component {
 	}
 }
 
-
 class B extends Component {
 	state = {
 		y: null,
@@ -42,29 +42,6 @@ class B extends Component {
 		>
 			<Text>By: {this.state.y}</Text>
 			<B1/>
-		</View>
-	}
-}
-
-class B1 extends Component {
-	state = {
-		y: null,
-	}
-
-	componentWillUpdate() {
-		console.log('更新的时候：B1 componentWillUpdate 应该只打印一次！！！')
-	}
-
-	render() {
-		return <View
-			onLayout={(e) => {
-				console.log('B1:', e.nativeEvent.layout)
-				this.setState({
-					y: e.nativeEvent.layout.y
-				})
-			}}
-		>
-			<Text>B1y: {this.state.y}</Text>
 		</View>
 	}
 }
