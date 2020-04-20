@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/areslabs/alita/compare/v2.4.6...v2.5.0) (2020-04-20)
+
+
+### Features
+
+* **alita-core wx-react:** 支持 onLayout ([6f9cd2d](https://github.com/areslabs/alita/commit/6f9cd2df8abbca74212236a6ebb891e5c77a37fa))
+
+
+
+
+
 ## [2.4.6](https://github.com/areslabs/alita/compare/v2.4.5...v2.4.6) (2020-04-16)
 
 **Note:** Version bump only for package @areslabs/wx-react

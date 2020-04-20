@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-eventemitter",
-  "version": "2.4.6",
+  "version": "2.5.0",
   "description": "可以在RN和小程序共用的EventEmitter",
   "main": "dist/index.js",
   "files": [
