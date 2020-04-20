@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import {isRenderReturn, getOriginal} from '../util/uast'
+import {isRenderReturn, getOriginal, getAttri} from '../util/uast'
 import errorLogTraverse from '../util/ErrorLogTraverse'
 
 /**
@@ -23,6 +23,7 @@ export default function compOutElementToBlock (ast, info) {
                 && path.node.name.name === 'view'
                 && getOriginal(path)  // 没有origial属性的view，可能是直接使用的小程序内置组件，这个时候view可能有其他属性，故无法转化为block
                 && isRenderReturn(path)
+				&& !getAttri(path, 'onLayout') // 有onLayout属性的，无法转化为block
             ) {
                 path.node.name.name = 'block'
 

@@ -259,14 +259,27 @@ export function isRenderReturn(path) {
  * @returns {any}
  */
 export function getOriginal(path) {
+    const attr = getAttri(path, 'original')
+    if (attr) {
+        return attr.value.value
+    }
+    return ''
+}
+
+/**
+ * 获取JSXElement的属性
+ * @param path
+ * @param name
+ * @returns {any}
+ */
+export function getAttri(path, name) {
     const attris = path.node.attributes
     for (let i = 0; i< attris.length; i ++) {
         const item = attris[i]
-        if (item.type === 'JSXAttribute' && item.name.name === 'original') {
-            return item.value.value
+        if (item.type === 'JSXAttribute' && item.name.name === name) {
+            return item
         }
     }
-    return ''
 }
 
 /**
