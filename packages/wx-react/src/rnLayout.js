@@ -76,6 +76,7 @@ export function invokeAllLayout() {
 			const allItems = res[0]
 			if (allItems.length === 0) return
 
+			console.warn('注意：小程序onLayout参数的x,y是相对于视口的位置')
 			// 批量更新，减少实际的更新次数
 			unstable_batchedUpdates(() => {
 				const curPage = getMpCurrentPage()
