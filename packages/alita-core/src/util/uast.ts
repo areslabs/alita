@@ -259,14 +259,52 @@ export function isRenderReturn(path) {
  * @returns {any}
  */
 export function getOriginal(path) {
+    const attr = getAttri(path, 'original')
+    if (attr) {
+        return attr.value.value
+    }
+    return ''
+}
+
+/**
+ * 获取JSXElement的属性
+ * @param path
+ * @param name
+ * @returns {any}
+ */
+export function getAttri(path, name) {
     const attris = path.node.attributes
     for (let i = 0; i< attris.length; i ++) {
         const item = attris[i]
-        if (item.type === 'JSXAttribute' && item.name.name === 'original') {
-            return item.value.value
+        if (item.type === 'JSXAttribute' && item.name.name === name) {
+            return item
         }
     }
-    return ''
+}
+
+/**
+ * 给JSXOpeningElement 添加class类名，
+ *
+ * 1. <view/>  ---> <view class="xx"/>
+ * 2. <View class="aa"/> ---> <view class="aa xx"/>
+ *
+ * @param jsxOp
+ * @param className
+ */
+export function elementAddClass(jsxOp, className) {
+    let hasClassAttr = false
+    jsxOp.attributes.forEach(attr => {
+        if (attr.type === 'JSXAttribute' && attr.name.name === 'class') {
+            hasClassAttr = true
+            attr.value.value = `${attr.value.value} ${className}`
+        }
+    })
+
+    if (!hasClassAttr) {
+        jsxOp.attributes.push(
+            t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral(className))
+        )
+    }
 }
 
 

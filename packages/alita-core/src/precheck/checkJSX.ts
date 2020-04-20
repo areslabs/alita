@@ -34,7 +34,6 @@ const supportRNAPI = new Set([
 ])
 
 const notSupportCommonAttris = new Set([
-    'onLayout',
     'onStartShouldSetResponder',
     'onMoveShouldSetResponder',
     'onResponderGrant',

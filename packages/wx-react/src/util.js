@@ -8,6 +8,7 @@
  
 import instanceManager from "./InstanceManager";
 import {mpRoot} from "./constants";
+import {HocComponent} from "./index";
 
 export function getPropsMethod(wxInst, key) {
     const compInst = instanceManager.getCompInstByUUID(wxInst.data.diuu);
@@ -149,4 +150,39 @@ export function cleanPageComp(pageComp) {
     invokeWillUnmount(allChildren)
 }
 
+/**
+ * 基本标签的事件回调，统一储存在其parent的__eventHanderMap 字段，当parent被rerender的时候__eventHanderMap重新设置，当parent unmount的时候__eventHanderMap同时被销毁，
+ * 故不会存在泄露。
+ *
+ * 此方法提供，通过parentDiuu， selfDiuu，  eventType 获取事件回调的机制
+ *
+ * @param parentDiuu
+ * @param selfDiuu
+ * @param eventType
+ * @returns {*}
+ */
+export function getEventHandler(parentDiuu, selfDiuu, eventType) {
+	const eventKey = selfDiuu + eventType
+
+	let compInst = instanceManager.getCompInstByUUID(parentDiuu)
+	while (compInst && compInst instanceof HocComponent) {
+		compInst = compInst._c[0]
+	}
+	let eh =  compInst.__eventHanderMap[eventKey]
+
+	// map地图组件的regionchange事件 type为begin/end
+	if (!eh && (eventType === 'begin' || eventType === 'end')) {
+		eh = compInst.__eventHanderMap[selfDiuu + 'regionchange']
+	}
+	return eh
+}
+
+/**
+ * //TODO 不同的小程序，可能有不同的实现
+ * @returns {*}
+ */
+export function getMpCurrentPage() {
+	const pages = getCurrentPages()
+	return pages[pages.length - 1]
+}
 
