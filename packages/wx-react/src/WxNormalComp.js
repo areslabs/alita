@@ -63,6 +63,7 @@ export default function (compPath) {
                         createElement(
                             CompMySelf,
                             {
+                            	rawQuery: query,
                                 routerParams: paramsObj,
                                 diuu: uuid
                             },
