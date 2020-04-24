@@ -233,6 +233,10 @@ export default function packByWebpack() {
 }
 
 function runCb(err, stats) {
+    if (err) {
+        handleWebpackError(err)
+        return
+    }
     const info = stats.toJson();
 
     if (stats.hasWarnings()) {
@@ -251,6 +255,10 @@ function runCb(err, stats) {
 }
 
 function watchCb(err, stats) {
+    if (err) {
+        handleWebpackError(err)
+        return
+    }
     const info = stats.toJson();
 
     if (stats.hasWarnings()) {
@@ -267,6 +275,13 @@ function watchCb(err, stats) {
         console.log(`\n编译完成, 监听文件...`.info)
     }
 
+}
+
+function handleWebpackError (err) {
+    console.log(err.stack || err)
+    if (err.details) {
+        console.error(err.details)
+    }
 }
 
 function handleError(message) {
