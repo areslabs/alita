@@ -307,5 +307,33 @@ export function elementAddClass(jsxOp, className) {
     }
 }
 
+/**
+ * 是否是React.Fragment节点
+ * @param node
+ * @returns {any}
+ */
+export function isReactFragment(node) {
+    const name = node.name
+    if (name && name.type === 'JSXMemberExpression') {
+        return isReactFragmentExpression(name)
+    }
+    return false
+}
 
-
+/**
+ * 是否是React.Fragment表达式
+ * @param node
+ * @returns {any}
+ */
+export function isReactFragmentExpression(jsxOp) {
+    const object = jsxOp.object
+    const property = jsxOp.property
+    if (object
+        && object.name === 'React'
+        && property
+        && property.name === 'Fragment'
+    ) {
+        return true
+    }
+    return false
+}

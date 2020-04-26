@@ -14,7 +14,7 @@ import * as webpack from 'webpack'
 
 import {LoaderTmpResult} from './interfaces'
 import configure from "../configure";
-import {isReactComponent, parseCode} from "../util/uast"
+import {isReactComponent, parseCode, isReactFragment} from "../util/uast"
 
 import {getModuleInfo, setModuleInfo} from '../util/cacheModuleInfos'
 import {getLibCompInfos} from "../util/getAndStorecompInfos";
@@ -88,12 +88,15 @@ function getFileInfo(ast, filepath) {
         },
 
         JSXOpeningElement: path => {
+            if (isReactFragment(path.node)) {
+                return
+            }
             const name = (path.node.name as t.JSXIdentifier).name
 
             if (name === 'Router') {
                 isEntry = true
             }
-
+            
             JSXElements.add(name)
 
             isRF = true
