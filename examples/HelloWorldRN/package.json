@@ -14,18 +14,19 @@
     "@areslabs/stringutil-rn": "^1.0.1",
     "@areslabs/stringutil-wx": "^1.0.1",
     "@areslabs/wx-animated": "^2.0.0",
+    "babel-loader": "6",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "0.59.8"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "2.4.2",
+    "@areslabs/alita-weixin-runtime": "2.4.4",
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
     "babel-jest": "^24.8.0",
     "eslint": "^5.16.0",
     "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "^0.54.1",
+    "metro-react-native-babel-preset": "0.59.0",
     "react-test-renderer": "16.8.3"
   },
   "jest": {

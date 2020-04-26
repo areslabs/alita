@@ -26,6 +26,7 @@ export default class B extends Component {
 
     componentDidMount() {
         console.log('B componentDidMount:')
+        console.log('B global:', global.store)
     }
 
     state = {
@@ -178,6 +179,27 @@ export default class B extends Component {
                         })
                     }
                 </ScrollView>
+
+
+                <View style={styles.button}>
+                    <Text style={styles.title}>横向FlatList</Text>
+                </View>
+                <FlatList
+
+                    horizontal={true}
+
+                    data={this.state.users}
+                    keyExtractor={this.keyExtractor}
+                    renderItem={() => <Image
+                        source={require('./local.png')}
+                        resizeMode="contain"
+                        style={{
+                            width: 200,
+                            height: 200
+                        }}/>}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => { this._onEndReached(); }}
+                />
                 
                 <View style={styles.button}>
                     <Text style={styles.title}>输入框</Text>

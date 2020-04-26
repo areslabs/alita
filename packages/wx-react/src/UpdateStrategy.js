@@ -6,7 +6,7 @@
  *
  */
 
-import {getCurrentContext, invokeWillUnmount} from './util'
+import {getCurrentContext, invokeWillUnmount, getMpCurrentPage} from './util'
 import createElement from './createElement'
 import {mpRoot, STYLE_EFFECT, INIT_EFFECT, UPDATE_EFFECT, STYLE_WXINIT_EFFECT} from './constants'
 import render, {renderNextValidComps} from './render'
@@ -14,6 +14,8 @@ import {resetEffect} from "./effect";
 import instanceManager from "./InstanceManager";
 import getChangePath from './getChangePath'
 import {HocComponent} from './AllComponent'
+
+import {invokeAllLayout} from './rnLayout'
 
 let inRenderPhase = false
 let shouldMerge = false
@@ -122,6 +124,7 @@ export function renderApp(appClass) {
  */
 function commitWork(firstEffect, lastEffect) {
     if (!firstEffect) {
+    	//TODO effect应该参考React的形式，把生命周期也算上， 现在这种直接返回，会漏掉生命周期的执行
         // 没有产生任何更新
         return
     }
@@ -205,14 +208,12 @@ function commitWork(firstEffect, lastEffect) {
         currentPage.setData({}, () => {
             unstable_batchedUpdates(() => {
                 commitLifeCycles(lastEffect)
+
+				// 任何时候渲染结束都需要检查，包括初次渲染
+				invokeAllLayout()
             })
         })
     })
-}
-
-function getMpCurrentPage() {
-    const pages = getCurrentPages()
-    return pages[pages.length - 1]
 }
 
 

@@ -143,6 +143,7 @@ export default function packByWebpack() {
         ]),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': configure.dev ? '"development"' : '"production"',
+            'global': 'wx'
         }),
 
         // react-native 全局可以使用的变量
@@ -215,6 +216,12 @@ export default function packByWebpack() {
         resolve,
 
         module,
+
+
+        // 当alita使用的loader和项目中依赖冲突时，比如项目中有多个babel-loader， alita需要取到自己的那一个
+        resolveLoader: {
+            modules: [path.resolve('node_modules', '@areslabs',  'alita-core', 'node_modules'), 'node_modules'],
+        }
     } as webpack.Configuration
 
     configure.resolve = webpackConfigure.resolve
@@ -233,6 +240,10 @@ export default function packByWebpack() {
 }
 
 function runCb(err, stats) {
+    if (err) {
+        handleWebpackError(err)
+        return
+    }
     const info = stats.toJson();
 
     if (stats.hasWarnings()) {
@@ -251,6 +262,10 @@ function runCb(err, stats) {
 }
 
 function watchCb(err, stats) {
+    if (err) {
+        handleWebpackError(err)
+        return
+    }
     const info = stats.toJson();
 
     if (stats.hasWarnings()) {
@@ -267,6 +282,13 @@ function watchCb(err, stats) {
         console.log(`\n编译完成, 监听文件...`.info)
     }
 
+}
+
+function handleWebpackError (err) {
+    console.log(err.stack || err)
+    if (err.details) {
+        console.error(err.details)
+    }
 }
 
 function handleError(message) {

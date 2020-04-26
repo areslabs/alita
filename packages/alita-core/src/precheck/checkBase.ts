@@ -6,27 +6,7 @@
  *
  */
 
-import traverse from "@babel/traverse";
-import {printError} from './util'
-
 
 export default function checkBase(ast, filepath, rawCode) {
-
-    traverse(ast, {
-
-        enter: path => {
-
-
-        },
-
-        exit: path => {
-
-        },
-
-        Identifier(path) {
-            if (path.node.name === "global") {
-                printError(filepath, path, rawCode, `小程序不支持使用global变量`)
-            }
-        },
-    })
+    // do noting
 }

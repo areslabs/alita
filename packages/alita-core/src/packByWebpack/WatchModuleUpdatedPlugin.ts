@@ -21,22 +21,36 @@ export default class WatchModuleUpdatedPlugin {
                 (compilation, records) => {
                     if (records.hash === compilation.hash) return;
                     records.hash = compilation.hash;
-                    records.moduleHashs = {};
-                    for (const module of compilation.modules) {
-                        const identifier = module.identifier();
-                        records.moduleHashs[identifier] = module.hash;
-                    }
+
                     records.chunkHashs = {};
                     for (const chunk of compilation.chunks) {
                         records.chunkHashs[chunk.id] = chunk.hash;
                     }
                     records.chunkModuleIds = {};
                     for (const chunk of compilation.chunks) {
-                        records.chunkModuleIds[chunk.id] = Array.from(
-                            chunk.modulesIterable,
-                            // @ts-ignore
-                            m => ({id: m.id, resource: m.resource, chunks: m.getChunks().map(c => c.name)})
-                        );
+
+                        const allModules = []
+                        chunk.modulesIterable.forEach(m => {
+                            if (m.resource) {
+                                allModules.push({
+                                    resource: m.resource, chunks: m.getChunks().map(c => c.name)
+                                })
+                            } else {
+                                // 被tree-shaking合并
+                                m._orderedConcatenationList && m._orderedConcatenationList.forEach(concatenationM => {
+                                    if (concatenationM.type === 'concatenated') {
+                                        const cm = concatenationM.module
+                                        allModules.push({
+                                            resource: cm.resource,
+                                            chunks: m.getChunks().map(c => c.name)
+                                        })
+                                    }
+                                })
+                            }
+                        })
+
+
+                        records.chunkModuleIds[chunk.id] = allModules
                     }
                 }
             );
@@ -66,25 +80,47 @@ export default class WatchModuleUpdatedPlugin {
     }
 }
 
-function setAllModuleDepsAndChunks(compilation) {
-    const allModules = {}
+
+function getAllModulesFromCompilation(compilation) {
+    const allModules = new Map()
     compilation.modules.forEach(m => {
-        m.__deps = {}
-        allModules[m.id] = m
+        if (m.resource) {
+            m.__chus = m.getChunks().map(c => c.name)
+            m.__deps = {}
+            allModules.set(m.resource, m)
+        } else {
+            // 被tree-shaking合并
+            m._orderedConcatenationList && m._orderedConcatenationList.forEach(concatenationM => {
+                if (concatenationM.type === 'concatenated') {
+                    const cm = concatenationM.module
+                    cm.__chus = m.getChunks().map(c => c.name)
+                    cm.__deps = {}
+                    allModules.set(cm.resource, cm)
+                }
+            })
+        }
     })
 
-    compilation.modules.forEach(m => {
+    return allModules
+}
+
+
+function setAllModuleDepsAndChunks(compilation) {
+
+    const modulesMap = getAllModulesFromCompilation(compilation)
+    const modulesArr = Array.from(modulesMap.values())
+
+    modulesArr.forEach(m => {
         m.reasons.forEach(reason => {
             if (reason.module) {
-                const reasonModule = allModules[reason.module.id]
+                const reasonModule = modulesMap.get(reason.module.resource)
                 reasonModule && (reasonModule.__deps[reason.dependency.request] = m.resource)
             }
         })
-
     })
 
-    compilation.modules.forEach(m => {
-        setModuleDepsAndChunks(m.resource, m.__deps, m.getChunks().map(c => c.name))
+    modulesArr.forEach(m => {
+        setModuleDepsAndChunks(m.resource, m.__deps, m.__chus)
     })
 }
 
@@ -92,16 +128,10 @@ function hanldeModuleChanged(compilation, handleChanged, handleDeleted) {
     const records = compilation.records;
     if (records.hash === compilation.hash) return;
 
-    const allModules = new Map()
-    compilation.chunks.forEach(chunk => {
-        for (const module of chunk.modulesIterable) {
-            allModules.set(module.resource, module.getChunks().map(c => c.name))
-        }
-    })
+    const allModules = getAllModulesFromCompilation(compilation)
 
     let oldAllModules = new Map()
     if (
-        !records.moduleHashs ||
         !records.chunkHashs ||
         !records.chunkModuleIds
     ) {
@@ -125,7 +155,9 @@ function hanldeModuleChanged(compilation, handleChanged, handleDeleted) {
     compilation.records.changedModules.forEach(m => {
         moduleHasChanged.add(m)
     })
-    allModules.forEach((newChunks, m)=> {
+    allModules.forEach((mv, m)=> {
+        const newChunks = mv.__chus
+
         if (compilation.records.changedModules.has(m)) {
             // 上面已经处理
             return

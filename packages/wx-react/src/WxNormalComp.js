@@ -6,9 +6,10 @@
  *
  */
 
-import {renderPage, createElement, HocComponent, unstable_batchedUpdates, instanceManager} from "./index"
+import {renderPage, createElement, unstable_batchedUpdates, instanceManager} from "./index"
 import geneUUID from "./geneUUID"
-import {cleanPageComp} from './util'
+import {cleanPageComp, getEventHandler} from './util'
+import {cleanPageLayoutElements} from './rnLayout'
 
 
 export default function (compPath) {
@@ -32,20 +33,9 @@ export default function (compPath) {
         methods: {
             // 基本组件回调函数处理
             eventHandler(e) {
-                const eventKey = e.currentTarget.dataset.diuu + e.type
-                let compInst = instanceManager.getCompInstByUUID(this.data.diuu)
-                while (compInst && compInst instanceof HocComponent) {
-                    compInst = compInst._c[0]
-                }
-                let eh = compInst.__eventHanderMap[eventKey]
-
-                // map地图组件的regionchange事件 type为begin/end
-                if (!eh && (e.type === 'begin' || e.type === 'end')) {
-                    eh = compInst.__eventHanderMap[e.currentTarget.dataset.diuu + 'regionchange']
-                }
-
+            	const eh = getEventHandler(this.data.diuu, e.currentTarget.dataset.diuu, e.type)
                 if (eh) {
-                    //TODO event参数
+                    //TODO 适配 event参数
                     eh(e)
                 }
             }
@@ -73,6 +63,7 @@ export default function (compPath) {
                         createElement(
                             CompMySelf,
                             {
+                            	rawQuery: query,
                                 routerParams: paramsObj,
                                 diuu: uuid
                             },
@@ -117,6 +108,7 @@ export default function (compPath) {
             compInst.componentWillUnfocus && compInst.componentWillUnfocus()
 
             cleanPageComp(compInst)
+			cleanPageLayoutElements(this.data.diuu)
         }
     }
     return o

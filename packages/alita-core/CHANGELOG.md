@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/areslabs/alita/compare/v2.4.6...v2.5.0) (2020-04-20)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复 组件外层view 退化为block，引起的onLayout事件不调用 ([ed8bc73](https://github.com/areslabs/alita/commit/ed8bc73b859d03cff563c1e9840f57165344cb8d))
+
+
+### Features
+
+* **alita-core wx-react:** 支持 onLayout ([6f9cd2d](https://github.com/areslabs/alita/commit/6f9cd2df8abbca74212236a6ebb891e5c77a37fa))
+
+
+
+
+
+## [2.4.6](https://github.com/areslabs/alita/compare/v2.4.5...v2.4.6) (2020-04-16)
+
+
+### Features
+
+* **alita-core:** 增加对weixin目录app.json文件的处理 ([32d9942](https://github.com/areslabs/alita/commit/32d994230287b2b15e3fbb07b4aafce897b8cd2e))
+
+
+
+
+
+## [2.4.5](https://github.com/areslabs/alita/compare/v2.4.4...v2.4.5) (2020-04-10)
+
+
+### Bug Fixes
+
+* **alita-core:** 当存在babel-loader版本冲突的时候，修复loader加载错误的bug ([91aa6dd](https://github.com/areslabs/alita/commit/91aa6dd4a9d06a372c2805029469dfe5f59a4f24))
+
+
+
+
+
+## [2.4.4](https://github.com/areslabs/alita/compare/v2.4.3...v2.4.4) (2020-04-10)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复 isChildComp 方法只通过基本组件名称来判断是否需要处理成抽象节点导致的bug ([c6748b8](https://github.com/areslabs/alita/commit/c6748b8960354bee3a44d276d30349ac235fc918))
+
+
+### Features
+
+* **alita-core:** 支持全局变量global，把显示的对全局变量的使用转化为wx ([c3f2589](https://github.com/areslabs/alita/commit/c3f25896c324ef26b7ac14a59a9ae27d104f92ae))
+
+
+
+
+
+## [2.4.3](https://github.com/areslabs/alita/compare/v2.4.2...v2.4.3) (2020-04-02)
+
+**Note:** Version bump only for package @areslabs/alita-core
+
+
+
+
+
 ## [2.4.2](https://github.com/areslabs/alita/compare/v2.4.1...v2.4.2) (2020-03-19)
 
 

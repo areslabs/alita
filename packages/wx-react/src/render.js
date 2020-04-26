@@ -887,6 +887,11 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
 
         eventProps.forEach(k => {
             const v = props[k]
+
+			if (k === 'onLayout') {  // onLayout 事件，需要设置parentDiuu， 方便invokeAllLayout里面的方法寻找
+            	data.parentDiuu = parentInst.__diuu__
+			}
+
             parentInst.__eventHanderMap[`${diuu}${getWxEventType(k)}`] = reactEnvWrapper(v)
         })
     }

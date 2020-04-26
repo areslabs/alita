@@ -18,6 +18,7 @@ import RNCompHandler from './RNCompHandler'
 import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
+import onLayoutHandler from './onLayoutHandler'
 
 
 import {setRFModuleInfo} from '../util/cacheModuleInfos'
@@ -62,6 +63,8 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
     ast = addEventHandler(ast, info)
 
     ast = classNameHandler(ast, info)
+
+    ast = onLayoutHandler(ast, info)
 
     ast = geneAllTemplate(ast, info)
 
