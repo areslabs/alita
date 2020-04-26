@@ -7,7 +7,7 @@
  */
 
 import errorLogTraverse from '../util/ErrorLogTraverse'
-import {InnerComponentNamePrefix, RNCOMPSET} from "../constants"
+import {RNCOMPSET} from "../constants"
 import * as t from "@babel/types"
 import {geneOrder, getGenericName} from "../util/util"
 import {getPropsChain, isChildComp} from "../util/uast"

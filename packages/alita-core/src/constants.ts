@@ -6,15 +6,6 @@
  *
  */
  
-export const InnerComponentNamePrefix = "ICNP" // inner component name prefix
-
-export const InnerTemplateNamePrefix = "Y" // inner template name prefix
-
-export const DIUUPrefix = "A"
-
-export const ChildTemplateDataKeyPrefix = "N" // inner spread attribute prefix
-
-export const ChildTemplateNamePrefix = "K"
 
 // 由 ./util/getAndStorecompInfos 根据package.json相关配置构造
 export const RNCOMPSET = new Set([])
