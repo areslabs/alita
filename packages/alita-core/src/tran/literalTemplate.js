@@ -12,7 +12,16 @@ import * as t from "@babel/types"
 import {isTextElement} from '../util/uast'
 
 /**
- * 如果 由childrenToTemplate生成的template 最终运行的结果是literal，那直接展示
+ * <Text>
+ *     <template is="child" data="{{datakey}}"/>
+ * </Text>
+ *
+ * 直接转化为：
+ *
+ * <Text>
+ *     {{datakey}}
+ * </Text>
+ *
  * @param ast
  * @param info
  * @returns {*}

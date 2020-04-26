@@ -92,7 +92,7 @@ export default function cptCompHandler (ast, info) {
                         return
                     }
 
-                    const key = `${InnerComponentNamePrefix}${go.nextString}`
+                    const key = go.next
                     jsxOp.attributes.push(
                         t.jsxAttribute(t.jsxIdentifier(genericName), t.stringLiteral(key))
                     )
@@ -123,7 +123,7 @@ export default function cptCompHandler (ast, info) {
                 }
 
 
-                const key = `${InnerComponentNamePrefix}${go.nextString}`
+                const key = go.next
                 jsxOp.node.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier(genericName), t.stringLiteral(key))
                 )
@@ -261,7 +261,7 @@ export default function cptCompHandler (ast, info) {
                 && path.node.children.length > 0
             ) {
                 const pe = path.node.openingElement
-                const key = `${InnerComponentNamePrefix}${go.nextString}`
+                const key = go.next
                 pe.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier(`generic:childrenCPT`), t.stringLiteral(key))
                 )

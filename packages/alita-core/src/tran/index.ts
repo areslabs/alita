@@ -54,7 +54,7 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
     ast = addTempName(ast, info)
 
-    ast = childrenToTemplate(ast, info)
+    //ast = childrenToTemplate(ast, info)
 
     const reactCode = geneReactCode(ast)
 

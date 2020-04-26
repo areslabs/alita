@@ -254,6 +254,9 @@ function runCb(err, stats) {
         })
     } else {
         console.log('\n编译完成'.info)
+        info.chunks.forEach(c => {
+            printChunkSize(c)
+        })
     }
 }
 
@@ -274,6 +277,12 @@ function watchCb(err, stats) {
         console.log(`\n编译完成, 监听文件...`.info)
     }
 
+}
+
+function printChunkSize(chunk) {
+    const chunkPath = path.resolve(configure.outputFullpath, chunk.files[0])
+    const stateInfo = fse.statSync(chunkPath)
+    console.log(chunk.files[0].info, ': Parsed Size:'.info, stateInfo.size, ' Stat size:'.info, chunk.size)
 }
 
 function handleError(message) {

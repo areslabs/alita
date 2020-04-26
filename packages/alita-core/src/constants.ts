@@ -8,11 +8,13 @@
  
 export const InnerComponentNamePrefix = "ICNP" // inner component name prefix
 
-export const InnerTemplateNamePrefix = "ITNP" // inner template name prefix
+export const InnerTemplateNamePrefix = "Y" // inner template name prefix
 
-export const ChildTemplateDataKeyPrefix = "CTDK" // inner spread attribute prefix
+export const DIUUPrefix = "A"
 
-export const ChildTemplateNamePrefix = "CTNP"
+export const ChildTemplateDataKeyPrefix = "N" // inner spread attribute prefix
+
+export const ChildTemplateNamePrefix = "K"
 
 // 由 ./util/getAndStorecompInfos 根据package.json相关配置构造
 export const RNCOMPSET = new Set([])
@@ -85,3 +87,10 @@ export const wxBaseComp = new Set([
     // 画布
     'canvas'
 ])
+
+
+export const originElementAttrName = '_o'
+export const viewOrigin = "1"
+export const imageOrigin = "2"
+export const innerTextOrigin = "3"
+export const outerTextOrigin = "4"

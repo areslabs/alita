@@ -178,7 +178,7 @@ export default function (ast, filepath, webpackContext) {
                     key: key,
                 })
 
-                pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`)))
+                pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(go.next)))
 
                 if (subpage) {
                     // 分包的依赖将会被处理为异步加载，固这里需要处理其引用，以免报错
@@ -243,7 +243,7 @@ export default function (ast, filepath, webpackContext) {
                 })
 
                 tabInfos.push(tabBarElement)
-                pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(`DIUU${go.next}`)))
+                pnode.attributes.push(t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(go.next)))
 
                 return
             }
@@ -251,7 +251,7 @@ export default function (ast, filepath, webpackContext) {
             if (path.type === 'JSXOpeningElement') {
                 const jsxOp = path.node as t.JSXOpeningElement
 
-                const key = `DIUU${go.next}`
+                const key = go.next
 
                 jsxOp.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier('diuu'), t.stringLiteral(key))
