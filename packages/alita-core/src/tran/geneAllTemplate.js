@@ -43,6 +43,7 @@ export default function(ast, info) {
         enter: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name !== 'template'
+				&& path.node.name.name !== 'block'
             ) {
                 const diuuAttr = getAttr(path.node, 'diuu')
                 path.node.diuu = diuuAttr.value.value
@@ -168,6 +169,11 @@ export default function(ast, info) {
 
                     return true
                 })
+
+				// block的属性没有意义
+				if (jsxOp.name.name === 'block') {
+					jsxOp.attributes = []
+				}
 
                 info.templates.push(decTemlate(tempName, path.node))
             }

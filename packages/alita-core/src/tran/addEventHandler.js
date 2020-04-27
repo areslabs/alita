@@ -18,7 +18,6 @@ export default function addEventHandler (ast) {
     errorLogTraverse(ast, {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
-                && path.node.name.name === 'view'
                 && getOriginal(path)
             ) {
 
