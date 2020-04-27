@@ -9,7 +9,7 @@
 import errorLogTraverse from '../util/ErrorLogTraverse'
 
 import * as t from "@babel/types"
-import {wxBaseComp} from '../constants'
+import {wxBaseComp, touchableOpacityOrigin, touchableHighlightOrigin} from '../constants'
 
 import {getOriginal} from '../util/uast'
 import configure from "../configure";
@@ -19,40 +19,62 @@ export default function addEventHandler (ast) {
         exit: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view'
-                && getOriginal(path).startsWith('Touchable')
+                && getOriginal(path)
             ) {
 
                 const original = getOriginal(path)
 
                 const diuu = getDiuu(path.node.attributes)
 
-                path.node.attributes.push(
-                    t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`)),
-                    t.jsxAttribute(t.jsxIdentifier('hover-stop-propagation'), t.stringLiteral("")),
-                    t.jsxAttribute(t.jsxIdentifier('hover-start-time'), t.stringLiteral("0")),
-                    t.jsxAttribute(t.jsxIdentifier('hover-stay-time'), t.stringLiteral("100")),
-                )
-
-
+				let hasEvent = false
                 path.node.attributes.forEach(attri => {
                     if (attri.type === 'JSXAttribute' && attri.name.name === 'onPress') {
                         attri.name.name = "catchtap"
                         attri.value = t.stringLiteral('eventHandler')
+						hasEvent = true
                     }
 
                     if (attri.type === 'JSXAttribute' && attri.name.name === 'onLongPress') {
                         attri.name.name = "catchlongpress"
                         attri.value = t.stringLiteral('eventHandler')
+						hasEvent = true
                     }
+
+                    // image的事件
+					if (attri.type === 'JSXAttribute' && attri.name.name === 'onLoad') {
+						attri.name.name = "bindload"
+						attri.value = t.stringLiteral('eventHandler')
+						hasEvent = true
+					}
+
+					if (attri.type === 'JSXAttribute' && attri.name.name === 'onError') {
+						attri.name.name = "binderror"
+						attri.value = t.stringLiteral('eventHandler')
+
+						hasEvent = true
+					}
                 })
 
-                if (original === 'TouchableOpacity') {
+				if (!hasEvent) {
+                	// 没有事件绑定
+                	return
+				}
+
+				path.node.attributes.push(
+					t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`)),
+					t.jsxAttribute(t.jsxIdentifier('hover-stop-propagation')),
+				)
+
+
+                if (original === touchableOpacityOrigin) {
                     path.node.attributes.push(
                         t.jsxAttribute(t.jsxIdentifier('hover-class'), t.stringLiteral(`{{${diuu}hoverClass}}`)),
+						t.jsxAttribute(t.jsxIdentifier('hover-start-time'), t.stringLiteral("0")),
+						t.jsxAttribute(t.jsxIdentifier('hover-stay-time'), t.stringLiteral("100")),
                     )
                 }
 
-                if (original === 'TouchableHighlight') {
+                if (original === touchableHighlightOrigin) {
                     const jsxElement = path.parentPath.node
 
                     for(let i = 0; i < jsxElement.children.length; i ++) {
@@ -74,74 +96,18 @@ export default function addEventHandler (ast) {
 
                     path.node.attributes.push(
                         t.jsxAttribute(t.jsxIdentifier('hover-class'), t.stringLiteral(`thHover`)),
+						t.jsxAttribute(t.jsxIdentifier('hover-start-time'), t.stringLiteral("0")),
+						t.jsxAttribute(t.jsxIdentifier('hover-stay-time'), t.stringLiteral("100")),
                     )
                 }
 
                 return
             }
 
-            if (path.type === 'JSXOpeningElement'
-                && path.node.name.name === 'view'
-                && getOriginal(path) === 'OuterText'
-            ) {
-                let hasEvent = false
-                path.node.attributes.forEach(attri => {
-                    if (attri.type === 'JSXAttribute' && attri.name.name === 'onPress') {
-                        attri.name.name = "catchtap"
-                        attri.value = t.stringLiteral('eventHandler')
-                        hasEvent = true
-                    }
-
-                    if (attri.type === 'JSXAttribute' && attri.name.name === 'onLongPress') {
-                        attri.name.name = "catchlongpress"
-                        attri.value = t.stringLiteral('eventHandler')
-
-                        hasEvent = true
-                    }
-                })
-
-                const diuu = getDiuu(path.node.attributes)
-                if (hasEvent) {
-                    path.node.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`)),
-                        t.jsxAttribute(t.jsxIdentifier('hover-stop-propagation'), t.stringLiteral("true")),
-                    )
-                }
-
-                return
-            }
-
-            if (path.type === 'JSXOpeningElement'
-                && path.node.name.name === 'image'
-            ) {
-
-                let hasEvent = false
-                path.node.attributes.forEach(attri => {
-                    if (attri.type === 'JSXAttribute' && attri.name.name === 'onLoad') {
-                        attri.name.name = "bindload"
-                        attri.value = t.stringLiteral('eventHandler')
-                        hasEvent = true
-                    }
-
-                    if (attri.type === 'JSXAttribute' && attri.name.name === 'onError') {
-                        attri.name.name = "binderror"
-                        attri.value = t.stringLiteral('eventHandler')
-
-                        hasEvent = true
-                    }
-                })
-
-                const diuu = getDiuu(path.node.attributes)
-                if (hasEvent) {
-                    path.node.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('data-diuu'), t.stringLiteral(`{{${diuu}}}`)),
-                    )
-                }
-
-                return
-            }
-
-            if (path.type === 'JSXAttribute'
+			/**
+			 * 当直接使用小程序组件 view/text/image等
+			 */
+			if (path.type === 'JSXAttribute'
                 && (path.node.name.name.startsWith('bind') || path.node.name.name.startsWith('catch'))
                 && (wxBaseComp.has(path.parentPath.node.name.name)
                     || configure.configObj.miniprogramComponents[path.parentPath.node.name.name]

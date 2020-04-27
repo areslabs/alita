@@ -9,6 +9,7 @@
 import webpack from 'webpack'
 import * as path from 'path'
 import CopyPlugin from 'copy-webpack-plugin'
+import fse from 'fs-extra'
 
 import WatchModuleUpdatedPlugin from './WatchModuleUpdatedPlugin'
 import ExtractImageFilesPlugin from './ExtractImageFilesPlugin'

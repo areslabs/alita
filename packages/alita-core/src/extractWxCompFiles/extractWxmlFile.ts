@@ -56,25 +56,21 @@ export const handleChanged = (info, finalJSPath) => {
 
     for (let i = 0; i < childTemplates.length; i++) {
         const name = childTemplates[i];
+        // 如果只使用一个child 小程序会报递归， 然后就不渲染了
         const subT = `
-<template name="${name}"><include src="${templateWxmlFilename}"/></template>
-`;
+<template name="${name}">
+   <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
+   <block wx:else>
+       <block wx:for="{{d}}" wx:key="key">
+           <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
+       </block>
+   </block>
+</template>
+        `;
+
         templateWxml = subT + templateWxml;
-    }
-
-    if (childTemplates.length > 0) {
-        templateWxml = `
-
-<block wx:if="{{t.l(d)}}">{{d}}</block>
-<template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
-<block wx:else>
-<block wx:for="{{d}}" wx:key="key">
-    <block wx:if="{{t.l(item)}}">{{item}}</block>
-    <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
-    </block>
-</block>
-   
-        `  + templateWxml
     }
 
 

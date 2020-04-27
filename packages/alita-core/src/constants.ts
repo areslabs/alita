@@ -5,6 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+
+export {
+    originElementAttrName,
+    viewOrigin,
+    imageOrigin,
+    innerTextOrigin,
+    outerTextOrigin,
+    errorViewOrigin,
+    touchableWithoutFeedbackOrigin,
+    touchableOpacityOrigin,
+    touchableHighlightOrigin,
+} from '@shared/constants'
  
 
 // 由 ./util/getAndStorecompInfos 根据package.json相关配置构造
@@ -78,10 +90,3 @@ export const wxBaseComp = new Set([
     // 画布
     'canvas'
 ])
-
-
-export const originElementAttrName = '_o'
-export const viewOrigin = "1"
-export const imageOrigin = "2"
-export const innerTextOrigin = "3"
-export const outerTextOrigin = "4"

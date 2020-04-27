@@ -23,7 +23,9 @@
     "test": "echo '正在补充测试用例。。。' && jest",
     "eslint": "eslint .",
     "fix": "eslint . --fix",
-    "build": "rm -fr lib && babel src --out-dir lib --extensions \".js,.ts\"",
+    "build:share": "babel ../shared --out-dir lib/_shared --extensions \".js,.ts\"",
+    "build": "rm -fr lib && npm run build:share && babel src --out-dir lib --extensions \".js,.ts\"",
+    "watch": "babel src --out-dir lib --extensions \".js,.ts\" --watch",
     "link": "npm run compiler && sudo npm link"
   },
   "authors": [
@@ -55,6 +57,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.3"
+    "@babel/cli": "^7.8.3",
+    "babel-plugin-module-resolver": "^4.0.0"
   }
 }

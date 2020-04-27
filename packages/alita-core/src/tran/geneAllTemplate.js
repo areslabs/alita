@@ -11,7 +11,7 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from '@babel/types'
 import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn, elementAddClass} from '../util/uast';
 import { isEventProp } from '../util/util';
-import {wxBaseComp} from "../constants";
+import {wxBaseComp, originElementAttrName} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
 
 import configure from '../configure'
@@ -54,7 +54,7 @@ export default function(ast, info) {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view') {
 
-                const originAttr = getAttr(path.node, 'original')
+                const originAttr = getAttr(path.node, originElementAttrName)
 
                 if (!originAttr) {
                     return
@@ -250,7 +250,7 @@ export default function(ast, info) {
                         return
                     }
 
-                    if (attr.value.type === 'JSXExpressionContainer') {
+                    if (attr.value && attr.value.type === 'JSXExpressionContainer') {
                         // 当小程序出现类似 <view class="{{x-y-z}}"/> 指绑定的时候会，会无效，需要处理
                         const yName = name.replace(/-/g, 'Y')
                         attr.value = t.stringLiteral(`{{${diuuKey}${yName}}}`)

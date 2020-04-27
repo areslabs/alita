@@ -8,7 +8,19 @@
  
 //import traverse from "@babel/traverse";
 import errorLogTraverse from '../util/ErrorLogTraverse'
-import {backToViewNode, RNCOMPSET} from "../constants";
+import {
+    backToViewNode,
+    RNCOMPSET,
+    originElementAttrName,
+    viewOrigin,
+    innerTextOrigin,
+    outerTextOrigin,
+    imageOrigin,
+    errorViewOrigin,
+    touchableHighlightOrigin,
+    touchableWithoutFeedbackOrigin,
+    touchableOpacityOrigin
+} from "../constants";
 import * as t from "@babel/types";
 
 import {textComp} from '../util/getAndStorecompInfos'
@@ -152,24 +164,39 @@ function handleComp(path, rnApis, fileJSXElements) {
     if (name === 'View'
         || name === 'AnimatedView'
         || name === 'AnimatedText'
-        || name === 'TouchableWithoutFeedback'
-        || name === 'TouchableOpacity'
-        || name === 'TouchableHighlight'
     ) {
         path.node.name.name = `view`
-        addViewOriginalAttri(path, name)
+        addViewOriginalAttri(path, viewOrigin)
+        return
+    }
+
+    if (name === 'TouchableWithoutFeedback') {
+        path.node.name.name = `view`
+        addViewOriginalAttri(path, touchableWithoutFeedbackOrigin)
+        return
+    }
+
+    if (name === 'TouchableOpacity') {
+        path.node.name.name = `view`
+        addViewOriginalAttri(path, touchableOpacityOrigin)
+        return
+    }
+
+    if (name === 'TouchableHighlight') {
+        path.node.name.name = `view`
+        addViewOriginalAttri(path, touchableHighlightOrigin)
         return
     }
 
     if (name === 'SafeAreaView') {
         path.node.name.name = `view`
-        addViewOriginalAttri(path, 'View')
+        addViewOriginalAttri(path, viewOrigin)
         return
     }
 
     if (name === 'Image' || name === 'AnimatedImage') {
         path.node.name.name = 'image'
-        addViewOriginalAttri(path, "image")
+        addViewOriginalAttri(path, imageOrigin)
         renameImageSourceAttri(path)
         return
     }
@@ -177,13 +204,13 @@ function handleComp(path, rnApis, fileJSXElements) {
     // Text 特殊需要处理
     if (textComp.has(name) && isInText(path)) {
         path.node.name.name = `view`
-        addViewOriginalAttri(path, "InnerText")
+        addViewOriginalAttri(path, innerTextOrigin)
         return
     }
 
     if (textComp.has(name) && !isInText(path)) {
         path.node.name.name = `view`
-        addViewOriginalAttri(path, "OuterText")
+        addViewOriginalAttri(path, outerTextOrigin)
         return
     }
 
@@ -197,8 +224,8 @@ function handleComp(path, rnApis, fileJSXElements) {
         if (path.type === 'JSXOpeningElement') {
             path.node.attributes = [
                 t.jsxAttribute(
-                    t.jsxIdentifier('original'),
-                    t.stringLiteral('ErrorView')
+                    t.jsxIdentifier(originElementAttrName),
+                    t.stringLiteral(errorViewOrigin)
                 )
             ]
             path.parentPath.node.children = [
@@ -220,8 +247,8 @@ function isInText(path) {
         if (op.name.name === 'view') {
             return  op.attributes.some(attri => {
                 return attri.type === 'JSXAttribute'
-                    &&  attri.name.name === 'original'
-                    && attri.value.value === 'OuterText'
+                    &&  attri.name.name === originElementAttrName
+                    && attri.value.value === outerTextOrigin
             })
         }
 
@@ -261,7 +288,7 @@ function addViewOriginalAttri(path, v) {
     if (path.type === 'JSXClosingElement') return
 
     path.node.attributes.push(
-        t.jsxAttribute(t.jsxIdentifier('original'), t.stringLiteral(v))
+        t.jsxAttribute(t.jsxIdentifier(originElementAttrName), t.stringLiteral(v))
     )
 }
 

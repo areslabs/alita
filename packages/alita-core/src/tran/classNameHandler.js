@@ -10,6 +10,17 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 
 import * as t from "@babel/types"
 
+import {
+	originElementAttrName,
+	viewOrigin,
+	touchableOpacityOrigin,
+	touchableHighlightOrigin,
+	outerTextOrigin,
+	innerTextOrigin,
+	touchableWithoutFeedbackOrigin,
+	errorViewOrigin
+} from '../constants'
+
 /**
  * 统一处理节点的类名添加
  * @param ast
@@ -24,7 +35,7 @@ export default function classNameHandler (ast,info) {
                 && path.node.name.name === 'view'
             ) {
                 const attris = path.node.attributes
-                const origs = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === 'original'))
+                const origs = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === originElementAttrName))
 
                 if (origs.length === 0) {
                     return
@@ -32,33 +43,31 @@ export default function classNameHandler (ast,info) {
 
                 const original =  origs[0].value.value
 
-                if (original === 'View'
-                    || original === 'AnimatedView'
-                    || original === 'AnimatedText'
-                    || original === 'TouchableOpacity'
-                    || original === 'TouchableHighlight'
+                if (original === viewOrigin
+                    || original === touchableOpacityOrigin
+                    || original === touchableHighlightOrigin
                 ) {
                     attris.push(
                         t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral('view'))
                     )
                 } else if (
-                    original === 'OuterText'
+                    original === outerTextOrigin
                 ) {
                     attris.push(
                         t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral('text'))
                     )
                 } else if (
-                    original === 'InnerText'
+                    original === innerTextOrigin
                 ) {
                     attris.push(
                         t.jsxAttribute(t.jsxIdentifier('class'), t.stringLiteral('textInner'))
                     )
                 } else if (
-                    original === 'TouchableWithoutFeedback'
+                    original === touchableWithoutFeedbackOrigin
                 ) {
                     // do nothing
                 } else if (
-                    original === 'ErrorView'
+                    original === errorViewOrigin
                 ) {
                     // do nothing
                 } else {
@@ -72,7 +81,7 @@ export default function classNameHandler (ast,info) {
                 && path.node.name.name === 'image'
             ) {
                 const attris = path.node.attributes
-                const origs = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === 'original'))
+                const origs = (attris.filter(item => item.type === 'JSXAttribute' && item.name.name === originElementAttrName))
 
                 if (origs.length === 0) {
                     return
