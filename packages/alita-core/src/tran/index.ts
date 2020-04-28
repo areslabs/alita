@@ -8,7 +8,6 @@
 
 import {geneReactCode} from '../util/uast'
 import funcCompToClassComp from './funcCompToClassComp'
-import childrenToTemplate from './childrenToTemplate'
 import compPreHandle from './compPreHandle'
 import addTempName from './addTempName'
 import geneAllTemplate from "./geneAllTemplate";
