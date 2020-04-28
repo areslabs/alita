@@ -19,7 +19,7 @@ const allChars = (low + low.toUpperCase()).split('')
  *
  * @returns {any}
  */
-export function geneOrder() {
+export function geneOrder(suffix = '') {
     let v = ['a']
     return {
         get next() {
@@ -33,7 +33,8 @@ export function geneOrder() {
                 }
             }
 
-            return v.join('')
+            // $ 保证不会和用户数据重复
+            return v.join('') + suffix
         },
     }
 }

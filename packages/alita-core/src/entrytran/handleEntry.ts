@@ -41,7 +41,7 @@ export default function (ast, filepath, webpackContext) {
     const tabInfos = []
 
 
-    const go = geneOrder()
+    const go = geneOrder('_')
     errorLogTraverse(ast, {
         enter: path => {
             if (path.type === 'StringLiteral'

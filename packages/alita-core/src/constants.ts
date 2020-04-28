@@ -16,6 +16,7 @@ export {
     touchableWithoutFeedbackOrigin,
     touchableOpacityOrigin,
     touchableHighlightOrigin,
+    errorViewOrigin,
 } from '@shared/constants'
  
 

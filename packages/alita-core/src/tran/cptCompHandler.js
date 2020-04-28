@@ -16,7 +16,7 @@ import {jsxPropsMap} from '../util/getAndStorecompInfos'
 
 export default function cptCompHandler (ast, info) {
     const ALLCPTCOMPMAP = jsxPropsMap
-    const go = geneOrder()
+    const go = geneOrder('$') // $的传递，是防止生成文件和用户文件重名
     errorLogTraverse(ast, {
         enter: path => {
             // 处理直接是<V>{this.props.children}</V> 这种情况

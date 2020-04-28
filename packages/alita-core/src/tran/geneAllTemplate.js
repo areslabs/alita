@@ -11,7 +11,7 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from '@babel/types'
 import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn, elementAddClass} from '../util/uast';
 import { isEventProp } from '../util/util';
-import {wxBaseComp, originElementAttrName} from "../constants";
+import {wxBaseComp, originElementAttrName, errorViewOrigin} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
 
 import configure from '../configure'
@@ -61,7 +61,7 @@ export default function(ast, info) {
                     return
                 }
 
-                if (originAttr.value.value === 'ErrorView') {
+                if (originAttr.value.value === errorViewOrigin) {
                     path.node.attributes = [
                         t.jsxAttribute(
                             t.jsxIdentifier('style'),
