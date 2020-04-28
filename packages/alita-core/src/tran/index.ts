@@ -19,6 +19,7 @@ import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
 import onLayoutHandler from './onLayoutHandler'
+import fragmentHadnler  from './fragmentHadnler'
 
 
 import {setRFModuleInfo} from '../util/cacheModuleInfos'
@@ -41,6 +42,8 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
 
         //webpackContext,
     }
+    // 必须放在第一个处理，否则下面处理方法会由于<>写法导致报错
+    ast = fragmentHadnler(ast, info)
 
     ast = funcCompToClassComp(ast, info)
 

@@ -180,6 +180,15 @@ export default class A extends Component {
                     <Text style={{fontSize: 16, color: 'rgb(24, 144, 255)'}}>Platform: {Platform.OS}</Text>
                 </View>
                 <PlatformComp style={styles.item}/>
+            
+                <View style={styles.item}>
+                    <>
+                        <Text style={styles.itemText}>React.</Text>
+                    </>
+                    <React.Fragment>
+                        <Text style={styles.itemText}>Fragment</Text>
+                    </React.Fragment>
+                </View>
 
                 {item1}
                 {this.item2}
