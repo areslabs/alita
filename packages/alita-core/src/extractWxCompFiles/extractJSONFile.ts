@@ -1,11 +1,13 @@
 import * as path from "path";
 
-import {getModuleInfo, setJsonRelativeFiles} from '../util/cacheModuleInfos'
+import {getModuleInfo, setJsonRelativeFiles, isValidPath} from '../util/cacheModuleInfos'
 import {getLibPath, judgeLibPath} from "../util/util"
 import configure from "../configure"
 import {wxBaseComp} from '../constants'
 
 import {getCompPath, getRealPackChunks} from './copyPackageWxComponents'
+
+import {syncResolve} from '../util/myResolve'
 
 export const handleChanged = (resouce, info, finalJSPath) => {
 
@@ -121,7 +123,10 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
         requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)
         jsonRelativeFiles.add(source)
     } else {
-        const deepSeekResult = deepSeekPath(element, info.deps[source], defaultSpecifier, chunk)
+
+        const validPath = getValidPath(module, source)
+
+        const deepSeekResult = deepSeekPath(element, validPath, defaultSpecifier, chunk)
         requireAbsolutePath = deepSeekResult.absolutePath
         requireDefault = deepSeekResult.defaultSpecifier
 
@@ -159,7 +164,7 @@ function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
         const source = im[element].source
         defaultSpecifier = im[element].defaultSpecifier
 
-        absolutePath = info.deps[source]
+        absolutePath = getValidPath(absolutePath, source)
         info = getModuleInfo(absolutePath)
 
         if (!info) {
@@ -251,6 +256,45 @@ function getGlobalChunkPath(globalPath, chunk, resouce, jsonRelativeFiles) {
 
     return shortPath(absoluteGlobalPath, resouce)
 
+}
+
+/**
+ * abPath: /a/b/c/d
+ * relativePath: ../../x
+ *
+ * 寻找到 /a/b/x.tsx 或者 /a/b/x.ts 或者 /a/b/x.jsx 或者 /a/b/x.js ....
+ *
+ * @param abPath
+ * @param relativePath
+ * @returns {string}
+ */
+function getValidPath(abPath, relativePath) {
+    let partORAllPath = path.resolve(path.dirname(abPath), relativePath)
+    if (isValidPath(partORAllPath)) {
+        return partORAllPath
+    }
+
+
+    const extensions = configure.webpackConfigure.resolve.extensions
+    for(let i = 0; i < extensions.length; i ++ ) {
+        const abSource = partORAllPath + extensions[i]
+
+        if (isValidPath(abSource)) {
+            return abSource
+        }
+    }
+
+    partORAllPath = path.resolve(partORAllPath, 'index')
+    for(let i = 0; i < extensions.length; i ++ ) {
+        const abSource = partORAllPath + extensions[i]
+
+        if (isValidPath(abSource)) {
+            return abSource
+        }
+    }
+
+    const abSource = syncResolve(path.dirname(abPath), relativePath)
+    return abSource
 }
 
 

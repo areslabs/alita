@@ -47,6 +47,8 @@ interface IConfigure {
 
     // 由路由subpage属性生成
     allChunks?: any
+
+    webpackConfigure?: any
 }
 
 const configure = {
