@@ -12,7 +12,6 @@ module.exports = function (api) {
 			presets: [require('babel-preset-react-app')],
 		}
 	}
-
 	return {
 		presets: [require('metro-react-native-babel-preset')],
 	}
