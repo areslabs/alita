@@ -6,7 +6,8 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "pub": "npm run build && lerna publish --exact --force-publish",
     "pub-alpha": "npm run build && lerna publish --exact --pre-dist-tag alpha --force-publish",
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "bc": "lerna run build --scope @areslabs/alita-core --scope @areslabs/wx-react"
   },
   "authors": [
     "yankang (https://github.com/ykforerlang)",
@@ -41,6 +42,7 @@
     "@types/node": "^12.12.11",
     "@types/webpack": "^4.41.0",
     "babel-jest": "^24.8.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "cz-lerna-changelog": "^2.0.2",
     "eslint": "^5.14.1",
     "husky": "^4.2.3",

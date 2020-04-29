@@ -19,8 +19,6 @@ interface IModuleInfo {
 
     outFiles?: any,
 
-    deps?: any,
-
     chunks?: any,
 
     jsonRelativeFiles?: any,
@@ -62,12 +60,11 @@ export function setEntryModuleInfo(filepath, entryInfo) {
     moduleInfos[filepath].entryInfo = entryInfo
 }
 
-export function setModuleDepsAndChunks(filepath, deps, chunks) {
+export function setModuleChunk(filepath, chunks) {
     if (!moduleInfos[filepath]) {
         moduleInfos[filepath] = {} as IModuleInfo
     }
 
-    moduleInfos[filepath].deps = deps
     moduleInfos[filepath].chunks = chunks
 }
 
@@ -86,6 +83,10 @@ export function setJsonRelativeFiles(filepath, jsonRelativeFiles) {
 
 export function getModuleInfos() {
     return moduleInfos
+}
+
+export function isValidPath(key) {
+    return key in moduleInfos
 }
 
 

@@ -5,14 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+
+export {
+    originElementAttrName,
+    viewOrigin,
+    imageOrigin,
+    innerTextOrigin,
+    outerTextOrigin,
+    errorViewOrigin,
+    touchableWithoutFeedbackOrigin,
+    touchableOpacityOrigin,
+    touchableHighlightOrigin,
+    errorViewOrigin,
+} from '@shared/constants'
  
-export const InnerComponentNamePrefix = "ICNP" // inner component name prefix
-
-export const InnerTemplateNamePrefix = "ITNP" // inner template name prefix
-
-export const ChildTemplateDataKeyPrefix = "CTDK" // inner spread attribute prefix
-
-export const ChildTemplateNamePrefix = "CTNP"
 
 // 由 ./util/getAndStorecompInfos 根据package.json相关配置构造
 export const RNCOMPSET = new Set([])

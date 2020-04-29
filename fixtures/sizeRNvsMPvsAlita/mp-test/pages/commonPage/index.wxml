@@ -1,0 +1,4 @@
+<view>
+    <text>commonPage</text>
+    <navigator url="/Page1/index">to Page1</navigator>
+</view>

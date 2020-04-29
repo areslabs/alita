@@ -225,7 +225,9 @@ export default function packByWebpack() {
     } as webpack.Configuration
 
     configure.resolve = webpackConfigure.resolve
-
+    // 把webpackConfigure 暴露出来， 方便其他地方获取此configure
+    // TODO 使用webpack的获取方式？
+    configure.webpackConfigure = webpackConfigure
 
     const compiler = webpack(webpackConfigure)
 

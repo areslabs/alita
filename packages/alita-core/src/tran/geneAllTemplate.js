@@ -11,7 +11,7 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from '@babel/types'
 import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn, elementAddClass} from '../util/uast';
 import { isEventProp } from '../util/util';
-import {wxBaseComp} from "../constants";
+import {wxBaseComp, originElementAttrName, errorViewOrigin} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
 
 import configure from '../configure'
@@ -43,6 +43,7 @@ export default function(ast, info) {
         enter: path => {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name !== 'template'
+				&& path.node.name.name !== 'block'
             ) {
                 const diuuAttr = getAttr(path.node, 'diuu')
                 path.node.diuu = diuuAttr.value.value
@@ -54,13 +55,13 @@ export default function(ast, info) {
             if (path.type === 'JSXOpeningElement'
                 && path.node.name.name === 'view') {
 
-                const originAttr = getAttr(path.node, 'original')
+                const originAttr = getAttr(path.node, originElementAttrName)
 
                 if (!originAttr) {
                     return
                 }
 
-                if (originAttr.value.value === 'ErrorView') {
+                if (originAttr.value.value === errorViewOrigin) {
                     path.node.attributes = [
                         t.jsxAttribute(
                             t.jsxIdentifier('style'),
@@ -169,6 +170,11 @@ export default function(ast, info) {
                     return true
                 })
 
+				// block的属性没有意义
+				if (jsxOp.name.name === 'block') {
+					jsxOp.attributes = []
+				}
+
                 info.templates.push(decTemlate(tempName, path.node))
             }
 
@@ -250,7 +256,7 @@ export default function(ast, info) {
                         return
                     }
 
-                    if (attr.value.type === 'JSXExpressionContainer') {
+                    if (attr.value && attr.value.type === 'JSXExpressionContainer') {
                         // 当小程序出现类似 <view class="{{x-y-z}}"/> 指绑定的时候会，会无效，需要处理
                         const yName = name.replace(/-/g, 'Y')
                         attr.value = t.stringLiteral(`{{${diuuKey}${yName}}}`)

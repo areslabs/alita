@@ -1,0 +1,5 @@
+<view>
+    <text>Page1</text>
+
+    <comp1/>
+</view>
