@@ -14,7 +14,7 @@ import {geneOrder} from '../util/util'
 export default function addTempName (ast, info) {
 
 	let tempNameCount = geneOrder()
-	let diuuCount = geneOrder('_') // _的传递，是 diuu加属性 和 diuu自增重复
+	let diuuCount = geneOrder('_') // _的传递，防止是 "diuu + 属性" 和 "diuu自增" 重复
 	let datakeyCount = geneOrder()
 
 	errorLogTraverse(ast, {
