@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/areslabs/alita/compare/v2.5.0...v2.5.1) (2020-04-30)
+
+
+### Features
+
+* **alita-core wx-react:** 添加直接渲染Fragment的警告提示 ([e4596c7](https://github.com/areslabs/alita/commit/e4596c724f5167b868b9cdf5416c7dec481504a9))
+* **wx-react:** 把小程序页面的query信息添加到 页面组件的props上暴露出来 ([de62639](https://github.com/areslabs/alita/commit/de626391692300130bb4e7db766eafddcaf8594b))
+
+
+
+
+
 # [2.5.0](https://github.com/areslabs/alita/compare/v2.4.6...v2.5.0) (2020-04-20)
 
 
