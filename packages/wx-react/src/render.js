@@ -22,7 +22,8 @@ import {
 	originElementAttrName,
 	touchableWithoutFeedbackOrigin,
 	touchableOpacityOrigin,
-	touchableHighlightOrigin
+	touchableHighlightOrigin,
+	reactFragmentFlag
 } from '../../shared/constants'
 
 export function renderNextValidComps(inst) {
@@ -106,11 +107,6 @@ export function renderNextValidComps(inst) {
 export default function render(vnode, parentInst, parentContext, data, oldData, dataPath) {
 
     try {
-        if (Array.isArray(vnode)) {
-            console.warn('小程序暂不支持渲染数组！')
-            return
-        }
-
         if (typeof vnode === 'string'
             || typeof vnode === 'number'
             || typeof vnode === 'boolean'
@@ -120,6 +116,11 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
         ) {
             return
         }
+
+		if (Array.isArray(vnode) || (vnode.props && vnode.props[reactFragmentFlag])) {
+			console.warn('组件暂不支持直接render数组/Fragment！')
+			return
+		}
 
         const {ref, nodeName, tempName} = vnode
 

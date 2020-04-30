@@ -16,3 +16,6 @@ export const errorViewOrigin = "5"
 export const touchableWithoutFeedbackOrigin = "6"
 export const touchableOpacityOrigin = "7"
 export const touchableHighlightOrigin = "8"
+
+
+export const reactFragmentFlag = "_FF"

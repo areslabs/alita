@@ -17,6 +17,7 @@ export {
     touchableOpacityOrigin,
     touchableHighlightOrigin,
     errorViewOrigin,
+    reactFragmentFlag
 } from '@shared/constants'
  
 
