@@ -45,6 +45,8 @@ import {camelCase} from '@areslabs/stringutil-rn'
 import info from './info'
 const info2 = require('./info')
 
+import {RA, RF, RA2, RF2} from './RFComp'
+
 
 import {history} from '@areslabs/router'
 
@@ -180,7 +182,7 @@ export default class A extends Component {
                     <Text style={{fontSize: 16, color: 'rgb(24, 144, 255)'}}>Platform: {Platform.OS}</Text>
                 </View>
                 <PlatformComp style={styles.item}/>
-            
+
                 <View style={styles.item}>
                     <>
                         <Text style={styles.itemText}>React.</Text>
@@ -307,13 +309,20 @@ export default class A extends Component {
                                 }}>
                                 Basic Mask
                             </Text>
-                        </View>
+				</View>
                     }>
                     {/* Shows behind the mask, you can put anything here, such as an image */}
                     <View style={{flex: 1, height: '100%', backgroundColor: '#324376'}} />
                     <View style={{flex: 1, height: '100%', backgroundColor: '#F5DD90'}} />
                     <View style={{flex: 1, height: '100%', backgroundColor: '#F76C5E'}} />
                 </MaskedViewIOS>
+
+				<View style={{flexDirection: 'row'}}>
+					<RA/>
+					<RF/>
+					<RF2/>
+					<RA2/>
+				</View>
 
             </ScrollView>
         )
