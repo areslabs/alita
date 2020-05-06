@@ -9,6 +9,7 @@
 import * as t from '@babel/types'
 import errorLogTraverse from '../util/ErrorLogTraverse'
 import {isReactFragment} from '../util/uast'
+import {reactFragmentFlag} from '../constants'
 
 /**
  * 处理 <> xxx </> 和  <React.Fragment> xxx </React.Fragment> 
@@ -42,7 +43,9 @@ function replaceElement(path) {
     let newEle = t.jsxElement(
         t.jsxOpeningElement(
             t.jsxIdentifier('block'),
-            []
+            [
+                t.jsxAttribute(t.jsxIdentifier(reactFragmentFlag), t.jsxExpressionContainer(t.booleanLiteral(true)))
+            ]
         ), 
         t.jsxClosingElement(
             t.jsxIdentifier('block')

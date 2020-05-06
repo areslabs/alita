@@ -7,7 +7,7 @@
  */
 
 import errorLogTraverse from '../util/ErrorLogTraverse'
-import {InnerComponentNamePrefix, RNCOMPSET} from "../constants"
+import {RNCOMPSET} from "../constants"
 import * as t from "@babel/types"
 import {geneOrder, getGenericName} from "../util/util"
 import {getPropsChain, isChildComp} from "../util/uast"
@@ -16,7 +16,7 @@ import {jsxPropsMap} from '../util/getAndStorecompInfos'
 
 export default function cptCompHandler (ast, info) {
     const ALLCPTCOMPMAP = jsxPropsMap
-    const go = geneOrder()
+    const go = geneOrder('$') // $的传递，是防止生成文件和用户文件重名
     errorLogTraverse(ast, {
         enter: path => {
             // 处理直接是<V>{this.props.children}</V> 这种情况
@@ -92,7 +92,7 @@ export default function cptCompHandler (ast, info) {
                         return
                     }
 
-                    const key = `${InnerComponentNamePrefix}${go.nextString}`
+                    const key = go.next
                     jsxOp.attributes.push(
                         t.jsxAttribute(t.jsxIdentifier(genericName), t.stringLiteral(key))
                     )
@@ -123,7 +123,7 @@ export default function cptCompHandler (ast, info) {
                 }
 
 
-                const key = `${InnerComponentNamePrefix}${go.nextString}`
+                const key = go.next
                 jsxOp.node.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier(genericName), t.stringLiteral(key))
                 )
@@ -261,7 +261,7 @@ export default function cptCompHandler (ast, info) {
                 && path.node.children.length > 0
             ) {
                 const pe = path.node.openingElement
-                const key = `${InnerComponentNamePrefix}${go.nextString}`
+                const key = go.next
                 pe.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier(`generic:childrenCPT`), t.stringLiteral(key))
                 )

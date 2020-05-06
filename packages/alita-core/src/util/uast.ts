@@ -11,7 +11,7 @@ import generator from '@babel/generator'
 import * as t from "@babel/types"
 
 import {allBaseComp, extChildComp} from './getAndStorecompInfos'
-import {wxBaseComp} from '../constants'
+import {wxBaseComp, originElementAttrName,  innerTextOrigin, outerTextOrigin,} from '../constants'
 import {getModuleInfo} from './cacheModuleInfos'
 import {judgeLibPath} from './util'
 
@@ -203,8 +203,8 @@ export function isTextElement(openingElement) {
 
     return openingElement.attributes.some(item =>
         item.type === 'JSXAttribute'
-        && item.name.name === 'original'
-        && (item.value.value === 'OuterText' || item.value.value === 'InnerText'))
+        && item.name.name === originElementAttrName
+        && (item.value.value === outerTextOrigin || item.value.value === innerTextOrigin))
 }
 
 
@@ -259,7 +259,7 @@ export function isRenderReturn(path) {
  * @returns {any}
  */
 export function getOriginal(path) {
-    const attr = getAttri(path, 'original')
+    const attr = getAttri(path, originElementAttrName)
     if (attr) {
         return attr.value.value
     }

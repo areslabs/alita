@@ -1,4 +1,5 @@
 import {RootPrefixPlaceHolader} from "../util/util"
+import prettierWxml from '../util/prettierWxml'
 import * as nodepath from "path";
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
@@ -46,6 +47,9 @@ export const handleChanged = (info, finalJSPath) => {
     });
 
 
+    const templateWxmlPath = finalJSPath.replace(".js", "$.wxml")
+    const templateWxmlFilename = nodepath.basename(templateWxmlPath)
+
     let templateWxml = geneReactCode(ast);
     templateWxml = templateWxml.replace("<InnerTmpOpeningElement>", "");
     templateWxml = templateWxml.replace("</InnerTmpOpeningElement>", "");
@@ -73,23 +77,22 @@ export const handleChanged = (info, finalJSPath) => {
     const utilWxsPath = `${RootPrefixPlaceHolader}/commonwxs.wxs`
 
     templateWxml = `<wxs src="${utilWxsPath}" module="t" />
-    ${templateWxml}
+
+${templateWxml}
     `
 
-    newWxOutFiles[`${finalJSPath.replace(".js", "Template.wxml")}`] = templateWxml
+    newWxOutFiles[templateWxmlPath] = prettierWxml(templateWxml)
 
 
     // gene all outComp
-    geneAllOutComp(outComp, finalJSPath, newWxOutFiles);
+    geneAllOutComp(outComp, finalJSPath, newWxOutFiles, templateWxmlFilename);
 
 
     return newWxOutFiles
 }
 
 
-function geneAllOutComp(outComp, finalJSPath, newWxOutFiles) {
-    const basename = nodepath.basename(finalJSPath);
-    const temppath = basename.replace(".js", "Template.wxml");
+function geneAllOutComp(outComp, finalJSPath, newWxOutFiles, templateWxmlFilename) {
 
     for (let i = 0; i < outComp.length; i++) {
         const name = outComp[i];
@@ -100,7 +103,7 @@ function geneAllOutComp(outComp, finalJSPath, newWxOutFiles) {
         );
 
         const wxmlAst = [];
-        wxmlAst.push(t.jsxText(`<import src="./${temppath}"/>`))
+        wxmlAst.push(t.jsxText(`<import src="./${templateWxmlFilename}"/>`))
         wxmlAst.push(t.jsxText("\n"));
         wxmlAst.push(t.jsxText(`<template wx:if="{{(_r && _r.tempName)}}" is="{{_r.tempName}}" data="{{..._r}}"/>`))
         let tmpWxmlAst = t.jsxElement(
@@ -118,7 +121,7 @@ function geneAllOutComp(outComp, finalJSPath, newWxOutFiles) {
         WXMLCode = WXMLCode.replace("</InnerTmpOpeningElement>", "");
 
 
-        newWxOutFiles[wxmlFilepath] = WXMLCode
+        newWxOutFiles[wxmlFilepath] = prettierWxml(WXMLCode)
     }
 }
 

@@ -1,0 +1,10 @@
+<view>
+    <button bindtap="addUser">添加用户</button>
+
+    <block wx:for="{{users}}">
+        <view>
+            <text>{{item.name}}</text>
+            <text>{{item.age}}</text>
+        </view>
+    </block>
+</view>

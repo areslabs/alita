@@ -8,7 +8,6 @@
 
 import {geneReactCode} from '../util/uast'
 import funcCompToClassComp from './funcCompToClassComp'
-import childrenToTemplate from './childrenToTemplate'
 import compPreHandle from './compPreHandle'
 import addTempName from './addTempName'
 import geneAllTemplate from "./geneAllTemplate";
@@ -56,8 +55,6 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
     ast = compOutElementToBlock(ast, info)
 
     ast = addTempName(ast, info)
-
-    ast = childrenToTemplate(ast, info)
 
     const reactCode = geneReactCode(ast)
 

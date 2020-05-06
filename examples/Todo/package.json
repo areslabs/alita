@@ -22,7 +22,7 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "2.4.2",
+    "@areslabs/alita-weixin-runtime": "2.5.1",
     "@babel/core": "^7.4.3",
     "@babel/runtime": "^7.4.3",
     "babel-jest": "^24.7.1",

@@ -11,41 +11,43 @@ import * as fse from 'fs-extra'
 
 import configure from '../configure'
 
-const constStr = 'abcdefghijklmnopqrstuvwxyz'
+const low = 'abcdefghijklmnopqrstuvwxyz'
+const allChars = (low + low.toUpperCase()).split('')
 
 /**
- * init = 0, length = 5
- * next: 00001
- * next: 00002
- * next: 00003
- * @param init
- * @returns {{next: next}}
+ * 产生顺序字符串: a --> b --> c .....--> z --> A ... --> Z --> aa --> ab ... --> ZZ --> aaa ...-> ZZZ
+ *
+ * @returns {any}
  */
-export function geneOrder(init = 0) {
-    let before = init
+export function geneOrder(suffix = '') {
+    let v = ['a']
     return {
         get next() {
-            const num = (++before)
-            let tmp = '00000' + num
-            return tmp.substring(tmp.length - 5)
+            let index = v.length - 1
+            while (incre(index, v)) {
+                index --
+
+                if (index === -1) {
+                    v.unshift('a')
+                    break
+                }
+            }
+
+            // $ 保证不会和用户数据重复
+            return v.join('') + suffix
         },
+    }
+}
 
-        get nextString() {
-            const num = (before++)
-            let tmp = '00000' + num
-            const numstr = tmp.substring(tmp.length - 5)
-            return constStr.charAt(numstr['0'])
-                + constStr.charAt(numstr['1'])
-                + constStr.charAt(numstr['2'])
-                + constStr.charAt(numstr['3'])
-                + constStr.charAt(numstr['4'])
-        },
+function incre(index, v) {
+    const char = v[index]
 
-        isMythsVar(key) {
-            const sufix = key.substring(key.length - 5)
-
-            return !isNaN(sufix)
-        }
+    if (char === 'Z') {
+        v[index] = 'a'
+        return true
+    } else {
+        v[index] = allChars[allChars.indexOf(char) + 1]
+        return false
     }
 }
 

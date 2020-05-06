@@ -1,5 +1,5 @@
 import * as path from 'path'
-import {setModuleDepsAndChunks, getModuleInfo} from '../util/cacheModuleInfos'
+import {setModuleChunk, getModuleInfo} from '../util/cacheModuleInfos'
 
 import {handleChanged, handleDeleted, handleJSONUpdate} from '../extractWxCompFiles'
 import copyPackageWxComponents, {isWxComponentPackage} from '../extractWxCompFiles/copyPackageWxComponents'
@@ -86,7 +86,6 @@ function getAllModulesFromCompilation(compilation) {
     compilation.modules.forEach(m => {
         if (m.resource) {
             m.__chus = m.getChunks().map(c => c.name)
-            m.__deps = {}
             allModules.set(m.resource, m)
         } else {
             // 被tree-shaking合并
@@ -94,7 +93,6 @@ function getAllModulesFromCompilation(compilation) {
                 if (concatenationM.type === 'concatenated') {
                     const cm = concatenationM.module
                     cm.__chus = m.getChunks().map(c => c.name)
-                    cm.__deps = {}
                     allModules.set(cm.resource, cm)
                 }
             })
@@ -111,16 +109,7 @@ function setAllModuleDepsAndChunks(compilation) {
     const modulesArr = Array.from(modulesMap.values())
 
     modulesArr.forEach(m => {
-        m.reasons.forEach(reason => {
-            if (reason.module) {
-                const reasonModule = modulesMap.get(reason.module.resource)
-                reasonModule && (reasonModule.__deps[reason.dependency.request] = m.resource)
-            }
-        })
-    })
-
-    modulesArr.forEach(m => {
-        setModuleDepsAndChunks(m.resource, m.__deps, m.__chus)
+        setModuleChunk(m.resource,  m.__chus)
     })
 }
 

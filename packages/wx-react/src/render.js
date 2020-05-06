@@ -18,6 +18,14 @@ import {enqueueEffect} from './effect'
 
 import {unstable_batchedUpdates, oldChildren} from './UpdateStrategy'
 
+import {
+	originElementAttrName,
+	touchableWithoutFeedbackOrigin,
+	touchableOpacityOrigin,
+	touchableHighlightOrigin,
+	reactFragmentFlag
+} from '../../shared/constants'
+
 export function renderNextValidComps(inst) {
     if (inst.didSelfUpdate) {
         // setState / forceUpdate 的节点，将会被设置didSelfUpdate
@@ -99,11 +107,6 @@ export function renderNextValidComps(inst) {
 export default function render(vnode, parentInst, parentContext, data, oldData, dataPath) {
 
     try {
-        if (Array.isArray(vnode)) {
-            console.warn('小程序暂不支持渲染数组！')
-            return
-        }
-
         if (typeof vnode === 'string'
             || typeof vnode === 'number'
             || typeof vnode === 'boolean'
@@ -113,6 +116,11 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
         ) {
             return
         }
+
+		if (Array.isArray(vnode) || (vnode.props && vnode.props[reactFragmentFlag])) {
+			console.warn('组件暂不支持直接render数组/Fragment！')
+			return
+		}
 
         const {ref, nodeName, tempName} = vnode
 
@@ -829,7 +837,7 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
     const allKeys = Object.keys(props)
 
     // RN退化的节点 存在original属性
-    let finalNodeType = props.original
+    let finalNodeType = props[originElementAttrName]
 
     let eventProps = []
 
@@ -858,7 +866,7 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
             const k = allKeys[i]
             const v = props[k]
 
-            if (k === 'children' || k === 'original') continue
+            if (k === 'children' || k === originElementAttrName) continue
 
             if (k === 'src') {
                 data[`${vnodeDiuu}${k}`] = v.uri || v
@@ -866,7 +874,7 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
                 eventProps.push(k)
             } else if (k === 'mode') {
                 data[`${vnodeDiuu}${k}`] = resizeMode(v)
-            } else if (k === 'style' && finalNodeType !== 'TouchableWithoutFeedback') {
+            } else if (k === 'style' && finalNodeType !== touchableWithoutFeedbackOrigin) {
                 data[`${vnodeDiuu}${k}`] = tackleWithStyleObj(v, (isFirstEle || vnode.TWFBStylePath) ? finalNodeType : null)
             } else if (k === 'activeOpacity') {
                 data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(v)
@@ -897,14 +905,14 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
     }
 
     // 如果props没有style属性，但是元素是外层需要上报属性的元素，那么同样需要计算出默认属性，用来上报
-    if (!props.style && finalNodeType !== 'TouchableWithoutFeedback' && (isFirstEle || vnode.TWFBStylePath)) {
+    if (!props.style && finalNodeType !== touchableWithoutFeedbackOrigin && (isFirstEle || vnode.TWFBStylePath)) {
         data[`${vnodeDiuu}style`] = tackleWithStyleObj('', finalNodeType)
     }
 
-    if (props.activeOpacity === undefined && finalNodeType === 'TouchableOpacity') {
+    if (props.activeOpacity === undefined && finalNodeType === touchableOpacityOrigin) {
         data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(0.2)
     }
-    if (props.activeOpacity === undefined && finalNodeType === 'TouchableHighlight') {
+    if (props.activeOpacity === undefined && finalNodeType === touchableHighlightOrigin) {
         data[`${vnodeDiuu}hoverClass`] = activeOpacityHandler(1)
     }
 
@@ -919,15 +927,15 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
     }
 
 
-    if (props.original === 'TouchableWithoutFeedback'
-        || props.original === 'TouchableHighlight'
+    if (finalNodeType === touchableWithoutFeedbackOrigin
+        || finalNodeType === touchableHighlightOrigin
     ) {
         if (children.length !== 1) {
-            console.warn(props.original,  '必须有且只有一个子元素')
+            console.warn(finalNodeType,  '必须有且只有一个子元素')
         }
     }
 
-    if (props.original === 'TouchableWithoutFeedback') {
+    if (finalNodeType === touchableWithoutFeedbackOrigin) {
         children[0].TWFBStylePath = `${dataPath}.${vnodeDiuu}style`
     }
 
@@ -938,7 +946,7 @@ function updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPat
 
 
     // TouchableWithoutFeedback本身不接样式，对外表现是唯一子节点的样式
-    if (props.original === 'TouchableWithoutFeedback') {
+    if (finalNodeType === touchableWithoutFeedbackOrigin) {
         const outStyleKey = `${vnodeDiuu}style`
 
         const firstChildNode = children[0]

@@ -1,0 +1,23 @@
+{
+  "pages":[
+    "pages/commonPage/index"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  },
+
+  "subpackages": [
+    {
+      "root": "Page1",
+      "name": "one",
+      "pages": [
+        "index"
+      ]
+    }
+  ],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

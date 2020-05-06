@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/areslabs/alita/compare/v2.5.0...v2.5.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复序号重复，引起的bug ([8ce041d](https://github.com/areslabs/alita/commit/8ce041dd6dc822e83a8a408da896ad14679b1703))
+* **alita-core:** 修复模块合并的情况下，模块记录错误的bug ([3ea7e48](https://github.com/areslabs/alita/commit/3ea7e48984f884e98a876e7da135dc185e6605b4))
+
+
+### Features
+
+* **alita-core:** webpack新增致命的错误（配置错误）的提示 ([50a2d54](https://github.com/areslabs/alita/commit/50a2d5449fc6ce065a02d148ab78b9a56c5a7549))
+* **alita-core:** 支持<>、<React.Fragment>这两类标签的写法 ([74c290c](https://github.com/areslabs/alita/commit/74c290c6114a07b5c69089cf26dc64687d7ac310))
+* **alita-core wx-react:** 添加直接渲染Fragment的警告提示 ([e4596c7](https://github.com/areslabs/alita/commit/e4596c724f5167b868b9cdf5416c7dec481504a9))
+
+
+
+
+
 # [2.5.0](https://github.com/areslabs/alita/compare/v2.4.6...v2.5.0) (2020-04-20)
 
 

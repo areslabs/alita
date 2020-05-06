@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react-redux",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "微信版本的react-redux",
   "files": [
     "package.json",
