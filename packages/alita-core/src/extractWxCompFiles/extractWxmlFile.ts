@@ -4,6 +4,7 @@ import * as nodepath from "path";
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
 import {geneReactCode} from "../util/uast";
+import {wxBaseComp} from "../constants"
 
 
 export const handleChanged = (info, finalJSPath) => {
@@ -42,6 +43,24 @@ export const handleChanged = (info, finalJSPath) => {
             ) {
                 path.remove();
                 return;
+            }
+            if (path.type === 'JSXElement'
+                && (path.node as t.JSXElement).openingElement
+            ) {
+                const openingElement = (path.node as t.JSXElement).openingElement
+                const name = (openingElement.name as t.JSXIdentifier).name
+                if (name && wxBaseComp.has(name.toLocaleLowerCase())
+                    && info.im[name]
+                    && info.im[name].source !== 'react-native'
+                ) {
+                    const aliasName = `WX${name}`
+                    info.im[name].aliasName = aliasName;
+                    (openingElement.name as t.JSXIdentifier).name = aliasName
+                    if ((path.node as t.JSXElement).closingElement) {
+                        const closingElement = (path.node as t.JSXElement).closingElement;
+                        (closingElement.name as t.JSXIdentifier).name = aliasName
+                    }
+                }
             }
         }
     });

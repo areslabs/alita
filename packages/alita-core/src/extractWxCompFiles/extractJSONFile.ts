@@ -99,10 +99,11 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
         }
 
         const { source, defaultSpecifier} = info.im[element]
+        const elementKey = info.im[element].aliasName || element
 
         try {
             //TODO getFinalPath参数耦合太紧，切分为各独立函数模块。
-            usedComps[element] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
+            usedComps[elementKey] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
         } catch (e) {
             console.log(`${resouce.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
             console.log(e)
