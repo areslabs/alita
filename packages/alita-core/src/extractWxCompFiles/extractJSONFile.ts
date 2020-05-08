@@ -32,6 +32,8 @@ export const handleChanged = (resouce, info, finalJSPath) => {
             }
         }
 
+        switchElementKeyName(renderUsingComponents)
+
         const renderJSON = {
             ...json,
             usingComponents: renderUsingComponents
@@ -62,7 +64,13 @@ export const handleChanged = (resouce, info, finalJSPath) => {
     return newWxOutFiles
 }
 
-
+function switchElementKeyName(renderUsingComponents) {
+    Object.keys(renderUsingComponents).forEach(elementKey => {
+        if (wxBaseComp.has(elementKey.toLocaleLowerCase())) {
+            renderUsingComponents[`WX${elementKey}`] = renderUsingComponents[elementKey]
+        }
+    })
+}
 
 function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
@@ -99,11 +107,10 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
         }
 
         const { source, defaultSpecifier} = info.im[element]
-        const elementKey = info.im[element].aliasName || element
 
         try {
             //TODO getFinalPath参数耦合太紧，切分为各独立函数模块。
-            usedComps[elementKey] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
+            usedComps[element] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
         } catch (e) {
             console.log(`${resouce.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
             console.log(e)

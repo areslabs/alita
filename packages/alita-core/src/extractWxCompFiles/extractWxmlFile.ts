@@ -50,11 +50,12 @@ export const handleChanged = (info, finalJSPath) => {
                 const openingElement = (path.node as t.JSXElement).openingElement
                 const name = (openingElement.name as t.JSXIdentifier).name
                 if (name && wxBaseComp.has(name.toLocaleLowerCase())
-                    && info.im[name]
-                    && info.im[name].source !== 'react-native'
+                    && (
+                        (info.im[name] && info.im[name].source !== 'react-native')
+                        || (info.RFInfo.outComp && info.RFInfo.outComp.includes(name))
+                    )
                 ) {
-                    const aliasName = `WX${name}`
-                    info.im[name].aliasName = aliasName;
+                    const aliasName = `WX${name}`;
                     (openingElement.name as t.JSXIdentifier).name = aliasName
                     if ((path.node as t.JSXElement).closingElement) {
                         const closingElement = (path.node as t.JSXElement).closingElement;
