@@ -55,5 +55,5 @@ export default function compOutElementToBlock (ast, info) {
 
 function hasEventAttri(path) {
     const attris = path.node.attributes
-    return attris.find(attri => /^on/.test(attri))
+    return attris.find(attri => attri.type === 'JSXAttribute' && /^on/.test(attri.name.name))
 }
