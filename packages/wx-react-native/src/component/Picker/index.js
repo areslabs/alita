@@ -15,7 +15,7 @@ import {
 
 const {VIEW} = styleType
 
-import PickerItem from '../WXPickerItem/index'
+import PickerItem from '../PickerItem/index'
 
 
 export default class WXPicker extends PureComponent {

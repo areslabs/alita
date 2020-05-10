@@ -47,7 +47,7 @@ export function getLibCompInfos(idens, JSXElements, filepath, relativePath) {
 
         if (packagePath === 'react-native') {
             components.forEach(comp => {
-                RNCOMPSET.add(comp.name.substring(2))
+                RNCOMPSET.add(comp.name)
             })
         }
 
