@@ -51,7 +51,7 @@ export const handleChanged = (info, finalJSPath) => {
                 const name = (openingElement.name as t.JSXIdentifier).name
                 if (name && wxBaseComp.has(name.toLocaleLowerCase())
                     && (
-                        (info.im[name] && info.im[name].source !== 'react-native')
+                        info.im[name]
                         || (info.RFInfo.outComp && info.RFInfo.outComp.includes(name))
                     )
                 ) {

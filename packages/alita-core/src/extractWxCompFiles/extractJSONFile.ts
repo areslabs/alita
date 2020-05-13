@@ -68,6 +68,7 @@ function switchElementKeyName(renderUsingComponents) {
     Object.keys(renderUsingComponents).forEach(elementKey => {
         if (wxBaseComp.has(elementKey.toLocaleLowerCase())) {
             renderUsingComponents[`WX${elementKey}`] = renderUsingComponents[elementKey]
+            delete renderUsingComponents[elementKey]
         }
     })
 }
