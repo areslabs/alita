@@ -80,6 +80,14 @@ export default function cptCompHandler (ast, info) {
         },
 
         exit: path => {
+            // 如果当前式子是条件语句（if条件语句或者三元条件语句的话），则直接跳过
+            if (path.parentPath
+                && (path.parentPath.type === 'ConditionalExpression' || path.parentPath.type === 'IfStatement') 
+                && path.node === path.parentPath.node.test
+            ) {
+                return
+            }
+
             // 基本组件的 props = xxComponent / renderItem 等
             if (path.type === 'JSXAttribute') {
                 const jsxOp = path.parentPath.node
