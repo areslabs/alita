@@ -1,7 +1,7 @@
 import * as path from "path";
 
 import {getModuleInfo, setJsonRelativeFiles, isValidPath} from '../util/cacheModuleInfos'
-import {getLibPath, judgeLibPath} from "../util/util"
+import {getLibPath, judgeLibPath, miscNameToJSName} from "../util/util"
 import configure from "../configure"
 import {wxBaseComp, exportGenericCompName} from '../constants'
 
@@ -14,7 +14,7 @@ export const handleChanged = (resouce, info, finalJSPath) => {
     const newWxOutFiles = {}
     const {json, outComp} = info.RFInfo
 
-    const fileName = path.basename(resouce).replace('.js', '')
+    const fileName = path.basename(miscNameToJSName(resouce)).replace('.js', '')
 
     const chunks = info.chunks
 
@@ -62,7 +62,7 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
     const info = getModuleInfo(resouce)
 
-    const fileName = path.basename(resouce).replace('.js', '')
+    const fileName = path.basename(miscNameToJSName(resouce)).replace('.js', '')
 
     const usedComps = {}
 
