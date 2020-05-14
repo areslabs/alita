@@ -39,7 +39,7 @@ function wrapObj(v) {
 		v.isGeneric = true
 	} else {
 		Object.values(v).forEach(item => {
-			if (item.isReactElement) {
+			if (item && item.isReactElement) {
 				item.isGeneric = true
 			}
 		})

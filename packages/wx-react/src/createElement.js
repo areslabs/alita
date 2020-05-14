@@ -57,6 +57,12 @@ export default function createElement(comp, props, ...args) {
 
     for(let k in rprops) {
     	const v = rprops[k]
+
+		if (k === 'style') {
+			// 事件回调
+			continue
+		}
+
     	if (isEventProp(k)) {
     		// 事件回调
     		continue
