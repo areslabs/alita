@@ -9,7 +9,8 @@
     "web-start": "webpack-dev-server --config rnw.config.js",
     "web-build": "webpack --config rnw.config.js",
     "wx-start": "alita --dev",
-    "wx-build": "alita"
+    "wx-build": "alita",
+    "link:bc": "yarn link @areslabs/alita-core @areslabs/wx-react @areslabs/wx-react-native"
   },
   "dependencies": {
     "@areslabs/router": "^2.0.0",

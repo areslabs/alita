@@ -6,7 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "build:rn": "react-native bundle --entry-file index.js --bundle-output ./rn-dist/rn.js --platform ios --verbose --reset-cache",
-    "build:wx": "alita"
+    "build:wx": "alita",
+    "link:bc": "yarn link @areslabs/alita-core @areslabs/wx-react @areslabs/wx-react-native"
   },
   "dependencies": {
     "@areslabs/router": "^2.5.0",

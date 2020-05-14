@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "link:bc": "yarn link @areslabs/alita-core @areslabs/wx-react @areslabs/wx-react-native"
   },
   "dependencies": {
     "@areslabs/router": "^2.0.0",
