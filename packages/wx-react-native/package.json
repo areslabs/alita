@@ -24,7 +24,7 @@
       {
         "name": "FlatList",
         "path": "FlatList/index",
-        "base": false,
+        "base": false
       },
       {
         "name": "Modal",
@@ -55,7 +55,7 @@
       {
         "name": "SectionList",
         "path": "SectionList/index",
-        "base": false,
+        "base": false
       },
       {
         "name": "TextInput",
