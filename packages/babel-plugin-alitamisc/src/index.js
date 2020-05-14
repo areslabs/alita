@@ -122,6 +122,7 @@ const alitamisc = (api, options) => {
             path.node.value = t.jsxExpressionContainer(path.node.value);
         }
 
+        // 移除 wx:if， generic:xxx等在react层无意义的属性
         if (path.type === 'JSXAttribute' && path.node.name.type === 'JSXNamespacedName') {
             path.remove()
         }
