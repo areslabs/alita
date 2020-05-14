@@ -30,6 +30,8 @@ export const handleChanged = (resouce, info, finalJSPath) => {
             renderUsingComponents[name] = fileName
         }
 
+        switchElementKeyName(renderUsingComponents)
+
         const renderJSON = {
             ...json,
             usingComponents: renderUsingComponents
@@ -56,7 +58,14 @@ export const handleChanged = (resouce, info, finalJSPath) => {
     return newWxOutFiles
 }
 
-
+function switchElementKeyName(renderUsingComponents) {
+    Object.keys(renderUsingComponents).forEach(elementKey => {
+        if (wxBaseComp.has(elementKey.toLocaleLowerCase())) {
+            renderUsingComponents[`WX${elementKey}`] = renderUsingComponents[elementKey]
+            delete renderUsingComponents[elementKey]
+        }
+    })
+}
 
 function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 

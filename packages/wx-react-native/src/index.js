@@ -7,16 +7,16 @@
  */
 import {unstable_batchedUpdates} from '@areslabs/wx-react'
 
-import WXFlatList from './component/WXFlatList/index'
-import WXSectionList from './component/WXSectionList/index'
-import WXScrollView from './component/WXScrollView/index'
+import FlatList from './component/FlatList/index'
+import SectionList from './component/SectionList/index'
+import ScrollView from './component/ScrollView/index'
 //TODO Picker, Picker.Item
-import WXPicker from './component/WXPicker/index'
-import WXTextInput from './component/WXTextInput/index'
-import WXButton from './component/WXButton/index'
-import WXActivityIndicator from './component/WXActivityIndicator/index'
-import WXImageBackground from './component/WXImageBackground/index'
-import WXModal from './component/WXModal/index'
+import Picker from './component/Picker/index'
+import TextInput from './component/TextInput/index'
+import Button from './component/Button/index'
+import ActivityIndicator from './component/ActivityIndicator/index'
+import ImageBackground from './component/ImageBackground/index'
+import Modal from './component/Modal/index'
 
 import StyleSheet from './api/StyleSheet'
 import Platform from './api/Platform'
@@ -30,12 +30,12 @@ import alert from './api/galert'
 import {requestAnimationFrame, cancelAnimationFrame} from './api/raf'
 
 
-import {getWXBaseComponent} from './component/WXComponent'
+import {getWXBaseComponent} from './component/Component'
 
-const WXSlider = getWXBaseComponent()
-const WXSwitch = getWXBaseComponent()
-const WXRefreshControl = getWXBaseComponent()
-const WXWebView = getWXBaseComponent()
+const Slider = getWXBaseComponent()
+const Switch = getWXBaseComponent()
+const RefreshControl = getWXBaseComponent()
+const WebView = getWXBaseComponent()
 
 const AppState = {
     removeEventListener: () => {
@@ -63,19 +63,19 @@ const DeviceEventEmitter = {
 }
 
 export {
-    WXActivityIndicator,
-    WXImageBackground,
-    WXButton,
-    WXFlatList,
-    WXSectionList,
-    WXModal,
-    WXPicker,
-    WXSlider,
-    WXSwitch,
-    WXTextInput,
-    WXScrollView,
-    WXRefreshControl,
-    WXWebView,
+    ActivityIndicator,
+    ImageBackground,
+    Button,
+    FlatList,
+    SectionList,
+    Modal,
+    Picker,
+    Slider,
+    Switch,
+    TextInput,
+    ScrollView,
+    RefreshControl,
+    WebView,
 
     StyleSheet,
     Platform,
@@ -95,19 +95,19 @@ export {
 }
 
 export default  {
-    WXActivityIndicator,
-    WXImageBackground,
-    WXButton,
-    WXFlatList,
-    WXSectionList,
-    WXModal,
-    WXPicker,
-    WXSlider,
-    WXSwitch,
-    WXTextInput,
-    WXScrollView,
-    WXRefreshControl,
-    WXWebView,
+    ActivityIndicator,
+    ImageBackground,
+    Button,
+    FlatList,
+    SectionList,
+    Modal,
+    Picker,
+    Slider,
+    Switch,
+    TextInput,
+    ScrollView,
+    RefreshControl,
+    WebView,
 
     StyleSheet,
     Platform,

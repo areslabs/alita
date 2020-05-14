@@ -3,8 +3,8 @@ import prettierWxml from '../util/prettierWxml'
 import * as nodepath from "path";
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
-import {geneReactCode} from "../util/uast"
-import {genericCompDiuu, genericCompName} from '../constants'
+import {geneReactCode} from "../util/uast";
+import {wxBaseComp, genericCompDiuu, genericCompName} from "../constants"
 
 
 export const handleChanged = (info, finalJSPath) => {
@@ -43,6 +43,25 @@ export const handleChanged = (info, finalJSPath) => {
             ) {
                 path.remove();
                 return;
+            }
+            if (path.type === 'JSXElement'
+                && (path.node as t.JSXElement).openingElement
+            ) {
+                const openingElement = (path.node as t.JSXElement).openingElement
+                const name = (openingElement.name as t.JSXIdentifier).name
+                if (name && wxBaseComp.has(name.toLocaleLowerCase())
+                    && (
+                        info.im[name]
+                        || (info.RFInfo.outComp && info.RFInfo.outComp.includes(name))
+                    )
+                ) {
+                    const aliasName = `WX${name}`;
+                    (openingElement.name as t.JSXIdentifier).name = aliasName
+                    if ((path.node as t.JSXElement).closingElement) {
+                        const closingElement = (path.node as t.JSXElement).closingElement;
+                        (closingElement.name as t.JSXIdentifier).name = aliasName
+                    }
+                }
             }
         }
     });
