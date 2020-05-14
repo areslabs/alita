@@ -18,6 +18,14 @@ const {SCROLL} = styleType
 
 //TODO 移除phblock 使用
 
+
+function getGenericTemplate(tempVnode, datakey,) {
+	return createElement('template', {
+		datakey,
+		tempVnode
+	})
+}
+
 export default class WXFlatList extends PureComponent {
     scrollToOffset(position) {
         const wxInst = instanceManager.getWxInstByUUID(this.__diuu__)
@@ -76,30 +84,20 @@ export default class WXFlatList extends PureComponent {
         if (ListHeaderComponent) {
             const CPTVnode = ListHeaderComponent.isReactElement ? ListHeaderComponent : ListHeaderComponent()
 
-            const header = createElement('ListHeaderComponentCPT', {
-                diuu: 'ListHeaderComponentDIUU',
-                CPTVnode
-            })
-
-            children.push(header)
+            children.push(getGenericTemplate(CPTVnode, 'ListHeaderComponent'))
         }
 
 
         if (ListEmptyComponent && data && data.length === 0) {
             const CPTVnode = ListEmptyComponent.isReactElement ? ListEmptyComponent : ListEmptyComponent()
 
-            const empty = createElement('ListEmptyComponentCPT', {
-                diuu: 'ListEmptyComponentDIUU',
-                CPTVnode
-            })
-
-            children.push(empty)
+			children.push(getGenericTemplate(CPTVnode, 'ListEmptyComponent'))
         }
 
 
         if (data && data.length > 0) {
             const body = createElement("template", {
-                datakey: "renderItemData",
+                datakey: "renderItem",
                 tempVnode: data.map((item, index) => {
                     const CPTVnode = renderItem({
                         item,
@@ -113,17 +111,12 @@ export default class WXFlatList extends PureComponent {
                     } else {
                         key = item.key
                     }
-                    return createElement(
-                        'renderItemCPT',
-                        {
-                            key,
-                            diuu: "renderItemDIUU",
-                            CPTVnode,
 
-                            // 最外层元素需要tempName属性， 在这里无实际意义， 只是为了标志， 不能删除 ，会影响render函数的执行
-                            tempName: 'renderItem'
-                        },
-                    )
+                    if (CPTVnode.isReactElement) {
+						CPTVnode.key = key
+					}
+
+					return CPTVnode
                 }),
             })
 
@@ -134,12 +127,7 @@ export default class WXFlatList extends PureComponent {
         if (ListFooterComponent) {
             const CPTVnode = ListFooterComponent.isReactElement ? ListFooterComponent : ListFooterComponent()
 
-            const footer = createElement('ListFooterComponentCPT', {
-                diuu: 'ListFooterComponentDIUU',
-                CPTVnode
-            })
-
-            children.push(footer)
+			children.push(getGenericTemplate(CPTVnode, 'ListFooterComponent'))
         }
 
         let bakStickyHeaderIndices = stickyHeaderIndices

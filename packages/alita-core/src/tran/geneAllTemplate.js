@@ -11,7 +11,7 @@ import errorLogTraverse from '../util/ErrorLogTraverse'
 import * as t from '@babel/types'
 import {decTemlate, isJSXChild, isChildCompChild, isChildComp, isRenderReturn, elementAddClass} from '../util/uast';
 import { isEventProp } from '../util/util';
-import {wxBaseComp, originElementAttrName, errorViewOrigin} from "../constants";
+import {wxBaseComp, originElementAttrName, errorViewOrigin, genericCompName, exportGenericCompName} from "../constants";
 import {allBaseComp} from "../util/getAndStorecompInfos";
 
 import configure from '../configure'
@@ -135,6 +135,11 @@ export default function(ast, info) {
                 jsxOp.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${diuuKey}style !== false}}`)),
                 )
+
+				const genericAttrName = `generic:${genericCompName}`
+				jsxOp.attributes.push(
+					t.jsxAttribute(t.jsxIdentifier(genericAttrName), t.stringLiteral(exportGenericCompName)),
+				)
 
                 return
             }

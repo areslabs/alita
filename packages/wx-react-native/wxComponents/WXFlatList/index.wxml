@@ -39,54 +39,59 @@
             >
                 <view class="loading"/>
             </view>
-            
-            <ListHeaderComponentCPT
-                    wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
-                    diuu="{{ListHeaderComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
-            />
 
-            <ListEmptyComponentCPT
-                    wx:if="{{ListEmptyComponentDIUU && ListEmptyComponentDIUUstyle !== false}}"
-                    diuu="{{ListEmptyComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListEmptyComponentDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
-            />
+
+            <block wx:if="{{ListHeaderComponent && ListHeaderComponent._generic}}">
+                <_g
+
+                        diuu="{{ListHeaderComponent._generic}}"
+                        style="{{tools.getFinalStyle(ListHeaderComponent._genericstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
+                />
+            </block>
+
+            <block wx:if="{{ListEmptyComponent && ListEmptyComponent._generic}}">
+                <_g
+                        diuu="{{ListEmptyComponent._generic}}"
+                        style="{{tools.getFinalStyle(ListEmptyComponent._genericstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
+                />
+
+            </block>
 
 
             <block wx:if="{{numColumns >= 2}}">
                 <view style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap;{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}">
-                    <view wx:for="{{renderItemData}}" wx:key="key" style="width: {{100 / numColumns}}%">
-                        <renderItemCPT id="id_{{index}}"
-                                       diuu="{{item.renderItemDIUU}}"
-                                       wx:if="{{item.renderItemDIUUstyle !== false}}"
-                                       style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}};"/>
+                    <view wx:for="{{renderItem}}" wx:key="key" style="width: {{100 / numColumns}}%">
+                        <_g id="id_{{index}}"
+                            diuu="{{item._generic}}"
+                            style="{{tools.getFinalStyle(item._genericstyle)}};"/>
                     </view>
                 </view>
             </block>
             <block wx:else>
-                <block wx:for="{{renderItemData}}" wx:key="key">
+                <block wx:for="{{renderItem}}" wx:key="key">
                     <view wx:if="{{methods.ArrayContains(stickyHeaderIndices,index)}}" style="{{sti['stickyContainerStyle'+index]}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}">
-                        <renderItemCPT id="id_{{index}}"
-                                       diuu="{{item.renderItemDIUU}}"
-                                       wx:if="{{item.renderItemDIUUstyle !== false}}"
-                                       style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}{{sti['stickyStyle'+index]}}"/>
+                        <_g id="id_{{index}}"
+                            diuu="{{item._generic}}"
+                            style="{{tools.getFinalStyle(item._genericstyle)}}{{sti['stickyStyle'+index]}}"/>
                     </view>
                     <block wx:else>
-                        <renderItemCPT
-                                id="id_{{index}}"
-                                diuu="{{item.renderItemDIUU}}"
-                                wx:if="{{item.renderItemDIUUstyle !== false}}"
-                                style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
+                        <_g id="id_{{index}}"
+                            diuu="{{item._generic}}"
+                            style="{{tools.getFinalStyle(item._genericstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
                         />
                     </block>
                 </block>
             </block>
 
-            <ListFooterComponentCPT
-                    wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
-                    diuu="{{ListFooterComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
-            />
+
+
+            <block wx:if="{{ListFooterComponent && ListFooterComponent._generic}}">
+                <_g
+                        diuu="{{ListFooterComponent._generic}}"
+                        style="{{tools.getFinalStyle(ListFooterComponent._genericstyle)}}{{horizontal ? 'display: inline-block;vertical-align: middle;' : ''}}"
+                />
+
+            </block>
         </view>
     </scroll-view>
 </template>

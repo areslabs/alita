@@ -4,33 +4,15 @@ import {RootPrefixPlaceHolader} from "../util/util"
 export const handleChanged = (info, finalJSPath) => {
     const newWxOutFiles = {}
 
-    const {isPageComp, outComp} = info.RFInfo
+    const wxssFilepath = finalJSPath.replace(".js", ".wxss")
 
-    for (let i = 0; i < outComp.length; i++) {
-        const name = outComp[i];
+    const pageCommonPath = `${RootPrefixPlaceHolader}/pageCommon.wxss`
+    const compCommonPath = `${RootPrefixPlaceHolader}/compCommon.wxss`;
 
-        const wxssFilepath = (name === "default"
-                ? finalJSPath.replace(".js", ".wxss")
-                : finalJSPath.replace(".js", `${name}.wxss`)
-        );
-
-
-        const pageCommonPath = `${RootPrefixPlaceHolader}/pageCommon.wxss`
-        const compCommonPath = `${RootPrefixPlaceHolader}/compCommon.wxss`;
-
-        let wxssCode = null
-        if (name === 'default' && isPageComp) {
-            wxssCode = `@import '${pageCommonPath}';
+    const wxssCode = `@import '${pageCommonPath}';
 @import '${compCommonPath}';`
-        } else {
-            wxssCode =  `@import '${compCommonPath}';`
-        }
 
-
-        newWxOutFiles[wxssFilepath] = wxssCode
-    }
-
-
+    newWxOutFiles[wxssFilepath] = wxssCode
 
     return newWxOutFiles
 }

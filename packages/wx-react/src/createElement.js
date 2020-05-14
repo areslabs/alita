@@ -6,6 +6,10 @@
  *
  */
 
+import genericWrapper from './genericWrapper'
+import {isEventProp} from './util'
+
+
 // 一般情况下 uuid都应该是存在的， 但是HOC的包裹的组件，uuid需要手动设置
 const TmpKey = "HOCKEY"
 
@@ -50,6 +54,18 @@ export default function createElement(comp, props, ...args) {
     }
 
 
+
+    for(let k in rprops) {
+    	const v = rprops[k]
+    	if (isEventProp(k)) {
+    		// 事件回调
+    		continue
+		}
+
+		rprops[k] = genericWrapper(v)
+	}
+
+
     let finalProps = rprops
     if (comp.defaultProps) {
         finalProps = {
@@ -58,7 +74,7 @@ export default function createElement(comp, props, ...args) {
         }
     }
 
-    finalProps.children = children
+    finalProps.children = typeof comp === 'string' ? children : genericWrapper(children)
 
     let finalDiuu = diuu
     if (!diuu && typeof comp === 'function') {

@@ -19,3 +19,5 @@ export const touchableHighlightOrigin = "8"
 
 
 export const reactFragmentFlag = "_FF"
+
+export const genericCompDiuu = "_generic"

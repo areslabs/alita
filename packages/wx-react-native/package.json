@@ -24,14 +24,7 @@
       {
         "name": "WXFlatList",
         "path": "WXFlatList/index",
-        "base": false,
-        "jsxProps": {
-          "ListHeaderComponent": "ListHeaderComponentCPT",
-          "ListFooterComponent": "ListFooterComponentCPT",
-          "ListEmptyComponent": "ListEmptyComponentCPT",
-          "renderItem": "renderItemCPT",
-          "ItemSeparatorComponent": "ItemSeparatorCompoCPT"
-        }
+        "base": false
       },
       {
         "name": "WXModal",
@@ -62,16 +55,7 @@
       {
         "name": "WXSectionList",
         "path": "WXSectionList/index",
-        "base": false,
-        "jsxProps": {
-          "renderSectionHeader": "renderSectionHeaderCPT",
-          "renderSectionFooter": "renderSectionFooterCPT",
-          "renderItem": "renderItemCPT",
-          "ListHeaderComponent": "ListHeaderComponentCPT",
-          "ListFooterComponent": "ListFooterComponentCPT",
-          "ListEmptyComponent": "ListEmptyComponentCPT",
-          "SectionSeparatorComponent": "SectionSeparatorCoCPT"
-        }
+        "base": false
       },
       {
         "name": "WXTextInput",

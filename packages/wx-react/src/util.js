@@ -186,3 +186,18 @@ export function getMpCurrentPage() {
 	return pages[pages.length - 1]
 }
 
+
+/**
+ * onX
+ * @param name
+ * @returns {boolean}
+ */
+export function isEventProp(name) {
+	if (!name || name.length <= 3) return false;
+	const trCode = name.charCodeAt(2);
+	return name.charCodeAt(0) === 111
+		&& name.charCodeAt(1) === 110
+		&& trCode >= 65
+		&& trCode <= 90;
+}
+

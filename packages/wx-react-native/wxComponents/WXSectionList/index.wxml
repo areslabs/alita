@@ -23,38 +23,40 @@
                 <view class="loading"/>
             </view>
 
-            <ListHeaderComponentCPT
-                    wx:if="{{ListHeaderComponentDIUU && ListHeaderComponentDIUUstyle !== false}}"
-                    diuu="{{ListHeaderComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListHeaderComponentDIUUstyle)}}"
-            />
-
-            <block wx:for="{{sectionsData}}" wx:key="key">
-                <renderSectionHeaderCPT
-                        wx:if="{{item.renderSectionHeaderDIUU && item.renderSectionHeaderDIUUstyle !== false}}"
-                        diuu="{{item.renderSectionHeaderDIUU}}"
-                        style="{{tools.getFinalStyle(item.renderSectionHeaderDIUUstyle)}}"
+            <block wx:if="{{ListHeaderComponent && ListHeaderComponent._generic}}">
+                <_g diuu="{{ListHeaderComponent._generic}}"
+                    style="{{tools.getFinalStyle(ListHeaderComponent._genericstyle)}}"
                 />
+            </block>
 
-                <block wx:for="{{item.renderItemData}}" wx:key="key">
-                    <renderItemCPT
-                            diuu="{{item.renderItemDIUU}}"
-                            wx:if="{{item.renderItemDIUUstyle !== false}}"
-                            style="{{tools.getFinalStyle(item.renderItemDIUUstyle)}}"
+            <block wx:for="{{sections}}" wx:key="key">
+
+                <block wx:if="{{item.renderSectionHeader && item.renderSectionHeader._generic}}">
+                    <_g diuu="{{item.renderSectionHeader._generic}}"
+                        style="{{tools.getFinalStyle(item.renderSectionHeader._genericstyle)}}"
                     />
                 </block>
 
-                <renderSectionFooterCPT
-                        wx:if="{{item.renderSectionFooterDIUU && item.renderSectionFooterDIUUstyle !== false}}"
-                        diuu="{{item.renderSectionFooterDIUU}}"
-                        style="{{tools.getFinalStyle(item.renderSectionFooterDIUUstyle)}}"
+                <block wx:for="{{item.renderItem}}" wx:key="key">
+                    <_g diuu="{{item._generic}}"
+                        style="{{tools.getFinalStyle(item._genericstyle)}}"
+                    />
+                </block>
+
+
+                <block wx:if="{{item.renderSectionFooter && item.renderSectionFooter._generic}}">
+                    <_g diuu="{{item.renderSectionFooter._generic}}"
+                        style="{{tools.getFinalStyle(item.renderSectionFooter._genericstyle)}}"
+                    />
+                </block>
+
+            </block>
+
+            <block wx:if="{{ListFooterComponent && ListFooterComponent._generic}}">
+                <_g diuu="{{ListFooterComponent._generic}}"
+                    style="{{tools.getFinalStyle(ListFooterComponent._genericstyle)}}"
                 />
             </block>
-            <ListFooterComponentCPT
-                    wx:if="{{ListFooterComponentDIUU && ListFooterComponentDIUUstyle !== false}}"
-                    diuu="{{ListFooterComponentDIUU}}"
-                    style="{{tools.getFinalStyle(ListFooterComponentDIUUstyle)}}"
-            />
         </view>
     </scroll-view>
 </template>

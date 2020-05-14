@@ -17,6 +17,13 @@ const {SCROLL} = styleType
 
 //TODO 移除phblock 使用
 
+function getGenericTemplate(tempVnode, datakey,) {
+	return createElement('template', {
+		datakey,
+		tempVnode
+	})
+}
+
 export default class WXSectionList extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
@@ -59,37 +66,28 @@ export default class WXSectionList extends PureComponent {
         const children = []
 
         if (ListHeaderComponent) {
-            const CPTVnode = ListHeaderComponent.isReactElement ? ListHeaderComponent : ListHeaderComponent()
+			const CPTVnode = ListHeaderComponent.isReactElement ? ListHeaderComponent : ListHeaderComponent()
 
-            const header = createElement('ListHeaderComponentCPT', {
-                diuu: 'ListHeaderComponentDIUU',
-                CPTVnode
-            })
-
-            children.push(header)
+			children.push(getGenericTemplate(CPTVnode, 'ListHeaderComponent'))
         }
 
         if (sections && sections.length > 0) {
             const body = createElement("template", {
-                datakey: "sectionsData",
+                datakey: "sections",
                 tempVnode: sections.map((item, index) => {
 
                     const seChildren = []
 
                     if (renderSectionHeader) {
-                        const sh = createElement('renderSectionHeaderCPT', {
-                            diuu: 'renderSectionHeaderDIUU',
-                            CPTVnode: renderSectionHeader({
-                                section: item
-                            })
-                        })
-
-                        seChildren.push(sh)
+                    	const CPTVnode = renderSectionHeader({
+							section: item
+						})
+                        seChildren.push(getGenericTemplate(CPTVnode, 'renderSectionHeader'))
                     }
 
                     if (item.data && item.data.length > 0 && renderItem) {
                         const sbody = createElement('template', {
-                            datakey: 'renderItemData',
+                            datakey: 'renderItem',
                             tempVnode: item.data.map((iitem, index) => {
 
                                 const CPTVnode = renderItem({
@@ -106,37 +104,28 @@ export default class WXSectionList extends PureComponent {
                                     key = iitem.key
                                 }
 
-                                return createElement(
-                                    'renderItemCPT',
-                                    {
-                                        key,
-                                        diuu: "renderItemDIUU",
-                                        CPTVnode,
+								if (CPTVnode.isReactElement) {
+									CPTVnode.key = key
+								}
 
-                                        // 最外层元素需要tempName属性， 在这里无实际意义， 只是为了标志， 会影响render函数的执行
-                                        tempName: 'renderItem'
-                                    },
-                                )
+								return CPTVnode
                             })
                         })
                         seChildren.push(sbody)
                     }
 
                     if (renderSectionFooter) {
-                        const sf = createElement('renderSectionFooterCPT', {
-                            diuu: 'renderSectionFooterDIUU',
-                            CPTVnode: renderSectionFooter({
-                                section: item
-                            })
-                        })
+						const CPTVnode = renderSectionFooter({
+							section: item
+						})
 
-                        seChildren.push(sf)
+						seChildren.push(getGenericTemplate(CPTVnode, 'renderSectionFooter'))
                     }
 
-                    return createElement('phblock', {
-                        key: item.key || index,
-                        tempName: 'sectionsRender'
-                    }, ...seChildren)
+					return createElement('phblock', {
+						key: item.key || index,
+						tempName: 'sectionsRender'
+					}, ...seChildren)
                 }),
             })
 
@@ -144,16 +133,11 @@ export default class WXSectionList extends PureComponent {
         }
 
 
-        if (ListFooterComponent) {
-            const CPTVnode = ListFooterComponent.isReactElement ? ListFooterComponent : ListFooterComponent()
+		if (ListFooterComponent) {
+			const CPTVnode = ListFooterComponent.isReactElement ? ListFooterComponent : ListFooterComponent()
 
-            const footer = createElement('ListFooterComponentCPT', {
-                diuu: 'ListFooterComponentDIUU',
-                CPTVnode
-            })
-
-            children.push(footer)
-        }
+			children.push(getGenericTemplate(CPTVnode, 'ListFooterComponent'))
+		}
 
         return createElement('phblock', {
             contentContainerStyle,
