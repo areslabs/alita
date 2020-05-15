@@ -15,3 +15,7 @@ yarn.lock
 yarn-error.log
 
 package-lock.json
+
+fixtures
+
+lerna-debug.log
