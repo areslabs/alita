@@ -1,5 +1,5 @@
 {
-  "name": "layoutTest",
+  "name": "xxCompAndChildren",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,17 +8,18 @@
     "link:bc": "yarn link @areslabs/alita-core @areslabs/wx-react @areslabs/wx-react-native"
   },
   "dependencies": {
-    "@areslabs/router": "^2.4.6",
-    "@areslabs/wx-animated": "^2.4.6",
+    "@areslabs/router": "^2.5.0",
+    "@areslabs/wx-animated": "^2.5.0",
+    "babel-preset-react-app": "^9.1.2",
     "react": "16.8.3",
     "react-native": "0.59.9"
   },
   "devDependencies": {
-    "@areslabs/alita-weixin-runtime": "^2.4.6",
+    "@areslabs/alita-weixin-runtime": "^2.5.0",
     "@babel/core": "^7.9.0",
     "@babel/runtime": "^7.9.2",
-    "babel-jest": "^25.3.0",
-    "jest": "^25.3.0",
+    "babel-jest": "^25.4.0",
+    "jest": "^25.4.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "16.8.3"
   },

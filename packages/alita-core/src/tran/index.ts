@@ -7,6 +7,7 @@
  */
 
 import {geneReactCode} from '../util/uast'
+import {exportGenericCompName, genericCompName} from '../constants'
 import funcCompToClassComp from './funcCompToClassComp'
 import compPreHandle from './compPreHandle'
 import addTempName from './addTempName'
@@ -14,7 +15,6 @@ import geneAllTemplate from "./geneAllTemplate";
 import compOutElementToBlock from './compOutElementToBlock'
 import addEventHandler from './addEventHandler'
 import RNCompHandler from './RNCompHandler'
-import cptCompHandler from './cptCompHandler'
 import literalTemplate from './literalTemplate'
 import classNameHandler from './classNameHandler'
 import onLayoutHandler from './onLayoutHandler'
@@ -28,11 +28,15 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
         filepath: filepath,
         templates: [],
         childTemplates: [],
-        outComp: [],
+        outComp: [
+            exportGenericCompName
+        ],
         json: {
             component: true,
             usingComponents: {},
-            componentGenerics: {},
+            componentGenerics: {
+                [genericCompName]: true
+            },
             disableScroll: true
         },
 
@@ -49,8 +53,6 @@ export default function (ast, filepath, isFuncComp, isPageComp, webpackContext) 
     ast = compPreHandle(ast, info)
 
     ast = RNCompHandler(ast, info)
-
-    ast = cptCompHandler(ast, info)
 
     ast = compOutElementToBlock(ast, info)
 

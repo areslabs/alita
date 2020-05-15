@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "fix": "eslint ./src",
-    "test": "jest"
+    "test": "jest",
+    "link:bc": "yarn link @areslabs/alita-core @areslabs/wx-react @areslabs/wx-react-native"
   },
   "dependencies": {
     "@areslabs/hello-rn": "^2.0.0",

@@ -12,17 +12,8 @@ import {RNCOMPSET, backToViewNode} from '../constants'
 import {printError, printWarn} from './util'
 import {isReactFragmentExpression} from '../util/uast'
 
-import {jsxPropsMap, allBaseComp} from '../util/getAndStorecompInfos'
+import { allBaseComp} from '../util/getAndStorecompInfos'
 
-
-const ignoreCompSet = new Set([
-    'PureComponent',
-    'HocComponent',
-    'WrappedComponent',
-    'Component',
-    'encodeURIComponent',
-    'decodeURIComponent'
-])
 
 const supportRNAPI = new Set([
     'StyleSheet',
@@ -72,37 +63,7 @@ const notSupportJSXElementAttris = {
  * @param rawCode
  */
 export default function checkJSX(ast, filepath, rawCode) {
-
-    // 收集所有JSX fun
-
-    let jsxFuncs = new Set([])
-    let hasJSXTag = false
-
-    let hasAttributeJSXTag = false
-
-
-    const ALLCPTCOMPMAP = jsxPropsMap
-
     traverse(ast, {
-
-        enter: path => {
-
-
-
-            if (path.type === 'ClassMethod' || path.type === 'ClassProperty') {
-                hasJSXTag = false
-            }
-
-            if (path.type === 'JSXAttribute') {
-                hasAttributeJSXTag = false
-            }
-
-            if (path.type === 'JSXOpeningElement') {
-                hasJSXTag = true
-                hasAttributeJSXTag = true
-            }
-
-        },
 
         exit: path => {
             if (path.type === 'ImportDeclaration' && (path.node as t.ImportDeclaration).source.value === 'react-native') {
@@ -131,57 +92,10 @@ export default function checkJSX(ast, filepath, rawCode) {
                 })
             }
 
-            if ((path.type === 'ClassMethod' || path.type === 'ClassProperty') && hasJSXTag) {
-                // @ts-ignore
-                jsxFuncs.add(path.node.key.name)
-            }
 
-            if (path.type === 'JSXAttribute' && hasAttributeJSXTag) {
-                // @ts-ignore
-                const JSXName = path.parentPath.node.name.name
-                // @ts-ignore
-                const attrName = path.node.name.name
-
-                if (RNCOMPSET.has(JSXName)) {
-                    return
-                }
-
-                // 配置的jsx属性，不需要check
-                if (ALLCPTCOMPMAP[JSXName] && ALLCPTCOMPMAP[JSXName][attrName]) {
-                    return
-                }
-
-                if (attrName.endsWith('Component')) {
-                    return
-                }
-
-
-                printWarn(filepath, path, rawCode, `props为JSX片段的，属性名需要以Component结尾！可改为：<${JSXName} ${attrName}Component={...} >`)
-            }
         },
 
         Identifier(path) {
-            if (path.node.name === "children") {
-                const p = path.parentPath
-                if (p.type !== 'MemberExpression') {
-                    printError(filepath, path, rawCode, `禁止直接使用children标识符，若是组件children属性this.props.children/props.children`)
-
-                }
-            }
-
-            if (path.node.name.endsWith('Component')) {
-                const name = path.node.name
-
-                if (ignoreCompSet.has(name)) {
-                    return
-                }
-
-                const p = path.parentPath
-                if (p.type !== 'MemberExpression') {
-                    printError(filepath, path, rawCode, `禁止使用xxComponent标识符，若是组件属性请使用this.props.xxComponent/props.xxComponent 替换`)
-
-                }
-            }
 
             if (path.node.name === "h") {
                 printError(filepath, path, rawCode, `不允许声明/导入 名字为h的变量`)
@@ -253,65 +167,5 @@ export default function checkJSX(ast, filepath, rawCode) {
             }
         },
     })
-
-
-    traverse(ast, {
-
-
-        // this.xx
-        JSXAttribute(path) {
-            const jsxOp = path.parentPath.node as t.JSXOpeningElement
-            const JSXName = (jsxOp.name as t.JSXIdentifier).name
-            const attrName = path.node.name.name as string
-
-            if (RNCOMPSET.has(JSXName)) {
-                return
-            }
-
-            // 配置的jsx属性，不需要check
-            if (ALLCPTCOMPMAP[JSXName] && ALLCPTCOMPMAP[JSXName][attrName]) {
-                return
-            }
-
-            if (path.node.value
-                && path.node.value.type === 'JSXExpressionContainer'
-                && path.node.value.expression
-                && path.node.value.expression.type === 'MemberExpression'
-                && path.node.value.expression.object.type === 'ThisExpression'
-            ) {
-                const name = path.node.value.expression.property.name
-
-                if (jsxFuncs.has(name) && !attrName.endsWith('Component')) {
-                    printWarn(filepath, path, rawCode, `props为JSX片段的，属性名需要以Component结尾！可改为<${JSXName} ${attrName}Component={...}>`)
-                }
-            }
-
-
-            // this.xx.bind(this)
-            if (path.node.value
-                && path.node.value.type === 'JSXExpressionContainer'
-                && path.node.value.expression
-                && path.node.value.expression.type === 'CallExpression'
-                && path.node.value.expression.callee.type === 'MemberExpression'
-                && path.node.value.expression.callee.property.name === 'bind'
-                && path.node.value.expression.arguments.length > 0
-                && path.node.value.expression.arguments[0].type === 'ThisExpression'
-            ) {
-
-                const obj = path.node.value.expression.callee.object
-
-                if (obj.type === 'MemberExpression'
-                    && obj.object.type === 'ThisExpression'
-
-                ) {
-                    const name = obj.property.name
-                    if (jsxFuncs.has(name) && !attrName.endsWith('Component')) {
-                        printWarn(filepath, path, rawCode, `props为JSX片段的，属性名需要以Component结尾！可改为<${JSXName} ${attrName}Component={...}/>`)
-                    }
-                }
-            }
-        },
-    })
-
 
 }

@@ -1,9 +1,9 @@
 import * as path from "path";
 
 import {getModuleInfo, setJsonRelativeFiles, isValidPath} from '../util/cacheModuleInfos'
-import {getLibPath, judgeLibPath} from "../util/util"
+import {getLibPath, judgeLibPath, miscNameToJSName} from "../util/util"
 import configure from "../configure"
-import {wxBaseComp} from '../constants'
+import {wxBaseComp, exportGenericCompName} from '../constants'
 
 import {getCompPath, getRealPackChunks} from './copyPackageWxComponents'
 
@@ -13,6 +13,8 @@ export const handleChanged = (resouce, info, finalJSPath) => {
 
     const newWxOutFiles = {}
     const {json, outComp} = info.RFInfo
+
+    const fileName = path.basename(miscNameToJSName(resouce)).replace('.js', '')
 
     const chunks = info.chunks
 
@@ -25,11 +27,7 @@ export const handleChanged = (resouce, info, finalJSPath) => {
 
         for(let i = 0; i < outComp.length; i ++) {
             const name = outComp[i]
-            if (name === 'default') {
-                continue
-            } else {
-                renderUsingComponents[name] = path.basename(finalJSPath).replace('.js', `${name}`)
-            }
+            renderUsingComponents[name] = fileName
         }
 
         switchElementKeyName(renderUsingComponents)
@@ -39,24 +37,20 @@ export const handleChanged = (resouce, info, finalJSPath) => {
             usingComponents: renderUsingComponents
         }
 
-        let renderJSONStr =  JSON.stringify(renderJSON, null, '\t')
+        const renderJSONStr = JSON.stringify(renderJSON, null, '\t')
 
-        for(let i = 0; i < outComp.length; i ++) {
-            const name = outComp[i]
+        const comppath = finalJSPath.replace('.js', `.json`)
+        let filepathWithChunk = null
 
-            const comppath = (name === 'default' ? finalJSPath.replace('.js', `.json`) : finalJSPath.replace('.js', `${name}.json`))
-            let filepathWithChunk = null
-
-            if (chunk === '_rn_') {
-                filepathWithChunk = comppath
-            } else {
-                const subpageDir = chunk.replace('/_rn_', '')
-                filepathWithChunk = comppath
-                    .replace(configure.outputFullpath, configure.outputFullpath + '/' + subpageDir)
-            }
-
-            newWxOutFiles[filepathWithChunk] = renderJSONStr
+        if (chunk === '_rn_') {
+            filepathWithChunk = comppath
+        } else {
+            const subpageDir = chunk.replace('/_rn_', '')
+            filepathWithChunk = comppath
+                .replace(configure.outputFullpath, configure.outputFullpath + '/' + subpageDir)
         }
+
+        newWxOutFiles[filepathWithChunk] = renderJSONStr
     }
 
 
@@ -77,6 +71,8 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
     const info = getModuleInfo(resouce)
 
+    const fileName = path.basename(miscNameToJSName(resouce)).replace('.js', '')
+
     const usedComps = {}
 
     info.JSXElements.forEach(element => {
@@ -95,7 +91,7 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 
             // 本文件声明了此组件
             if (info.RFInfo.outComp.includes(element)) {
-                usedComps[element] = `./${element}`
+                usedComps[element] = fileName // 引用自己
             } else if (configure.configObj.componentPaths && configure.configObj.componentPaths[element]) {
                 // 全局声明
 
@@ -107,11 +103,11 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
             return
         }
 
-        const { source, defaultSpecifier} = info.im[element]
+        const { source } = info.im[element]
 
         try {
             //TODO getFinalPath参数耦合太紧，切分为各独立函数模块。
-            usedComps[element] = getFinalPath(element, source, resouce, info, defaultSpecifier, chunk, jsonRelativeFiles)
+            usedComps[element] = getFinalPath(element, source, resouce, info, chunk, jsonRelativeFiles)
         } catch (e) {
             console.log(`${resouce.replace(configure.inputFullpath, '')} 组件${element} 搜索路径失败！`.error)
             console.log(e)
@@ -123,10 +119,9 @@ function getUsedCompPaths(resouce, chunk, jsonRelativeFiles) {
 }
 
 
-function getFinalPath(element, source, module, info, defaultSpecifier, chunk, jsonRelativeFiles) {
+function getFinalPath(element, source, module, info, chunk, jsonRelativeFiles) {
 
     let requireAbsolutePath = null
-    let requireDefault = true
     if (judgeLibPath(source) && source === getLibPath(source) && getCompPath(chunk, source, element)) {
         requireAbsolutePath = getCompPath(chunk, source, element)
         requireAbsolutePath = path.resolve(configure.inputFullpath, '.' + requireAbsolutePath)
@@ -135,10 +130,8 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
 
         const validPath = getValidPath(module, source)
 
-        const deepSeekResult = deepSeekPath(element, validPath, defaultSpecifier, chunk)
+        const deepSeekResult = deepSeekPath(element, validPath, chunk)
         requireAbsolutePath = deepSeekResult.absolutePath
-        requireDefault = deepSeekResult.defaultSpecifier
-
         jsonRelativeFiles.add(deepSeekResult.rawAbsolutePath)
     }
 
@@ -149,16 +142,11 @@ function getFinalPath(element, source, module, info, defaultSpecifier, chunk, js
 
     }
 
-    let sp = shortPath(requireAbsolutePath, module)
-
-    if (!requireDefault) {
-        sp += element
-    }
-    return sp
+    return shortPath(requireAbsolutePath, module)
 }
 
 
-function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
+function deepSeekPath(element, absolutePath, chunk) {
 
     let info = getModuleInfo(absolutePath)
 
@@ -171,7 +159,6 @@ function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
 
     while (im[element]) {
         const source = im[element].source
-        defaultSpecifier = im[element].defaultSpecifier
 
         absolutePath = getValidPath(absolutePath, source)
         info = getModuleInfo(absolutePath)
@@ -194,7 +181,6 @@ function deepSeekPath(element, absolutePath, defaultSpecifier, chunk) {
 
     return {
         absolutePath,
-        defaultSpecifier,
         rawAbsolutePath,
     }
 }

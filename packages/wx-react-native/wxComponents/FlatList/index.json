@@ -3,9 +3,6 @@
   "usingComponents": {
   },
   "componentGenerics": {
-    "renderItemCPT": true,
-    "ListFooterComponentCPT": true,
-    "ListHeaderComponentCPT": true,
-    "ListEmptyComponentCPT": true
+    "_g": true
   }
 }

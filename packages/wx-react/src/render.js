@@ -23,7 +23,8 @@ import {
 	touchableWithoutFeedbackOrigin,
 	touchableOpacityOrigin,
 	touchableHighlightOrigin,
-	reactFragmentFlag
+	reactFragmentFlag,
+	genericCompDiuu
 } from '../../shared/constants'
 
 export function renderNextValidComps(inst) {
@@ -136,9 +137,9 @@ export default function render(vnode, parentInst, parentContext, data, oldData, 
             updateTemplate(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (nodeName === 'phblock') {
             updatePhblock(vnode, parentInst, parentContext, data, oldData, dataPath)
-        } else if (typeof nodeName === 'string' && nodeName.endsWith('CPT')) {
-            updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
-        } else if (typeof nodeName === 'string') {
+        } else if (vnode.isGeneric && dataPath !== '_r') {
+			updateGereicComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
+		} else if (typeof nodeName === 'string') {
             updateBaseView(vnode, parentInst, parentContext, data, oldData, dataPath)
         } else if (nodeName.prototype && Object.getPrototypeOf(nodeName) === FuncComponent) {
             updateFuncComponent(vnode, parentInst, parentContext, data, oldData, dataPath)
@@ -448,63 +449,79 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
 }
 
 /**
- * 抽象组件节点， 处理属性是xxComponent/children的情况
+ *  属性是JSX片段的时候（包括children），可以看成是 组件A的渲染是声明在组件B的。
+ *  这种情况，在微信小程序上只能通过 抽象节点表示，在其他小程序可以通过scoped-slot表示
+ *
+ *  抽象节点本身会产生一个组件。我们需要在render isGeneric节点的时候，也产生一个react组件实例，与之对应。并且需要确保
+ *  小程序抽象节点实例和React生成的实例的一致性 --- 同时生成同时消亡，否则将会有泄露的问题。
+ *
+ *  注意：当是 map => this.props.renderXX的时候，需要用key值保持他们的一致性
+ *
  */
-function updateCPTComponent(vnode, parentInst, parentContext, data, oldData, dataPath) {
-    const {CPTVnode: subVnode, diuu: vnodeDiuu} = vnode
-    let {diuu, diuuKey, shouldReuse} = getDiuuAndShouldReuse(vnode, oldData)
-
-    const effect = {}
-    let inst = null
-    if (shouldReuse) {
-        inst = instanceManager.getCompInstByUUID(diuu)
-        if (!inst) {
-            shouldReuseButInstNull(vnode)
-            return
-        }
-
-        parentInst._c.push(inst)
-        effect.tag = UPDATE_EFFECT
-        effect.inst = inst
-        enqueueEffect(effect)
-    } else {
-        inst = new CPTComponent()
-
-        diuu = geneUUID()
-        inst.__diuu__ = diuu
-
-        parentInst._c.push(inst)
-        inst._p = parentInst
+function updateGereicComponent(vnode, parentInst, parentContext, data, oldData, dataPath) {
+	const diuuKey = genericCompDiuu
+	let diuu = oldData && oldData[diuuKey]
+	const shouldReuse = !!diuu
 
 
-        instanceManager.setCompInst(diuu, inst)
+	const effect = {}
+	let inst = null
+	if (shouldReuse) {
+		inst = instanceManager.getCompInstByUUID(diuu)
+		if (!inst) {
+			shouldReuseButInstNull(vnode)
+			return
+		}
 
-        effect.tag = INIT_EFFECT
-        effect.inst = inst
-        enqueueEffect(effect)
-    }
-    data[diuuKey] = diuu
+		parentInst._c.push(inst)
+		effect.tag = UPDATE_EFFECT
+		effect.inst = inst
+		enqueueEffect(effect)
+	} else {
+		inst = new CPTComponent()
 
-    const oc = inst._c
-    resetInstProps(inst)
+		diuu = geneUUID()
+		inst.__diuu__ = diuu
 
-    if (subVnode && subVnode.isReactElement) {
-        subVnode.isFirstEle = true
+		parentInst._c.push(inst)
+		inst._p = parentInst
 
-        inst._styleKey = `${subVnode.diuu}style`
-    } else {
-        inst._styleKey = undefined
-    }
-    // 当组件往外层上报样式的时候，通过keyPath 确定数据路径
-    inst._outStyleKey = `${dataPath}.${vnodeDiuu}style`
 
-    render(subVnode, inst, parentContext, inst._r, inst._or, '_r')
+		instanceManager.setCompInst(diuu, inst)
 
-    getRealOc(oc, inst._c, oldChildren)
+		effect.tag = INIT_EFFECT
+		effect.inst = inst
+		enqueueEffect(effect)
+	}
+	data[diuuKey] = diuu
 
-    rReportStyle(inst, effect)
-    inst.didChildUpdate = false
-    inst.didSelfUpdate = false
+	const oc = inst._c
+	resetInstProps(inst)
+
+	if (vnode && vnode.isReactElement) {
+		vnode.isFirstEle = true
+
+		inst._styleKey = `${vnode.diuu}style`
+	} else {
+		inst._styleKey = undefined
+	}
+	// 当组件往外层上报样式的时候，通过keyPath 确定数据路径
+	inst._outStyleKey = `${dataPath}.${diuuKey}style`
+
+
+	// remove template加的标示，以免走入map的复用逻辑
+	delete vnode.isTempMap
+	delete vnode.key
+
+
+	render(vnode, inst, parentContext, inst._r, inst._or, '_r')
+
+
+	getRealOc(oc, inst._c, oldChildren)
+
+	rReportStyle(inst, effect)
+	inst.didChildUpdate = false
+	inst.didSelfUpdate = false
 }
 
 /**

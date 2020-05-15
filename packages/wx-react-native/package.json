@@ -24,14 +24,7 @@
       {
         "name": "FlatList",
         "path": "FlatList/index",
-        "base": false,
-        "jsxProps": {
-          "ListHeaderComponent": "ListHeaderComponentCPT",
-          "ListFooterComponent": "ListFooterComponentCPT",
-          "ListEmptyComponent": "ListEmptyComponentCPT",
-          "renderItem": "renderItemCPT",
-          "ItemSeparatorComponent": "ItemSeparatorCompoCPT"
-        }
+        "base": false
       },
       {
         "name": "Modal",
@@ -62,16 +55,7 @@
       {
         "name": "SectionList",
         "path": "SectionList/index",
-        "base": false,
-        "jsxProps": {
-          "renderSectionHeader": "renderSectionHeaderCPT",
-          "renderSectionFooter": "renderSectionFooterCPT",
-          "renderItem": "renderItemCPT",
-          "ListHeaderComponent": "ListHeaderComponentCPT",
-          "ListFooterComponent": "ListFooterComponentCPT",
-          "ListEmptyComponent": "ListEmptyComponentCPT",
-          "SectionSeparatorComponent": "SectionSeparatorCoCPT"
-        }
+        "base": false
       },
       {
         "name": "TextInput",
