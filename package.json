@@ -7,7 +7,7 @@
     "pub": "npm run build && lerna publish --exact --force-publish",
     "pub-alpha": "npm run build && lerna publish --exact --pre-dist-tag alpha --force-publish",
     "build": "lerna run build",
-    "bc": "lerna run build --scope @areslabs/alita-core --scope @areslabs/wx-react"
+    "bc": "lerna run build --scope @areslabs/alita-core --scope @areslabs/wx-react --scope @areslabs/wx-react-native"
   },
   "authors": [
     "yankang (https://github.com/ykforerlang)",

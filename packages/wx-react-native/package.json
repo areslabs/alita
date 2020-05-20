@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-react-native",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "微信版本的React Native",
   "files": [
     "dist",
@@ -18,72 +18,56 @@
     "path": "wxComponents",
     "components": [
       {
-        "name": "WXButton",
-        "path": "WXButton/index"
+        "name": "Button",
+        "path": "Button/index"
       },
       {
-        "name": "WXFlatList",
-        "path": "WXFlatList/index",
-        "base": false,
-        "jsxProps": {
-          "ListHeaderComponent": "ListHeaderComponentCPT",
-          "ListFooterComponent": "ListFooterComponentCPT",
-          "ListEmptyComponent": "ListEmptyComponentCPT",
-          "renderItem": "renderItemCPT",
-          "ItemSeparatorComponent": "ItemSeparatorCompoCPT"
-        }
+        "name": "FlatList",
+        "path": "FlatList/index",
+        "base": false
       },
       {
-        "name": "WXModal",
-        "path": "WXModal/index"
+        "name": "Modal",
+        "path": "Modal/index"
       },
       {
-        "name": "WXPicker",
-        "path": "WXPicker/index",
+        "name": "Picker",
+        "path": "Picker/index",
         "needOperateChildren": true,
         "base": false
       },
       {
-        "name": "WXPickerItem",
-        "path": "WXPickerItem/index"
+        "name": "PickerItem",
+        "path": "PickerItem/index"
       },
       {
-        "name": "WXScrollView",
-        "path": "WXScrollView/index"
+        "name": "ScrollView",
+        "path": "ScrollView/index"
       },
       {
-        "name": "WXSlider",
-        "path": "WXSlider/index"
+        "name": "Slider",
+        "path": "Slider/index"
       },
       {
-        "name": "WXSwitch",
-        "path": "WXSwitch/index"
+        "name": "Switch",
+        "path": "Switch/index"
       },
       {
-        "name": "WXSectionList",
-        "path": "WXSectionList/index",
-        "base": false,
-        "jsxProps": {
-          "renderSectionHeader": "renderSectionHeaderCPT",
-          "renderSectionFooter": "renderSectionFooterCPT",
-          "renderItem": "renderItemCPT",
-          "ListHeaderComponent": "ListHeaderComponentCPT",
-          "ListFooterComponent": "ListFooterComponentCPT",
-          "ListEmptyComponent": "ListEmptyComponentCPT",
-          "SectionSeparatorComponent": "SectionSeparatorCoCPT"
-        }
+        "name": "SectionList",
+        "path": "SectionList/index",
+        "base": false
       },
       {
-        "name": "WXTextInput",
-        "path": "WXTextInput/index"
+        "name": "TextInput",
+        "path": "TextInput/index"
       },
       {
-        "name": "WXActivityIndicator",
-        "path": "WXActivityIndicator/index"
+        "name": "ActivityIndicator",
+        "path": "ActivityIndicator/index"
       },
       {
-        "name": "WXImageBackground",
-        "path": "WXImageBackground/index"
+        "name": "ImageBackground",
+        "path": "ImageBackground/index"
       }
     ]
   }

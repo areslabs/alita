@@ -1,0 +1,64 @@
+<wxs src="../commonwxs.wxs" module="tools" />
+
+<template name="sectionList">
+    <scroll-view
+            bindscrolltoupper="onScrollToupper"
+            scroll-y
+            scroll-top="{{onRefreshPassed ? (sr ? 0: 80) : 0}}"
+            upper-threshold="3"
+            scroll-with-animation="{{withAni}}"
+            bindscroll="outScroll"
+            scroll-left="{{outLeft}}"
+            style="flex: 1; flex-basis: 0%;overflow:hidden;"
+            bindtouchstart='startTouch'
+            bindtouchend='leaveTouch'
+            bindscrolltolower="onEndReached"
+            lower-threshold="{{onEndReachedThreshold}}"
+    >
+        <view id="container" style="{{contentContainerStyle}}min-height: calc(100% + {{onRefreshPassed ? 80 : 0}}px)">
+            <view
+                    wx:if="{{onRefreshPassed}}"
+                    style="height:80px;align-items:center;justify-content:center;"
+            >
+                <view class="loading"/>
+            </view>
+
+            <block wx:if="{{ListHeaderComponent && ListHeaderComponent._generic}}">
+                <_g diuu="{{ListHeaderComponent._generic}}"
+                    style="{{tools.getFinalStyle(ListHeaderComponent._genericstyle)}}"
+                />
+            </block>
+
+            <block wx:for="{{sections}}" wx:key="key">
+
+                <block wx:if="{{item.renderSectionHeader && item.renderSectionHeader._generic}}">
+                    <_g diuu="{{item.renderSectionHeader._generic}}"
+                        style="{{tools.getFinalStyle(item.renderSectionHeader._genericstyle)}}"
+                    />
+                </block>
+
+                <block wx:for="{{item.renderItem}}" wx:key="key">
+                    <_g diuu="{{item._generic}}"
+                        style="{{tools.getFinalStyle(item._genericstyle)}}"
+                    />
+                </block>
+
+
+                <block wx:if="{{item.renderSectionFooter && item.renderSectionFooter._generic}}">
+                    <_g diuu="{{item.renderSectionFooter._generic}}"
+                        style="{{tools.getFinalStyle(item.renderSectionFooter._genericstyle)}}"
+                    />
+                </block>
+
+            </block>
+
+            <block wx:if="{{ListFooterComponent && ListFooterComponent._generic}}">
+                <_g diuu="{{ListFooterComponent._generic}}"
+                    style="{{tools.getFinalStyle(ListFooterComponent._genericstyle)}}"
+                />
+            </block>
+        </view>
+    </scroll-view>
+</template>
+
+<template is="sectionList" data="{{..._r, withAni, outLeft, sr}}"/>

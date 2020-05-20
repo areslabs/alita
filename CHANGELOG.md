@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/areslabs/alita/compare/v2.5.1...v2.6.0) (2020-05-15)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复 .wx 文件取 文件名的bug ([c22acdb](https://github.com/areslabs/alita/commit/c22acdb50a963bb1584b026e30d66d9c59e0a78f))
+* **wx-react:** 修复genericWrapper 包裹的情况 ([68534bf](https://github.com/areslabs/alita/commit/68534bf5f90e0e05c44e905829422cd98625cfaa))
+* **wx-react-native:** 移除package.json文件报错 ([40754ea](https://github.com/areslabs/alita/commit/40754ea45faf1dae05d78338acd6646aec21f36f))
+
+
+### Features
+
+* **wx-react wx-react-native alita-core:** 1.重新实现this.props.xxComponent 2.简化生成的小程序组件 3. 其他 ([834d045](https://github.com/areslabs/alita/commit/834d0454298afa13d11690e21df65df4dbebb17d))
+
+
+
+
+
 ## [2.5.1](https://github.com/areslabs/alita/compare/v2.5.0...v2.5.1) (2020-04-30)
 
 

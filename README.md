@@ -144,6 +144,9 @@ Alita的设计目标是要尽可能无损的转换RN应用，即使是已经存�
 社区另有一个[alitajs/alita](https://github.com/alitajs/alita)，那是一个专注业务的Web全流程方案。我们重名了，带来的困扰很抱歉:sweat_smile::sweat_smile::sweat_smile: 。 所以如果你需要的是Web全流程方案，请[点击](https://github.com/alitajs/alita)
 
 
+## 使用案例
+请在[这里](https://github.com/areslabs/alita/issues/64)查找
+
 ## 开发交流
 
 <table>

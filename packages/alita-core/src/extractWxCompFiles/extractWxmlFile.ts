@@ -4,6 +4,7 @@ import * as nodepath from "path";
 import * as t from "@babel/types";
 import traverse from "@babel/traverse";
 import {geneReactCode} from "../util/uast";
+import {wxBaseComp, genericCompDiuu, genericCompName} from "../constants"
 
 
 export const handleChanged = (info, finalJSPath) => {
@@ -43,12 +44,30 @@ export const handleChanged = (info, finalJSPath) => {
                 path.remove();
                 return;
             }
+            if (path.type === 'JSXElement'
+                && (path.node as t.JSXElement).openingElement
+            ) {
+                const openingElement = (path.node as t.JSXElement).openingElement
+                const name = (openingElement.name as t.JSXIdentifier).name
+                if (name && wxBaseComp.has(name.toLocaleLowerCase())
+                    && (
+                        info.im[name]
+                        || (info.RFInfo.outComp && info.RFInfo.outComp.includes(name))
+                    )
+                ) {
+                    const aliasName = `WX${name}`;
+                    (openingElement.name as t.JSXIdentifier).name = aliasName
+                    if ((path.node as t.JSXElement).closingElement) {
+                        const closingElement = (path.node as t.JSXElement).closingElement;
+                        (closingElement.name as t.JSXIdentifier).name = aliasName
+                    }
+                }
+            }
         }
     });
 
 
-    const templateWxmlPath = finalJSPath.replace(".js", "$.wxml")
-    const templateWxmlFilename = nodepath.basename(templateWxmlPath)
+    const templateWxmlPath = finalJSPath.replace(".js", ".wxml")
 
     let templateWxml = geneReactCode(ast);
     templateWxml = templateWxml.replace("<InnerTmpOpeningElement>", "");
@@ -60,10 +79,12 @@ export const handleChanged = (info, finalJSPath) => {
         const subT = `
 <template name="${name}">
    <block wx:if="{{t.l(d)}}">{{d}}</block>
+   <${genericCompName} wx:elif="{{d.${genericCompDiuu}}}" diuu="{{d.${genericCompDiuu}}}" style="{{t.s(d.${genericCompDiuu}style)}}"/>
    <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
    <block wx:else>
        <block wx:for="{{d}}" wx:key="key">
            <block wx:if="{{t.l(item)}}">{{item}}</block>
+           <${genericCompName} wx:elif="{{item.${genericCompDiuu}}}" diuu="{{item.${genericCompDiuu}}}" style="{{t.s(item.${genericCompDiuu}style)}}"/>
            <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
        </block>
    </block>
@@ -79,49 +100,12 @@ export const handleChanged = (info, finalJSPath) => {
     templateWxml = `<wxs src="${utilWxsPath}" module="t" />
 
 ${templateWxml}
+
+
+<template wx:if="{{(_r && _r.tempName)}}" is="{{_r.tempName}}" data="{{..._r}}"/>
     `
 
     newWxOutFiles[templateWxmlPath] = prettierWxml(templateWxml)
-
-
-    // gene all outComp
-    geneAllOutComp(outComp, finalJSPath, newWxOutFiles, templateWxmlFilename);
-
-
     return newWxOutFiles
-}
-
-
-function geneAllOutComp(outComp, finalJSPath, newWxOutFiles, templateWxmlFilename) {
-
-    for (let i = 0; i < outComp.length; i++) {
-        const name = outComp[i];
-
-        const wxmlFilepath = (name === "default"
-                ? finalJSPath.replace(".js", ".wxml")
-                : finalJSPath.replace(".js", `${name}.wxml`)
-        );
-
-        const wxmlAst = [];
-        wxmlAst.push(t.jsxText(`<import src="./${templateWxmlFilename}"/>`))
-        wxmlAst.push(t.jsxText("\n"));
-        wxmlAst.push(t.jsxText(`<template wx:if="{{(_r && _r.tempName)}}" is="{{_r.tempName}}" data="{{..._r}}"/>`))
-        let tmpWxmlAst = t.jsxElement(
-            t.jsxOpeningElement(
-                t.jsxIdentifier("InnerTmpOpeningElement"),
-                []
-            ),
-            t.jsxClosingElement(t.jsxIdentifier("InnerTmpOpeningElement")),
-            wxmlAst,
-            false
-        );
-
-        let WXMLCode = geneReactCode(tmpWxmlAst);
-        WXMLCode = WXMLCode.replace("<InnerTmpOpeningElement>", "");
-        WXMLCode = WXMLCode.replace("</InnerTmpOpeningElement>", "");
-
-
-        newWxOutFiles[wxmlFilepath] = prettierWxml(WXMLCode)
-    }
 }
 

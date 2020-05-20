@@ -17,7 +17,8 @@ export {
     touchableOpacityOrigin,
     touchableHighlightOrigin,
     errorViewOrigin,
-    reactFragmentFlag
+    reactFragmentFlag,
+    genericCompDiuu
 } from '@shared/constants'
  
 
@@ -92,3 +93,7 @@ export const wxBaseComp = new Set([
     // 画布
     'canvas'
 ])
+
+
+export const genericCompName = '_g'
+export const exportGenericCompName = '_e'

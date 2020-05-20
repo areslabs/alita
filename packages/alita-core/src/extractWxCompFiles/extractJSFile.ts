@@ -7,7 +7,7 @@ import * as path from "path";
 export const handleChanged = (info, finalJSPath) => {
     const newWxOutFiles = {}
 
-    const {outComp, isPageComp} = info.RFInfo
+    const {isPageComp} = info.RFInfo
 
 
     let outCompCode = `Component(wx.__bridge.WxNormalComp())`
@@ -26,14 +26,6 @@ export const handleChanged = (info, finalJSPath) => {
         renderCode = outCompCode
     }
 
-    for(let i = 0; i < outComp.length; i++) {
-        const name = outComp[i]
-
-        const jspath = (name === 'default' ? finalJSPath : finalJSPath.replace('.js', `${name}.js`))
-        const jscode = (name === 'default' ? renderCode : outCompCode)
-
-        newWxOutFiles[jspath] = jscode
-    }
-
+    newWxOutFiles[finalJSPath] = renderCode
     return newWxOutFiles
 }

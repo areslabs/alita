@@ -30,8 +30,7 @@ import {getModuleInfo} from '../util/cacheModuleInfos'
 /**
  * 处理 RN官方组件
  * 1. View, Text等退化为小程序view节点
- * 2. Button，FlatList等添加前缀WX，以免RN button和小程序原生button 混淆
- * 3. 不支持组件 替换为 <view style="color: red">不支持组件：[name]</view>
+ * 2. 不支持组件 替换为 <view style="color: red">不支持组件：[name]</view>
  *
  * @param ast
  * @returns {*}
@@ -64,18 +63,6 @@ export default function RNCompHandler (ast, info?: any) {
                         return false
                     }
 
-                    if (RNCOMPSET.has(name)) {
-                        const wxName = `WX${name}`
-                        spe.local.name = wxName
-                        // @ts-ignore
-                        spe.imported.name = wxName
-
-                        fileIms[wxName] = fileIms[name]
-                        fileIms[wxName].imported = wxName
-                        delete fileIms[name]
-
-                        return true
-                    }
                     return true
                 })
             }
@@ -85,24 +72,12 @@ export default function RNCompHandler (ast, info?: any) {
                 const id = path.parentPath.node.id
                 if (id.type === 'ObjectPattern') {
                     id.properties = id.properties.filter(pro => {
-                        const {key, value} = pro
+                        const {key} = pro
                         if (backToViewNode.has(key)) {
                             return false
                         }
                         rnApis.add(key)
-
-                        if (RNCOMPSET.has(key)) {
-                            const rawName = key.name
-                            const wxName = `WX${rawName}`
-
-                            key.name = wxName
-                            value.name = `WX${value.name}`
-
-                            fileIms[wxName] = fileIms[rawName]
-                            fileIms[wxName].imported = wxName
-                            delete fileIms[rawName]
-                        }
-
+                        
                         return true
                     })
                 } else {
@@ -124,18 +99,6 @@ export default function RNCompHandler (ast, info?: any) {
 
             if (path.type === 'JSXClosingElement') {
                 handleComp(path, rnApis, fileJSXElements)
-                return
-            }
-
-            // Text.propTypes 类似这种
-            if (path.type === 'Identifier'
-                && path.key !== 'property'
-                && rnApis.has((path.node as t.Identifier).name)
-                && RNCOMPSET.has((path.node as t.Identifier).name)
-
-            ) {
-                const pnode = path.node as t.Identifier
-                pnode.name = `WX${pnode.name}`
                 return
             }
         }
@@ -216,8 +179,7 @@ function handleComp(path, rnApis, fileJSXElements) {
 
 
     if (RNCOMPSET.has(name)) {
-        path.node.name.name = `WX${name}`
-        fileJSXElements.add(`WX${name}`)
+        fileJSXElements.add(name)
     } else {
         path.node.name.name = `view`
 
