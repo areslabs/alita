@@ -8,6 +8,7 @@
 
 import genericWrapper from './genericWrapper'
 import {isEventProp} from './util'
+import { RNBaseComponent } from './AllComponent'
 
 
 // 一般情况下 uuid都应该是存在的， 但是HOC的包裹的组件，uuid需要手动设置
@@ -80,7 +81,9 @@ export default function createElement(comp, props, ...args) {
         }
     }
 
-    finalProps.children = typeof comp === 'string' ? children : genericWrapper(children)
+	finalProps.children = (typeof comp === 'string'
+		|| (comp.prototype && Object.getPrototypeOf(comp) === RNBaseComponent)) ? children : genericWrapper(children)
+
 
     let finalDiuu = diuu
     if (!diuu && typeof comp === 'function') {
