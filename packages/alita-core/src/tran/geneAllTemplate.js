@@ -105,7 +105,7 @@ export default function(ast, info) {
                 const styleAttr = getAttr(jsxOp, 'style')
                 if (!styleAttr) {
                     jsxOp.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{t.s(${diuuKey}style)}}`))
+                        t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{_t.s(${diuuKey}style)}}`))
                     )
                 }
 
@@ -130,7 +130,7 @@ export default function(ast, info) {
 
 
                 jsxOp.attributes.push(
-                    t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{t.s(${diuuKey}style)}}`))
+                    t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{_t.s(${diuuKey}style)}}`))
                 )
                 jsxOp.attributes.push(
                     t.jsxAttribute(t.jsxIdentifier('wx:if'), t.stringLiteral(`{{${diuuKey}style !== false}}`)),
@@ -199,7 +199,7 @@ export default function(ast, info) {
                     jsxOp.attributes = jsxOp.attributes.filter(attr => !(attr.type === 'JSXAttribute' && attr.name.name === 'style'))
 
                     jsxOp.attributes.push(
-                        t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{t.s(${diuuKey}style)}}`))
+                        t.jsxAttribute(t.jsxIdentifier('style'), t.stringLiteral(`{{_t.s(${diuuKey}style)}}`))
                     )
 
 					if (info.isPageComp) {
@@ -251,7 +251,7 @@ export default function(ast, info) {
                             // 微信基本组件 <view style="height: 90px"/>
                             return
                         } else {
-                            attr.value = t.stringLiteral(`{{t.s(${diuuKey}style)}}`)
+                            attr.value = t.stringLiteral(`{{_t.s(${diuuKey}style)}}`)
                         }
                         return
                     }
@@ -281,7 +281,7 @@ export default function(ast, info) {
                             // 微信基本组件 <view style="height: 90px"/>
                             return
                         } else {
-                            attr.value = t.stringLiteral(`{{t.s(${diuuKey}style)}}`)
+                            attr.value = t.stringLiteral(`{{_t.s(${diuuKey}style)}}`)
                         }
                         return
                     }
