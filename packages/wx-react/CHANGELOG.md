@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.1](https://github.com/areslabs/alita/compare/v2.6.0...v2.6.1) (2020-05-21)
+
+
+### Bug Fixes
+
+* **wx-react:** 修复RNBaseComponent 的子节点 被 generic的bug ([0123f7f](https://github.com/areslabs/alita/commit/0123f7fb256e1bbc6eba1c2768e48bfa80141a8c))
+
+
+
+
+
 # [2.6.0](https://github.com/areslabs/alita/compare/v2.5.1...v2.6.0) (2020-05-15)
 
 
