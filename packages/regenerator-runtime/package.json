@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/regenerator-runtime",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "description": "alita regenerator-runtime copy from regenerator-runtime@0.11.1",
   "main": "runtime-module.js",
   "scripts": {

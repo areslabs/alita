@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/eslint-plugin-alita",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "description": "rules for alita",
   "files": [
     "lib",

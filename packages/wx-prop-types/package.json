@@ -1,6 +1,6 @@
 {
   "name": "@areslabs/wx-prop-types",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "description": "小程序版本的prop-types",
   "files": [
     "src",
