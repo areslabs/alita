@@ -78,13 +78,13 @@ export const handleChanged = (info, finalJSPath) => {
         // 如果只使用一个child 小程序会报递归， 然后就不渲染了
         const subT = `
 <template name="${name}">
-   <block wx:if="{{t.l(d)}}">{{d}}</block>
-   <${genericCompName} wx:elif="{{d.${genericCompDiuu}}}" diuu="{{d.${genericCompDiuu}}}" style="{{t.s(d.${genericCompDiuu}style)}}"/>
+   <block wx:if="{{_t.l(d)}}">{{d}}</block>
+   <${genericCompName} wx:elif="{{d.${genericCompDiuu}}}" diuu="{{d.${genericCompDiuu}}}" style="{{_t.s(d.${genericCompDiuu}style)}}"/>
    <template wx:elif="{{d.tempName}}" is="{{d.tempName}}" data="{{...d}}"/>
    <block wx:else>
        <block wx:for="{{d}}" wx:key="key">
-           <block wx:if="{{t.l(item)}}">{{item}}</block>
-           <${genericCompName} wx:elif="{{item.${genericCompDiuu}}}" diuu="{{item.${genericCompDiuu}}}" style="{{t.s(item.${genericCompDiuu}style)}}"/>
+           <block wx:if="{{_t.l(item)}}">{{item}}</block>
+           <${genericCompName} wx:elif="{{item.${genericCompDiuu}}}" diuu="{{item.${genericCompDiuu}}}" style="{{_t.s(item.${genericCompDiuu}style)}}"/>
            <template wx:else is="{{item.tempName}}" data="{{...item}}"/>
        </block>
    </block>
@@ -97,7 +97,7 @@ export const handleChanged = (info, finalJSPath) => {
 
     const utilWxsPath = `${RootPrefixPlaceHolader}/commonwxs.wxs`
 
-    templateWxml = `<wxs src="${utilWxsPath}" module="t" />
+    templateWxml = `<wxs src="${utilWxsPath}" module="_t" />
 
 ${templateWxml}
 
