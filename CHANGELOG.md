@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.4](https://github.com/areslabs/alita/compare/v2.6.3...v2.6.4) (2020-05-22)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复wxml引用wxs变量名t和template模板相关变量冲突导致无法正常渲染问题 ([716c335](https://github.com/areslabs/alita/commit/716c335b8c638661bb5e2e37af667693e2d443a0))
+
+
+
+
+
 ## [2.6.3](https://github.com/areslabs/alita/compare/v2.6.2...v2.6.3) (2020-05-21)
 
 **Note:** Version bump only for package root
