@@ -91,8 +91,7 @@ function handleRemovePath(runtimeData, opts = {}) {
 			parent.__removed = true
 		} else {
 			const path = data.path
-			!path.__removed && path.remove();
-			path.__removed = true
+			path.remove();
 		}
 	})
 }
