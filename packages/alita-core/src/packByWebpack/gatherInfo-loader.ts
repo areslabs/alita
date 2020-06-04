@@ -19,6 +19,8 @@ import {isReactComponent, parseCode, isReactFragment} from "../util/uast"
 import {getModuleInfo, setModuleInfo} from '../util/cacheModuleInfos'
 import {getLibCompInfos} from "../util/getAndStorecompInfos";
 import {judgeLibPath} from "../util/util";
+import deleteNoWxCode from "../preproccessCode/deleteNoWxCode"
+import optimizeImports from "../preproccessCode/importOptimize"
 
 /**
  * 收集alita 处理所必须的信息
@@ -30,7 +32,11 @@ export default function (this: webpack.loader.LoaderContext,  context: string): 
     const filepath = this.resourcePath
 
     console.log(`开始处理：${filepath.replace(configure.inputFullpath, '')} ...`.info)
-    const ast = parseCode(context, npath.extname(filepath))
+    let ast = parseCode(context, npath.extname(filepath))
+    //删除非wx平台的代码
+    ast = deleteNoWxCode(ast)
+    //移除无用的的Import，减少import不支持转化的模块导致转化错误（包括移除非wx平台的代码，导致的无用import）
+    ast = optimizeImports(ast)
 
     //TODO 暂时通过此方式，让ast和sourceCode/filepath 建立联系
     // @ts-ignore
