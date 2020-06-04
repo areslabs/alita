@@ -37,7 +37,7 @@ function checkAndRemoveCode(path,isIfStatement,isConditionalExpression){
 		if (isIfStatement && path.node.alternate) {
 			path.replaceWith(path.node.consequent)
 		} else if(isConditionalExpression && path.node.consequent){
-			path.parent.init = path.node.consequent;
+			path.replaceWith(path.node.consequent)
 		} 
 	}
 
@@ -46,7 +46,7 @@ function checkAndRemoveCode(path,isIfStatement,isConditionalExpression){
 		if (isIfStatement && path.node.consequent) {
 			path.node.consequent.body= [];
 		} else if(isConditionalExpression && path.node.alternate){
-			path.parent.init = path.node.alternate
+			path.replaceWith(path.node.alternate)
 		}
   	}
 }
