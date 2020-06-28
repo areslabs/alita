@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.4](https://github.com/areslabs/alita/compare/v2.6.3...v2.6.4) (2020-05-22)
+
+
+### Bug Fixes
+
+* **alita-core:** 修复wxml引用wxs变量名t和template模板相关变量冲突导致无法正常渲染问题 ([716c335](https://github.com/areslabs/alita/commit/716c335b8c638661bb5e2e37af667693e2d443a0))
+
+
+
+
+
+## [2.6.3](https://github.com/areslabs/alita/compare/v2.6.2...v2.6.3) (2020-05-21)
+
+**Note:** Version bump only for package root
+
+
+
+
+
+## [2.6.2](https://github.com/areslabs/alita/compare/v2.6.1...v2.6.2) (2020-05-21)
+
+**Note:** Version bump only for package root
+
+
+
+
+
+## [2.6.1](https://github.com/areslabs/alita/compare/v2.6.0...v2.6.1) (2020-05-21)
+
+
+### Bug Fixes
+
+* **wx-react:** 修复RNBaseComponent 的子节点 被 generic的bug ([0123f7f](https://github.com/areslabs/alita/commit/0123f7fb256e1bbc6eba1c2768e48bfa80141a8c))
+
+
+
+
+
 # [2.6.0](https://github.com/areslabs/alita/compare/v2.5.1...v2.6.0) (2020-05-15)
 
 
