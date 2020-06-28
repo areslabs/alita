@@ -17,6 +17,12 @@ export default class CommonPage extends Component {
 						history.push('Page1')
 					}}
 				/>
+                <Button
+					title={"to Page2"}
+					onPress={() => {
+						history.push('Page2')
+					}}
+				/>
             </View>
 
         );

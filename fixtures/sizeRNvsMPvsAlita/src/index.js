@@ -13,6 +13,7 @@ import React, {PureComponent} from 'react'
 import {Router, Route, TabRouter} from '@areslabs/router'
 
 import Page1 from './Page1'
+import Page2 from './Page2'
 import CommonPage from './CommonPage'
 
 import {f1} from './util'
@@ -42,6 +43,7 @@ export default class App extends PureComponent {
 
 				{/*分包用来测试体积*/}
                 <Route subpage="one" key={"Page1"} component={Page1}/>
+                <Route subpage="two" key={"Page2"} component={Page2}/>
             </Router>
         )
     }
