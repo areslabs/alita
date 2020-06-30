@@ -215,7 +215,7 @@ function checkFuncIsJsx(expression, ast) {
  */
 function checkVarnIsJsx(varnName, ast) {
 	let isJsxExpress = false
-	let varnNameCount = 0 // ele.expression.name 已经算了一次了，所以从-1算起
+	let varnNameCount = 0
 	errorLogTraverse(ast, {
 		exit: (path) => {
 			if ((
