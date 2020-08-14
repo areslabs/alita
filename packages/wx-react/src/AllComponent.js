@@ -14,6 +14,7 @@ import shallowEqual from './shallowEqual'
 
 import {UpdateState, ForceUpdate} from './constants'
 import {performUpdater} from './UpdateStrategy'
+import {isFunction} from './util'
 
 
 export class BaseComponent {
@@ -39,14 +40,6 @@ export class BaseComponent {
 export class CPTComponent extends BaseComponent {
 }
 
-export class FuncComponent extends BaseComponent {
-    constructor(props, context) {
-        super()
-        this.props = props
-        this.context = context
-    }
-}
-
 export class Component extends BaseComponent {
     constructor(props, context) {
         super()
@@ -70,6 +63,34 @@ export class Component extends BaseComponent {
             payload: newState,
             callback: callback,
         })
+    }
+}
+
+export class FuncComponent extends Component {
+
+    constructor(props, context, isMemo) {
+        super()
+        this.props = props
+        this.context = context
+        this.isMemo = isMemo
+        this.hooks = []
+        this.effects = []
+        this.layoutEffects = []
+    }
+
+    componentWillUnmount() {
+        this.hooks.forEach(hook => {
+            if (isFunction(hook.cleanup)) {
+                hook.cleanup()
+            }
+        })
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (this.isMemo) {
+            return !(shallowEqual(nextProps, this.props))
+        }
+        return true
     }
 }
 
@@ -128,4 +149,9 @@ export class RNBaseComponent {
     transformStyle(style) {
         return tackleWithStyleObj(style)
     }
+}
+
+export const memo = (f) => {
+    f.isMemo = true
+    return f
 }

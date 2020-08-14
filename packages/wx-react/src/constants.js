@@ -25,3 +25,7 @@ export const mpRoot = {
     _c: []
 }
 
+export const Current = {
+    current: null,
+    index: 0
+}

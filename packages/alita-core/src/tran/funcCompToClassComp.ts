@@ -52,6 +52,9 @@ export default function funcCompToClassComp(ast, info) {
 
             if (path.type === 'JSXOpeningElement') {
                 hasJSXElement = true
+                // 如果检测到有jsx元素的话，就退出
+                // 否则有有些jsx属性为方法类型，就会使hasJSXElement = false（上面逻辑）
+                path.skip()
             }
         },
 
@@ -213,7 +216,6 @@ function geneClassDec(path) {
         funcPathNode.body.body.unshift(contextDec)
     }
 
-
     const classDec = t.classExpression(
         // @ts-ignore
         path.node.id,
@@ -221,9 +223,70 @@ function geneClassDec(path) {
         t.classBody([
             t.classMethod(
                 'method',
-                t.identifier('render'),
+                t.identifier('renderComp'),
                 [],
                 funcPathNode.body
+            ),
+            t.classMethod(
+                'method',
+                t.identifier('render'),
+                [],
+                t.blockStatement([
+                    t.expressionStatement(
+                        t.assignmentExpression(
+                            '=',
+                            t.memberExpression(
+                                t.memberExpression(
+                                    t.identifier('React'),
+                                    t.identifier('Current')
+                                ),
+                                t.identifier('current')
+                            ),
+                            t.thisExpression()
+                        )
+                    ),
+                    t.expressionStatement(
+                        t.assignmentExpression(
+                            '=',
+                            t.memberExpression(
+                                t.memberExpression(
+                                    t.identifier('React'),
+                                    t.identifier('Current')
+                                ),
+                                t.identifier('index')
+                            ),
+                            t.numericLiteral(0)
+                        )
+                    ),
+                    t.variableDeclaration('const', [
+                        t.variableDeclarator(
+                            t.identifier('comp'),
+                            t.callExpression(
+                                t.memberExpression(
+                                    t.thisExpression(),
+                                    t.identifier('renderComp')
+                                ),
+                                []
+                            )
+                        )
+                    ]),
+                    t.expressionStatement(
+                        t.assignmentExpression(
+                            '=',
+                            t.memberExpression(
+                                t.memberExpression(
+                                    t.identifier('React'),
+                                    t.identifier('Current')
+                                ),
+                                t.identifier('current')
+                            ),
+                            t.nullLiteral()
+                        )
+                    ),
+                    t.returnStatement(
+                        t.identifier('comp')
+                    )
+                ])
             )
         ])
     )
