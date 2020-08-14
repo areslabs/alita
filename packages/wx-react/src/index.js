@@ -7,7 +7,7 @@
  */
  
 import createElement from './createElement'
-import {PureComponent, Component, FuncComponent, HocComponent, RNBaseComponent} from './AllComponent'
+import {PureComponent, Component, FuncComponent, HocComponent, RNBaseComponent, memo} from './AllComponent'
 import WxNormalComp from './WxNormalComp'
 import tackleWithStyleObj from './tackleWithStyleObj'
 import styleType from './styleType'
@@ -15,6 +15,20 @@ import instanceManager from './InstanceManager'
 import {getPropsMethod} from './util'
 import reactCompHelper from './reactCompHelper'
 import {unstable_batchedUpdates, renderPage, renderApp} from './UpdateStrategy'
+import {
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+    useRef,
+    useReducer,
+    useImperativeHandle,
+    useLayoutEffect,
+    useDebugValue
+} from './hooks'
+import {Current} from './constants'
+import {createContext} from './createContext'
 
 
 export default {
@@ -33,6 +47,19 @@ export default {
     getPropsMethod,
     unstable_batchedUpdates,
     renderApp,
+    memo,
+    Current,
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+    useRef,
+    useReducer,
+    useImperativeHandle,
+    useLayoutEffect,
+    useDebugValue,
+    createContext
 }
 
 export {
@@ -50,6 +77,19 @@ export {
     getPropsMethod,
     unstable_batchedUpdates,
     renderApp,
+    memo,
+    Current,
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+    useRef,
+    useReducer,
+    useImperativeHandle,
+    useLayoutEffect,
+    useDebugValue,
+    createContext
 }
 export const h = createElement
 

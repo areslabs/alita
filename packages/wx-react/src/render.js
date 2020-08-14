@@ -372,6 +372,7 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
             shouldReuseButInstNull(vnode)
             return
         }
+        const shouldUpdate = checkShouldComponentUpdate(inst, false, props, {})
 
         data[diuuKey] = diuu
 
@@ -380,12 +381,27 @@ function updateFuncComponent(vnode, parentInst, parentContext, data, oldData, da
 
         parentInst._c.push(inst)
 
+        if (!shouldUpdate) {
+            if (inst.didChildUpdate) {
+                for(let i = 0; i < inst._c.length; i ++ ) {
+                    const child = inst._c[i]
+                    renderNextValidComps(child)
+                }
+
+            }
+
+            rReportExistStyle(inst)
+            inst.didChildUpdate = false
+            inst.didSelfUpdate = false
+            return
+        }
+
         effect.tag = UPDATE_EFFECT
         effect.inst = inst
         enqueueEffect(effect)
     } else {
         const myContext = filterContext(nodeName, parentContext)
-        inst = new nodeName(props, myContext)
+        inst = new nodeName(props, myContext, nodeName.isMemo)
 
         let instUUID
         if (parentInst === mpRoot) {

@@ -94,7 +94,12 @@ function getFileInfo(ast, filepath) {
         },
 
         JSXOpeningElement: path => {
-            if (isReactFragment(path.node)) {
+            if (isReactFragment(path.node)
+                || (
+                    path.node.name
+                    && path.node.name.type === 'JSXMemberExpression'
+                )
+            ) {
                 return
             }
             const name = (path.node.name as t.JSXIdentifier).name

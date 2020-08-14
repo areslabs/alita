@@ -337,3 +337,24 @@ export function isReactFragmentExpression(jsxOp) {
     }
     return false
 }
+
+/**
+ * 是否是Context.Provider 或者 Context.Comsumer 表达式
+ * @param node
+ * @returns {any}
+ */
+export function isJSXContextExpression(path) {
+    const jsxOp = path.node
+    const object = jsxOp.object
+    const property = jsxOp.property
+    const jsx = path.parentPath.parentPath
+    if (object
+        && object.name
+        && property
+        && (property.name === 'Provider' || property.name === 'Consumer')
+        && jsx.isJSXElement()
+    ) {
+        return true
+    }
+    return false
+}

@@ -10,7 +10,7 @@ import traverse from "@babel/traverse"
 import * as t from '@babel/types'
 import {RNCOMPSET, backToViewNode} from '../constants'
 import {printError, printWarn} from './util'
-import {isReactFragmentExpression} from '../util/uast'
+import {isReactFragmentExpression, isJSXContextExpression} from '../util/uast'
 
 import { allBaseComp} from '../util/getAndStorecompInfos'
 
@@ -119,7 +119,8 @@ export default function checkJSX(ast, filepath, rawCode) {
         },
 
         JSXMemberExpression: path => {
-            if (isReactFragmentExpression(path.node)) return
+            if (isReactFragmentExpression(path.node)
+                || isJSXContextExpression(path)) return
             printWarn(filepath, path, rawCode, `小程序不允许存在<A.B/> 形式`)
         },
 

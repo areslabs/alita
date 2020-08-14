@@ -32,6 +32,8 @@ import MyChildComp from './MyChildComp'
 import MyStyleComp from './MyStyleComp'
 import PlatformComp from './PlatformComp'
 import MyHoc from './MyHoc'
+import ThemeContext from './ThemeContext'
+import Hooks from './Hooks'
 
 import {Dic1, Dic21, Dic22, Dic3, Dic31, Dic32, DicFunc, DF3, DF1, DF2, DF4} from './dic'
 
@@ -140,6 +142,8 @@ export default class A extends Component {
             age: 18
         },
 
+        theme: 'yellow',
+
         hasZ: false
     }
 
@@ -159,7 +163,7 @@ export default class A extends Component {
     item2 = <View style={styles.item}><Text style={styles.itemText}>item2</Text></View>
 
     render() {
-        const {toggleClicked1, arr, user, count} = this.state
+        const {toggleClicked1, arr, user, count, theme} = this.state
 
         const item1 = <View style={styles.item}><Text style={styles.itemText}>item1</Text></View>
         return (
@@ -226,9 +230,11 @@ export default class A extends Component {
                     }
                 </View>
 
-
-                <MyContext {...user}/>
-
+                <Hooks />
+                
+                <ThemeContext.Provider value={{theme}}>
+                    <MyContext {...user}/>
+                </ThemeContext.Provider>
 
                 <View style={styles.button}>
                     <Button
