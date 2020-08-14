@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {View, Text, StyleSheet} from 'react-native'
 import styles from './styles';
 
-export default function MyFunComp({name, age}, {color}) {
+function MyFunComp({name, age}, {color}) {
 
     return <View style={styles.item}>
         <Text style={styles.itemText}>{name}{age}{color}</Text>
@@ -13,3 +13,5 @@ export default function MyFunComp({name, age}, {color}) {
 MyFunComp.contextTypes = {
     color: PropTypes.string,
 }
+
+export default React.memo(MyFunComp)
